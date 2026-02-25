@@ -8,7 +8,7 @@
   },
   "keywords": ["atproto", "lexicon", "linguistics", "annotation"],
   "author": "Aaron Steven White",
-  "license": "CC-BY-4.0",
+  "license": "CC-BY-SA-4.0",
   "devDependencies": {
     "@atproto/lexicon": "^0.6.1",
     "@atproto/syntax": "^0.4.3"

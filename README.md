@@ -86,4 +86,4 @@ This project is in the design phase. Open [issues](https://github.com/layers-pub
 
 ## License
 
-Copyright © 2026 Aaron Steven White. Licensed under [CC-BY-4.0](LICENSE).
+Copyright © 2026 Aaron Steven White. Licensed under [CC-BY-SA-4.0](LICENSE).
