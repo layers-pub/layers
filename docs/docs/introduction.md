@@ -63,7 +63,7 @@ Expressions are recursive: a document contains paragraphs, which contain sentenc
 
 ## License
 
-Copyright © 2025 Aaron Steven White. Layers is licensed under **CC-BY-4.0**.
+Copyright © 2026 Aaron Steven White. Layers is licensed under **CC-BY-4.0**.
 
 ## Next Steps
 
