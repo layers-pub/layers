@@ -1,0 +1,233 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.eprint",
+  "description": "Eprint linkage records. Links linguistic data and annotations to academic eprints on any publication platform. Includes data-link records for connecting eprints to the data they produce, and reproducibility metadata.",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A link between a Layers data record and an eprint.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["eprintIdentifier", "linkType", "createdAt"],
+        "properties": {
+          "eprintIdentifier": {
+            "type": "string",
+            "description": "The eprint identifier (DOI, arXiv ID, ACL Anthology ID, etc.).",
+            "maxLength": 512
+          },
+          "eprintIdentifierTypeUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the identifier type definition node. Community-expandable via knowledge graph."
+          },
+          "eprintIdentifierType": {
+            "type": "string",
+            "description": "Identifier type slug (fallback when eprintIdentifierTypeUri unavailable).",
+            "knownValues": ["doi", "arxiv", "acl-anthology", "semantic-scholar", "pubmed", "isbn", "url", "at-uri", "custom"],
+            "maxLength": 128
+          },
+          "eprintUri": {
+            "type": "string",
+            "format": "uri",
+            "description": "Full URI of the eprint."
+          },
+          "platformEprintRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the eprint record on its publication platform (e.g., chive.pub, any ATProto-native publication service)."
+          },
+          "linkTypeUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the link type definition node. Community-expandable via knowledge graph."
+          },
+          "linkType": {
+            "type": "string",
+            "description": "Link type slug (fallback when linkTypeUri unavailable).",
+            "knownValues": [
+              "produced-by",
+              "described-in",
+              "evaluated-in",
+              "replicated-from",
+              "extends",
+              "supplements",
+              "cited-in",
+              "annotates",
+              "training-data-for",
+              "test-data-for"
+            ],
+            "maxLength": 128
+          },
+          "expressionRefs": {
+            "type": "array",
+            "description": "References to Layers expressions linked to this eprint.",
+            "maxLength": 1000,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "annotationRefs": {
+            "type": "array",
+            "description": "References to specific annotation records linked to this eprint.",
+            "maxLength": 1000,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "corpusRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to a corpus record."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the relationship.",
+            "maxLength": 10000
+          },
+          "citation": {
+            "type": "string",
+            "description": "Full citation string.",
+            "maxLength": 4096
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "Knowledge graph references (e.g., Wikidata for the venue, DBLP, Semantic Scholar corpus ID).",
+            "maxLength": 32,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+
+    "dataLink": {
+      "type": "record",
+      "description": "A link from an eprint to the Layers data it produced or is associated with. Generalizes the former chive-specific eprintDataLink.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["eprintUri", "dataKind", "createdAt"],
+        "properties": {
+          "eprintUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the eprint on its publication platform."
+          },
+          "eprintDid": {
+            "type": "string",
+            "format": "did",
+            "description": "DID of the eprint author/owner on the publication platform."
+          },
+          "dataKindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the data kind definition node. Community-expandable via knowledge graph."
+          },
+          "dataKind": {
+            "type": "string",
+            "description": "Data kind slug (fallback when dataKindUri unavailable).",
+            "knownValues": [
+              "corpus",
+              "annotation-layer",
+              "model-output",
+              "gold-standard",
+              "evaluation-data",
+              "supplementary",
+              "replication"
+            ],
+            "maxLength": 128
+          },
+          "corpusRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to a Layers corpus."
+          },
+          "expressionRefs": {
+            "type": "array",
+            "description": "References to specific Layers expressions.",
+            "maxLength": 10000,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "annotationRefs": {
+            "type": "array",
+            "description": "References to specific annotation records.",
+            "maxLength": 10000,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 10000
+          },
+          "paperSection": {
+            "type": "string",
+            "description": "Which section of the paper this data corresponds to (e.g., 'Section 4.2', 'Table 3', 'Appendix A').",
+            "maxLength": 256
+          },
+          "reproducibility": {
+            "type": "ref",
+            "ref": "#reproducibilityInfo"
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+
+    "reproducibilityInfo": {
+      "type": "object",
+      "description": "Information about how to reproduce the data from the eprint.",
+      "properties": {
+        "codeUri": {
+          "type": "string",
+          "format": "uri",
+          "description": "URI of the code repository.",
+          "maxLength": 2048
+        },
+        "commitHash": {
+          "type": "string",
+          "description": "Git commit hash for reproducibility.",
+          "maxLength": 64
+        },
+        "command": {
+          "type": "string",
+          "description": "Command to reproduce the data.",
+          "maxLength": 4096
+        },
+        "environment": {
+          "type": "string",
+          "description": "Environment specification (Docker image, conda env, etc.).",
+          "maxLength": 2048
+        },
+        "randomSeed": {
+          "type": "integer",
+          "description": "Random seed used."
+        }
+      }
+    }
+  }
+}

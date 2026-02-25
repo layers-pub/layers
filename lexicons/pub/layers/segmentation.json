@@ -1,0 +1,254 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.segmentation",
+  "description": "A segmentation record that binds a hierarchical document structure (sections containing sentences containing tokenizations) to an expression. Multiple segmentations can coexist for the same expression.",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A complete segmentation of an expression into sections, sentences, and tokenizations.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["expression", "sections", "createdAt"],
+        "properties": {
+          "expression": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to the expression this segmentation applies to."
+          },
+          "sections": {
+            "type": "array",
+            "description": "The ordered sections of the expression.",
+            "items": {
+              "type": "ref",
+              "ref": "#sectionWithSentences"
+            }
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata"
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "Knowledge graph references (e.g., segmentation algorithm, sentence splitting model).",
+            "maxLength": 16,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features (e.g., segmenter version, parameters, language model used)."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+
+    "section": {
+      "type": "object",
+      "description": "A section of an expression (paragraph, chapter, turn in dialogue, etc.).",
+      "required": ["uuid", "kind"],
+      "properties": {
+        "uuid": {
+          "type": "ref",
+          "ref": "pub.layers.defs#uuid"
+        },
+        "kindUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the section kind definition node. Community-expandable via knowledge graph."
+        },
+        "kind": {
+          "type": "string",
+          "description": "Section kind slug (fallback when kindUri unavailable).",
+          "knownValues": ["paragraph", "passage", "chapter", "turn", "utterance", "heading", "list", "other"],
+          "maxLength": 128
+        },
+        "textSpan": {
+          "type": "ref",
+          "ref": "pub.layers.defs#span",
+          "description": "Character offsets into the expression's text."
+        },
+        "temporalSpan": {
+          "type": "ref",
+          "ref": "pub.layers.defs#temporalSpan",
+          "description": "Temporal span for audio/video-grounded sections."
+        },
+        "label": {
+          "type": "string",
+          "description": "Optional label or heading text.",
+          "maxLength": 1024
+        },
+        "speaker": {
+          "type": "string",
+          "description": "Speaker identifier for dialogue/transcript sections.",
+          "maxLength": 256
+        },
+        "knowledgeRefs": {
+          "type": "array",
+          "description": "Knowledge graph references for this section.",
+          "maxLength": 16,
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#knowledgeRef"
+          }
+        },
+        "metadata": {
+          "type": "ref",
+          "ref": "pub.layers.defs#annotationMetadata",
+          "description": "Provenance: what tool/process produced this section boundary."
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    },
+
+    "sentence": {
+      "type": "object",
+      "description": "A sentence or utterance-level unit within a section.",
+      "required": ["uuid"],
+      "properties": {
+        "uuid": {
+          "type": "ref",
+          "ref": "pub.layers.defs#uuid"
+        },
+        "textSpan": {
+          "type": "ref",
+          "ref": "pub.layers.defs#span"
+        },
+        "temporalSpan": {
+          "type": "ref",
+          "ref": "pub.layers.defs#temporalSpan"
+        },
+        "knowledgeRefs": {
+          "type": "array",
+          "description": "Knowledge graph references for this sentence.",
+          "maxLength": 16,
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#knowledgeRef"
+          }
+        },
+        "metadata": {
+          "type": "ref",
+          "ref": "pub.layers.defs#annotationMetadata",
+          "description": "Provenance: what tool/process produced this sentence boundary."
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    },
+
+    "token": {
+      "type": "object",
+      "description": "A single token within a tokenization.",
+      "required": ["tokenIndex"],
+      "properties": {
+        "tokenIndex": {
+          "type": "integer",
+          "description": "Position of this token in the tokenization (0-based).",
+          "minimum": 0
+        },
+        "text": {
+          "type": "string",
+          "description": "The surface form of the token.",
+          "maxLength": 4096
+        },
+        "textSpan": {
+          "type": "ref",
+          "ref": "pub.layers.defs#span",
+          "description": "Character offsets into the expression text."
+        },
+        "temporalSpan": {
+          "type": "ref",
+          "ref": "pub.layers.defs#temporalSpan"
+        }
+      }
+    },
+
+    "tokenization": {
+      "type": "object",
+      "description": "An ordered sequence of tokens derived from a sentence or section.",
+      "required": ["uuid", "kind", "tokens"],
+      "properties": {
+        "uuid": {
+          "type": "ref",
+          "ref": "pub.layers.defs#uuid"
+        },
+        "kindUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the tokenization kind definition node. Community-expandable via knowledge graph."
+        },
+        "kind": {
+          "type": "string",
+          "description": "Tokenization kind slug (fallback when kindUri unavailable).",
+          "knownValues": ["whitespace", "penn-treebank", "bpe", "sentencepiece", "character", "morphological", "custom"],
+          "maxLength": 128
+        },
+        "tokens": {
+          "type": "array",
+          "description": "The ordered token sequence.",
+          "items": {
+            "type": "ref",
+            "ref": "#token"
+          }
+        },
+        "metadata": {
+          "type": "ref",
+          "ref": "pub.layers.defs#annotationMetadata"
+        }
+      }
+    },
+
+    "sectionWithSentences": {
+      "type": "object",
+      "description": "A section paired with its constituent sentences and their tokenizations.",
+      "required": ["section"],
+      "properties": {
+        "section": {
+          "type": "ref",
+          "ref": "#section"
+        },
+        "sentences": {
+          "type": "array",
+          "description": "Sentences within this section.",
+          "items": {
+            "type": "ref",
+            "ref": "#sentenceWithTokenizations"
+          }
+        }
+      }
+    },
+
+    "sentenceWithTokenizations": {
+      "type": "object",
+      "description": "A sentence paired with one or more tokenizations. Multiple tokenizations support interlinear glossing, alternative segmentation strategies, or multi-granularity analysis.",
+      "required": ["sentence"],
+      "properties": {
+        "sentence": {
+          "type": "ref",
+          "ref": "#sentence"
+        },
+        "tokenizations": {
+          "type": "array",
+          "description": "One or more tokenizations of this sentence. The first is conventionally the primary/word-level tokenization.",
+          "items": {
+            "type": "ref",
+            "ref": "#tokenization"
+          }
+        }
+      }
+    }
+  }
+}

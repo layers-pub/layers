@@ -1,0 +1,551 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.resource",
+  "description": "Linguistic resource records: lexical entries, collections, stimulus templates, slot definitions, and fillings. Provides an abstract, composable framework for representing any structured linguistic resource — lexicons, frame inventories, stimulus generation pipelines, and experimental item construction. Subsumes bead's Template/Slot/LexicalItem/Lexicon/FilledTemplate/Item model, glazing's unified frame ontology inventories, and similar resource structures in FoLiA, TEI, and UIMA.",
+  "defs": {
+    "entry": {
+      "type": "record",
+      "description": "A linguistic resource entry: a lexical item, frame element filler, morphological paradigm cell, or any atomic unit in a structured linguistic collection. Abstract enough to represent bead LexicalItems, FrameNet lexical units, PropBank rolesets, WordNet synset members, morphological paradigm cells, etc.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["form", "createdAt"],
+        "properties": {
+          "lemma": {
+            "type": "string",
+            "description": "Canonical/citation form.",
+            "maxLength": 1024
+          },
+          "form": {
+            "type": "string",
+            "description": "Surface form or string representation.",
+            "maxLength": 4096
+          },
+          "language": {
+            "type": "string",
+            "description": "BCP-47 language tag.",
+            "maxLength": 32
+          },
+          "ontologyTypeRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to a pub.layers.ontology#typeDef classifying this entry."
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "Knowledge graph groundings (WordNet synset, FrameNet lexical unit, Wikidata, etc.).",
+            "maxLength": 32,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features: pos, morphological features, frequency, register, etc."
+          },
+          "components": {
+            "type": "array",
+            "description": "For multi-word expressions: the component words.",
+            "maxLength": 32,
+            "items": {
+              "type": "ref",
+              "ref": "#mweComponent"
+            }
+          },
+          "mweKindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the MWE kind definition node. Community-expandable via knowledge graph."
+          },
+          "mweKind": {
+            "type": "string",
+            "description": "MWE kind slug (fallback when mweKindUri unavailable).",
+            "knownValues": ["compound", "phrasal-verb", "idiom", "light-verb", "named-entity", "collocation", "custom"],
+            "maxLength": 128
+          },
+          "sourceRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the source record this entry was derived from (e.g., an annotation, another entry)."
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who created this entry, with what tool, under what persona."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+
+    "collection": {
+      "type": "record",
+      "description": "A named collection of linguistic resource entries. Abstract enough to represent bead Lexicons, FrameNet frame inventories, PropBank frame files, WordNet synsets, morphological paradigm tables, gazetteers, stop-word lists, etc.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["name", "createdAt"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Human-readable name for this collection.",
+            "maxLength": 512
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 10000
+          },
+          "kindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the collection kind definition node. Community-expandable via knowledge graph."
+          },
+          "kind": {
+            "type": "string",
+            "description": "Collection kind slug (fallback when kindUri unavailable).",
+            "knownValues": ["lexicon", "frame-inventory", "gazetteer", "paradigm", "stop-list", "stimulus-pool", "custom"],
+            "maxLength": 128
+          },
+          "language": {
+            "type": "string",
+            "description": "BCP-47 language tag.",
+            "maxLength": 32
+          },
+          "version": {
+            "type": "string",
+            "description": "Version string (e.g., 'FrameNet 1.7', 'PropBank 3.4').",
+            "maxLength": 64
+          },
+          "ontologyRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to a pub.layers.ontology defining the type system for entries in this collection."
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "maxLength": 32,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who curated this collection, with what tool."
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+
+    "collectionMembership": {
+      "type": "record",
+      "description": "Links an entry to a collection. Separate record enables many-to-many relationships (an entry can belong to multiple collections) and decentralized curation (anyone can propose membership).",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["collectionRef", "entryRef", "createdAt"],
+        "properties": {
+          "collectionRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the collection."
+          },
+          "entryRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the entry."
+          },
+          "ordinal": {
+            "type": "integer",
+            "description": "Optional ordering position within the collection.",
+            "minimum": 0
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who added this entry to this collection, when, with what tool."
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+
+    "slot": {
+      "type": "object",
+      "description": "A named variable slot in a template. Generalizes bead's Slot (template variable position with constraints and defaults), ontology roleSlots (argument positions with filler type constraints), and similar parameterized positions in any structured linguistic pattern. Slots are composable — they can reference collections of allowed fillers, ontology types, or express arbitrary constraints.",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Slot name (used as placeholder key in template text, e.g., 'subject', 'verb', 'arg0').",
+          "maxLength": 256
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 2048
+        },
+        "required": {
+          "type": "boolean",
+          "description": "Whether this slot must be filled."
+        },
+        "defaultValue": {
+          "type": "string",
+          "description": "Default filler value if not explicitly filled.",
+          "maxLength": 4096
+        },
+        "collectionRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of a resource collection constraining allowed fillers."
+        },
+        "ontologyTypeRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of a pub.layers.ontology#typeDef constraining the filler type."
+        },
+        "fillerTypeRefs": {
+          "type": "array",
+          "description": "Multiple allowed filler type references (disjunctive constraint).",
+          "maxLength": 32,
+          "items": {
+            "type": "string",
+            "format": "at-uri"
+          }
+        },
+        "constraints": {
+          "type": "array",
+          "description": "Slot-level constraints (e.g., 'self.pos == \"VERB\"', 'self.features.number == \"sg\"').",
+          "maxLength": 32,
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#constraint"
+          }
+        },
+        "knowledgeRefs": {
+          "type": "array",
+          "maxLength": 16,
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#knowledgeRef"
+          }
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    },
+
+    "template": {
+      "type": "record",
+      "description": "A parameterized text template with named variable slots. Generalizes bead's Template (text pattern with {slotName} placeholders, slot definitions, and cross-slot constraints) and similar pattern structures used for stimulus generation, item construction, data augmentation, and controlled natural language. Templates are composable — they can reference ontologies, collections, and other templates.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["text", "slots", "createdAt"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Human-readable template name.",
+            "maxLength": 512
+          },
+          "text": {
+            "type": "string",
+            "description": "Template text with {slotName} placeholders (e.g., '{subject} {verb} the {object}').",
+            "maxLength": 50000
+          },
+          "language": {
+            "type": "string",
+            "description": "BCP-47 language tag.",
+            "maxLength": 32
+          },
+          "slots": {
+            "type": "array",
+            "description": "The named slots in this template.",
+            "maxLength": 64,
+            "items": {
+              "type": "ref",
+              "ref": "#slot"
+            }
+          },
+          "constraints": {
+            "type": "array",
+            "description": "Cross-slot constraints (e.g., agreement, semantic compatibility). These apply across multiple slots in this template.",
+            "maxLength": 64,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#constraint"
+            }
+          },
+          "ontologyRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to the ontology defining the type system used by this template."
+          },
+          "experimentRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to the experiment this template was designed for."
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "maxLength": 32,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who designed this template, with what tool."
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features: judgmentType, taskType, category, domain, etc."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+
+    "slotFilling": {
+      "type": "object",
+      "description": "A single slot→filler mapping in a filled template. The filler can be an entry reference (AT-URI to a resource entry), a literal value, or both (entry reference with rendered surface form).",
+      "required": ["slotName"],
+      "properties": {
+        "slotName": {
+          "type": "string",
+          "description": "Name of the slot being filled (must match a slot name in the template).",
+          "maxLength": 256
+        },
+        "entryRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the resource entry filling this slot."
+        },
+        "literalValue": {
+          "type": "string",
+          "description": "Literal string value for this slot (used when no entry reference is needed, or as override).",
+          "maxLength": 4096
+        },
+        "renderedForm": {
+          "type": "string",
+          "description": "The surface form as rendered in the filled text (may differ from entry form due to morphological inflection, agreement, etc.).",
+          "maxLength": 4096
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    },
+
+    "filling": {
+      "type": "record",
+      "description": "A filled template: a template with all slots mapped to specific fillers, producing a rendered text. Generalizes bead's FilledTemplate and Item. The rendered text can optionally be materialized as a pub.layers.expression for annotation. Fillings are composable — they reference templates, entries, and communications via AT-URIs.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["templateRef", "slotFillings", "createdAt"],
+        "properties": {
+          "templateRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the template being filled."
+          },
+          "slotFillings": {
+            "type": "array",
+            "description": "The slot→filler mappings.",
+            "maxLength": 64,
+            "items": {
+              "type": "ref",
+              "ref": "#slotFilling"
+            }
+          },
+          "renderedText": {
+            "type": "string",
+            "description": "The fully rendered text after substitution.",
+            "maxLength": 100000
+          },
+          "expressionRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the pub.layers.expression materializing this filling (for annotation)."
+          },
+          "strategyUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the filling strategy definition node. Community-expandable via knowledge graph."
+          },
+          "strategy": {
+            "type": "string",
+            "description": "Filling strategy slug (fallback when strategyUri unavailable).",
+            "knownValues": ["exhaustive", "random", "stratified", "mlm", "csp", "mixed", "manual", "custom"],
+            "maxLength": 128
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: what tool/process generated this filling."
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "Knowledge graph references (e.g., generation model in a KB, sampling distribution, linguistic theory motivating the filling).",
+            "maxLength": 32,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features: model name for MLM filling, seed for random, solver stats for CSP, etc."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+
+    "templateComposition": {
+      "type": "record",
+      "description": "A composition of templates (sequence, tree, or other structure). Used for multi-part stimuli, template hierarchies, and complex item construction.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["compositionType", "members", "createdAt"],
+        "properties": {
+          "compositionTypeUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the composition type definition node. Community-expandable via knowledge graph."
+          },
+          "compositionType": {
+            "type": "string",
+            "description": "Composition type slug (fallback when compositionTypeUri unavailable).",
+            "knownValues": ["sequence", "tree", "parallel", "alternation", "custom"],
+            "maxLength": 128
+          },
+          "members": {
+            "type": "array",
+            "description": "Ordered members of this composition.",
+            "maxLength": 256,
+            "items": {
+              "type": "ref",
+              "ref": "#templateMember"
+            }
+          },
+          "experimentRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to the experiment this composition was designed for."
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata"
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+
+    "templateMember": {
+      "type": "object",
+      "description": "A member in a template composition. References either a template or a nested composition.",
+      "required": ["ordinal"],
+      "properties": {
+        "ordinal": {
+          "type": "integer",
+          "description": "Position in the composition (0-based).",
+          "minimum": 0
+        },
+        "templateRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of a template record."
+        },
+        "compositionRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of a nested templateComposition (for tree structures)."
+        },
+        "label": {
+          "type": "string",
+          "description": "Optional label for this member (e.g., 'context', 'target', 'filler').",
+          "maxLength": 256
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    },
+
+    "mweComponent": {
+      "type": "object",
+      "description": "A component of a multi-word expression entry.",
+      "required": ["form"],
+      "properties": {
+        "form": {
+          "type": "string",
+          "description": "Surface form of this component.",
+          "maxLength": 1024
+        },
+        "lemma": {
+          "type": "string",
+          "description": "Lemma/citation form of this component.",
+          "maxLength": 1024
+        },
+        "position": {
+          "type": "integer",
+          "description": "Position in the MWE (0-based).",
+          "minimum": 0
+        },
+        "isHead": {
+          "type": "boolean",
+          "description": "Whether this component is the head of the MWE."
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    }
+  }
+}

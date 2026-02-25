@@ -1,0 +1,421 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.annotation",
+  "description": "Unified abstract annotation model. All annotation types — token tags, span labels, entity mentions, situation/frame mentions, syntactic parses, discourse relations, interlinear glosses, sentiment, temporal expressions, etc. — are represented through a single abstract schema discriminated by kind and subkind. The appview specializes rendering based on these discriminators and the features present. This replaces the former separate entity, situation, and parse lexicons.",
+  "defs": {
+    "annotationLayer": {
+      "type": "record",
+      "description": "A named layer of annotations over an expression. All annotation types use this single record type. The combination of kind, subkind, and formalism tells the appview how to render. Multiple layers can coexist for the same expression.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["expression", "kind", "annotations", "createdAt"],
+        "properties": {
+          "expression": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "The expression this annotation layer applies to."
+          },
+          "kindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the annotation kind definition node. Community-expandable via knowledge graph."
+          },
+          "kind": {
+            "type": "string",
+            "description": "Primary annotation kind slug (fallback when kindUri unavailable). Determines the structural interpretation of annotations in this layer.",
+            "knownValues": [
+              "token-tag",
+              "span",
+              "relation",
+              "tree",
+              "graph",
+              "tier",
+              "document-tag"
+            ],
+            "maxLength": 128
+          },
+          "subkindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the annotation subkind definition node. Community-expandable via knowledge graph."
+          },
+          "subkind": {
+            "type": "string",
+            "description": "Annotation subkind slug (fallback when subkindUri unavailable). The appview uses this for specialized rendering.",
+            "knownValues": [
+              "pos",
+              "xpos",
+              "ner",
+              "lemma",
+              "morph",
+              "supersense",
+              "sense",
+              "chunk",
+              "speaker",
+              "gloss",
+              "phonetic",
+              "prosody",
+              "tobi",
+              "language-id",
+              "entity-mention",
+              "situation-mention",
+              "frame",
+              "predicate",
+              "discourse-unit",
+              "speech-act",
+              "temporal-expression",
+              "temporal-signal",
+              "spatial-expression",
+              "spatial-signal",
+              "spatial-relation",
+              "location-mention",
+              "sentiment",
+              "emotion",
+              "stance",
+              "information-structure",
+              "error",
+              "correction",
+              "code-switch",
+              "highlight",
+              "comment",
+              "bookmark",
+              "temporal-value",
+              "temporal-vagueness",
+              "dependency",
+              "enhanced-dependency",
+              "constituency",
+              "ccg",
+              "coreference",
+              "bridging",
+              "temporal-relation",
+              "causal-relation",
+              "discourse-relation",
+              "custom"
+            ],
+            "maxLength": 128
+          },
+          "formalismUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the formalism definition node. Community-expandable via knowledge graph."
+          },
+          "formalism": {
+            "type": "string",
+            "description": "Formalism slug (fallback when formalismUri unavailable). The linguistic formalism or annotation standard used.",
+            "knownValues": [
+              "universal-dependencies",
+              "penn-treebank",
+              "stanford",
+              "prague",
+              "propbank",
+              "framenet",
+              "verbnet",
+              "amr",
+              "ucca",
+              "rst",
+              "erst",
+              "sdrt",
+              "pdtb",
+              "timeml",
+              "iso-space",
+              "spatialml",
+              "conll-u",
+              "brat",
+              "elan",
+              "leipzig-glossing",
+              "ipa",
+              "tobi",
+              "bpe",
+              "sentencepiece",
+              "unimorph",
+              "wals",
+              "custom"
+            ],
+            "maxLength": 128
+          },
+          "labelSet": {
+            "type": "string",
+            "description": "Identifier for the label set used (e.g., 'universal-pos', 'ontonotes-ner', 'penn-treebank-pos').",
+            "maxLength": 256
+          },
+          "ontologyRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to a pub.layers.ontology defining the types used in this layer."
+          },
+          "tokenizationId": {
+            "type": "ref",
+            "ref": "pub.layers.defs#uuid",
+            "description": "For token-aligned layers (kind=token-tag, dependency, constituency, etc.): the tokenization these annotations are aligned to."
+          },
+          "rank": {
+            "type": "integer",
+            "description": "Rank among k-best alternatives (1 = best).",
+            "minimum": 1
+          },
+          "alternativesRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to the top-ranked layer in a k-best group."
+          },
+          "parentLayerRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "For dependent/subordinate layers: the parent layer this one subdivides or refines. Supports ELAN-style tier dependencies, error-correction pairs, etc."
+          },
+          "language": {
+            "type": "string",
+            "description": "BCP-47 language tag for this annotation layer, if different from the expression's language.",
+            "maxLength": 64
+          },
+          "annotations": {
+            "type": "array",
+            "description": "The annotations in this layer.",
+            "items": {
+              "type": "ref",
+              "ref": "#annotation"
+            }
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+
+    "annotation": {
+      "type": "object",
+      "description": "A single abstract annotation. The fields populated depend on the layer's kind/subkind. For token-tags: tokenIndex + label. For spans: anchor + label. For trees: anchor + label + parentId/childIds. For relations: anchor + arguments. For graphs: anchor + arguments or headIndex/targetIndex. This single type replaces the former tag, spanAnnotation, entityMention, situationMention, dependencyArc, parseNode, etc.",
+      "required": ["uuid"],
+      "properties": {
+        "uuid": {
+          "type": "ref",
+          "ref": "pub.layers.defs#uuid"
+        },
+
+        "anchor": {
+          "type": "ref",
+          "ref": "pub.layers.defs#anchor",
+          "description": "How this annotation attaches to the source data."
+        },
+        "tokenIndex": {
+          "type": "integer",
+          "description": "For token-level annotations: 0-based index into the tokenization.",
+          "minimum": 0
+        },
+
+        "label": {
+          "type": "string",
+          "description": "The primary label (POS tag, entity type, frame name, constituent label, dependency relation, etc.).",
+          "maxLength": 512
+        },
+        "value": {
+          "type": "string",
+          "description": "Secondary value (lemma form, gloss, normalized temporal value, etc.).",
+          "maxLength": 4096
+        },
+        "text": {
+          "type": "string",
+          "description": "Surface text of the annotated span.",
+          "maxLength": 4096
+        },
+
+        "parentId": {
+          "type": "ref",
+          "ref": "pub.layers.defs#uuid",
+          "description": "Parent annotation in tree structures (constituency, RST, etc.)."
+        },
+        "childIds": {
+          "type": "array",
+          "description": "Child annotation UUIDs in tree structures.",
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#uuid"
+          }
+        },
+        "headIndex": {
+          "type": "integer",
+          "description": "Head/governor token index for directed arcs (dependency parsing). -1 for root.",
+          "minimum": -1
+        },
+        "targetIndex": {
+          "type": "integer",
+          "description": "Dependent/target token index for directed arcs.",
+          "minimum": 0
+        },
+
+        "arguments": {
+          "type": "array",
+          "description": "Role/argument fillers for predicate-argument structures (FrameNet, PropBank, AMR, etc.). Each argument references another annotation.",
+          "items": {
+            "type": "ref",
+            "ref": "#argumentRef"
+          }
+        },
+
+        "confidence": {
+          "type": "integer",
+          "description": "Confidence score 0-10000.",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "ontologyTypeRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "Reference to a type definition in a pub.layers.ontology."
+        },
+        "knowledgeRefs": {
+          "type": "array",
+          "description": "Links to external knowledge bases.",
+          "maxLength": 32,
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#knowledgeRef"
+          }
+        },
+        "temporal": {
+          "type": "ref",
+          "ref": "pub.layers.defs#temporalExpression",
+          "description": "Structured temporal annotation. For temporal-expression, temporal-value, and temporal-vagueness subkinds. Subsumes TimeML TIMEX3 and OWL-Time GeneralDateTimeDescription."
+        },
+        "spatial": {
+          "type": "ref",
+          "ref": "pub.layers.defs#spatialExpression",
+          "description": "Structured spatial annotation. For spatial-expression and location-mention subkinds. Subsumes ISO-Space place annotations (ISO 24617-7), SpatialML PLACE elements, and GeoJSON/WKT geometries."
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features. Use for domain-specific properties: phraseType, polarity, modality, tense, isEnhanced, morphological features, etc."
+        }
+      }
+    },
+
+    "argumentRef": {
+      "type": "object",
+      "description": "A role/argument reference in a predicate-argument structure. Uses the composable objectRef to point to another annotation — either locally (same layer, by UUID) or remotely (cross-layer or cross-record, by AT-URI + UUID).",
+      "required": ["role", "target"],
+      "properties": {
+        "role": {
+          "type": "string",
+          "description": "The argument role label (e.g., ARG0, Agent, Theme, CAUSE, connective, etc.).",
+          "maxLength": 256
+        },
+        "target": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "Reference to the annotation filling this role. Use localId for same-layer, recordRef+objectId for cross-layer."
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    },
+
+    "clusterSet": {
+      "type": "record",
+      "description": "Groups annotations into equivalence classes. Used for coreference resolution (entity clusters, situation clusters), bridging anaphora grouping, and any annotation clustering task.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["kind", "clusters", "createdAt"],
+        "properties": {
+          "expression": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Primary expression context. Optional for cross-document clustering."
+          },
+          "expressionRefs": {
+            "type": "array",
+            "description": "For cross-document clustering: all expressions these clusters span.",
+            "maxLength": 10000,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "corpusRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Corpus these clusters span (for cross-document clustering)."
+          },
+          "kindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the clustering kind definition node. Community-expandable via knowledge graph."
+          },
+          "kind": {
+            "type": "string",
+            "description": "Clustering kind slug (fallback when kindUri unavailable).",
+            "knownValues": ["coreference", "situation-coreference", "bridging", "same-as", "clustering", "custom"],
+            "maxLength": 128
+          },
+          "layerRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "The annotation layer whose annotations these clusters group."
+          },
+          "clusters": {
+            "type": "array",
+            "items": {
+              "type": "ref",
+              "ref": "#cluster"
+            }
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+
+    "cluster": {
+      "type": "object",
+      "description": "A cluster of annotations (e.g., coreferent entity mentions, situation mentions referring to the same situation).",
+      "required": ["uuid", "members"],
+      "properties": {
+        "uuid": {
+          "type": "ref",
+          "ref": "pub.layers.defs#uuid"
+        },
+        "canonicalLabel": {
+          "type": "string",
+          "description": "The canonical/representative label for this cluster.",
+          "maxLength": 1024
+        },
+        "members": {
+          "type": "array",
+          "description": "References to the annotations in this cluster. Use localId for same-layer members, recordRef+objectId for cross-layer or cross-document coreference.",
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#objectRef"
+          }
+        },
+        "knowledgeRefs": {
+          "type": "array",
+          "maxLength": 32,
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#knowledgeRef"
+          }
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    }
+  }
+}

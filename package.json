@@ -1,0 +1,16 @@
+{
+  "name": "layers",
+  "version": "1.0.0",
+  "description": "Composable ATProto lexicons for representing, sharing, and interlinking linguistic annotation data in a decentralized network.",
+  "scripts": {
+    "validate": "node validate-lexicons.mjs",
+    "test": "node validate-lexicons.mjs"
+  },
+  "keywords": ["atproto", "lexicon", "linguistics", "annotation"],
+  "author": "Aaron Steven White",
+  "license": "CC-BY-4.0",
+  "devDependencies": {
+    "@atproto/lexicon": "^0.6.1",
+    "@atproto/syntax": "^0.4.3"
+  }
+}
