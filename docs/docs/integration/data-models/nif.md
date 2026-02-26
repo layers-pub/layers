@@ -81,5 +81,5 @@ http://example.org/doc1#char=0,5
 }
 ```
 
-NIF uses HTTP URIs, making every annotation a dereferenceable web resource. Layers uses AT-URIs (`at://did:plc:xxx/pub.layers.annotation/tid`), which serve the same purpose in the ATProto ecosystem — every annotation is a dereferenceable resource via its AT-URI.
+NIF uses HTTP URIs, making every annotation a dereferenceable web resource. Layers uses AT-URIs (`at://did:plc:xxx/pub.layers.annotation/tid`), which serve the same purpose in the ATProto ecosystem: every annotation is a dereferenceable resource via its AT-URI.
 

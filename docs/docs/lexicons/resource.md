@@ -4,7 +4,7 @@ sidebar_label: "Resource"
 
 # pub.layers.resource
 
-Linguistic resource records: lexical entries, collections, stimulus templates, slot definitions, and fillings. Provides an abstract, composable framework for representing any structured linguistic resource — lexicons, frame inventories, stimulus generation pipelines, and experimental item construction.
+Linguistic resource records: lexical entries, collections, stimulus templates, slot definitions, and fillings. Provides an abstract, composable framework for representing any structured linguistic resource: lexicons, frame inventories, stimulus generation pipelines, and experimental item construction.
 
 ## Types
 

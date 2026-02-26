@@ -4,14 +4,14 @@ sidebar_label: "Expression"
 
 # pub.layers.expression
 
-An Expression is any linguistic unit in Layers — from a single morpheme to a full document. Expressions are recursive: a word is part of a phrase, which is part of a sentence, which is part of a paragraph, which is part of a document. Top-level expressions (documents, recordings) have no parent; all other expressions reference their containing expression via `parentRef`. Segmentation records define how a parent expression is broken into child expressions.
+An Expression is any linguistic unit in Layers, from a single morpheme to a full document. Expressions are recursive: a word is part of a phrase, which is part of a sentence, which is part of a paragraph, which is part of a document. Top-level expressions (documents, recordings) have no parent; all other expressions reference their containing expression via `parentRef`. Segmentation records define how a parent expression is broken into child expressions.
 
 ## Types
 
 ### main
 **Type:** Record
 
-An expression record representing any linguistic unit — from a full document to a single morpheme — with optional recursive nesting.
+An expression record representing any linguistic unit, from a full document to a single morpheme, with optional recursive nesting.
 
 | Field | Type | Description |
 |-------|------|-------------|

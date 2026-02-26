@@ -3,7 +3,7 @@
 <div className="metadata-card">
 <dl>
 <dt>Model</dt>
-<dd>UIMA/CAS — Unstructured Information Management Architecture and Common Analysis Structure</dd>
+<dd>UIMA/CAS: Unstructured Information Management Architecture and Common Analysis Structure</dd>
 <dt>Origin</dt>
 <dd>Apache Software Foundation / OASIS</dd>
 <dt>Specification</dt>
@@ -38,7 +38,7 @@ UIMA is a framework for building text analytics pipelines. The Common Analysis S
 |---|---|---|
 | `uima.tcas.Annotation` | `pub.layers.annotation#annotation` | Base annotation with span. |
 | `uima.tcas.DocumentAnnotation` | `pub.layers.expression` | Document-level metadata. |
-| `uima.cas.TOP` | No direct equivalent needed | Root of type hierarchy — implicit in Layers. |
+| `uima.cas.TOP` | No direct equivalent needed | Root of type hierarchy, implicit in Layers. |
 | `uima.cas.AnnotationBase` | `pub.layers.annotation#annotation` | Base for all annotations. |
 | `uima.cas.FSArray` | `annotation.childIds` or `argumentRef[]` | Feature structure arrays. |
 | `uima.cas.StringList`/`IntegerList` | `pub.layers.defs#featureMap` | Typed lists in features. |

@@ -75,7 +75,7 @@ UDS graphs have three layers: a syntactic layer (UD dependency trees), a semanti
 
 | Decomp/UDS Concept | Layers Equivalent | Notes |
 |---|---|---|
-| Annotation protocol (property definitions, scale) | `pub.layers.judgment#experimentDef` | Each UDS property protocol (e.g., proto-role elicitation) maps to an experiment definition with `taskType="SCALAR"`, `scaleMin`/`scaleMax`, and guidelines. |
+| Annotation protocol (property definitions, scale) | `pub.layers.judgment#experimentDef` | Each UDS property protocol (e.g., proto-role elicitation) maps to an experiment definition with `taskType="scalar"`, `scaleMin`/`scaleMax`, and guidelines. |
 | Annotator responses per property | `pub.layers.judgment#judgmentSet` | Raw responses grouped by annotator. |
 | Inter-annotator agreement | `pub.layers.judgment#agreementReport` | Agreement statistics (Krippendorff's alpha, correlation) for each property. |
 

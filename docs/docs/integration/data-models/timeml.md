@@ -18,9 +18,9 @@
 TimeML is the ISO standard markup language for temporal and event expressions in natural language text. It provides four main tag types (TIMEX3, EVENT, SIGNAL, LINK) for annotating temporal expressions, events with temporal attributes, temporal signals/connectives, and temporal/aspectual/subordination relations. TimeBank is the primary annotated corpus.
 
 Layers fully subsumes TimeML through three mechanisms:
-1. **Structured temporal annotations** — `temporalExpression`, `temporalEntity`, and `temporalModifier` in `pub.layers.defs` capture all TIMEX3 attributes
-2. **Annotation subkinds** — `temporal-expression`, `temporal-signal`, `situation-mention` discriminate TimeML tag types
-3. **Graph edges** — Allen's 13 interval relations plus aspectual relations as `graphEdge.edgeType` values capture all TLINK and ALINK relations
+1. **Structured temporal annotations.** `temporalExpression`, `temporalEntity`, and `temporalModifier` in `pub.layers.defs` capture all TIMEX3 attributes.
+2. **Annotation subkinds.** `temporal-expression`, `temporal-signal`, `situation-mention` discriminate TimeML tag types.
+3. **Graph edges.** Allen's 13 interval relations plus aspectual relations as `graphEdge.edgeType` values capture all TLINK and ALINK relations.
 
 ## Type-by-Type Mapping
 

@@ -3,8 +3,21 @@ import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
 const sidebars: SidebarsConfig = {
   docs: [
     'introduction',
-    'foundations',
-    'lexicon-overview',
+    {
+      type: 'category',
+      label: 'Foundations',
+      collapsed: false,
+      link: {
+        type: 'doc',
+        id: 'foundations/index',
+      },
+      items: [
+        'foundations/design-principles',
+        'foundations/primitives',
+        'foundations/flexible-enums',
+        'foundations/lexicon-overview',
+      ],
+    },
     {
       type: 'category',
       label: 'Lexicon Reference',
@@ -34,6 +47,8 @@ const sidebars: SidebarsConfig = {
         'guides/spatial-representation',
         'guides/multimodal-annotation',
         'guides/knowledge-grounding',
+        'guides/psycholinguistic-data',
+        'guides/judgment-data',
       ],
     },
     {

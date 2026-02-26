@@ -85,7 +85,7 @@ const config: Config = {
             },
             {
               label: 'Lexicon Overview',
-              to: '/lexicon-overview',
+              to: '/foundations/lexicon-overview',
             },
           ],
         },

@@ -18,9 +18,9 @@
 ISO-Space is the ISO standard framework for annotating spatial and spatiotemporal information in natural language text. It provides markup for places, spatial entities, spatial signals (prepositions and connectives), paths, motion events, and four types of spatial links: qualitative spatial links (QSLINK) using RCC-8 topological relations, orientation links (OLINK) for directional relations, measure links (MEASURELINK) for metric/distance relations, and motion links (MLINK) connecting motion events to their paths.
 
 Layers fully subsumes ISO-Space through three mechanisms:
-1. **Structured spatial annotations** — `spatialExpression`, `spatialEntity`, and `spatialModifier` in `pub.layers.defs` capture all place and spatial entity attributes
-2. **Annotation subkinds** — `location-mention`, `spatial-expression`, `spatial-signal`, `situation-mention` discriminate ISO-Space element types
-3. **Graph edges** — RCC-8 topological relations, directional relations, and distance relations as `graphEdge.edgeType` values capture all QSLINK, OLINK, and MEASURELINK relations
+1. **Structured spatial annotations.** `spatialExpression`, `spatialEntity`, and `spatialModifier` in `pub.layers.defs` capture all place and spatial entity attributes.
+2. **Annotation subkinds.** `location-mention`, `spatial-expression`, `spatial-signal`, `situation-mention` discriminate ISO-Space element types.
+3. **Graph edges.** RCC-8 topological relations, directional relations, and distance relations as `graphEdge.edgeType` values capture all QSLINK, OLINK, and MEASURELINK relations.
 
 ## Type-by-Type Mapping
 

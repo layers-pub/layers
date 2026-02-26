@@ -14,7 +14,7 @@ Layers distinguishes **media space** from **semantic space**:
 
 - **Semantic space** (`spatialExpression`): *what place or region* a linguistic expression refers to. Expressed as geographic coordinates, named locations, or relative positions. Used for spatial annotation: "this expression refers to downtown Tokyo."
 
-Media space lives on [anchors](../foundations.md#anchor) (`pub.layers.defs#anchor.spatioTemporalAnchor`). Semantic space lives on [annotations](../lexicons/annotation.md) (`pub.layers.annotation#annotation.spatial`). They are independent: a spatial annotation at pixel (100, 50) in a satellite image might refer to "the Eiffel Tower at 48.8584° N, 2.2945° E."
+Media space lives on [anchors](../foundations/primitives.md#anchor) (`pub.layers.defs#anchor.spatioTemporalAnchor`). Semantic space lives on [annotations](../lexicons/annotation.md) (`pub.layers.annotation#annotation.spatial`). They are independent: a spatial annotation at pixel (100, 50) in a satellite image might refer to "the Eiffel Tower at 48.8584° N, 2.2945° E."
 
 ## Spatial Primitives
 
@@ -91,7 +91,7 @@ The DE-9IM (Dimensionally Extended 9-Intersection Model) predicates used in Post
 | `Covers` | `tangential-proper-part-inverse` | Contains with boundary sharing |
 | `CoveredBy` | `tangential-proper-part` | Within with boundary sharing |
 | `Intersects` | Any except `disconnected` | Negation of Disjoint |
-| `Crosses` | — | Applies to line/point geometries; use `partially-overlapping` or features |
+| `Crosses` | (none) | Applies to line/point geometries; use `partially-overlapping` or features |
 
 ### Directional Relations
 
@@ -369,7 +369,7 @@ All 8 RCC-8 relations are first-class `graphEdge.edgeType` values. See the [Spat
 
 ## See Also
 
-- [Primitives](../foundations.md): spatialExpression, spatialEntity, spatialModifier definitions
+- [Primitives](../foundations/primitives.md): spatialExpression, spatialEntity, spatialModifier definitions
 - [Temporal Representation](./temporal-representation.md): the parallel temporal type system
 - [Multimodal Annotation](./multimodal-annotation.md): spatial anchoring in images and video
 - [Knowledge Grounding](./knowledge-grounding.md): spatial relations as graph edges

@@ -3,7 +3,7 @@
 <div className="metadata-card">
 <dl>
 <dt>Model</dt>
-<dd>TEI — Text Encoding Initiative XML encoding standard</dd>
+<dd>TEI: Text Encoding Initiative XML encoding standard</dd>
 <dt>Origin</dt>
 <dd>TEI Consortium</dd>
 <dt>Specification</dt>

@@ -14,7 +14,7 @@ Layers distinguishes **media time** from **semantic time**:
 
 - **Semantic time** (`temporalExpression`): *what time* a linguistic expression refers to. Expressed as ISO 8601 values with granularity, calendar, modifiers, and document function. Used for temporal annotation: "this expression refers to March 2024."
 
-Media time lives on [anchors](../foundations.md#anchor) (`pub.layers.defs#anchor.temporalSpan`). Semantic time lives on [annotations](../lexicons/annotation.md) (`pub.layers.annotation#annotation.temporal`). They are independent: a temporal expression annotation at 3:45 in a recording might refer to "next Tuesday."
+Media time lives on [anchors](../foundations/primitives.md#anchor) (`pub.layers.defs#anchor.temporalSpan`). Semantic time lives on [annotations](../lexicons/annotation.md) (`pub.layers.annotation#annotation.temporal`). They are independent: a temporal expression annotation at 3:45 in a recording might refer to "next Tuesday."
 
 ## Temporal Primitives
 
@@ -279,7 +279,7 @@ ELAN and similar multimedia annotation tools use timeline-based representation w
 
 ## See Also
 
-- [Primitives](../foundations.md): temporalExpression, temporalEntity, temporalModifier definitions
+- [Primitives](../foundations/primitives.md): temporalExpression, temporalEntity, temporalModifier definitions
 - [Spatial Representation](./spatial-representation.md): the parallel spatial type system
 - [Multimodal Annotation](./multimodal-annotation.md): temporal anchoring in audio and video
 - [Knowledge Grounding](./knowledge-grounding.md): temporal relations as graph edges

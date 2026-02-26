@@ -1,4 +1,5 @@
 ---
+sidebar_label: "Lexicon Overview"
 sidebar_position: 5
 ---
 
@@ -10,19 +11,19 @@ Layers consists of 13 lexicons organized into core pipeline layers, parallel tra
 
 | Lexicon | ID | Purpose |
 |---------|----|---------|
-| [Definitions](./lexicons/defs.md) | `pub.layers.defs` | Core primitives: objectRef, anchor, constraint, agentRef, annotationMetadata, knowledgeRef, featureMap, alignmentLink |
-| [Expression](./lexicons/expression.md) | `pub.layers.expression` | Any linguistic unit (document, paragraph, sentence, word, morpheme) with recursive nesting |
-| [Segmentation](./lexicons/segmentation.md) | `pub.layers.segmentation` | Tokenization, chunking, segmentation boundaries, span indices |
-| [Annotation](./lexicons/annotation.md) | `pub.layers.annotation` | Linguistic labels and categories (POS, NER, SRL, discourse, etc.) |
-| [Ontology](./lexicons/ontology.md) | `pub.layers.ontology` | Label definitions, linguistic categories, theory/framework records |
-| [Corpus](./lexicons/corpus.md) | `pub.layers.corpus` | Corpus metadata, membership, and statistics |
-| [Resource](./lexicons/resource.md) | `pub.layers.resource` | Lexical entries, collections, stimulus templates, fillings, and template compositions |
-| [Judgment](./lexicons/judgment.md) | `pub.layers.judgment` | Human judgments, model predictions, confidence, disagreement, experiment design |
-| [Alignment](./lexicons/alignment.md) | `pub.layers.alignment` | Cross-record linking, token correspondence, equivalence |
-| [Graph](./lexicons/graph.md) | `pub.layers.graph` | Generic typed property graph for knowledge representation and cross-referencing |
-| [Persona](./lexicons/persona.md) | `pub.layers.persona` | Agent personas, theoretical frameworks, backgrounds |
-| [Media](./lexicons/media.md) | `pub.layers.media` | Audio, video, image, and paged document references |
-| [Eprint](./lexicons/eprint.md) | `pub.layers.eprint` | Eprint linkage, data provenance, scholarly metadata, reproducibility |
+| [Definitions](../lexicons/defs.md) | `pub.layers.defs` | Core primitives: objectRef, anchor, constraint, agentRef, annotationMetadata, knowledgeRef, featureMap, alignmentLink |
+| [Expression](../lexicons/expression.md) | `pub.layers.expression` | Any linguistic unit (document, paragraph, sentence, word, morpheme) with recursive nesting |
+| [Segmentation](../lexicons/segmentation.md) | `pub.layers.segmentation` | Tokenization, chunking, segmentation boundaries, span indices |
+| [Annotation](../lexicons/annotation.md) | `pub.layers.annotation` | Linguistic labels and categories (POS, NER, SRL, discourse, etc.) |
+| [Ontology](../lexicons/ontology.md) | `pub.layers.ontology` | Label definitions, linguistic categories, theory/framework records |
+| [Corpus](../lexicons/corpus.md) | `pub.layers.corpus` | Corpus metadata, membership, and statistics |
+| [Resource](../lexicons/resource.md) | `pub.layers.resource` | Lexical entries, collections, stimulus templates, fillings, and template compositions |
+| [Judgment](../lexicons/judgment.md) | `pub.layers.judgment` | Human judgments, model predictions, confidence, disagreement, experiment design |
+| [Alignment](../lexicons/alignment.md) | `pub.layers.alignment` | Cross-record linking, token correspondence, equivalence |
+| [Graph](../lexicons/graph.md) | `pub.layers.graph` | Generic typed property graph for knowledge representation and cross-referencing |
+| [Persona](../lexicons/persona.md) | `pub.layers.persona` | Agent personas, theoretical frameworks, backgrounds |
+| [Media](../lexicons/media.md) | `pub.layers.media` | Audio, video, image, and paged document references |
+| [Eprint](../lexicons/eprint.md) | `pub.layers.eprint` | Eprint linkage, data provenance, scholarly metadata, reproducibility |
 
 ## Lexicon Organization
 
@@ -330,9 +331,9 @@ Eprint linkage, data provenance, reproducibility, and scholarly metadata:
 
 ## See Also
 
-- [Introduction](./introduction.md) for architectural overview
-- [Foundations](./foundations.md) for design principles, primitives, and the flexible enum pattern
-- [Temporal Representation](./guides/temporal-representation.md) for temporal primitives and standards mapping
-- [Spatial Representation](./guides/spatial-representation.md) for spatial primitives and standards mapping
-- [Multimodal Annotation](./guides/multimodal-annotation.md) for annotation across text, audio, video, and image
-- [Knowledge Grounding](./guides/knowledge-grounding.md) for linking annotations to external knowledge bases
+- [Introduction](../introduction.md) for architectural overview
+- [Foundations](./index.md) for design principles, primitives, and the flexible enum pattern
+- [Temporal Representation](../guides/temporal-representation.md) for temporal primitives and standards mapping
+- [Spatial Representation](../guides/spatial-representation.md) for spatial primitives and standards mapping
+- [Multimodal Annotation](../guides/multimodal-annotation.md) for annotation across text, audio, video, and image
+- [Knowledge Grounding](../guides/knowledge-grounding.md) for linking annotations to external knowledge bases

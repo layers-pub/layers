@@ -200,7 +200,7 @@ Anchor to a specific page and region in a paged document (PDF, etc.). Compatible
 ### textQuoteSelector
 **Type:** Object
 
-W3C TextQuoteSelector — select text by quoting it with surrounding context. Compatible with at.margin.annotation and the W3C Web Annotation Data Model.
+W3C TextQuoteSelector: select text by quoting it with surrounding context. Compatible with at.margin.annotation and the W3C Web Annotation Data Model.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -211,7 +211,7 @@ W3C TextQuoteSelector — select text by quoting it with surrounding context. Co
 ### textPositionSelector
 **Type:** Object
 
-W3C TextPositionSelector — select by character offsets. Semantically equivalent to pub.layers.defs#span but named for W3C compatibility with at.margin.
+W3C TextPositionSelector: select by character offsets. Semantically equivalent to pub.layers.defs#span but named for W3C compatibility with at.margin.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -221,7 +221,7 @@ W3C TextPositionSelector — select by character offsets. Semantically equivalen
 ### fragmentSelector
 **Type:** Object
 
-W3C FragmentSelector — select by URI fragment identifier.
+W3C FragmentSelector: select by URI fragment identifier.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -243,7 +243,7 @@ Target for annotating external resources (web pages, documents, etc.). Compatibl
 ### anchor
 **Type:** Object
 
-Abstract anchor: how an annotation attaches to its source data. This is a polymorphic type — at least one anchoring field should be present. Consumers dispatch on which field(s) are populated.
+Abstract anchor: how an annotation attaches to its source data. This is a polymorphic type; at least one anchoring field should be present. Consumers dispatch on which field(s) are populated.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -346,7 +346,7 @@ An abstract constraint expression. Used for type constraints on role slots, slot
 ### objectRef
 **Type:** Object
 
-A composable reference to any Layers object, whether local (same record, by UUID), remote (different record, by AT-URI + optional object UUID), or external (knowledge graph entry). This is the universal cross-referencing primitive — consumers dispatch on which field(s) are populated.
+A composable reference to any Layers object, whether local (same record, by UUID), remote (different record, by AT-URI + optional object UUID), or external (knowledge graph entry). This is the universal cross-referencing primitive; consumers dispatch on which field(s) are populated.
 
 | Field | Type | Description |
 |-------|------|-------------|

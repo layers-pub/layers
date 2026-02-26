@@ -52,7 +52,7 @@ FOVEA separates **ontology types** (what kinds of things exist) from **world ins
 | FOVEA Type | Layers Equivalent | Notes |
 |---|---|---|
 | `Time` (instant/interval) | `pub.layers.defs#temporalEntity` (for calendar time) or `pub.layers.defs#temporalSpan` (for media time) | FOVEA's `TimeInstant` maps to `temporalEntity.instant`; `TimeInterval` maps to `temporalEntity.intervalStart`/`intervalEnd`. For media-anchored time, `temporalSpan` with `start`/`ending` in milliseconds. |
-| `Time.videoReferences` | `pub.layers.defs#temporalSpan` | Direct mapping — frame numbers convert to milliseconds via frame rate. |
+| `Time.videoReferences` | `pub.layers.defs#temporalSpan` | Direct mapping. Frame numbers convert to milliseconds via frame rate. |
 | `Time.vagueness` | `pub.layers.defs#temporalModifier` + `pub.layers.defs#temporalEntity.earliest`/`latest` | Temporal vagueness maps to `temporalModifier.mod` (`approximate`, `early`, `late`, etc.) and uncertainty bounds (`earliest`/`latest`). `granularity` is a first-class field on `temporalEntity`. |
 | `Time.deictic` | `pub.layers.defs#temporalExpression.anchorRef` | Deictic temporal references use `anchorRef` pointing to the deictic center (document creation time, speech time, etc.). |
 | `RecurrenceRule` (RFC 5545) | `pub.layers.defs#temporalEntity.recurrence` | ISO 8601 repeating intervals (e.g., `R/P1W` for weekly). More complex RFC 5545 rules use `features`. |
@@ -64,7 +64,7 @@ FOVEA separates **ontology types** (what kinds of things exist) from **world ins
 
 | FOVEA Type | Layers Equivalent | Notes |
 |---|---|---|
-| `BoundingBox` | `pub.layers.defs#boundingBox` | Direct mapping: `x`, `y`, `width`, `height`. FOVEA adds `frameNumber`, `confidence`, `isKeyframe` — Layers handles frame number via `keyframe.timeMs` (converted from frame number) and confidence via `annotation.confidence`. |
+| `BoundingBox` | `pub.layers.defs#boundingBox` | Direct mapping: `x`, `y`, `width`, `height`. FOVEA adds `frameNumber`, `confidence`, `isKeyframe`. Layers handles frame number via `keyframe.timeMs` (converted from frame number) and confidence via `annotation.confidence`. |
 | `BoundingBoxSequence` | `pub.layers.defs#spatioTemporalAnchor` | `boxes` → `keyframes` (each keyframe has `timeMs` and `bbox`); `interpolationSegments` → `interpolation` (linear, step, cubic); `visibilityRanges` → representable via features. |
 | `InterpolationSegment` | `pub.layers.defs#spatioTemporalAnchor.interpolation` + `features` | Layers supports `linear`, `step`, and `cubic` interpolation. FOVEA's `bezier`, `ease-in`, `ease-out`, `parametric` are representable as `cubic` with control points in features, or via community-defined `interpolationUri` values. |
 | `ObjectAnnotation` | `pub.layers.annotation#annotation` with `anchor.spatioTemporalAnchor` | Links a spatial region to a world object. `linkedEntityId` → `annotation.knowledgeRefs` or `clusterSet` membership. |
@@ -89,7 +89,7 @@ FOVEA separates **ontology types** (what kinds of things exist) from **world ins
 | `User` | ATProto DID | Decentralized identity. No centralized user database. |
 | `Project` | Corpus (`pub.layers.corpus`) | A project is a named collection of expressions with shared ontologies. |
 | `ProjectMembership` | ATProto social graph | Access control is handled by ATProto's decentralized identity layer, not by Layers records. |
-| `ResourceShare` | ATProto record permissions | Sharing is native to ATProto — records are public by default in user PDSes. |
+| `ResourceShare` | ATProto record permissions | Sharing is native to ATProto. Records are public by default in user PDSes. |
 | `RBAC` | Appview-level access control | Layers delegates access control to the appview implementation, not the data model. |
 
 ## Features Not in FOVEA (Layers Extensions)

@@ -35,19 +35,19 @@ A type definition within an ontology. Covers entity types, event types, role typ
 | `ontologyRef` | at-uri | The ontology this type belongs to. |
 | `name` | string | The type name/label. |
 | `typeKindUri` | at-uri | AT-URI of the type kind definition node. Community-expandable via knowledge graph. |
-| `typeKind` | string | Type kind slug (fallback when typeKindUri unavailable). Known values: `ENTITY_TYPE`, `EVENT_TYPE`, `STATE_TYPE`, `ROLE_TYPE`, `RELATION_TYPE`, `FRAME_TYPE`, `ATTRIBUTE_TYPE` |
+| `typeKind` | string | Type kind slug (fallback when typeKindUri unavailable). Known values: `entity-type`, `situation-type`, `role-type`, `relation-type`, `attribute-type` |
 | `gloss` | string | Rich text definition/gloss of this type. May include references to other types and Wikidata entities. |
 | `parentTypeRef` | at-uri | Reference to a parent type (for type hierarchies/inheritance). |
 | `allowedRoles` | array | For frame/event types: the roles that can be filled. Array of ref: `#roleSlot` |
 | `allowedValues` | array | For attribute types: enumerated allowed values. Array of strings |
 | `knowledgeRefs` | array | Knowledge graph groundings (Wikidata, chive.pub, FrameNet, etc.). Array of ref: `pub.layers.defs#knowledgeRef` |
-| `features` | ref | Open-ended features. For `RELATION_TYPE` typeDefs, standardized feature keys include: `symmetric` (boolean — if true, A→B implies B→A), `transitive` (boolean — if true, A→B and B→C implies A→C), `reflexive` (boolean — if true, A→A is valid), `inverse` (AT-URI of the inverse relation typeDef), `domain` (AT-URI of required source type), `range` (AT-URI of required target type). Ref: `pub.layers.defs#featureMap` |
+| `features` | ref | Open-ended features. For `relation-type` typeDefs, standardized feature keys include: `symmetric` (boolean, if true A→B implies B→A), `transitive` (boolean, if true A→B and B→C implies A→C), `reflexive` (boolean, if true A→A is valid), `inverse` (AT-URI of the inverse relation typeDef), `domain` (AT-URI of required source type), `range` (AT-URI of required target type). Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### roleSlot
 **Type:** Object
 
-A role/argument slot in a frame or event type definition. Structurally parallel to pub.layers.resource#slot — both represent named positions with type constraints.
+A role/argument slot in a frame or event type definition. Structurally parallel to pub.layers.resource#slot: both represent named positions with type constraints.
 
 | Field | Type | Description |
 |-------|------|-------------|

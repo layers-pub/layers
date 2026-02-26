@@ -11,7 +11,7 @@ Generic typed property graph for knowledge representation and cross-referencing.
 ### graphNode
 **Type:** Record
 
-A standalone graph node for entities, concepts, situations, or other objects that don't have another Layers record. Existing Layers records (expressions, annotations, typeDefs) are implicitly nodes via `objectRef` — this record is only needed for nodes that exist purely in the graph.
+A standalone graph node for entities, concepts, situations, or other objects that don't have another Layers record. Existing Layers records (expressions, annotations, typeDefs) are implicitly nodes via `objectRef`. This record is only needed for nodes that exist purely in the graph.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -55,7 +55,7 @@ A single directed, typed edge between any two Layers objects. Supports multidigr
 
 **Meta:** `produced-by`, `described-in`, `annotates`, `see-also`
 
-**Temporal — Allen's Interval Algebra (13 basic relations):**
+**Temporal: Allen's Interval Algebra (13 basic relations)**
 
 | Edge type | Inverse | Definition |
 |-----------|---------|------------|
@@ -73,11 +73,11 @@ A single directed, typed edge between any two Layers objects. Supports multidigr
 | `finished-by` | `finishes` | Source and target end together, target starts later |
 | `equals` | `equals` | Source and target have identical start and end |
 
-**Temporal — TimeML extensions:** `simultaneous` (looser than `equals` — allows partial overlap in practice)
+**Temporal: TimeML extensions.** `simultaneous` (looser than `equals`, allows partial overlap in practice)
 
 **Aspectual (TimeML ALINK):** `initiates`, `culminates`, `terminates`, `continues`, `reinitiates`
 
-**Spatial — RCC-8 Region Connection Calculus (8 basic topological relations):**
+**Spatial: RCC-8 Region Connection Calculus (8 basic topological relations)**
 
 | Edge type | Inverse | Definition |
 |-----------|---------|------------|
@@ -90,9 +90,9 @@ A single directed, typed edge between any two Layers objects. Supports multidigr
 | `non-tangential-proper-part-inverse` | `non-tangential-proper-part` | Source contains target, no boundary contact |
 | `spatially-equal` | `spatially-equal` | Identical spatial extent (symmetric) |
 
-**Spatial — Directional (ISO-Space orientational):** `north-of`, `south-of`, `east-of`, `west-of`, `above`, `below`, `in-front-of`, `behind`, `left-of`, `right-of`
+**Spatial: Directional (ISO-Space orientational).** `north-of`, `south-of`, `east-of`, `west-of`, `above`, `below`, `in-front-of`, `behind`, `left-of`, `right-of`
 
-**Spatial — Distance (ISO-Space metric):** `near`, `far`, `adjacent`
+**Spatial: Distance (ISO-Space metric).** `near`, `far`, `adjacent`
 
 **Generic:** `custom`
 

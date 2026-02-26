@@ -4,11 +4,11 @@ sidebar_label: "Multimodal Annotation"
 
 # Multimodal Annotation
 
-Layers supports annotation across text, audio, video, image, and paged documents through a single schema. The key mechanism is the **polymorphic anchor type**: the same annotation record works across modalities by switching the anchor kind. This guide explains how anchoring, expressions, and media records work together for multimodal annotation.
+Layers supports annotation across text, audio, video, image, and paged documents through a single schema. The mechanism is the **polymorphic anchor type**: the same annotation record works across modalities by switching the anchor kind. This guide explains how anchoring, expressions, and media records work together for multimodal annotation.
 
 ## The Polymorphic Anchor
 
-Every annotation attaches to source data through an [`anchor`](../foundations.md#anchor). The anchor's `kind` field determines the modality:
+Every annotation attaches to source data through an [`anchor`](../foundations/primitives.md#anchor). The anchor's `kind` field determines the modality:
 
 | Anchor Kind | Modality | Value |
 |-------------|----------|-------|
@@ -120,7 +120,7 @@ Video annotation combines temporal and spatial dimensions. Two anchor types appl
 
 **Temporal only** (`temporalSpan`): For annotations that span a time range without spatial specificity, such as scene labels, speaker turns, and temporal events.
 
-**Spatiotemporal** (`spatioTemporalAnchor`): For tracking objects through video frames. Defined by keyframes, each with a timestamp and [bounding box](../foundations.md#spatialexpression):
+**Spatiotemporal** (`spatioTemporalAnchor`): For tracking objects through video frames. Defined by keyframes, each with a timestamp and [bounding box](../foundations/primitives.md#spatialexpression):
 
 ```json
 {
@@ -148,7 +148,7 @@ Video annotation combines temporal and spatial dimensions. Two anchor types appl
 
 Frames between keyframes are computed via interpolation (`linear`, `step`, or `cubic`).
 
-For semantic spatial annotation (e.g., "this scene takes place in Tokyo"), use the `spatial` field on annotations with a [`spatialExpression`](../foundations.md#spatialexpression). See the [Spatial Representation guide](./spatial-representation.md) for details.
+For semantic spatial annotation (e.g., "this scene takes place in Tokyo"), use the `spatial` field on annotations with a [`spatialExpression`](../foundations/primitives.md#spatialexpression). See the [Spatial Representation guide](./spatial-representation.md) for details.
 
 ## Annotating Images
 
@@ -249,14 +249,14 @@ The [`pub.layers.alignment`](../lexicons/alignment.md) lexicon connects annotati
 
 Beyond anchoring (where in the media), annotations can carry **semantic** temporal and spatial information (what time/place the content refers to):
 
-- **Temporal**: The [`temporal`](../foundations.md#temporalexpression) field on annotations carries structured temporal values. See the [Temporal Representation guide](./temporal-representation.md).
-- **Spatial**: The [`spatial`](../foundations.md#spatialexpression) field carries structured spatial values. See the [Spatial Representation guide](./spatial-representation.md).
+- **Temporal**: The [`temporal`](../foundations/primitives.md#temporalexpression) field on annotations carries structured temporal values. See the [Temporal Representation guide](./temporal-representation.md).
+- **Spatial**: The [`spatial`](../foundations/primitives.md#spatialexpression) field carries structured spatial values. See the [Spatial Representation guide](./spatial-representation.md).
 
 These are independent of the anchor. An annotation anchored at 3:45 in a recording (media time) might carry a temporal expression referring to "next Tuesday" (semantic time).
 
 ## See Also
 
-- [Primitives](../foundations.md): anchor, temporalExpression, spatialExpression definitions
+- [Primitives](../foundations/primitives.md): anchor, temporalExpression, spatialExpression definitions
 - [Temporal Representation](./temporal-representation.md): temporal primitives and standards mapping
 - [Spatial Representation](./spatial-representation.md): spatial primitives and standards mapping
 - [Knowledge Grounding](./knowledge-grounding.md): linking annotations to external KBs

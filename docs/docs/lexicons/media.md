@@ -11,7 +11,7 @@ Media source records for audio, video, image, and document data associated with 
 ### audioInfo
 **Type:** Object
 
-Composable audio metadata. Attach to any media record representing audio content — standalone audio files, audio tracks in video, etc.
+Composable audio metadata. Attach to any media record representing audio content: standalone audio files, audio tracks in video, etc.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -85,7 +85,7 @@ A media source record (audio, video, image, or document) that can be referenced 
 
 ## Feature Key Conventions
 
-The `features` field on media records is a `featureMap` — an open key-value store for domain-specific metadata that does not warrant dedicated schema fields. All feature values are strings (per the `feature` type definition); consumers parse typed values based on key semantics. The keys below are conventions, not requirements. Applications should use these keys when applicable to enable cross-corpus interoperability.
+The `features` field on media records is a `featureMap`, an open key-value store for domain-specific metadata that does not warrant dedicated schema fields. All feature values are strings (per the `feature` type definition); consumers parse typed values based on key semantics. The keys below are conventions, not requirements. Applications should use these keys when applicable to enable cross-corpus interoperability.
 
 ### Recording & Equipment
 

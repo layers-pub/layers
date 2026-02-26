@@ -3,7 +3,7 @@
 <div className="metadata-card">
 <dl>
 <dt>Model</dt>
-<dd>PAULA, Salt, and ANNIS — multi-layer corpus annotation architecture</dd>
+<dd>PAULA, Salt, and ANNIS: multi-layer corpus annotation architecture</dd>
 <dt>Origin</dt>
 <dd>Humboldt University Berlin / corpus-tools.org</dd>
 <dt>Specification</dt>

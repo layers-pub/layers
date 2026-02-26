@@ -14,8 +14,12 @@ These guides provide in-depth coverage of cross-cutting topics in Layers. Each g
 
 - **[Knowledge Grounding](./knowledge-grounding.md)**: Linking annotations to external knowledge bases (Wikidata, FrameNet, WordNet), building typed property graphs, defining ontologies, and the entity grounding workflow.
 
+- **[Psycholinguistic Data](./psycholinguistic-data.md)**: How self-paced reading, eye-tracking, EEG, MEG, and fMRI data map to Layers primitives. Covers stimulus generation, behavioral responses, neural signals, and experimental design.
+
+- **[Judgment Data](./judgment-data.md)**: The full lifecycle of linguistic judgment data: experiment definition, stimulus generation, data collection, and agreement analysis. Covers categorical, scalar, ranking, span selection, free text, pairwise comparison, and best-worst scaling tasks.
+
 ## See Also
 
-- [Primitives](../foundations.md) for the core building blocks used across all guides
-- [Lexicon Overview](../lexicon-overview.md) for the full list of schemas
-- [Flexible Enums](../foundations.md#flexible-enums) for the URI+slug pattern used throughout
+- [Primitives](../foundations/primitives.md) for the core building blocks used across all guides
+- [Lexicon Overview](../foundations/lexicon-overview.md) for the full list of schemas
+- [Flexible Enums](../foundations/flexible-enums.md) for the URI+slug pattern used throughout

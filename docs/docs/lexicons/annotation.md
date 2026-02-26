@@ -4,7 +4,7 @@ sidebar_label: "Annotation"
 
 # pub.layers.annotation
 
-Unified abstract annotation model. All annotation types — token tags, span labels, entity mentions, situation/frame mentions, syntactic parses, discourse relations, interlinear glosses, sentiment, temporal expressions, etc. — are represented through a single abstract schema discriminated by kind and subkind.
+Unified abstract annotation model. All annotation types (token tags, span labels, entity mentions, situation/frame mentions, syntactic parses, discourse relations, interlinear glosses, sentiment, temporal expressions, etc.) are represented through a single abstract schema discriminated by kind and subkind.
 
 ## Types
 

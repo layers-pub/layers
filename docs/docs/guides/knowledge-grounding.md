@@ -8,7 +8,7 @@ Layers provides mechanisms for linking annotations to external knowledge bases, 
 
 ## The knowledgeRef Primitive
 
-The [`knowledgeRef`](../foundations.md#knowledgeref) is the fundamental link between a Layers annotation and an external knowledge base entry:
+The [`knowledgeRef`](../foundations/primitives.md#knowledgeref) is the fundamental link between a Layers annotation and an external knowledge base entry:
 
 ```json
 {
@@ -69,7 +69,7 @@ A [`graphNode`](../lexicons/graph.md#graphnode) represents a standalone entity o
 
 Node types include: `entity`, `concept`, `situation`, `state`, `time`, `location`, `claim`, `proposition`, and community-defined types via `nodeTypeUri`.
 
-Existing Layers records (expressions, annotations, type definitions) are implicitly graph nodes through [`objectRef`](../foundations.md#objectref). The `graphNode` record is only needed for objects that exist purely in the graph, such as world-level entities and abstract concepts.
+Existing Layers records (expressions, annotations, type definitions) are implicitly graph nodes through [`objectRef`](../foundations/primitives.md#objectref). The `graphNode` record is only needed for objects that exist purely in the graph, such as world-level entities and abstract concepts.
 
 ### Graph Edges
 
@@ -119,7 +119,7 @@ A [`typeDef`](../lexicons/ontology.md#typedef) record defines a single type with
 {
   "ontologyRef": "at://did:plc:.../pub.layers.ontology/ontonotes-ner",
   "name": "PERSON",
-  "typeKind": "ENTITY_TYPE",
+  "typeKind": "entity-type",
   "gloss": "People, including fictional characters",
   "knowledgeRefs": [
     { "source": "wikidata", "identifier": "Q5", "label": "human" }
@@ -127,7 +127,7 @@ A [`typeDef`](../lexicons/ontology.md#typedef) record defines a single type with
 }
 ```
 
-Type kinds include: `ENTITY_TYPE`, `EVENT_TYPE`, `STATE_TYPE`, `ROLE_TYPE`, `RELATION_TYPE`, `FRAME_TYPE`, `ATTRIBUTE_TYPE`.
+Type kinds include: `entity-type`, `situation-type`, `role-type`, `relation-type`, `attribute-type`.
 
 Type definitions support inheritance via `parentTypeRef`, role slots via `allowedRoles`, and constraint definition via `allowedValues`. For relation types, `features` can encode properties like `symmetric`, `transitive`, `reflexive`, `inverse`, `domain`, and `range`.
 
@@ -168,7 +168,7 @@ The [`pub.layers.persona`](../lexicons/persona.md) lexicon defines annotator per
 }
 ```
 
-Personas are referenced from annotations via [`agentRef.personaRef`](../foundations.md#agentref), enabling:
+Personas are referenced from annotations via [`agentRef.personaRef`](../foundations/primitives.md#agentref), enabling:
 
 - **Multi-perspective annotation**: The same text annotated by different personas with different ontologies
 - **Model attribution**: ML models as personas with their training data and framework documented
@@ -240,7 +240,7 @@ The ontology's `typeDef` records define the frame with its `allowedRoles` (role 
 
 ## See Also
 
-- [Primitives](../foundations.md): knowledgeRef, objectRef, agentRef definitions
+- [Primitives](../foundations/primitives.md): knowledgeRef, objectRef, agentRef definitions
 - [Temporal Representation](./temporal-representation.md): temporal relations as graph edges
 - [Spatial Representation](./spatial-representation.md): spatial relations as graph edges
 - [Multimodal Annotation](./multimodal-annotation.md): annotation across modalities
@@ -248,4 +248,4 @@ The ontology's `typeDef` records define the frame with its `allowedRoles` (role 
 - [Ontology](../lexicons/ontology.md): annotation ontology lexicon reference
 - [Persona](../lexicons/persona.md): agent persona lexicon reference
 - [Annotation](../lexicons/annotation.md): unified annotation model
-- [Flexible Enums](../foundations.md#flexible-enums): URI+slug pattern for community-expandable types
+- [Flexible Enums](../foundations/flexible-enums.md): URI+slug pattern for community-expandable types

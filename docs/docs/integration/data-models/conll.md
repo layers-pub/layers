@@ -78,7 +78,7 @@ CoNLL formats are flat, token-per-line representations. Converting to Layers req
 2. Group tokens into sentences (blank-line delimited), creating `sentence` objects
 3. Wrap in a `segmentation` record bound to an `expression`
 4. For each annotation column, create a separate `annotationLayer` with appropriate `kind`/`subkind`
-5. IOB/BILOU tags can remain as token-tags or be converted to span annotations — Layers supports both
+5. IOB/BILOU tags can remain as token-tags or be converted to span annotations. Layers supports both.
 
 The reverse conversion (Layers → CoNLL) selects the appropriate annotation layers and serializes them column-by-column.
 

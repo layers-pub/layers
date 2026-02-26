@@ -30,9 +30,9 @@ If application A stores a record at `at://did:plc:alice/app.a.record/123`, any L
 
 The Layers appview subscribes to the ATProto firehose and indexes all `pub.layers.*` records it encounters. For each record, it extracts and indexes external references:
 
-- `expression.sourceUrl` — find all Layers annotations of a given web page
-- `expression.sourceRef` — find all Layers annotations of a given ATProto record
-- `expression.eprintRef` — find all Layers data linked to a given eprint
-- `graph.graphEdge` target references — find all Layers data linked to a given knowledge graph node (chive.pub, Wikidata, etc.)
+- `expression.sourceUrl`: find all Layers annotations of a given web page
+- `expression.sourceRef`: find all Layers annotations of a given ATProto record
+- `expression.eprintRef`: find all Layers data linked to a given eprint
+- `graph.graphEdge` target references: find all Layers data linked to a given knowledge graph node (chive.pub, Wikidata, etc.)
 
 This indexing model lets the appview answer queries like "show me all linguistic annotations of this Bluesky post" or "show me all corpora linked to this DOI" without cooperation from the source application.

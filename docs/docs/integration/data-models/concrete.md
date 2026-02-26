@@ -97,15 +97,15 @@ Concrete is a stand-off annotation data model originally defined via Apache Thri
 
 Layers extends Concrete's model in several dimensions that Concrete does not address:
 
-- **Recursive expressions**: Documents, paragraphs, sentences, words, and morphemes are all expressions with recursive nesting via `parentRef` — Concrete has a fixed hierarchy
-- **Multimodal anchoring**: `temporalSpan`, `spatioTemporalAnchor`, `pageAnchor`, `boundingBox` — Concrete is primarily text-oriented
-- **W3C selectors**: `textQuoteSelector`, `textPositionSelector`, `fragmentSelector` — for web annotation interoperability
-- **Knowledge graph integration**: `knowledgeRef`, `pub.layers.graph` (generic typed property graph) — Concrete has no built-in knowledge base references
-- **Alignment records**: `pub.layers.alignment` — Concrete has no parallel text or interlinear glossing support
-- **Ontology definitions**: `pub.layers.ontology` — Concrete relies on external tagset definitions
-- **Judgment experiments**: `pub.layers.judgment` — Concrete has no annotation experiment framework
-- **Community-expandable enums**: URI+slug dual-field pattern — Concrete uses fixed enum types
-- **Decentralized ownership**: ATProto records live in user PDSes — Concrete assumes centralized storage
+- **Recursive expressions**: Documents, paragraphs, sentences, words, and morphemes are all expressions with recursive nesting via `parentRef`. Concrete has a fixed hierarchy.
+- **Multimodal anchoring**: `temporalSpan`, `spatioTemporalAnchor`, `pageAnchor`, `boundingBox`. Concrete is primarily text-oriented.
+- **W3C selectors**: `textQuoteSelector`, `textPositionSelector`, `fragmentSelector` for web annotation interoperability.
+- **Knowledge graph integration**: `knowledgeRef`, `pub.layers.graph` (generic typed property graph). Concrete has no built-in knowledge base references.
+- **Alignment records**: `pub.layers.alignment`. Concrete has no parallel text or interlinear glossing support.
+- **Ontology definitions**: `pub.layers.ontology`. Concrete relies on external tagset definitions.
+- **Judgment experiments**: `pub.layers.judgment`. Concrete has no annotation experiment framework.
+- **Community-expandable enums**: URI+slug dual-field pattern. Concrete uses fixed enum types.
+- **Decentralized ownership**: ATProto records live in user PDSes. Concrete assumes centralized storage.
 
 ## Conversion Notes
 

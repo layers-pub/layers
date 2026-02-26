@@ -24,7 +24,7 @@ The W3C Web Annotation Data Model is the standard for annotating web resources. 
 | W3C Concept | Layers Equivalent | Notes |
 |---|---|---|
 | `Annotation` | `pub.layers.annotation#annotation` | A single annotation. W3C's `id` → annotation UUID / AT-URI. |
-| `Target` | `annotation.anchor` | What the annotation is about — the selected region of a resource. |
+| `Target` | `annotation.anchor` | What the annotation is about: the selected region of a resource. |
 | `Body` | `annotation.label`, `annotation.value`, `annotation.features`, `annotation.arguments` | The content of the annotation. Layers distributes body content across typed fields rather than using a generic body object. |
 | `Motivation` | `annotationLayer.kind` + `annotationLayer.subkind` | Why the annotation was created. W3C motivations (commenting, highlighting, tagging, describing, etc.) map to Layers kind/subkind discriminators. |
 | `Creator` | `pub.layers.defs#annotationMetadata.tool` + ATProto DID | The annotation creator. In ATProto, the record's DID identifies the creator. |
@@ -96,5 +96,5 @@ The at.margin ATProto lexicons implement W3C Web Annotation on ATProto. Layers's
 | `at.margin.reply` | ATProto social graph | Not a Layers annotation type. |
 | `at.margin.like` | ATProto social graph | Not a Layers annotation type. |
 
-The lairs.pub appview discovers at.margin annotations by consuming the ATProto firehose and indexing records that share `sourceUrl` values with Layers expressions. No bridge records are needed — this follows standard ATProto cross-app discovery patterns.
+The lairs.pub appview discovers at.margin annotations by consuming the ATProto firehose and indexing records that share `sourceUrl` values with Layers expressions. No bridge records are needed. This follows standard ATProto cross-app discovery patterns.
 

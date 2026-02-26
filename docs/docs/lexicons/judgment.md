@@ -18,7 +18,7 @@ Definition of an annotation or judgment experiment.
 | `name` | string | Experiment name. |
 | `description` | string | Detailed description. |
 | `taskTypeUri` | at-uri | AT-URI of the task type definition node. Community-expandable via knowledge graph. |
-| `taskType` | string | Task type slug (fallback). Known values: `CATEGORICAL`, `ORDINAL`, `SCALAR`, `RANKING`, `SPAN_SELECTION`, `FREETEXT`, `PAIRWISE_COMPARISON`, `BEST_WORST_SCALING`, `ACCEPTABILITY`, `CUSTOM` |
+| `taskType` | string | Task type slug (fallback). Known values: `categorical`, `ordinal`, `scalar`, `ranking`, `span-selection`, `freetext`, `pairwise-comparison`, `best-worst-scaling`, `acceptability`, `custom` |
 | `guidelines` | string | Task guidelines and instructions. |
 | `ontologyRef` | at-uri | Reference to the ontology used. |
 | `personaRef` | at-uri | Reference to the persona defining the annotation framework. |

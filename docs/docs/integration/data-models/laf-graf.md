@@ -64,7 +64,7 @@ LAF mandates that annotations are stored separately from primary data, referenci
 
 ### LAF Compositionality
 
-LAF requires that annotation graphs be composable — independent annotations from different sources can be combined. Layers achieves this through:
+LAF requires that annotation graphs be composable: independent annotations from different sources can be combined. Layers achieves this through:
 
 1. **Separate records**: Each annotation layer is an independent ATProto record
 2. **Shared anchoring**: All layers reference the same expression via its AT-URI

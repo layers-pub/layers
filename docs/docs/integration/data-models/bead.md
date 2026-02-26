@@ -33,10 +33,10 @@ bead defines abstract interfaces that unify heterogeneous frame ontology resourc
 | bead Concept | Layers Equivalent | Notes |
 |---|---|---|
 | Frame ontology resource | `pub.layers.ontology` (record) | A named, versioned ontology with `domain`, `personaRef`, and `knowledgeRefs`. The `domainUri` field allows community-defined domains. |
-| Frame definition | `pub.layers.ontology#typeDef` with `typeKind="FRAME_TYPE"` | bead's unified frame interface maps to Layers's `typeDef` with `typeKind` set to `FRAME_TYPE`. The `allowedRoles` array contains `roleSlot` references. |
-| Event type | `pub.layers.ontology#typeDef` with `typeKind="EVENT_TYPE"` | bead treats events as a subtype of frames. Layers's `typeKindUri` allows community extension. |
+| Frame definition | `pub.layers.ontology#typeDef` with `typeKind="situation-type"` | bead's unified frame interface maps to Layers's `typeDef` with `typeKind` set to `situation-type`. The `allowedRoles` array contains `roleSlot` references. |
+| Event type | `pub.layers.ontology#typeDef` with `typeKind="situation-type"` | bead treats events as a subtype of frames. Layers's `typeKindUri` allows community extension. |
 | Role/argument slot | `pub.layers.ontology#roleSlot` | `roleName` → role label (ARG0, Agent, Theme); `fillerTypeRefs` → type constraints; `required` → obligatoriness; `constraints` → declarative selectional restrictions via `pub.layers.defs#constraint`. |
-| Entity type | `pub.layers.ontology#typeDef` with `typeKind="ENTITY_TYPE"` | Filler type definitions for role constraints. |
+| Entity type | `pub.layers.ontology#typeDef` with `typeKind="entity-type"` | Filler type definitions for role constraints. |
 | Type hierarchy | `typeDef.parentTypeRef` | Recursive parent reference enables arbitrary inheritance depth. |
 | Knowledge base link | `typeDef.knowledgeRefs[]` | Links to FrameNet, PropBank, VerbNet, Wikidata via `pub.layers.defs#knowledgeRef`. The `sourceUri` field allows community-defined knowledge bases. |
 
@@ -52,7 +52,7 @@ bead defines abstract interfaces that unify heterogeneous frame ontology resourc
 
 ### Unified Access Pattern
 
-bead's key contribution is a single interface that abstracts over PropBank, FrameNet, and VerbNet. In Layers, this unification is achieved by:
+bead provides a single interface that abstracts over PropBank, FrameNet, and VerbNet. In Layers, this unification is achieved by:
 
 1. All frame ontologies use the same `pub.layers.ontology` record structure (`typeDef` + `roleSlot`)
 2. The `formalism` field on `annotationLayer` identifies which tradition the annotation follows
@@ -65,9 +65,9 @@ The glazing companion package provides unified Pydantic models for FrameNet 1.7,
 
 | glazing Concept | Layers Equivalent | Notes |
 |---|---|---|
-| FrameNet Frame | `pub.layers.ontology#typeDef` with `typeKind="FRAME_TYPE"` + `knowledgeRefs` source `"framenet"` | Frame definition with roles, frame elements, relations. |
+| FrameNet Frame | `pub.layers.ontology#typeDef` with `typeKind="situation-type"` + `knowledgeRefs` source `"framenet"` | Frame definition with roles, frame elements, relations. |
 | FrameNet LexicalUnit | `pub.layers.resource#entry` with `knowledgeRefs` source `"framenet"` | Lexical unit within a frame. |
-| PropBank Roleset | `pub.layers.ontology#typeDef` with `typeKind="FRAME_TYPE"` + `knowledgeRefs` source `"propbank"` | PropBank predicate-argument structure. |
+| PropBank Roleset | `pub.layers.ontology#typeDef` with `typeKind="situation-type"` + `knowledgeRefs` source `"propbank"` | PropBank predicate-argument structure. |
 | VerbNet VerbClass | `pub.layers.ontology#typeDef` with hierarchy via `parentTypeRef` + `knowledgeRefs` source `"verbnet"` | VerbNet class with inheritance. |
 | WordNet Synset | `pub.layers.resource#entry` with `knowledgeRefs` source `"wordnet"` | WordNet sense/synset reference. |
 | Frame inventory (e.g., FrameNet 1.7) | `pub.layers.resource#collection` with `kind="frame-inventory"` and `version="1.7"` | A versioned collection of frame definitions. |
