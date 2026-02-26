@@ -40,36 +40,55 @@ Layers is in **v0.3.0 draft** status, in active development and accepting commen
 
 ## Architecture Overview
 
-Layers is organized around a **core pipeline** of annotation layers, each building on primitives from the layer before:
+Layers is organized around a **core pipeline** of annotation layers, with **parallel tracks** for experimental and analytical workflows and **integration layers** connecting to the ATProto ecosystem and external data:
 
+```mermaid
+flowchart TD
+    E["<b>Expression</b><br/><i>document, paragraph, sentence,<br/>word, morpheme</i>"]
+    S["<b>Segmentation</b><br/><i>tokenization, chunking,<br/>segmentation bounds</i>"]
+    A["<b>Annotation</b><br/><i>POS, NER, semantic roles,<br/>ERP components, fixations</i>"]
+
+    E ==> S ==> A
+
+    O["<b>Ontology</b><br/><i>label definitions,<br/>theoretical frameworks</i>"]
+    C["<b>Corpus</b><br/><i>membership, annotation<br/>design, quality criteria</i>"]
+    R["<b>Resource</b><br/><i>lexical entries, stimulus<br/>templates, fillings</i>"]
+    J["<b>Judgment</b><br/><i>experiment design,<br/>responses, agreement</i>"]
+    AL["<b>Alignment</b><br/><i>cross-lingual, cross-modal,<br/>signal-to-stimulus</i>"]
+
+    G["<b>Graph</b><br/><i>knowledge representation,<br/>typed relations</i>"]
+    M["<b>Media</b><br/><i>audio, video, image,<br/>EEG, MEG, fMRI</i>"]
+    EP["<b>Eprint</b><br/><i>scholarly metadata,<br/>publication links</i>"]
+    P["<b>Persona</b><br/><i>annotator frameworks,<br/>tool attribution</i>"]
+
+    O -.-> A
+    C -.-> E
+    R -.-> J
+    J -.-> A
+    AL -.-> A
+    M -.-> E
+    G -.-> A
+    EP -.-> C
+    P -.-> A
+
+    classDef core fill:#001673,stroke:#2c6faa,color:#fff
+    classDef track fill:#5D0073,stroke:#7d3c98,color:#fff
+    classDef integ fill:#167300,stroke:#1e8449,color:#fff
+
+    class E,S,A core
+    class O,C,R,J,AL track
+    class G,M,EP,P integ
 ```
-Expression (any linguistic unit: document, paragraph, sentence, word, morpheme)
-       ↓
-Segmentation (tokenization, chunking, segmentation bounds)
-       ↓
-Annotation (linguistic labels: POS, NER, semantic roles, ERP components, fixations, etc.)
-```
 
-Expressions are recursive: a document contains paragraphs, which contain sentences, which contain words, which contain morphemes. Each Expression can reference its parent via `parentRef`, and Segmentation records define the ordered decomposition of a parent Expression into child Expressions.
+**Core pipeline** (blue): Expressions are recursive: a document contains paragraphs, which contain sentences, which contain words, which contain morphemes. Segmentation records define the ordered decomposition of a parent expression into child expressions. Annotation layers attach linguistic labels to any level of the hierarchy.
 
-**Parallel tracks** integrate the pipeline with experimental and analytical workflows:
+**Parallel tracks** (purple): Ontologies defines label systems and theoretical frameworks. Corpora collects expressions with annotation project design metadata (redundancy, adjudication, quality criteria). Resources provides lexical entries and stimulus templates. Judgments captures experiment definitions with four orthogonal dimensions (measure type, task type, presentation, recording). Alignment links structures across languages, modalities, and records.
 
-- **Ontology**: authority records for label definitions, linguistic categories, and theoretical frameworks.
-- **Corpus**: corpus metadata, membership, statistics, and annotation project design (annotator redundancy, adjudication method, quality criteria).
-- **Resource**: lexical entries, stimulus templates with typed slots, fillings, and template compositions for constructing experimental items.
-- **Judgment**: experiment definitions with four orthogonal dimensions (measure type, task type, presentation method, recording method), design specifications, response times, and inter-annotator agreement reports.
-- **Alignment**: cross-record linking for signal-to-stimulus correspondence, token alignment across languages, and cross-modal synchronization.
-
-**Integration layers** connect Layers to the ATProto ecosystem and external data:
-
-- **Graph**: generic typed property graph for knowledge representation, temporal/spatial relations, and cross-referencing.
-- **Media**: raw signal and media files (audio, video, image, EEG, MEG, fMRI data) with modality-specific metadata.
-- **Eprint**: scholarly metadata, publication links, and data provenance.
-- **Persona**: agent personas, theoretical frameworks, and tool attribution for reproducibility.
+**Integration layers** (green): Graphs provide typed property graphs for knowledge representation. Media stores raw signals (audio, video, EEG, fMRI). Eprint connects to scholarly metadata. Persona tracks annotator frameworks and tool attribution.
 
 ## License
 
-Layers is licensed under **CC-BY-SA-4.0**.
+Layers is licensed under [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.en).
 
 ## Next Steps
 
