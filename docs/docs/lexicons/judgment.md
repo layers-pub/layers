@@ -17,16 +17,20 @@ Definition of an annotation or judgment experiment.
 |-------|------|-------------|
 | `name` | string | Experiment name. |
 | `description` | string | Detailed description. |
-| `taskTypeUri` | at-uri | AT-URI of the task type definition node. Community-expandable via knowledge graph. |
-| `taskType` | string | Task type slug (fallback). Known values: `categorical`, `ordinal`, `scalar`, `ranking`, `span-selection`, `freetext`, `pairwise-comparison`, `best-worst-scaling`, `acceptability`, `custom` |
+| `measureTypeUri` | at-uri | AT-URI of the measure type definition node. Community-expandable via knowledge graph. |
+| `measureType` | string | What property or behavior is being measured (fallback). Known values: `acceptability`, `inference`, `similarity`, `plausibility`, `comprehension`, `preference`, `extraction`, `reading-time`, `production`, `custom` |
+| `taskTypeUri` | at-uri | AT-URI of the response instrument definition node. Community-expandable via knowledge graph. |
+| `taskType` | string | Response instrument: how the response is collected (fallback). Known values: `forced-choice`, `multi-select`, `ordinal-scale`, `magnitude`, `binary`, `categorical`, `free-text`, `cloze`, `span-labeling`, `custom` |
 | `guidelines` | string | Task guidelines and instructions. |
 | `ontologyRef` | at-uri | Reference to the ontology used. |
 | `personaRef` | at-uri | Reference to the persona defining the annotation framework. |
 | `corpusRef` | at-uri | Reference to the corpus. |
 | `templateRefs` | array | References to pub.layers.resource#template records used to generate stimuli. Array of at-uri |
 | `collectionRefs` | array | References to pub.layers.resource#collection records providing filler pools. Array of at-uri |
-| `design` | ref | Experiment design specification (list constraints, distribution, presentation). Ref: `#experimentDesign` |
-| `scaleMin` | integer | Minimum scale value for scalar/ordinal judgments. |
+| `presentation` | ref | How stimuli are displayed to participants. Ref: `#presentationSpec` |
+| `recordingMethods` | array | Data capture instruments used in this experiment. Array of ref: `#recordingMethod` |
+| `design` | ref | Experiment design specification (list constraints, distribution, item order). Ref: `#experimentDesign` |
+| `scaleMin` | integer | Minimum scale value for ordinal-scale judgments. |
 | `scaleMax` | integer | Maximum scale value. |
 | `labels` | array | Available labels for categorical judgments. Array of strings |
 | `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
@@ -58,9 +62,8 @@ A single judgment about a linguistic item.
 | `item` | ref | Reference to the item being judged. Ref: `pub.layers.defs#objectRef` |
 | `fillingRef` | at-uri | Reference to the pub.layers.resource#filling that generated the item being judged. |
 | `categoricalValue` | string | Categorical judgment label. |
-| `scalarValue` | integer | Scalar/ordinal judgment value. |
-| `rankValue` | integer | Rank position. |
-| `textSpan` | ref | Selected text span for span-selection tasks. Ref: `pub.layers.defs#span` |
+| `scalarValue` | integer | Numeric response value (ordinal-scale rating, magnitude estimate, or rank position). |
+| `textSpan` | ref | Selected text span for span-labeling tasks. Ref: `pub.layers.defs#span` |
 | `freeText` | string | Free-text response. |
 | `responseTimeMs` | integer | Response time in milliseconds. |
 | `confidence` | integer | Confidence score 0-10000. |
@@ -70,15 +73,15 @@ A single judgment about a linguistic item.
 ### experimentDesign
 **Type:** Object
 
-Experiment design specification controlling how stimuli are constructed, distributed, and presented to annotators.
+Experiment design specification controlling how items are distributed, ordered, and timed.
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `listConstraints` | array | Constraints on how items are distributed into lists. Array of ref: `#listConstraint` |
 | `distributionStrategyUri` | at-uri | AT-URI of the distribution strategy definition node. Community-expandable via knowledge graph. |
 | `distributionStrategy` | string | Distribution strategy slug (fallback). Known values: `latin-square`, `random`, `blocked`, `stratified`, `custom` |
-| `presentationModeUri` | at-uri | AT-URI of the presentation mode definition node. Community-expandable via knowledge graph. |
-| `presentationMode` | string | Presentation mode slug (fallback). Known values: `random-order`, `fixed-order`, `blocked`, `adaptive`, `custom` |
+| `itemOrderUri` | at-uri | AT-URI of the item order definition node. Community-expandable via knowledge graph. |
+| `itemOrder` | string | How items are ordered within a list (fallback). Known values: `random-order`, `fixed-order`, `blocked`, `adaptive`, `custom` |
 | `timingMs` | integer | Time limit per item in milliseconds, if applicable. |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 
@@ -94,6 +97,33 @@ A constraint on how experimental items are distributed into lists (e.g., Latin s
 | `targetProperty` | string | The property being constrained (e.g., 'condition', 'verb-type', 'length'). |
 | `parameters` | ref | Ref: `pub.layers.defs#featureMap` |
 | `constraint` | ref | Formal constraint expression. Ref: `pub.layers.defs#constraint` |
+
+### presentationSpec
+**Type:** Object
+
+How stimuli are displayed to participants.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `methodUri` | at-uri | AT-URI of the presentation method definition node. Community-expandable via knowledge graph. |
+| `method` | string | Presentation method (fallback). Known values: `rsvp`, `self-paced`, `whole-sentence`, `auditory`, `visual-world`, `masked-priming`, `cross-modal`, `naturalistic`, `gating`, `maze`, `boundary`, `moving-window`, `custom` |
+| `chunkingUnit` | string | How text is segmented for incremental presentation. Known values: `word`, `character`, `morpheme`, `phrase`, `sentence`, `region`, `custom` |
+| `timingMs` | integer | Per-chunk display duration in milliseconds. |
+| `isiMs` | integer | Inter-stimulus interval in milliseconds. |
+| `cumulative` | boolean | Whether previous chunks remain visible during incremental presentation. |
+| `maskChar` | string | Masking character for non-cumulative displays (e.g., '-', '#'). |
+| `features` | ref | Ref: `pub.layers.defs#featureMap` |
+
+### recordingMethod
+**Type:** Object
+
+A data capture instrument used in an experiment.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `methodUri` | at-uri | AT-URI of the recording method definition node. Community-expandable via knowledge graph. |
+| `method` | string | Recording method (fallback). Known values: `button-box`, `keyboard`, `mouse-click`, `touchscreen`, `voice`, `eeg`, `meg`, `fmri`, `fnirs`, `eye-tracking`, `pupillometry`, `mouse-tracking`, `emg`, `skin-conductance`, `ecog`, `custom` |
+| `features` | ref | Ref: `pub.layers.defs#featureMap` |
 
 ### agreementReport
 **Type:** Record

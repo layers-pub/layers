@@ -107,7 +107,7 @@ bead provides a rich system for constructing experimental stimuli:
 | Item (constructed stimulus) | `pub.layers.expression` + `pub.layers.resource#filling` | The filling's `renderedText` becomes an expression's `text`. The `expressionRef` on the filling links them. Annotations on the expression represent labeled spans. |
 | Item spans | `pub.layers.annotation#annotationLayer` on the expression | Labeled spans on the materialized stimulus text. |
 | Item span relations | `pub.layers.annotation#argumentRef` or `pub.layers.graph#graphEdge` | Directed typed relations between spans, using the standard annotation argument mechanism or graph edges. |
-| ItemTemplate | `pub.layers.resource#template` + `pub.layers.judgment#experimentDef` | The structural template (text, slots) lives in `resource#template`; experiment-level metadata (judgmentType, taskType, guidelines, labels, scale) lives in `experimentDef`. The `experimentRef` on template links them. Item-specific metadata (judgmentType, category) can go in `template.features`. |
+| ItemTemplate | `pub.layers.resource#template` + `pub.layers.judgment#experimentDef` | The structural template (text, slots) lives in `resource#template`; experiment-level metadata (`measureType`, `taskType`, `presentation`, `recordingMethods`, guidelines, labels, scale) lives in `experimentDef`. The `experimentRef` on template links them. bead's three orthogonal dimensions (judgment type, task type, presentation spec) map directly to `experimentDef.measureType`, `experimentDef.taskType`, and `experimentDef.presentation`. |
 | Model outputs on items | `pub.layers.annotation#annotationLayer` with `metadata.tool` = model name | Model predictions stored as annotation layers on the materialized expression, with provenance tracking. |
 
 ### Template-to-Experiment Pipeline
@@ -140,22 +140,61 @@ bead provides a structured framework for:
 
 | bead Concept | Layers Equivalent | Notes |
 |---|---|---|
-| Experiment definition | `pub.layers.judgment#experimentDef` | Direct mapping. `taskType` covers all bead task types: CATEGORICAL, ORDINAL, SCALAR, RANKING, SPAN_SELECTION, FREETEXT, PAIRWISE_COMPARISON, BEST_WORST_SCALING, ACCEPTABILITY. The `taskTypeUri` field allows community-defined task types. `templateRefs` links to stimulus templates; `collectionRefs` links to filler pools. |
+| Experiment definition | `pub.layers.judgment#experimentDef` | Direct mapping. Layers extends bead's orthogonal dimensions with `presentation` and `recordingMethods` (see tables below). `templateRefs` links to stimulus templates; `collectionRefs` links to filler pools. |
+| `JudgmentType` | `experimentDef.measureType` | Direct mapping. bead's `JudgmentType` maps to Layers's `measureType`. See measure type table below. |
+| `TaskType` | `experimentDef.taskType` | Direct mapping. See task type table below. |
+| `PresentationSpec` | `experimentDef.presentation` | bead's `PresentationSpec` maps to Layers's `presentationSpec` object. `PresentationMode` → `method`, `ChunkingSpec.unit` → `chunkingUnit`, `TimingParams.duration_ms` → `timingMs`, `TimingParams.isi_ms` → `isiMs`, `TimingParams.cumulative` → `cumulative`, `TimingParams.mask_char` → `maskChar`. |
 | Annotation guidelines | `experimentDef.guidelines` | Free-text guidelines (up to 100K chars). `ontologyRef` links to the formal type system. |
-| Scale definition | `experimentDef.scaleMin` / `experimentDef.scaleMax` | For scalar and ordinal tasks. |
-| Label set | `experimentDef.labels[]` | For categorical tasks. |
-| Annotator | `pub.layers.judgment#judgmentSet.annotatorDid` / `annotatorId` | ATProto DID for decentralized identity; fallback string ID for anonymous annotators. |
-| Single judgment | `pub.layers.judgment#judgment` | Supports all bead response types: `categoricalValue`, `scalarValue`, `rankValue`, `textSpan`, `freeText`. Adds `responseTimeMs`, `confidence`, and `fillingRef`. |
+| Scale definition | `experimentDef.scaleMin` / `experimentDef.scaleMax` | For ordinal-scale tasks. |
+| Label set | `experimentDef.labels[]` | For categorical and forced-choice tasks. |
+| Annotator | `pub.layers.judgment#judgmentSet.agent` | ATProto DID for decentralized identity; fallback string ID for anonymous annotators; `knowledgeRef` for ORCID or model cards. |
+| Single judgment | `pub.layers.judgment#judgment` | Response fields: `categoricalValue`, `scalarValue`, `textSpan`, `freeText`. Also `responseTimeMs`, `confidence`, and `fillingRef`. |
 | Judgment batch | `pub.layers.judgment#judgmentSet` | Groups judgments from a single annotator for an experiment. |
 | Agreement metric | `pub.layers.judgment#agreementReport` | `metric` covers standard measures: Cohen's kappa, Fleiss' kappa, Krippendorff's alpha, percent agreement, correlation, F1. The `metricUri` field allows community-defined metrics. |
 | Active learning signal | `judgment.responseTimeMs` + `judgment.confidence` | Response time and confidence scores enable active learning item selection. Additional signals can be stored in `features`. |
 | Behavioral analytics | `pub.layers.judgment#judgment.behavioralData` | Mouse movements, keystroke patterns, eye tracking data, and other behavioral signals stored as a `featureMap`. |
 | List constraints | `pub.layers.judgment#experimentDesign.listConstraints` | Latin square balancing, no-adjacent-same-condition, balanced frequency, and minimum distance constraints. Each `listConstraint` has `kind`, `targetProperty`, `parameters`, and an optional formal `constraint` expression. |
 | Distribution strategy | `pub.layers.judgment#experimentDesign.distributionStrategy` | How items are distributed to annotators: `latin-square`, `random`, `blocked`, `stratified`, or community-defined via `distributionStrategyUri`. |
-| Presentation mode | `pub.layers.judgment#experimentDesign.presentationMode` | How items are ordered within a list: `random-order`, `fixed-order`, `blocked`, `adaptive`, or community-defined via `presentationModeUri`. |
+| Item order | `pub.layers.judgment#experimentDesign.itemOrder` | How items are ordered within a list: `random-order`, `fixed-order`, `blocked`, `adaptive`, or community-defined via `itemOrderUri`. |
 | Template sequence | `pub.layers.resource#templateComposition` with `compositionType="sequence"` | bead's `TemplateSequence` (ordered list of templates for multi-part stimuli) maps to a template composition with ordered `templateMember` entries. |
 | Template tree | `pub.layers.resource#templateComposition` with `compositionType="tree"` | bead's `TemplateTree` (hierarchical template structures) maps to a template composition where members can reference nested compositions via `compositionRef`. |
 | Multi-word expression | `pub.layers.resource#entry.components` + `entry.mweKind` | MWE entries have `components` (array of `mweComponent` with form, lemma, position, isHead) and `mweKind` (compound, phrasal-verb, idiom, etc.). |
+
+#### bead JudgmentType → Layers measureType
+
+| bead | Layers | Description |
+|---|---|---|
+| `acceptability` | `acceptability` | Linguistic acceptability, naturalness, grammaticality |
+| `inference` | `inference` | Semantic relationship (entailment, neutral, contradiction) |
+| `similarity` | `similarity` | Semantic similarity, distance, relatedness |
+| `plausibility` | `plausibility` | Likelihood of events or statements |
+| `comprehension` | `comprehension` | Understanding or recall of content |
+| `preference` | `preference` | Subjective preference between alternatives |
+| `extraction` | `extraction` | Extracting structured info (labeled spans) from text |
+
+#### bead TaskType → Layers taskType
+
+| bead | Layers | Description |
+|---|---|---|
+| `forced_choice` | `forced-choice` | Pick exactly one option (2AFC, NAFC) |
+| `multi_select` | `multi-select` | Pick one or more options |
+| `ordinal_scale` | `ordinal-scale` | Value on bounded discrete scale (Likert, slider) |
+| `magnitude` | `magnitude` | Unbounded numeric value |
+| `binary` | `binary` | Yes/no, true/false |
+| `categorical` | `categorical` | Pick from unordered categories |
+| `free_text` | `free-text` | Open-ended text response |
+| `cloze` | `cloze` | Fill-in-the-blank |
+| `span_labeling` | `span-labeling` | Select and label text spans |
+
+#### bead PresentationMode → Layers presentationSpec.method
+
+| bead | Layers | Description |
+|---|---|---|
+| `static` | `whole-sentence` | Entire stimulus displayed at once |
+| `self_paced` | `self-paced` | Participant controls advancement |
+| `timed_sequence` | `rsvp` | Chunks shown at a fixed rate (RSVP) |
+
+bead's `ChunkingSpec.unit` maps to `presentationSpec.chunkingUnit`, `TimingParams.duration_ms` to `timingMs`, `TimingParams.isi_ms` to `isiMs`, `TimingParams.cumulative` to `cumulative`, and `TimingParams.mask_char` to `maskChar`. Layers extends the known presentation methods beyond bead's three modes to include `auditory`, `visual-world`, `masked-priming`, `cross-modal`, `naturalistic`, `gating`, `maze`, `boundary`, and `moving-window`.
 
 ### Experiment Lifecycle
 

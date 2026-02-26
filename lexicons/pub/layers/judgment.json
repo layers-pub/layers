@@ -19,24 +19,46 @@
             "type": "string",
             "maxLength": 50000
           },
+          "measureTypeUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the measure type definition node. Community-expandable via knowledge graph."
+          },
+          "measureType": {
+            "type": "string",
+            "description": "What property or behavior is being measured (fallback when measureTypeUri unavailable).",
+            "knownValues": [
+              "acceptability",
+              "inference",
+              "similarity",
+              "plausibility",
+              "comprehension",
+              "preference",
+              "extraction",
+              "reading-time",
+              "production",
+              "custom"
+            ],
+            "maxLength": 128
+          },
           "taskTypeUri": {
             "type": "string",
             "format": "at-uri",
-            "description": "AT-URI of the task type definition node. Community-expandable via knowledge graph."
+            "description": "AT-URI of the response instrument definition node. Community-expandable via knowledge graph."
           },
           "taskType": {
             "type": "string",
-            "description": "Task type slug (fallback when taskTypeUri unavailable).",
+            "description": "Response instrument: how the response is collected (fallback when taskTypeUri unavailable).",
             "knownValues": [
+              "forced-choice",
+              "multi-select",
+              "ordinal-scale",
+              "magnitude",
+              "binary",
               "categorical",
-              "ordinal",
-              "scalar",
-              "ranking",
-              "span-selection",
-              "freetext",
-              "pairwise-comparison",
-              "best-worst-scaling",
-              "acceptability",
+              "free-text",
+              "cloze",
+              "span-labeling",
               "custom"
             ],
             "maxLength": 128
@@ -77,7 +99,7 @@
           },
           "scaleMin": {
             "type": "integer",
-            "description": "Minimum scale value for scalar/ordinal judgments."
+            "description": "Minimum scale value for ordinal-scale judgments."
           },
           "scaleMax": {
             "type": "integer",
@@ -101,10 +123,24 @@
               "ref": "pub.layers.defs#knowledgeRef"
             }
           },
+          "presentation": {
+            "type": "ref",
+            "ref": "#presentationSpec",
+            "description": "How stimuli are displayed to participants."
+          },
+          "recordingMethods": {
+            "type": "array",
+            "description": "Data capture instruments used in this experiment.",
+            "maxLength": 16,
+            "items": {
+              "type": "ref",
+              "ref": "#recordingMethod"
+            }
+          },
           "design": {
             "type": "ref",
             "ref": "#experimentDesign",
-            "description": "Experiment design parameters: list constraints, distribution strategy, presentation mode."
+            "description": "Experiment design parameters: list constraints, distribution strategy, item order."
           },
           "features": {
             "type": "ref",
@@ -120,7 +156,7 @@
 
     "experimentDesign": {
       "type": "object",
-      "description": "Experiment design parameters for item distribution, presentation, and timing.",
+      "description": "Experiment design parameters for item distribution, ordering, and timing.",
       "properties": {
         "listConstraints": {
           "type": "array",
@@ -142,12 +178,12 @@
           "knownValues": ["latin-square", "random", "blocked", "stratified", "custom"],
           "maxLength": 128
         },
-        "presentationModeUri": {
+        "itemOrderUri": {
           "type": "string",
           "format": "at-uri",
-          "description": "AT-URI of the presentation mode definition node. Community-expandable."
+          "description": "AT-URI of the item order definition node. Community-expandable."
         },
-        "presentationMode": {
+        "itemOrder": {
           "type": "string",
           "description": "How items are ordered within a list.",
           "knownValues": ["random-order", "fixed-order", "blocked", "adaptive", "custom"],
@@ -195,6 +231,107 @@
           "type": "ref",
           "ref": "pub.layers.defs#constraint",
           "description": "Optional formal constraint expression."
+        }
+      }
+    },
+
+    "presentationSpec": {
+      "type": "object",
+      "description": "How stimuli are displayed to participants.",
+      "properties": {
+        "methodUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the presentation method definition node. Community-expandable via knowledge graph."
+        },
+        "method": {
+          "type": "string",
+          "description": "Presentation method (fallback when methodUri unavailable).",
+          "knownValues": [
+            "rsvp",
+            "self-paced",
+            "whole-sentence",
+            "auditory",
+            "visual-world",
+            "masked-priming",
+            "cross-modal",
+            "naturalistic",
+            "gating",
+            "maze",
+            "boundary",
+            "moving-window",
+            "custom"
+          ],
+          "maxLength": 128
+        },
+        "chunkingUnit": {
+          "type": "string",
+          "description": "How text is segmented for incremental presentation.",
+          "knownValues": ["word", "character", "morpheme", "phrase", "sentence", "region", "custom"],
+          "maxLength": 128
+        },
+        "timingMs": {
+          "type": "integer",
+          "description": "Per-chunk display duration in milliseconds.",
+          "minimum": 0
+        },
+        "isiMs": {
+          "type": "integer",
+          "description": "Inter-stimulus interval in milliseconds.",
+          "minimum": 0
+        },
+        "cumulative": {
+          "type": "boolean",
+          "description": "Whether previous chunks remain visible during incremental presentation."
+        },
+        "maskChar": {
+          "type": "string",
+          "description": "Masking character for non-cumulative displays (e.g., '-', '#').",
+          "maxLength": 8
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    },
+
+    "recordingMethod": {
+      "type": "object",
+      "description": "A data capture instrument used in an experiment.",
+      "required": ["method"],
+      "properties": {
+        "methodUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the recording method definition node. Community-expandable via knowledge graph."
+        },
+        "method": {
+          "type": "string",
+          "description": "Recording method (fallback when methodUri unavailable).",
+          "knownValues": [
+            "button-box",
+            "keyboard",
+            "mouse-click",
+            "touchscreen",
+            "voice",
+            "eeg",
+            "meg",
+            "fmri",
+            "fnirs",
+            "eye-tracking",
+            "pupillometry",
+            "mouse-tracking",
+            "emg",
+            "skin-conductance",
+            "ecog",
+            "custom"
+          ],
+          "maxLength": 128
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
         }
       }
     },
@@ -270,17 +407,12 @@
         },
         "scalarValue": {
           "type": "integer",
-          "description": "Scalar/ordinal judgment value."
-        },
-        "rankValue": {
-          "type": "integer",
-          "description": "Rank position.",
-          "minimum": 0
+          "description": "Numeric response value (ordinal-scale rating, magnitude estimate, or rank position)."
         },
         "textSpan": {
           "type": "ref",
           "ref": "pub.layers.defs#span",
-          "description": "Selected text span for span-selection tasks."
+          "description": "Selected text span for span-labeling tasks."
         },
         "freeText": {
           "type": "string",

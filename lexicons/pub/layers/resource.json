@@ -324,7 +324,7 @@
           "features": {
             "type": "ref",
             "ref": "pub.layers.defs#featureMap",
-            "description": "Open-ended features: judgmentType, taskType, category, domain, etc."
+            "description": "Open-ended features: measureType, taskType, category, domain, etc."
           },
           "createdAt": {
             "type": "string",

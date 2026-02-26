@@ -161,6 +161,12 @@ This pattern is systematic across Layers:
 | type | typeUri | type | Depends on context (POS, entity type, etc.) |
 | format | formatUri | format | "json", "xml", "text", "binary" |
 | role | roleUri | role | "agent", "patient", "theme", ... |
+| measureType | measureTypeUri | measureType | "acceptability", "inference", "reading-time", ... |
+| taskType | taskTypeUri | taskType | "ordinal-scale", "binary", "forced-choice", ... |
+| presentation method | methodUri | method | "rsvp", "self-paced", "whole-sentence", "auditory", ... |
+| recording method | methodUri | method | "eeg", "eye-tracking", "keyboard", "button-box", ... |
+| item order | itemOrderUri | itemOrder | "random-order", "fixed-order", "blocked", "adaptive" |
+| distribution strategy | distributionStrategyUri | distributionStrategy | "latin-square", "random", "blocked", "stratified" |
 
 Consumers should handle both fields transparently; producers should populate at least the slug.
 

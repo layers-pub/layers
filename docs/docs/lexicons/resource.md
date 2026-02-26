@@ -95,7 +95,7 @@ A parameterized text template with named variable slots. Generalizes stimulus ge
 | `experimentRef` | at-uri | Reference to the experiment this template was designed for. |
 | `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
 | `metadata` | ref | Provenance: who designed this template. Ref: `pub.layers.defs#annotationMetadata` |
-| `features` | ref | Open-ended features: judgmentType, taskType, category, domain, etc. Ref: `pub.layers.defs#featureMap` |
+| `features` | ref | Open-ended features: measureType, taskType, category, domain, etc. Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### slotFilling

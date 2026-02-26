@@ -13,7 +13,7 @@ Layers is a set of ATProto Lexicon v1 schemas for representing, sharing, and int
 
 - **Psycholinguistic and neurolinguistic signals**: self-paced reading times, eye-tracking fixations and saccades, EEG/ERP waveforms with electrode montages, MEG sensor data with source localization, and fMRI BOLD activations with ROI definitions. See the [Psycholinguistic Data guide](./guides/psycholinguistic-data.md) for how each modality maps to Layers primitives.
 
-- **Offline judgment and experiment data**: categorical, scalar, ordinal, ranking, span selection, free text, pairwise comparison, best-worst scaling, and acceptability judgments, together with parameterized stimulus templates, experimental designs (Latin square, blocked, adaptive), behavioral analytics, and inter-annotator agreement reports. See the [Judgment Data guide](./guides/judgment-data.md) for the full experiment lifecycle.
+- **Offline judgment and experiment data**: judgment types (acceptability, inference, similarity, preference, and others) collected via independent response instruments (ordinal scales, forced choice, categorical selection, span labeling, free text, and others), together with parameterized stimulus templates, experimental designs (Latin square, blocked, adaptive), behavioral analytics, and inter-annotator agreement reports. See the [Judgment Data guide](./guides/judgment-data.md) for the full experiment lifecycle.
 
 Layers subsumes 15+ major annotation data models (including CoNLL, brat, ELAN, TEI, Universal Dependencies, and others) while maintaining a theory-neutral, modular architecture. All data lives in user-controlled Personal Data Servers (PDSes); Layers provides the schema and protocols for interoperability.
 
@@ -36,7 +36,7 @@ Layers solves this by:
 
 ## Status
 
-Layers is in **v0.1.0 draft** status, in active development and accepting comments and discussion. File issues or participate on GitHub: https://github.com/layers-pub/layers
+Layers is in **v0.2.0 draft** status, in active development and accepting comments and discussion. File issues or participate on GitHub: https://github.com/layers-pub/layers
 
 ## Architecture Overview
 
@@ -57,7 +57,7 @@ Expressions are recursive: a document contains paragraphs, which contain sentenc
 - **Ontology**: authority records for label definitions, linguistic categories, and theoretical frameworks.
 - **Corpus**: corpus metadata, membership, and statistics.
 - **Resource**: lexical entries, stimulus templates with typed slots, fillings, and template compositions for constructing experimental items.
-- **Judgment**: experiment definitions with design specifications, behavioral judgments (categorical, scalar, ranking, span selection, free text, etc.), response times, and inter-annotator agreement reports.
+- **Judgment**: experiment definitions with four orthogonal dimensions (measure type, task type, presentation method, recording method), design specifications, response times, and inter-annotator agreement reports.
 - **Alignment**: cross-record linking for signal-to-stimulus correspondence, token alignment across languages, and cross-modal synchronization.
 
 **Integration layers** connect Layers to the ATProto ecosystem and external data:

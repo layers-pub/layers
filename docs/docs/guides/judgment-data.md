@@ -4,20 +4,100 @@ sidebar_label: "Judgment Data"
 
 # Judgment Data
 
-Layers represents the full lifecycle of linguistic judgment data, from experiment definition through stimulus construction, data collection, and agreement analysis. The [`pub.layers.judgment`](../lexicons/judgment.md) and [`pub.layers.resource`](../lexicons/resource.md) lexicons work together to support all major judgment task types used in psycholinguistics and computational linguistics.
+Layers represents the full lifecycle of linguistic judgment data, from experiment definition through stimulus construction, data collection, and agreement analysis. The [`pub.layers.judgment`](../lexicons/judgment.md) and [`pub.layers.resource`](../lexicons/resource.md) lexicons work together to support all major judgment paradigms used in psycholinguistics and computational linguistics.
 
-## Judgment Types
+## Four Orthogonal Dimensions
 
-Every judgment type uses the same `pub.layers.judgment#judgment` object, with different fields populated depending on the task. The `taskType` on the experiment definition tells consumers which response fields to expect.
+Following [bead](../integration/data-models/bead.md)'s design, every experiment definition can specify four independent fields:
+
+**`measureType`**: What property or behavior is being measured.
+
+**`taskType`**: What behavioral response instrument collects explicit responses. Omit for passive paradigms.
+
+**`presentation`**: How stimuli are displayed (RSVP, self-paced, whole-sentence, auditory, etc.), including chunking and timing parameters.
+
+**`recordingMethods`**: What instruments capture data (keyboard, button-box, EEG, eye-tracking, etc.). An experiment can use multiple simultaneous recording methods.
+
+These are fully independent. An acceptability experiment can use an ordinal scale, a binary yes/no, or a magnitude estimate. The same RSVP presentation can be used with EEG, MEG, or behavioral-only recording. A preference experiment can use forced choice (pairwise comparison), multi-select (best-worst scaling), or ordinal scale (direct ranking). The measure type tells consumers what the data represents; the task type tells them how explicit responses were collected; the presentation tells them how stimuli were shown; the recording methods tell them what instruments captured data.
+
+| Paradigm | `measureType` | `taskType` | `presentation.method` | `recordingMethods` |
+|----------|---------------|------------|-----------------------|--------------------|
+| Likert-scale acceptability rating | `acceptability` | `ordinal-scale` | `whole-sentence` | `keyboard` |
+| Binary grammaticality judgment | `acceptability` | `binary` | `whole-sentence` | `button-box` |
+| EEG + RSVP, passive reading | `acceptability` | | `rsvp` | `eeg` |
+| EEG + RSVP + button press | `acceptability` | `binary` | `rsvp` | `eeg`, `button-box` |
+| Self-paced reading | `reading-time` | | `self-paced` | `keyboard` |
+| Eye-tracking natural reading | `reading-time` | | `whole-sentence` | `eye-tracking` |
+| EEG + eye-tracking co-registration | `reading-time` | | `whole-sentence` | `eeg`, `eye-tracking` |
+| fMRI + auditory narrative | `comprehension` | | `naturalistic` | `fmri` |
+| Visual world paradigm | `comprehension` | | `visual-world` | `eye-tracking` |
+| Masked priming + lexical decision + EEG | `similarity` | `binary` | `masked-priming` | `eeg`, `button-box` |
+| Maze task | `reading-time` | `forced-choice` | `maze` | `keyboard` |
+| NLI classification | `inference` | `categorical` | `whole-sentence` | `keyboard` |
+| Pairwise translation comparison | `preference` | `forced-choice` | `whole-sentence` | `mouse-click` |
+| Best-worst scaling for sentiment | `preference` | `multi-select` | `whole-sentence` | `mouse-click` |
+| Semantic similarity rating | `similarity` | `ordinal-scale` | `whole-sentence` | `mouse-click` |
+| Magnitude estimation | `acceptability` | `magnitude` | `whole-sentence` | `keyboard` |
+| Cloze probability | `comprehension` | `cloze` | `whole-sentence` | `keyboard` |
+| Named entity span annotation | `extraction` | `span-labeling` | `whole-sentence` | `mouse-click` |
+| Sentence completion | `production` | `free-text` | `whole-sentence` | `keyboard` |
+| MEG + auditory + passive listening | `comprehension` | | `auditory` | `meg` |
+
+## Measure Types
+
+The `measureType` field identifies what property or behavior is being measured.
+
+| Value | Description |
+|-------|-------------|
+| `acceptability` | Linguistic acceptability, naturalness, or grammaticality |
+| `inference` | Semantic relationship (entailment, contradiction, neutral) |
+| `similarity` | Semantic similarity, distance, or relatedness |
+| `plausibility` | Likelihood or plausibility of events or statements |
+| `comprehension` | Understanding or recall of content |
+| `preference` | Subjective preference between alternatives |
+| `extraction` | Extracting structured information (labeled spans) from text |
+| `reading-time` | Processing time per word or region (self-paced reading, eye tracking) |
+| `production` | Language production (sentence completion, word generation) |
+
+All values are community-expandable via `measureTypeUri`.
+
+## Task Types (Response Instruments)
+
+The `taskType` field identifies how responses are collected, independent of what is being measured.
+
+### Ordinal Scale
+
+Participants rate on a bounded discrete scale (Likert, slider). Responses go in `scalarValue`.
+
+```json
+{
+  "$type": "pub.layers.judgment#experimentDef",
+  "name": "Naturalness rating study",
+  "measureType": "acceptability",
+  "taskType": "ordinal-scale",
+  "scaleMin": 1,
+  "scaleMax": 7,
+  "guidelines": "Rate how natural the sentence sounds on a scale from 1 (very unnatural) to 7 (perfectly natural)..."
+}
+```
+
+```json
+{
+  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42" },
+  "scalarValue": 5,
+  "responseTimeMs": 1560
+}
+```
 
 ### Categorical
 
-Participants choose a label from a fixed set.
+Participants choose a label from a fixed set of unordered categories. Responses go in `categoricalValue`.
 
 ```json
 {
   "$type": "pub.layers.judgment#experimentDef",
   "name": "Semantic relation classification",
+  "measureType": "inference",
   "taskType": "categorical",
   "labels": ["cause", "effect", "precondition", "none"],
   "guidelines": "Select the relation that best describes how the two events are connected..."
@@ -33,117 +113,16 @@ Participants choose a label from a fixed set.
 }
 ```
 
-### Scalar
+### Forced Choice
 
-Participants rate on a numeric scale.
-
-```json
-{
-  "$type": "pub.layers.judgment#experimentDef",
-  "name": "Naturalness rating study",
-  "taskType": "scalar",
-  "scaleMin": 1,
-  "scaleMax": 7,
-  "guidelines": "Rate how natural the sentence sounds on a scale from 1 (very unnatural) to 7 (perfectly natural)..."
-}
-```
-
-```json
-{
-  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42" },
-  "scalarValue": 5,
-  "responseTimeMs": 1560
-}
-```
-
-### Ordinal
-
-Like scalar, but the distances between values are not assumed to be equal. Uses the same `scalarValue` field. The `taskType` signals ordinal interpretation to analysis tools.
-
-```json
-{
-  "$type": "pub.layers.judgment#experimentDef",
-  "name": "Formality level classification",
-  "taskType": "ordinal",
-  "scaleMin": 1,
-  "scaleMax": 5,
-  "labels": ["very informal", "informal", "neutral", "formal", "very formal"]
-}
-```
-
-### Ranking
-
-Participants order items by preference. Each judgment carries `rankValue` (0-indexed position):
-
-```json
-{
-  "$type": "pub.layers.judgment#experimentDef",
-  "name": "Paraphrase ranking",
-  "taskType": "ranking",
-  "guidelines": "Rank the four paraphrases from most natural (1) to least natural (4)..."
-}
-```
-
-```json
-[
-  { "item": { "localId": "paraphrase-A" }, "rankValue": 0 },
-  { "item": { "localId": "paraphrase-C" }, "rankValue": 1 },
-  { "item": { "localId": "paraphrase-B" }, "rankValue": 2 },
-  { "item": { "localId": "paraphrase-D" }, "rankValue": 3 }
-]
-```
-
-### Span Selection
-
-Participants select a text region in the stimulus:
-
-```json
-{
-  "$type": "pub.layers.judgment#experimentDef",
-  "name": "Argument span identification",
-  "taskType": "span-selection",
-  "guidelines": "Highlight the text span that answers: who performed the action?"
-}
-```
-
-```json
-{
-  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42" },
-  "textSpan": { "start": 0, "end": 7 },
-  "responseTimeMs": 3200
-}
-```
-
-### Free Text
-
-Participants provide open-ended text responses:
-
-```json
-{
-  "$type": "pub.layers.judgment#experimentDef",
-  "name": "Paraphrase generation",
-  "taskType": "freetext",
-  "guidelines": "Write a paraphrase of the following sentence that preserves its meaning..."
-}
-```
-
-```json
-{
-  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42" },
-  "freeText": "The mouse was chased by the cat through the garden",
-  "responseTimeMs": 8450
-}
-```
-
-### Pairwise Comparison
-
-Participants choose between two alternatives. Modeled as a categorical judgment over the pair:
+Participants pick exactly one option from a small set (2AFC, NAFC). Responses go in `categoricalValue`. This is the instrument behind pairwise comparison experiments.
 
 ```json
 {
   "$type": "pub.layers.judgment#experimentDef",
   "name": "Translation quality comparison",
-  "taskType": "pairwise-comparison",
+  "measureType": "preference",
+  "taskType": "forced-choice",
   "labels": ["a", "b", "tie"],
   "guidelines": "Which translation better conveys the meaning of the source?"
 }
@@ -158,15 +137,16 @@ Participants choose between two alternatives. Modeled as a categorical judgment 
 }
 ```
 
-### Best-Worst Scaling
+### Multi-Select
 
-Participants select the best and worst items from a set. Each judgment records both selections:
+Participants pick one or more options from a set. Responses go in `behavioralData` features. This is the instrument behind best-worst scaling experiments.
 
 ```json
 {
   "$type": "pub.layers.judgment#experimentDef",
   "name": "Sentiment intensity BWS",
-  "taskType": "best-worst-scaling",
+  "measureType": "preference",
+  "taskType": "multi-select",
   "guidelines": "Select the sentence that conveys the MOST positive sentiment and the LEAST positive sentiment..."
 }
 ```
@@ -176,35 +156,292 @@ Participants select the best and worst items from a set. Each judgment records b
   "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/tuple-8" },
   "behavioralData": {
     "features": [
-      { "key": "best", "value": "item-A" },
-      { "key": "worst", "value": "item-C" }
+      { "key": "best", "value": "item-a" },
+      { "key": "worst", "value": "item-c" }
     ]
   },
   "responseTimeMs": 5100
 }
 ```
 
-### Acceptability
+### Binary
 
-The classic linguistics task. Participants judge whether a sentence is acceptable. Can be binary (yes/no) or gradient (scalar):
+Participants give a yes/no response. Responses go in `categoricalValue`.
 
 ```json
 {
   "$type": "pub.layers.judgment#experimentDef",
-  "name": "Island constraint acceptability",
-  "taskType": "acceptability",
-  "scaleMin": 1,
-  "scaleMax": 7,
-  "guidelines": "Rate how acceptable the following sentence sounds..."
+  "name": "Grammaticality judgment",
+  "measureType": "acceptability",
+  "taskType": "binary",
+  "labels": ["yes", "no"],
+  "guidelines": "Is the following sentence grammatically acceptable?"
 }
 ```
 
 ```json
 {
   "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42" },
-  "scalarValue": 2,
-  "responseTimeMs": 1890,
-  "confidence": 9000
+  "categoricalValue": "yes",
+  "responseTimeMs": 980
+}
+```
+
+### Free Text
+
+Participants provide open-ended text responses. Responses go in `freeText`.
+
+```json
+{
+  "$type": "pub.layers.judgment#experimentDef",
+  "name": "Paraphrase generation",
+  "measureType": "similarity",
+  "taskType": "free-text",
+  "guidelines": "Write a paraphrase of the following sentence that preserves its meaning..."
+}
+```
+
+```json
+{
+  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42" },
+  "freeText": "The mouse was chased by the cat through the garden",
+  "responseTimeMs": 8450
+}
+```
+
+### Span Labeling
+
+Participants select and optionally label text regions. Responses go in `textSpan`.
+
+```json
+{
+  "$type": "pub.layers.judgment#experimentDef",
+  "name": "Argument span identification",
+  "measureType": "extraction",
+  "taskType": "span-labeling",
+  "guidelines": "Highlight the text span that answers: who performed the action?"
+}
+```
+
+```json
+{
+  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42" },
+  "textSpan": { "start": 0, "end": 7 },
+  "responseTimeMs": 3200
+}
+```
+
+### Magnitude
+
+Participants provide an unbounded numeric value (magnitude estimation). Responses go in `scalarValue`. Unlike ordinal-scale, there are no `scaleMin`/`scaleMax` bounds.
+
+```json
+{
+  "$type": "pub.layers.judgment#experimentDef",
+  "name": "Magnitude estimation of naturalness",
+  "measureType": "acceptability",
+  "taskType": "magnitude",
+  "guidelines": "Assign a number reflecting how natural the sentence sounds. Use any positive number; the reference sentence has a value of 100..."
+}
+```
+
+```json
+{
+  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42" },
+  "scalarValue": 230,
+  "responseTimeMs": 2100
+}
+```
+
+### Cloze
+
+Participants fill in blanks in a stimulus. Responses go in `freeText`.
+
+```json
+{
+  "$type": "pub.layers.judgment#experimentDef",
+  "name": "Cloze probability estimation",
+  "measureType": "comprehension",
+  "taskType": "cloze",
+  "guidelines": "Complete the sentence by filling in the blank with the first word that comes to mind..."
+}
+```
+
+```json
+{
+  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42" },
+  "freeText": "dog",
+  "responseTimeMs": 1200
+}
+```
+
+## Stimulus Presentation
+
+The `presentation` field on `experimentDef` specifies how individual stimuli are displayed to participants. This is independent of what is being measured, what response is collected, and what instruments record data.
+
+### Presentation Methods
+
+| Value | Description |
+|-------|-------------|
+| `rsvp` | Rapid Serial Visual Presentation: chunks shown one at a time at a fixed rate |
+| `self-paced` | Participant controls advancement (button press to reveal next chunk) |
+| `whole-sentence` | Entire stimulus displayed at once |
+| `auditory` | Spoken stimulus (natural speech, synthesized, or rate-controlled) |
+| `visual-world` | Visual scene displayed alongside auditory stimulus |
+| `masked-priming` | Forward mask, brief prime, then target |
+| `cross-modal` | Stimulus in one modality, probe in another (e.g., auditory sentence + visual word) |
+| `naturalistic` | Extended narrative (audiobook, story) for continuous processing |
+| `gating` | Incremental portions of a spoken word revealed in successive gates |
+| `maze` | Two-alternative forced choice at each word position |
+| `boundary` | Invisible boundary triggers parafoveal preview change during saccade |
+| `moving-window` | Only a window around fixation is visible; rest is masked |
+
+All values are community-expandable via `methodUri`.
+
+### Chunking and Timing
+
+For incremental presentation methods (RSVP, self-paced), additional fields control segmentation and timing:
+
+```json
+{
+  "presentation": {
+    "method": "rsvp",
+    "chunkingUnit": "word",
+    "timingMs": 300,
+    "isiMs": 200,
+    "cumulative": false
+  }
+}
+```
+
+```json
+{
+  "presentation": {
+    "method": "self-paced",
+    "chunkingUnit": "word",
+    "cumulative": false,
+    "maskChar": "-"
+  }
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `chunkingUnit` | How text is segmented: `word`, `character`, `morpheme`, `phrase`, `sentence`, `region`, `custom` |
+| `timingMs` | Per-chunk display duration in milliseconds (for timed presentations like RSVP) |
+| `isiMs` | Inter-stimulus interval in milliseconds |
+| `cumulative` | Whether previous chunks remain visible (true for cumulative self-paced reading, false for non-cumulative) |
+| `maskChar` | Masking character replacing hidden text (e.g., `-` for dashes, `#` for hashes) |
+| `features` | Additional method-specific parameters (e.g., prime duration for masked priming, gate size for gating) |
+
+## Recording Methods
+
+The `recordingMethods` array on `experimentDef` declares what instruments capture data. An experiment can use multiple simultaneous recording methods (e.g., EEG + eye-tracking co-registration).
+
+### Behavioral Input Devices
+
+| Value | Description |
+|-------|-------------|
+| `button-box` | Dedicated response box (e.g., Cedrus, PST) with hardware-level timing |
+| `keyboard` | Standard keyboard keypress |
+| `mouse-click` | Mouse button click |
+| `touchscreen` | Touchscreen tap |
+| `voice` | Voice key or microphone onset detection |
+
+### Physiological Instruments
+
+| Value | Description |
+|-------|-------------|
+| `eeg` | Electroencephalography (scalp electrodes, ERPs) |
+| `meg` | Magnetoencephalography |
+| `fmri` | Functional magnetic resonance imaging |
+| `fnirs` | Functional near-infrared spectroscopy |
+| `eye-tracking` | Eye tracker (fixation-based reading measures, visual world) |
+| `pupillometry` | Pupil diameter recording |
+| `mouse-tracking` | Continuous mouse cursor trajectory |
+| `emg` | Electromyography |
+| `skin-conductance` | Galvanic skin response |
+| `ecog` | Intracranial EEG / electrocorticography |
+
+All values are community-expandable via `methodUri`. Detailed acquisition parameters (sample rate, channel count, montage) belong on `pub.layers.media` records, not the experiment definition. See the [Psycholinguistic Data guide](./psycholinguistic-data.md) for media record examples.
+
+### Examples
+
+EEG study with RSVP and a behavioral task:
+
+```json
+{
+  "$type": "pub.layers.judgment#experimentDef",
+  "name": "N400 semantic violation study",
+  "measureType": "acceptability",
+  "taskType": "binary",
+  "presentation": {
+    "method": "rsvp",
+    "chunkingUnit": "word",
+    "timingMs": 300,
+    "isiMs": 200,
+    "cumulative": false
+  },
+  "recordingMethods": [
+    { "method": "eeg" },
+    { "method": "button-box" }
+  ],
+  "labels": ["acceptable", "unacceptable"],
+  "guidelines": "After each sentence, press the left button if acceptable or the right button if unacceptable..."
+}
+```
+
+Eye-tracking natural reading with no explicit task:
+
+```json
+{
+  "$type": "pub.layers.judgment#experimentDef",
+  "name": "Garden-path reading study",
+  "measureType": "reading-time",
+  "presentation": {
+    "method": "whole-sentence"
+  },
+  "recordingMethods": [
+    { "method": "eye-tracking" }
+  ],
+  "guidelines": "Read each sentence silently at your own pace..."
+}
+```
+
+Self-paced reading:
+
+```json
+{
+  "$type": "pub.layers.judgment#experimentDef",
+  "name": "Garden-path SPR study",
+  "measureType": "reading-time",
+  "presentation": {
+    "method": "self-paced",
+    "chunkingUnit": "word",
+    "cumulative": false,
+    "maskChar": "-"
+  },
+  "recordingMethods": [
+    { "method": "keyboard" }
+  ],
+  "guidelines": "Press the spacebar to reveal each word..."
+}
+```
+
+fMRI with auditory narrative (passive):
+
+```json
+{
+  "$type": "pub.layers.judgment#experimentDef",
+  "name": "Narrative comprehension fMRI",
+  "measureType": "comprehension",
+  "presentation": {
+    "method": "naturalistic"
+  },
+  "recordingMethods": [
+    { "method": "fmri" }
+  ],
+  "guidelines": "Listen to the story and try to understand what is happening..."
 }
 ```
 
@@ -331,7 +568,7 @@ The filling's `renderedText` becomes an expression's `text`. The `expressionRef`
 
 ## Experiment Design
 
-The `experimentDef` record specifies the full experimental design, including list construction constraints and presentation parameters.
+The `experimentDef` record specifies the full experimental design, including list construction constraints and item ordering.
 
 ### Full Example
 
@@ -339,7 +576,14 @@ The `experimentDef` record specifies the full experimental design, including lis
 {
   "$type": "pub.layers.judgment#experimentDef",
   "name": "Relative clause attachment ambiguity",
-  "taskType": "acceptability",
+  "measureType": "acceptability",
+  "taskType": "ordinal-scale",
+  "presentation": {
+    "method": "whole-sentence"
+  },
+  "recordingMethods": [
+    { "method": "keyboard" }
+  ],
   "scaleMin": 1,
   "scaleMax": 7,
   "guidelines": "Read each sentence and rate how natural it sounds...",
@@ -353,7 +597,7 @@ The `experimentDef` record specifies the full experimental design, including lis
   ],
   "design": {
     "distributionStrategy": "latin-square",
-    "presentationMode": "random-order",
+    "itemOrder": "random-order",
     "timingMs": 30000,
     "listConstraints": [
       {
@@ -397,12 +641,12 @@ The `experimentDef` record specifies the full experimental design, including lis
 | `balanced-frequency` | Control the ratio of experimental to filler items | Per-type counts |
 | `min-distance` | Minimum distance between items of the same type | `minDistance`, `targetProperty` |
 
-### Distribution and Presentation
+### Distribution and Item Order
 
 | Field | Known Values | Description |
 |-------|-------------|-------------|
 | `distributionStrategy` | `latin-square`, `random`, `blocked`, `stratified`, `custom` | How items are assigned to participant lists |
-| `presentationMode` | `random-order`, `fixed-order`, `blocked`, `adaptive`, `custom` | How items are ordered within a list |
+| `itemOrder` | `random-order`, `fixed-order`, `blocked`, `adaptive`, `custom` | How items are ordered within a list |
 | `timingMs` | integer | Maximum time per item in milliseconds |
 
 ## Behavioral Data
@@ -510,14 +754,14 @@ The `agreementReport` record summarizes inter-annotator agreement across judgmen
 
 | Metric | Use Case | Scale |
 |--------|----------|-------|
-| `cohens-kappa` | Two annotators, categorical data | 0–10000 (maps to 0.0–1.0) |
-| `fleiss-kappa` | Multiple annotators, categorical data | 0–10000 |
-| `krippendorff-alpha` | Any number of annotators, any scale type | 0–10000 |
-| `percent-agreement` | Simple agreement percentage | 0–10000 |
-| `correlation` | Scalar/ordinal judgments | 0–10000 (maps to 0.0–1.0) |
-| `f1` | Span selection overlap | 0–10000 |
+| `cohens-kappa` | Two annotators, categorical data | 0-10000 (maps to 0.0-1.0) |
+| `fleiss-kappa` | Multiple annotators, categorical data | 0-10000 |
+| `krippendorff-alpha` | Any number of annotators, any scale type | 0-10000 |
+| `percent-agreement` | Simple agreement percentage | 0-10000 |
+| `correlation` | Ordinal-scale judgments | 0-10000 (maps to 0.0-1.0) |
+| `f1` | Span labeling overlap | 0-10000 |
 
-All metric values use the 0–10000 integer scale for consistent representation without floating-point issues. The `metricUri` field allows community-defined metrics beyond these known values.
+All metric values use the 0-10000 integer scale for consistent representation without floating-point issues. The `metricUri` field allows community-defined metrics beyond these known values.
 
 ## See Also
 
@@ -527,6 +771,6 @@ All metric values use the 0–10000 integer scale for consistent representation 
 - [Resource](../lexicons/resource.md): template, slot, filling, collection, and entry definitions
 - [Expression](../lexicons/expression.md): materialized stimulus expressions
 - [Annotation](../lexicons/annotation.md): annotation layers for derived measures on stimuli
-- [Flexible Enums](../foundations/flexible-enums.md): extending taskType, metric, and strategy values
+- [Flexible Enums](../foundations/flexible-enums.md): extending measureType, taskType, presentation method, recording method, and other values
 - [bead Integration](../integration/data-models/bead.md): mapping from the bead framework
 - [Decomp Integration](../integration/data-models/decomp.md): mapping from UDS scalar judgments

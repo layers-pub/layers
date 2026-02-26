@@ -107,18 +107,27 @@ Per-region reading times are recorded as judgments. Each judgment references the
 
 ### Experimental Design
 
-The experiment definition specifies task type, design constraints, and links to the stimulus templates:
+The experiment definition specifies measure type, presentation method, recording instruments, design constraints, and links to stimulus templates:
 
 ```json
 {
   "$type": "pub.layers.judgment#experimentDef",
   "name": "Garden-path SPR study",
-  "taskType": "acceptability",
+  "measureType": "reading-time",
+  "presentation": {
+    "method": "self-paced",
+    "chunkingUnit": "word",
+    "cumulative": false,
+    "maskChar": "-"
+  },
+  "recordingMethods": [
+    { "method": "keyboard" }
+  ],
   "guidelines": "Read each sentence at your own pace by pressing the spacebar...",
   "templateRefs": ["at://did:plc:researcher/pub.layers.resource.template/gp-template"],
   "design": {
     "distributionStrategy": "latin-square",
-    "presentationMode": "random-order",
+    "itemOrder": "random-order",
     "listConstraints": [
       {
         "kind": "latin-square",
