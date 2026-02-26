@@ -36,7 +36,7 @@ Layers solves this by:
 
 ## Status
 
-Layers is in **v0.2.0 draft** status, in active development and accepting comments and discussion. File issues or participate on GitHub: https://github.com/layers-pub/layers
+Layers is in **v0.3.0 draft** status, in active development and accepting comments and discussion. File issues or participate on GitHub: https://github.com/layers-pub/layers
 
 ## Architecture Overview
 
@@ -55,7 +55,7 @@ Expressions are recursive: a document contains paragraphs, which contain sentenc
 **Parallel tracks** integrate the pipeline with experimental and analytical workflows:
 
 - **Ontology**: authority records for label definitions, linguistic categories, and theoretical frameworks.
-- **Corpus**: corpus metadata, membership, and statistics.
+- **Corpus**: corpus metadata, membership, statistics, and annotation project design (annotator redundancy, adjudication method, quality criteria).
 - **Resource**: lexical entries, stimulus templates with typed slots, fillings, and template compositions for constructing experimental items.
 - **Judgment**: experiment definitions with four orthogonal dimensions (measure type, task type, presentation method, recording method), design specifications, response times, and inter-annotator agreement reports.
 - **Alignment**: cross-record linking for signal-to-stimulus correspondence, token alignment across languages, and cross-modal synchronization.
@@ -69,7 +69,7 @@ Expressions are recursive: a document contains paragraphs, which contain sentenc
 
 ## License
 
-Copyright © 2026 Aaron Steven White. Layers is licensed under **CC-BY-SA-4.0**.
+Layers is licensed under **CC-BY-SA-4.0**.
 
 ## Next Steps
 
@@ -79,6 +79,7 @@ Copyright © 2026 Aaron Steven White. Layers is licensed under **CC-BY-SA-4.0**.
   - [Multimodal Annotation](./guides/multimodal-annotation.md): annotation across text, audio, video, image, and paged documents.
   - [Psycholinguistic Data](./guides/psycholinguistic-data.md): self-paced reading, eye-tracking, EEG, MEG, and fMRI.
   - [Judgment Data](./guides/judgment-data.md): experiment design, stimulus pipelines, and judgment collection.
+  - [Annotation Design](./guides/annotation-design.md): source method, annotator redundancy, adjudication, and quality criteria.
   - [Temporal Representation](./guides/temporal-representation.md): dates, durations, intervals, and Allen's relations.
   - [Spatial Representation](./guides/spatial-representation.md): coordinates, regions, brain atlases, and RCC-8 relations.
   - [Knowledge Grounding](./guides/knowledge-grounding.md): linking to Wikidata, FrameNet, WordNet, and typed property graphs.

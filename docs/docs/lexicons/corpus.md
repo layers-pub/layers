@@ -26,8 +26,64 @@ A corpus: a curated collection of expressions.
 | `ontologyRefs` | array | Ontologies used in this corpus. Array of at-uri |
 | `eprintRefs` | array | Eprint links for this corpus. Array of at-uri |
 | `expressionCount` | integer | Number of expressions in the corpus. |
+| `annotationDesign` | ref | Annotation project design: annotator assignment, adjudication, and quality criteria. Ref: `#annotationDesign` |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
+
+### annotationDesign
+**Type:** Object
+
+Annotation project design parameters: annotator assignment, adjudication, and quality criteria.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `redundancy` | ref | How annotators are assigned to items. Ref: `#redundancySpec` |
+| `adjudication` | ref | How disagreements are resolved. Ref: `#adjudicationSpec` |
+| `qualityCriteria` | array | Acceptance criteria for annotation quality. Array of ref: `#qualityCriterion` |
+| `guidelinesRef` | at-uri | AT-URI of the annotation guidelines document (e.g., a pub.layers.persona or external resource). |
+| `guidelinesVersion` | string | Version identifier for the annotation guidelines. |
+| `annotationRounds` | integer | Number of annotation passes in the project workflow. |
+| `features` | ref | Ref: `pub.layers.defs#featureMap` |
+
+### redundancySpec
+**Type:** Object
+
+How many annotators work on each item and how they are assigned.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `count` | integer | Number of independent annotators per item. |
+| `assignmentStrategyUri` | at-uri | AT-URI of the assignment strategy definition node. Community-expandable via knowledge graph. |
+| `assignmentStrategy` | string | How annotators are assigned to items (fallback when assignmentStrategyUri unavailable). Known values: `random`, `round-robin`, `stratified`, `expertise-based`, `custom` |
+| `annotatorPool` | integer | Total number of annotators in the project. |
+| `features` | ref | Ref: `pub.layers.defs#featureMap` |
+
+### adjudicationSpec
+**Type:** Object
+
+How disagreements between annotators are resolved into a final annotation.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `methodUri` | at-uri | AT-URI of the adjudication method definition node. Community-expandable via knowledge graph. |
+| `method` | string | Adjudication method (fallback when methodUri unavailable). Known values: `expert`, `majority-vote`, `unanimous`, `discussion`, `dawid-skene`, `automatic-merge`, `intersection`, `union`, `none`, `custom` |
+| `dedicatedAdjudicator` | boolean | Whether a separate adjudicator (not one of the annotators) resolves disagreements. |
+| `agreementThreshold` | integer | Agreement level (0-10000) above which adjudication is skipped. |
+| `features` | ref | Ref: `pub.layers.defs#featureMap` |
+
+### qualityCriterion
+**Type:** Object
+
+An acceptance criterion for annotation quality.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `metricUri` | at-uri | AT-URI of the metric definition node. Community-expandable via knowledge graph. |
+| `metric` | string | Agreement or quality metric (fallback when metricUri unavailable). Known values: `cohens-kappa`, `fleiss-kappa`, `krippendorff-alpha`, `percent-agreement`, `f1`, `smatch`, `uas`, `las`, `correlation`, `custom` |
+| `threshold` | integer | Minimum acceptable metric value (0-10000). |
+| `scopeUri` | at-uri | AT-URI of the evaluation scope definition node. Community-expandable via knowledge graph. |
+| `scope` | string | Evaluation scope (fallback when scopeUri unavailable). Known values: `item`, `layer`, `document`, `corpus`, `custom` |
+| `features` | ref | Ref: `pub.layers.defs#featureMap` |
 
 ### membership
 **Type:** Record

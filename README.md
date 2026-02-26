@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/layers-pub/layers/releases"><img src="https://img.shields.io/badge/version-0.1.0-purple?style=flat-square" alt="Version"></a>
+  <a href="https://github.com/layers-pub/layers/releases"><img src="https://img.shields.io/badge/version-0.3.0-purple?style=flat-square" alt="Version"></a>
   <a href="https://github.com/layers-pub/layers/blob/main/CHANGELOG.md"><img src="https://img.shields.io/badge/status-draft-orange?style=flat-square" alt="Status: Draft"></a>
   <a href="https://docs.layers.pub"><img src="https://img.shields.io/badge/docs-docs.layers.pub-blue?style=flat-square" alt="Documentation"></a>
   <a href="https://github.com/layers-pub/layers/blob/main/LICENSE"><img src="https://img.shields.io/github/license/layers-pub/layers?style=flat-square" alt="License"></a>

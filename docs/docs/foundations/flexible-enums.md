@@ -167,6 +167,11 @@ This pattern is systematic across Layers:
 | recording method | methodUri | method | "eeg", "eye-tracking", "keyboard", "button-box", ... |
 | item order | itemOrderUri | itemOrder | "random-order", "fixed-order", "blocked", "adaptive" |
 | distribution strategy | distributionStrategyUri | distributionStrategy | "latin-square", "random", "blocked", "stratified" |
+| source method | sourceMethodUri | sourceMethod | "manual-native", "automatic", "converted", "crowd-sourced", ... |
+| assignment strategy | assignmentStrategyUri | assignmentStrategy | "random", "round-robin", "stratified", "expertise-based" |
+| adjudication method | methodUri | method | "expert", "majority-vote", "discussion", "dawid-skene", ... |
+| quality metric | metricUri | metric | "cohens-kappa", "fleiss-kappa", "krippendorff-alpha", "f1", ... |
+| quality scope | scopeUri | scope | "item", "layer", "document", "corpus" |
 
 Consumers should handle both fields transparently; producers should populate at least the slug.
 

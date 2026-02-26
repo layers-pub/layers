@@ -4,6 +4,17 @@ All notable changes to the Layers lexicon schemas will be documented in this fil
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] — 2026-02-26
+
+### Added
+
+- `annotationDesign` object type on `corpus` for annotation project design metadata: annotator assignment, adjudication, and quality criteria.
+- `redundancySpec` object type for annotator-per-item count and assignment strategy (`random`, `round-robin`, `stratified`, `expertise-based`).
+- `adjudicationSpec` object type for disagreement resolution method (`expert`, `majority-vote`, `unanimous`, `discussion`, `dawid-skene`, `automatic-merge`, `intersection`, `union`, `none`), with dedicated adjudicator flag and agreement threshold.
+- `qualityCriterion` object type for acceptance criteria: metric (`cohens-kappa`, `fleiss-kappa`, `krippendorff-alpha`, `percent-agreement`, `f1`, `smatch`, `uas`, `las`, `correlation`), threshold, and evaluation scope (`item`, `layer`, `document`, `corpus`).
+- `sourceMethodUri` / `sourceMethod` field on `annotationLayer` for per-layer annotation source tracking (`manual-native`, `manual-corrected`, `automatic`, `automatic-corrected`, `converted`, `converted-corrected`, `crowd-sourced`), following UD's per-layer annotation source convention.
+- Annotation Design guide with composability table across 8 project types.
+
 ## [0.2.0] — 2026-02-26
 
 ### Added

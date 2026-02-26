@@ -18,6 +18,8 @@ These guides provide in-depth coverage of cross-cutting topics in Layers. Each g
 
 - **[Judgment Data](./judgment-data.md)**: The full lifecycle of linguistic judgment data: experiment definition, stimulus generation, data collection, and agreement analysis. Covers categorical, scalar, ranking, span selection, free text, pairwise comparison, and best-worst scaling tasks.
 
+- **[Annotation Design](./annotation-design.md)**: Annotation project design metadata: source method, annotator redundancy, adjudication, and quality criteria. Covers treebanks, sembanks, crowd-sourced corpora, silver annotation, and conversion projects.
+
 ## See Also
 
 - [Primitives](../foundations/primitives.md) for the core building blocks used across all guides

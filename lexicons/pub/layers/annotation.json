@@ -134,6 +134,26 @@
             ],
             "maxLength": 128
           },
+          "sourceMethodUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the annotation source method definition node. Community-expandable via knowledge graph."
+          },
+          "sourceMethod": {
+            "type": "string",
+            "description": "How this annotation layer was produced (fallback when sourceMethodUri unavailable). Follows UD's per-layer annotation source tracking.",
+            "knownValues": [
+              "manual-native",
+              "manual-corrected",
+              "automatic",
+              "automatic-corrected",
+              "converted",
+              "converted-corrected",
+              "crowd-sourced",
+              "custom"
+            ],
+            "maxLength": 128
+          },
           "labelSet": {
             "type": "string",
             "description": "Identifier for the label set used (e.g., 'universal-pos', 'ontonotes-ner', 'penn-treebank-pos').",
