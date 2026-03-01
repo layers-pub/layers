@@ -9,6 +9,7 @@ Linguistic resource records: lexical entries, collections, stimulus templates, s
 ## Types
 
 ### entry
+**NSID:** `pub.layers.resource.entry`
 **Type:** Record
 
 A linguistic resource entry: a lexical item, frame element filler, morphological paradigm cell, or any atomic unit in a structured linguistic collection.
@@ -18,10 +19,10 @@ A linguistic resource entry: a lexical item, frame element filler, morphological
 | `lemma` | string | Canonical/citation form. |
 | `form` | string | Surface form or string representation. |
 | `language` | string | BCP-47 language tag. |
-| `ontologyTypeRef` | at-uri | Reference to a pub.layers.ontology#typeDef classifying this entry. |
+| `ontologyTypeRef` | at-uri | Reference to a `pub.layers.ontology.typeDef` classifying this entry. |
 | `knowledgeRefs` | array | Knowledge graph groundings (WordNet synset, FrameNet lexical unit, Wikidata, etc.). Array of ref: `pub.layers.defs#knowledgeRef` |
 | `features` | ref | Open-ended features: pos, morphological features, frequency, register, etc. Ref: `pub.layers.defs#featureMap` |
-| `components` | array | For multi-word expressions: the component words. Array of ref: `#mweComponent` |
+| `components` | array | For multi-word expressions: the component words. Array of ref: `pub.layers.resource.defs#mweComponent` |
 | `mweKindUri` | at-uri | AT-URI of the MWE kind definition node. Community-expandable via knowledge graph. |
 | `mweKind` | string | MWE kind slug (fallback). Known values: `compound`, `phrasal-verb`, `idiom`, `light-verb`, `inherently-reflexive`, `verb-particle`, `collocation`, `custom` |
 | `sourceRef` | at-uri | AT-URI of the source record this entry was derived from. |
@@ -29,6 +30,7 @@ A linguistic resource entry: a lexical item, frame element filler, morphological
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### collection
+**NSID:** `pub.layers.resource.collection`
 **Type:** Record
 
 A named collection of linguistic resource entries. Abstract enough to represent lexicons, frame inventories, paradigm tables, gazetteers, stop-word lists, etc.
@@ -41,13 +43,14 @@ A named collection of linguistic resource entries. Abstract enough to represent 
 | `kind` | string | Collection kind slug (fallback). Known values: `lexicon`, `frame-inventory`, `gazetteer`, `paradigm`, `stop-list`, `stimulus-pool`, `custom` |
 | `language` | string | BCP-47 language tag. |
 | `version` | string | Version string (e.g., 'FrameNet 1.7', 'PropBank 3.4'). |
-| `ontologyRef` | at-uri | Reference to a pub.layers.ontology defining the type system for entries. |
+| `ontologyRef` | at-uri | Reference to a `pub.layers.ontology.ontology` defining the type system for entries. |
 | `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
 | `metadata` | ref | Provenance: who curated this collection. Ref: `pub.layers.defs#annotationMetadata` |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### collectionMembership
+**NSID:** `pub.layers.resource.collectionMembership`
 **Type:** Record
 
 Links an entry to a collection. Separate record enables many-to-many relationships and decentralized curation.
@@ -62,6 +65,7 @@ Links an entry to a collection. Separate record enables many-to-many relationshi
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### slot
+**NSID:** `pub.layers.resource.defs#slot`
 **Type:** Object
 
 A named variable slot in a template. Generalizes template variable positions with constraints and defaults.
@@ -73,13 +77,14 @@ A named variable slot in a template. Generalizes template variable positions wit
 | `required` | boolean | Whether this slot must be filled. |
 | `defaultValue` | string | Default filler value if not explicitly filled. |
 | `collectionRef` | at-uri | AT-URI of a resource collection constraining allowed fillers. |
-| `ontologyTypeRef` | at-uri | AT-URI of a pub.layers.ontology#typeDef constraining the filler type. |
+| `ontologyTypeRef` | at-uri | AT-URI of a `pub.layers.ontology.typeDef` constraining the filler type. |
 | `fillerTypeRefs` | array | Multiple allowed filler type references (disjunctive constraint). Array of at-uri |
 | `constraints` | array | Slot-level constraints. Array of ref: `pub.layers.defs#constraint` |
 | `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 
 ### template
+**NSID:** `pub.layers.resource.template`
 **Type:** Record
 
 A parameterized text template with named variable slots. Generalizes stimulus generation pipelines and controlled natural language patterns.
@@ -89,7 +94,7 @@ A parameterized text template with named variable slots. Generalizes stimulus ge
 | `name` | string | Human-readable template name. |
 | `text` | string | Template text with `{slotName}` placeholders. |
 | `language` | string | BCP-47 language tag. |
-| `slots` | array | The named slots in this template. Array of ref: `#slot` |
+| `slots` | array | The named slots in this template. Array of ref: `pub.layers.resource.defs#slot` |
 | `constraints` | array | Cross-slot constraints. Array of ref: `pub.layers.defs#constraint` |
 | `ontologyRef` | at-uri | Reference to the ontology defining the type system. |
 | `experimentRef` | at-uri | Reference to the experiment this template was designed for. |
@@ -99,9 +104,10 @@ A parameterized text template with named variable slots. Generalizes stimulus ge
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### slotFilling
+**NSID:** `pub.layers.resource.defs#slotFilling`
 **Type:** Object
 
-A single slot→filler mapping in a filled template. The filler can be an entry reference, a literal value, or both.
+A single slot-to-filler mapping in a filled template. The filler can be an entry reference, a literal value, or both.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -112,16 +118,17 @@ A single slot→filler mapping in a filled template. The filler can be an entry 
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 
 ### filling
+**NSID:** `pub.layers.resource.filling`
 **Type:** Record
 
-A filled template: a template with all slots mapped to specific fillers, producing a rendered text. The rendered text can optionally be materialized as a pub.layers.expression for annotation.
+A filled template: a template with all slots mapped to specific fillers, producing a rendered text. The rendered text can optionally be materialized as a `pub.layers.expression.expression` for annotation.
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `templateRef` | at-uri | AT-URI of the template being filled. |
-| `slotFillings` | array | The slot→filler mappings. Array of ref: `#slotFilling` |
+| `slotFillings` | array | The slot-to-filler mappings. Array of ref: `pub.layers.resource.defs#slotFilling` |
 | `renderedText` | string | The fully rendered text after substitution. |
-| `expressionRef` | at-uri | AT-URI of the pub.layers.expression materializing this filling. |
+| `expressionRef` | at-uri | AT-URI of the `pub.layers.expression.expression` materializing this filling. |
 | `strategyUri` | at-uri | AT-URI of the filling strategy definition node. Community-expandable via knowledge graph. |
 | `strategy` | string | Filling strategy slug (fallback). Known values: `exhaustive`, `random`, `stratified`, `mlm`, `csp`, `mixed`, `manual`, `custom` |
 | `metadata` | ref | Provenance: what tool/process generated this filling. Ref: `pub.layers.defs#annotationMetadata` |
@@ -130,6 +137,7 @@ A filled template: a template with all slots mapped to specific fillers, produci
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### templateComposition
+**NSID:** `pub.layers.resource.templateComposition`
 **Type:** Record
 
 A composition of templates into sequences or trees. Enables building complex stimuli from simpler template units (e.g., context paragraph + target sentence + comprehension question).
@@ -140,13 +148,14 @@ A composition of templates into sequences or trees. Enables building complex sti
 | `description` | string | Description of the composition. |
 | `compositionTypeUri` | at-uri | AT-URI of the composition type definition node. Community-expandable via knowledge graph. |
 | `compositionType` | string | Composition type slug (fallback). Known values: `sequence`, `tree`, `custom` |
-| `members` | array | The template members in order. Array of ref: `#templateMember` |
+| `members` | array | The template members in order. Array of ref: `pub.layers.resource.defs#templateMember` |
 | `constraints` | array | Cross-member constraints. Array of ref: `pub.layers.defs#constraint` |
 | `metadata` | ref | Ref: `pub.layers.defs#annotationMetadata` |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### templateMember
+**NSID:** `pub.layers.resource.defs#templateMember`
 **Type:** Object
 
 A single member in a template composition, referencing a template or another composition.
@@ -161,6 +170,7 @@ A single member in a template composition, referencing a template or another com
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 
 ### mweComponent
+**NSID:** `pub.layers.resource.defs#mweComponent`
 **Type:** Object
 
 A single component word in a multi-word expression.
@@ -172,3 +182,149 @@ A single component word in a multi-word expression.
 | `position` | integer | 0-based position within the MWE. |
 | `isHead` | boolean | Whether this component is the head of the MWE. |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
+
+## XRPC Queries
+
+### getEntry
+**NSID:** `pub.layers.resource.getEntry`
+
+Retrieve a single resource entry record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the entry record. |
+
+**Output**: The entry record object.
+
+### listEntries
+**NSID:** `pub.layers.resource.listEntries`
+
+List resource entry records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: entry[], cursor?: string }`
+
+### getCollection
+**NSID:** `pub.layers.resource.getCollection`
+
+Retrieve a single collection record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the collection record. |
+
+**Output**: The collection record object.
+
+### listCollections
+**NSID:** `pub.layers.resource.listCollections`
+
+List collection records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: collection[], cursor?: string }`
+
+### getTemplate
+**NSID:** `pub.layers.resource.getTemplate`
+
+Retrieve a single template record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the template record. |
+
+**Output**: The template record object.
+
+### listTemplates
+**NSID:** `pub.layers.resource.listTemplates`
+
+List template records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: template[], cursor?: string }`
+
+### getFilling
+**NSID:** `pub.layers.resource.getFilling`
+
+Retrieve a single filling record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the filling record. |
+
+**Output**: The filling record object.
+
+### listFillings
+**NSID:** `pub.layers.resource.listFillings`
+
+List filling records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: filling[], cursor?: string }`
+
+### getTemplateComposition
+**NSID:** `pub.layers.resource.getTemplateComposition`
+
+Retrieve a single template composition record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the template composition record. |
+
+**Output**: The template composition record object.
+
+### listTemplateCompositions
+**NSID:** `pub.layers.resource.listTemplateCompositions`
+
+List template composition records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: templateComposition[], cursor?: string }`
+
+### getCollectionMembership
+**NSID:** `pub.layers.resource.getCollectionMembership`
+
+Retrieve a single collection membership record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the collection membership record. |
+
+**Output**: The collection membership record object.
+
+### listCollectionMemberships
+**NSID:** `pub.layers.resource.listCollectionMemberships`
+
+List collection membership records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: collectionMembership[], cursor?: string }`

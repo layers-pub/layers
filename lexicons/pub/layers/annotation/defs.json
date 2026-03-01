@@ -1,0 +1,165 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.annotation.defs",
+  "defs": {
+    "annotation": {
+      "type": "object",
+      "description": "A single abstract annotation. The fields populated depend on the layer's kind/subkind. For token-tags: tokenIndex + label. For spans: anchor + label. For trees: anchor + label + parentId/childIds. For relations: anchor + arguments. For graphs: anchor + arguments or headIndex/targetIndex. This single type replaces the former tag, spanAnnotation, entityMention, situationMention, dependencyArc, parseNode, etc.",
+      "required": ["uuid"],
+      "properties": {
+        "uuid": {
+          "type": "ref",
+          "ref": "pub.layers.defs#uuid"
+        },
+        "anchor": {
+          "type": "ref",
+          "ref": "pub.layers.defs#anchor",
+          "description": "How this annotation attaches to the source data."
+        },
+        "tokenIndex": {
+          "type": "integer",
+          "description": "For token-level annotations: 0-based index into the tokenization.",
+          "minimum": 0
+        },
+        "label": {
+          "type": "string",
+          "description": "The primary label (POS tag, entity type, frame name, constituent label, dependency relation, etc.).",
+          "maxLength": 512
+        },
+        "value": {
+          "type": "string",
+          "description": "Secondary value (lemma form, gloss, normalized temporal value, etc.).",
+          "maxLength": 4096
+        },
+        "text": {
+          "type": "string",
+          "description": "Surface text of the annotated span.",
+          "maxLength": 4096
+        },
+        "parentId": {
+          "type": "ref",
+          "ref": "pub.layers.defs#uuid",
+          "description": "Parent annotation in tree structures (constituency, RST, etc.)."
+        },
+        "childIds": {
+          "type": "array",
+          "description": "Child annotation UUIDs in tree structures.",
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#uuid"
+          }
+        },
+        "headIndex": {
+          "type": "integer",
+          "description": "Head/governor token index for directed arcs (dependency parsing). -1 for root.",
+          "minimum": -1
+        },
+        "targetIndex": {
+          "type": "integer",
+          "description": "Dependent/target token index for directed arcs.",
+          "minimum": 0
+        },
+        "arguments": {
+          "type": "array",
+          "description": "Role/argument fillers for predicate-argument structures (FrameNet, PropBank, AMR, etc.). Each argument references another annotation.",
+          "items": {
+            "type": "ref",
+            "ref": "#argumentRef"
+          }
+        },
+        "confidence": {
+          "type": "integer",
+          "description": "Confidence score 0-1000.",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "ontologyTypeRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "Reference to a type definition in a pub.layers.ontology."
+        },
+        "knowledgeRefs": {
+          "type": "array",
+          "description": "Links to external knowledge bases.",
+          "maxLength": 32,
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#knowledgeRef"
+          }
+        },
+        "temporal": {
+          "type": "ref",
+          "ref": "pub.layers.defs#temporalExpression",
+          "description": "Structured temporal annotation. For temporal-expression, temporal-value, and temporal-vagueness subkinds. Subsumes TimeML TIMEX3 and OWL-Time GeneralDateTimeDescription."
+        },
+        "spatial": {
+          "type": "ref",
+          "ref": "pub.layers.defs#spatialExpression",
+          "description": "Structured spatial annotation. For spatial-expression and location-mention subkinds. Subsumes ISO-Space place annotations (ISO 24617-7), SpatialML PLACE elements, and GeoJSON/WKT geometries."
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features. Use for domain-specific properties: phraseType, polarity, modality, tense, isEnhanced, morphological features, etc."
+        }
+      }
+    },
+    "argumentRef": {
+      "type": "object",
+      "description": "A role/argument reference in a predicate-argument structure. Uses the composable objectRef to point to another annotation, either locally (same layer, by UUID) or remotely (cross-layer or cross-record, by AT-URI + UUID).",
+      "required": ["role", "target"],
+      "properties": {
+        "role": {
+          "type": "string",
+          "description": "The argument role label (e.g., ARG0, Agent, Theme, CAUSE, connective, etc.).",
+          "maxLength": 256
+        },
+        "target": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "Reference to the annotation filling this role. Use localId for same-layer, recordRef+objectId for cross-layer."
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    },
+    "cluster": {
+      "type": "object",
+      "description": "A cluster of annotations (e.g., coreferent entity mentions, situation mentions referring to the same situation).",
+      "required": ["uuid", "members"],
+      "properties": {
+        "uuid": {
+          "type": "ref",
+          "ref": "pub.layers.defs#uuid"
+        },
+        "canonicalLabel": {
+          "type": "string",
+          "description": "The canonical/representative label for this cluster.",
+          "maxLength": 1024
+        },
+        "members": {
+          "type": "array",
+          "description": "References to the annotations in this cluster. Use localId for same-layer members, recordRef+objectId for cross-layer or cross-document coreference.",
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#objectRef"
+          }
+        },
+        "knowledgeRefs": {
+          "type": "array",
+          "maxLength": 32,
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#knowledgeRef"
+          }
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    }
+  }
+}

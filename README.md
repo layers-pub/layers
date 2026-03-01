@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/layers-pub/layers/releases"><img src="https://img.shields.io/badge/version-0.3.0-purple?style=flat-square" alt="Version"></a>
+  <a href="https://github.com/layers-pub/layers/releases"><img src="https://img.shields.io/badge/version-0.4.0-purple?style=flat-square" alt="Version"></a>
   <a href="https://github.com/layers-pub/layers/blob/main/CHANGELOG.md"><img src="https://img.shields.io/badge/status-draft-orange?style=flat-square" alt="Status: Draft"></a>
   <a href="https://docs.layers.pub"><img src="https://img.shields.io/badge/docs-docs.layers.pub-blue?style=flat-square" alt="Documentation"></a>
   <a href="https://github.com/layers-pub/layers/blob/main/LICENSE"><img src="https://img.shields.io/github/license/layers-pub/layers?style=flat-square" alt="License"></a>
@@ -24,7 +24,7 @@
 
 ## What is Layers?
 
-Layers is a set of [AT Protocol Lexicon v1](https://atproto.com/guides/lexicon) schemas under the `pub.layers.*` namespace. It defines a composable interchange format for annotations across text, audio, video, and image modalities.
+Layers is a set of [AT Protocol Lexicon](https://atproto.com/guides/lexicon) schemas under the `pub.layers.*` namespace. It defines a composable interchange format for annotations across text, audio, video, and image modalities.
 
 Layers subsumes 15+ major annotation data models (CoNLL, CoNLL-U, brat, ELAN, TEI, WebVTT, Universal Dependencies, AMT, SRL, ARK, and others) while maintaining a theory-neutral, modular architecture. All annotation data lives in user-controlled Personal Data Servers (PDSes); Layers provides the schema and protocols for interoperability.
 
@@ -35,7 +35,7 @@ Layers is organized around a pipeline of annotation layers, each building on pri
 ```
 Expression (any linguistic unit: document, paragraph, sentence, word, morpheme)
        ↓
-Segmentation (tokenization, chunking, segmentation bounds)
+Segmentation (tokenization strategies, token sequences)
        ↓
 Annotation (linguistic labels: POS, NER, semantic roles, etc.)
 ```
@@ -48,7 +48,7 @@ Parallel tracks (ontology, corpus, resource, judgment, alignment) integrate this
 |---------|---------|
 | `pub.layers.defs` | Shared primitives: anchors, selectors, metadata, cross-references |
 | `pub.layers.expression` | Primary document/expression model |
-| `pub.layers.segmentation` | Section/sentence/tokenization binding |
+| `pub.layers.segmentation` | Tokenization strategies and token sequences |
 | `pub.layers.annotation` | Unified abstract annotation model |
 | `pub.layers.ontology` | Annotation type systems and role slots |
 | `pub.layers.corpus` | Named corpus collections |

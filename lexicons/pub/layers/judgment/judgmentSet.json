@@ -1,0 +1,55 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.judgment.judgmentSet",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A set of judgments from a single annotator for an experiment.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["experimentRef", "judgments", "createdAt"],
+        "properties": {
+          "experimentRef": {
+            "type": "string",
+            "format": "at-uri"
+          },
+          "agent": {
+            "type": "ref",
+            "ref": "pub.layers.defs#agentRef",
+            "description": "The agent (human annotator, ML model, crowd worker, etc.) who produced this judgment set. Use did for ATProto-native annotators, id for anonymized/platform-specific identifiers, knowledgeRef for ORCID or model cards."
+          },
+          "judgments": {
+            "type": "array",
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.judgment.defs#judgment"
+            }
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata"
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "Knowledge graph references (e.g., crowdsourcing platform, annotator population, methodology source).",
+            "maxLength": 32,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features (e.g., annotator demographics, session metadata, completion time, payment info)."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

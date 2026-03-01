@@ -1,0 +1,111 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.alignment.alignment",
+  "description": "Alignment records for parallel structure correspondence. Handles interlinear glossing (Leipzig glossing rules), parallel text alignment (translation), cross-tokenization mapping (word-to-morpheme), audio-text forced alignment, and any many-to-many correspondence between annotation elements or sequences.",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "An alignment between two parallel sequences. The sequences can be tokenizations, annotation layers, expressions (for parallel text), or tiers. Links establish many-to-many correspondence between elements indexed by position.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["kind", "links", "createdAt"],
+        "properties": {
+          "expression": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Primary expression context (for within-document alignments)."
+          },
+          "kindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the alignment kind definition node. Community-expandable via knowledge graph."
+          },
+          "kind": {
+            "type": "string",
+            "description": "Alignment kind slug (fallback). The type of alignment.",
+            "knownValues": [
+              "tokenization-to-tokenization",
+              "interlinear",
+              "parallel-text",
+              "audio-to-text",
+              "layer-to-layer",
+              "error-to-correction",
+              "custom"
+            ],
+            "maxLength": 128
+          },
+          "subkindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the alignment subkind definition node. Community-expandable via knowledge graph."
+          },
+          "subkind": {
+            "type": "string",
+            "description": "Alignment subkind slug (fallback). More specific alignment type within the kind.",
+            "knownValues": [
+              "word-to-morpheme",
+              "word-to-word",
+              "sentence-to-sentence",
+              "phrase-to-phrase",
+              "morpheme-to-gloss",
+              "forced-alignment",
+              "manual-alignment",
+              "custom"
+            ],
+            "maxLength": 128
+          },
+          "source": {
+            "type": "ref",
+            "ref": "pub.layers.defs#objectRef",
+            "description": "Reference to the source sequence. Use localId for within-segmentation tokenization UUID, recordRef for cross-record AT-URI (annotation layer, expression, etc.)."
+          },
+          "target": {
+            "type": "ref",
+            "ref": "pub.layers.defs#objectRef",
+            "description": "Reference to the target sequence. Use localId for within-segmentation tokenization UUID, recordRef for cross-record AT-URI."
+          },
+          "sourceLang": {
+            "type": "string",
+            "description": "BCP-47 language tag for the source (for parallel text alignment).",
+            "maxLength": 64
+          },
+          "targetLang": {
+            "type": "string",
+            "description": "BCP-47 language tag for the target.",
+            "maxLength": 64
+          },
+          "links": {
+            "type": "array",
+            "description": "The alignment links.",
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#alignmentLink"
+            }
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata"
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "Knowledge graph references for this alignment (e.g., alignment model, parallel corpus source).",
+            "maxLength": 16,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

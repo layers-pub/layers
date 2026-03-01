@@ -61,7 +61,7 @@ Layers fully subsumes ISO-Space through three mechanisms:
 
 | ISO-Space Element | Layers Equivalent | Notes |
 |---|---|---|
-| `QSLINK` (qualitative spatial) | `pub.layers.graph#graphEdge` with RCC-8 `edgeType` | Topological relations. `relType` maps to specific RCC-8 edge type. |
+| `QSLINK` (qualitative spatial) | `pub.layers.graph.graphEdge` with RCC-8 `edgeType` | Topological relations. `relType` maps to specific RCC-8 edge type. |
 | `QSLINK.relType=DC` | `graphEdge` with `edgeType="disconnected"` | Disconnected |
 | `QSLINK.relType=EC` | `graphEdge` with `edgeType="externally-connected"` | Externally connected |
 | `QSLINK.relType=PO` | `graphEdge` with `edgeType="partially-overlapping"` | Partially overlapping |
@@ -70,15 +70,15 @@ Layers fully subsumes ISO-Space through three mechanisms:
 | `QSLINK.relType=TPPi` | `graphEdge` with `edgeType="tangential-proper-part-inverse"` | Tangential proper part inverse |
 | `QSLINK.relType=NTPPi` | `graphEdge` with `edgeType="non-tangential-proper-part-inverse"` | Non-tangential proper part inverse |
 | `QSLINK.relType=EQ` | `graphEdge` with `edgeType="spatially-equal"` | Spatially equal |
-| `OLINK` (orientation) | `pub.layers.graph#graphEdge` with directional `edgeType` | Orientational relations |
+| `OLINK` (orientation) | `pub.layers.graph.graphEdge` with directional `edgeType` | Orientational relations |
 | `OLINK.relType` (ABOVE, BELOW, LEFT, RIGHT, IN_FRONT, BEHIND, NORTH, SOUTH, EAST, WEST) | Mapped directional `edgeType` | `ABOVE` → `above`, `IN_FRONT` → `in-front-of`, `NORTH` → `north-of`, etc. |
 | `OLINK.frame_type` (INTRINSIC, RELATIVE, ABSOLUTE) | `graphEdge.properties` feature `frame-type` | Reference frame specification |
 | `OLINK.referencePt` | `graphEdge.properties` feature `reference-point` | Reference point for computing orientation |
-| `MEASURELINK` | `pub.layers.graph#graphEdge` with distance `edgeType` | Metric relations |
+| `MEASURELINK` | `pub.layers.graph.graphEdge` with distance `edgeType` | Metric relations |
 | `MEASURELINK.relType` (DISTANCE) | `graphEdge` with `edgeType="near"`, `"far"`, or `"adjacent"` | Qualitative distance; quantitative value in `properties` |
 | `MEASURELINK.value` | `graphEdge.properties` feature `distance` | Distance value as string (e.g., "50km", "3 miles") |
 | `MEASURELINK.unit` | `graphEdge.properties` feature `distance-unit` | Unit of measurement |
-| `MLINK` (motion link) | `pub.layers.graph#graphEdge` with `edgeType="causal"` or `"related-to"` | Links between motion events and spatial entities/paths |
+| `MLINK` (motion link) | `pub.layers.graph.graphEdge` with `edgeType="causal"` or `"related-to"` | Links between motion events and spatial entities/paths |
 | `MLINK.figure` | `graphEdge.source` | The moving entity |
 | `MLINK.ground` | `graphEdge.target` | The reference entity or path |
 
@@ -93,7 +93,7 @@ Layers fully subsumes ISO-Space through three mechanisms:
 
 An ISO-Space-annotated document can be converted to Layers records as follows:
 
-1. Create a `pub.layers.expression` record with `kind="document"` from the source text
+1. Create a `pub.layers.expression.expression` record with `kind="document"` from the source text
 2. For each `PLACE`, create an annotation in an `annotationLayer` with `kind="span"`, `subkind="location-mention"`, `formalism="iso-space"`. Populate the `spatial` field with a `spatialExpression` containing the geo-coordinates, place type, and document function
 3. For each `SPATIAL_ENTITY` (non-place), create an annotation with `subkind="spatial-expression"` and populate the `spatial` field
 4. For each `SPATIAL_SIGNAL`, create an annotation with `subkind="spatial-signal"`

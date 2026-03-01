@@ -1,0 +1,240 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.judgment.defs",
+  "description": "Shared object definitions for the judgment namespace.",
+  "defs": {
+    "judgment": {
+      "type": "object",
+      "description": "A single judgment about a linguistic item.",
+      "required": ["item"],
+      "properties": {
+        "item": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "Reference to the item being judged. Use recordRef for the communication/annotation record, objectId for a specific object within it, localId for same-record references."
+        },
+        "fillingRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "Reference to the pub.layers.resource#filling that generated the item being judged."
+        },
+        "categoricalValue": {
+          "type": "string",
+          "description": "Categorical judgment label.",
+          "maxLength": 512
+        },
+        "scalarValue": {
+          "type": "integer",
+          "description": "Numeric response value (ordinal-scale rating, magnitude estimate, or rank position)."
+        },
+        "textSpan": {
+          "type": "ref",
+          "ref": "pub.layers.defs#span",
+          "description": "Selected text span for span-labeling tasks."
+        },
+        "freeText": {
+          "type": "string",
+          "description": "Free-text response.",
+          "maxLength": 10000
+        },
+        "responseTimeMs": {
+          "type": "integer",
+          "description": "Response time in milliseconds.",
+          "minimum": 0
+        },
+        "confidence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "behavioralData": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Behavioral signals: mouse movements, keystroke patterns, eye tracking data, scroll events, etc."
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    },
+    "experimentDesign": {
+      "type": "object",
+      "description": "Experiment design parameters for item distribution, ordering, and timing.",
+      "properties": {
+        "listConstraints": {
+          "type": "array",
+          "description": "Constraints on item list construction (Latin square balancing, no-adjacent-same-condition, etc.).",
+          "maxLength": 32,
+          "items": {
+            "type": "ref",
+            "ref": "#listConstraint"
+          }
+        },
+        "distributionStrategyUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the distribution strategy definition node. Community-expandable."
+        },
+        "distributionStrategy": {
+          "type": "string",
+          "description": "How items are distributed to annotators.",
+          "knownValues": ["latin-square", "random", "blocked", "stratified", "custom"],
+          "maxLength": 128
+        },
+        "itemOrderUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the item order definition node. Community-expandable."
+        },
+        "itemOrder": {
+          "type": "string",
+          "description": "How items are ordered within a list.",
+          "knownValues": ["random-order", "fixed-order", "blocked", "adaptive", "custom"],
+          "maxLength": 128
+        },
+        "timingMs": {
+          "type": "integer",
+          "description": "Target timing per item in milliseconds.",
+          "minimum": 0
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    },
+    "listConstraint": {
+      "type": "object",
+      "description": "A constraint on item list construction for an experiment.",
+      "required": ["kind"],
+      "properties": {
+        "kindUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the constraint kind definition node. Community-expandable."
+        },
+        "kind": {
+          "type": "string",
+          "description": "Constraint kind slug.",
+          "knownValues": ["latin-square", "no-adjacent-same-condition", "balanced-frequency", "minimum-distance", "custom"],
+          "maxLength": 128
+        },
+        "targetProperty": {
+          "type": "string",
+          "description": "The item property this constraint operates on (e.g., 'condition', 'templateRef').",
+          "maxLength": 256
+        },
+        "parameters": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Constraint parameters (e.g., minimum distance, number of lists)."
+        },
+        "constraint": {
+          "type": "ref",
+          "ref": "pub.layers.defs#constraint",
+          "description": "Optional formal constraint expression."
+        }
+      }
+    },
+    "presentationSpec": {
+      "type": "object",
+      "description": "How stimuli are displayed to participants.",
+      "properties": {
+        "methodUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the presentation method definition node. Community-expandable via knowledge graph."
+        },
+        "method": {
+          "type": "string",
+          "description": "Presentation method (fallback when methodUri unavailable).",
+          "knownValues": [
+            "rsvp",
+            "self-paced",
+            "whole-sentence",
+            "auditory",
+            "visual-world",
+            "masked-priming",
+            "cross-modal",
+            "naturalistic",
+            "gating",
+            "maze",
+            "boundary",
+            "moving-window",
+            "custom"
+          ],
+          "maxLength": 128
+        },
+        "chunkingUnit": {
+          "type": "string",
+          "description": "How text is segmented for incremental presentation.",
+          "knownValues": ["word", "character", "morpheme", "phrase", "sentence", "region", "custom"],
+          "maxLength": 128
+        },
+        "timingMs": {
+          "type": "integer",
+          "description": "Per-chunk display duration in milliseconds.",
+          "minimum": 0
+        },
+        "isiMs": {
+          "type": "integer",
+          "description": "Inter-stimulus interval in milliseconds.",
+          "minimum": 0
+        },
+        "cumulative": {
+          "type": "boolean",
+          "description": "Whether previous chunks remain visible during incremental presentation."
+        },
+        "maskChar": {
+          "type": "string",
+          "description": "Masking character for non-cumulative displays (e.g., '-', '#').",
+          "maxLength": 8
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    },
+    "recordingMethod": {
+      "type": "object",
+      "description": "A data capture instrument used in an experiment.",
+      "required": ["method"],
+      "properties": {
+        "methodUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the recording method definition node. Community-expandable via knowledge graph."
+        },
+        "method": {
+          "type": "string",
+          "description": "Recording method (fallback when methodUri unavailable).",
+          "knownValues": [
+            "button-box",
+            "keyboard",
+            "mouse-click",
+            "touchscreen",
+            "voice",
+            "eeg",
+            "meg",
+            "fmri",
+            "fnirs",
+            "eye-tracking",
+            "pupillometry",
+            "mouse-tracking",
+            "emg",
+            "skin-conductance",
+            "ecog",
+            "custom"
+          ],
+          "maxLength": 128
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    }
+  }
+}

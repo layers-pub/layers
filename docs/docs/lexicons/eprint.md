@@ -8,7 +8,8 @@ Eprint linkage and data provenance records. Provides a way to link linguistic da
 
 ## Types
 
-### main
+### eprint
+**NSID:** `pub.layers.eprint.eprint`
 **Type:** Record
 
 A link between a Layers data record and an eprint.
@@ -32,6 +33,7 @@ A link between a Layers data record and an eprint.
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### dataLink
+**NSID:** `pub.layers.eprint.dataLink`
 **Type:** Record
 
 A link from an eprint to the Layers data it produced or is associated with. Created when a publication's data artifacts (corpora, annotation layers, model outputs, etc.) are registered. Works with any publication platform.
@@ -47,11 +49,12 @@ A link from an eprint to the Layers data it produced or is associated with. Crea
 | `annotationRefs` | array | References to specific annotation records. Array of at-uri |
 | `description` | string | Description of the data. |
 | `paperSection` | string | Which section of the paper this data corresponds to (e.g., 'Section 4.2', 'Table 3', 'Appendix A'). |
-| `reproducibility` | ref | Information about how to reproduce the data. Ref: `#reproducibilityInfo` |
+| `reproducibility` | ref | Information about how to reproduce the data. Ref: `pub.layers.eprint.defs#reproducibilityInfo` |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### reproducibilityInfo
+**NSID:** `pub.layers.eprint.defs#reproducibilityInfo`
 **Type:** Object
 
 Information about how to reproduce the data from the eprint.
@@ -63,3 +66,53 @@ Information about how to reproduce the data from the eprint.
 | `command` | string | Command to reproduce the data. |
 | `environment` | string | Environment specification (Docker image, conda env, etc.). |
 | `randomSeed` | integer | Random seed used. |
+
+## XRPC Queries
+
+### getEprint
+**NSID:** `pub.layers.eprint.getEprint`
+
+Retrieve a single eprint record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the eprint record. |
+
+**Output**: The eprint record object.
+
+### listEprints
+**NSID:** `pub.layers.eprint.listEprints`
+
+List eprint records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: eprint[], cursor?: string }`
+
+### getDataLink
+**NSID:** `pub.layers.eprint.getDataLink`
+
+Retrieve a single data link record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the data link record. |
+
+**Output**: The data link record object.
+
+### listDataLinks
+**NSID:** `pub.layers.eprint.listDataLinks`
+
+List data link records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: dataLink[], cursor?: string }`

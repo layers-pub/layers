@@ -41,8 +41,8 @@ In the reverse direction, Layers annotations can reference label records via `kn
 
 | Type | Role |
 |---|---|
-| `pub.layers.expression` | Can be the target of a label (by AT-URI) |
-| `pub.layers.annotation#annotationLayer` | Can be the target of a label |
+| `pub.layers.expression.expression` | Can be the target of a label (by AT-URI) |
+| `pub.layers.annotation.annotationLayer` | Can be the target of a label |
 | `pub.layers.defs#featureMap` | Can store label references as features |
 
 ## Discovery

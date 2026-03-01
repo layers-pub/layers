@@ -23,7 +23,7 @@ The W3C Web Annotation Data Model is the standard for annotating web resources. 
 
 | W3C Concept | Layers Equivalent | Notes |
 |---|---|---|
-| `Annotation` | `pub.layers.annotation#annotation` | A single annotation. W3C's `id` → annotation UUID / AT-URI. |
+| `Annotation` | `pub.layers.annotation.defs#annotation` | A single annotation. W3C's `id` → annotation UUID / AT-URI. |
 | `Target` | `annotation.anchor` | What the annotation is about: the selected region of a resource. |
 | `Body` | `annotation.label`, `annotation.value`, `annotation.features`, `annotation.arguments` | The content of the annotation. Layers distributes body content across typed fields rather than using a generic body object. |
 | `Motivation` | `annotationLayer.kind` + `annotationLayer.subkind` | Why the annotation was created. W3C motivations (commenting, highlighting, tagging, describing, etc.) map to Layers kind/subkind discriminators. |
@@ -40,7 +40,7 @@ The W3C Web Annotation Data Model is the standard for annotating web resources. 
 | `oa:describing` | `kind="span"` with `annotation.value` | Descriptive annotation. |
 | `oa:classifying` | `kind="span"` with `annotation.ontologyTypeRef` | Ontology-based classification. |
 | `oa:identifying` | `kind="span", subkind="entity-mention"` with `knowledgeRefs` | Entity identification/linking. |
-| `oa:linking` | `pub.layers.graph#graphEdge` | Linking to related resources. |
+| `oa:linking` | `pub.layers.graph.graphEdge` | Linking to related resources. |
 | `oa:bookmarking` | `kind="span", subkind="bookmark"` | Bookmarking. |
 | `oa:editing` | `kind="span", subkind="correction"` | Suggested edits. |
 | `oa:questioning` | `kind="span"` with custom `subkind` | Questioning content. |
@@ -89,10 +89,10 @@ The at.margin ATProto lexicons implement W3C Web Annotation on ATProto. Layers's
 
 | at.margin Record | Layers Equivalent | Integration Pattern |
 |---|---|---|
-| `at.margin.annotation` | `pub.layers.annotation#annotationLayer` | Layers expressions with `sourceUrl` co-locate with at.margin annotations on the same URL. |
+| `at.margin.annotation` | `pub.layers.annotation.annotationLayer` | Layers expressions with `sourceUrl` co-locate with at.margin annotations on the same URL. |
 | `at.margin.highlight` | `annotationLayer(kind="span", subkind="highlight")` | Highlighting. |
 | `at.margin.bookmark` | `annotationLayer(kind="span", subkind="bookmark")` | Bookmarking. |
-| `at.margin.collection` | `pub.layers.corpus` | Collections of annotations. |
+| `at.margin.collection` | `pub.layers.corpus.corpus` | Collections of annotations. |
 | `at.margin.reply` | ATProto social graph | Not a Layers annotation type. |
 | `at.margin.like` | ATProto social graph | Not a Layers annotation type. |
 

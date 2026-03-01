@@ -1,0 +1,47 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.graph.defs",
+  "description": "Shared object definitions for the graph namespace.",
+  "defs": {
+    "graphEdgeEntry": {
+      "type": "object",
+      "description": "A single directed edge entry within a graphEdgeSet.",
+      "required": ["uuid", "source", "target", "edgeType"],
+      "properties": {
+        "uuid": {
+          "type": "ref",
+          "ref": "pub.layers.defs#uuid"
+        },
+        "edgeTypeUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the edge type definition node. Overrides the set-level edgeType."
+        },
+        "edgeType": {
+          "type": "string",
+          "description": "Edge type slug. Overrides the set-level edgeType if different.",
+          "maxLength": 256
+        },
+        "source": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "Source node."
+        },
+        "target": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "Target node."
+        },
+        "confidence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    }
+  }
+}

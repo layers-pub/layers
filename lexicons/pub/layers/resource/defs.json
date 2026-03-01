@@ -1,0 +1,164 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.resource.defs",
+  "description": "Shared object definitions for the resource namespace.",
+  "defs": {
+    "slot": {
+      "type": "object",
+      "description": "A named variable slot in a template. Generalizes bead's Slot (template variable position with constraints and defaults), ontology roleSlots (argument positions with filler type constraints), and similar parameterized positions in any structured linguistic pattern. Slots are composable: they can reference collections of allowed fillers, ontology types, or express arbitrary constraints.",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Slot name (used as placeholder key in template text, e.g., 'subject', 'verb', 'arg0').",
+          "maxLength": 256
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 2048
+        },
+        "required": {
+          "type": "boolean",
+          "description": "Whether this slot must be filled."
+        },
+        "defaultValue": {
+          "type": "string",
+          "description": "Default filler value if not explicitly filled.",
+          "maxLength": 4096
+        },
+        "collectionRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of a resource collection constraining allowed fillers."
+        },
+        "ontologyTypeRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of a pub.layers.ontology#typeDef constraining the filler type."
+        },
+        "fillerTypeRefs": {
+          "type": "array",
+          "description": "Multiple allowed filler type references (disjunctive constraint).",
+          "maxLength": 32,
+          "items": {
+            "type": "string",
+            "format": "at-uri"
+          }
+        },
+        "constraints": {
+          "type": "array",
+          "description": "Slot-level constraints (e.g., 'self.pos == \"VERB\"', 'self.features.number == \"sg\"').",
+          "maxLength": 32,
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#constraint"
+          }
+        },
+        "knowledgeRefs": {
+          "type": "array",
+          "maxLength": 16,
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#knowledgeRef"
+          }
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    },
+    "slotFilling": {
+      "type": "object",
+      "description": "A single slot→filler mapping in a filled template. The filler can be an entry reference (AT-URI to a resource entry), a literal value, or both (entry reference with rendered surface form).",
+      "required": ["slotName"],
+      "properties": {
+        "slotName": {
+          "type": "string",
+          "description": "Name of the slot being filled (must match a slot name in the template).",
+          "maxLength": 256
+        },
+        "entryRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the resource entry filling this slot."
+        },
+        "literalValue": {
+          "type": "string",
+          "description": "Literal string value for this slot (used when no entry reference is needed, or as override).",
+          "maxLength": 4096
+        },
+        "renderedForm": {
+          "type": "string",
+          "description": "The surface form as rendered in the filled text (may differ from entry form due to morphological inflection, agreement, etc.).",
+          "maxLength": 4096
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    },
+    "templateMember": {
+      "type": "object",
+      "description": "A member in a template composition. References either a template or a nested composition.",
+      "required": ["ordinal"],
+      "properties": {
+        "ordinal": {
+          "type": "integer",
+          "description": "Position in the composition (0-based).",
+          "minimum": 0
+        },
+        "templateRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of a template record."
+        },
+        "compositionRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of a nested templateComposition (for tree structures)."
+        },
+        "label": {
+          "type": "string",
+          "description": "Optional label for this member (e.g., 'context', 'target', 'filler').",
+          "maxLength": 256
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    },
+    "mweComponent": {
+      "type": "object",
+      "description": "A component of a multi-word expression entry.",
+      "required": ["form"],
+      "properties": {
+        "form": {
+          "type": "string",
+          "description": "Surface form of this component.",
+          "maxLength": 1024
+        },
+        "lemma": {
+          "type": "string",
+          "description": "Lemma/citation form of this component.",
+          "maxLength": 1024
+        },
+        "position": {
+          "type": "integer",
+          "description": "Position in the MWE (0-based).",
+          "minimum": 0
+        },
+        "isHead": {
+          "type": "boolean",
+          "description": "Whether this component is the head of the MWE."
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap"
+        }
+      }
+    }
+  }
+}

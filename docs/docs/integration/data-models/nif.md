@@ -1,4 +1,4 @@
-# NIF (NLP Interchange Format)
+# NIF
 
 <div className="metadata-card">
 <dl>
@@ -23,13 +23,13 @@ NIF is an RDF/Linked Data-based format for representing NLP annotations as web r
 
 | NIF Class/Property | Layers Equivalent | Notes |
 |---|---|---|
-| `nif:Context` | `pub.layers.expression` | The document/text being annotated. NIF's `nif:isString` → `expression.text`. |
-| `nif:String` (base class) | `pub.layers.annotation#annotation` | Any annotated substring. NIF identifies strings by URI (offset-based); Layers uses UUID + character span anchoring. |
+| `nif:Context` | `pub.layers.expression.expression` | The document/text being annotated. NIF's `nif:isString` → `expression.text`. |
+| `nif:String` (base class) | `pub.layers.annotation.defs#annotation` | Any annotated substring. NIF identifies strings by URI (offset-based); Layers uses UUID + character span anchoring. |
 | `nif:RFC5147String` / `nif:OffsetBasedString` | `pub.layers.defs#span` | Character offset-based string identification. NIF's `nif:beginIndex`/`nif:endIndex` → `span.start`/`span.ending`. |
-| `nif:Word` | `pub.layers.expression` (kind: `token`) | Word-level string. |
-| `nif:Sentence` | `pub.layers.expression` (kind: `sentence`) | Sentence-level string. |
-| `nif:Phrase` | `pub.layers.annotation#annotation` with `kind="span"` | Phrase/constituent annotation. |
-| `nif:Title` / `nif:Paragraph` | `pub.layers.expression` (kind: `section`) | Document structure elements. |
+| `nif:Word` | `pub.layers.expression.expression` (kind: `token`) | Word-level string. |
+| `nif:Sentence` | `pub.layers.expression.expression` (kind: `sentence`) | Sentence-level string. |
+| `nif:Phrase` | `pub.layers.annotation.defs#annotation` with `kind="span"` | Phrase/constituent annotation. |
+| `nif:Title` / `nif:Paragraph` | `pub.layers.expression.expression` (kind: `section`) | Document structure elements. |
 
 ### NIF Annotation Properties
 
@@ -52,7 +52,7 @@ NIF is an RDF/Linked Data-based format for representing NLP annotations as web r
 |---|---|---|
 | `itsrdf:taIdentRef` (entity linking) | `annotation.knowledgeRefs` with `source="wikidata"` or `source="dbpedia"` | Entity linking to Linked Data resources. NIF's DBpedia/Wikidata URIs → Layers `knowledgeRef.uri` + `knowledgeRef.identifier`. |
 | `itsrdf:taClassRef` | `annotation.ontologyTypeRef` + `knowledgeRefs` | Entity type from an ontology. |
-| `itsrdf:taConfidence` | `annotation.confidence` | Entity linking confidence (scaled 0-10000). |
+| `itsrdf:taConfidence` | `annotation.confidence` | Entity linking confidence (scaled 0-1000). |
 | OLiA ontology references | `annotationLayer.ontologyRef` or `annotation.knowledgeRefs` | Links to the Ontologies of Linguistic Annotation for tagset normalization. |
 | `nif:sourceUrl` | `pub.layers.expression.sourceUrl` | Source document URL. |
 
@@ -81,5 +81,5 @@ http://example.org/doc1#char=0,5
 }
 ```
 
-NIF uses HTTP URIs, making every annotation a dereferenceable web resource. Layers uses AT-URIs (`at://did:plc:xxx/pub.layers.annotation/tid`), which serve the same purpose in the ATProto ecosystem: every annotation is a dereferenceable resource via its AT-URI.
+NIF uses HTTP URIs, making every annotation a dereferenceable web resource. Layers uses AT-URIs (`at://did:plc:xxx/pub.layers.annotation.annotationLayer/tid`), which serve the same purpose in the ATProto ecosystem: every annotation is a dereferenceable resource via its AT-URI.
 

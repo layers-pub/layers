@@ -1,4 +1,4 @@
-# NAF (NLP Annotation Format)
+# NAF
 
 <div className="metadata-card">
 <dl>
@@ -24,13 +24,13 @@ NAF is a layered stand-off annotation format designed for NLP pipeline interoper
 | NAF Element | Layers Equivalent | Notes |
 |---|---|---|
 | `<text>` layer | `pub.layers.expression.text` | Raw text. |
-| `<wf>` (word form) | `pub.layers.expression` (kind: `token`) | Tokens with character offsets. `@offset` → `token.textSpan.start`; `@length` → derived from text; `@sent` → sentence grouping. |
+| `<wf>` (word form) | `pub.layers.expression.expression` (kind: `token`) | Tokens with character offsets. `@offset` → `token.textSpan.start`; `@length` → derived from text; `@sent` → sentence grouping. |
 
 ### Terms Layer
 
 | NAF Element | Layers Equivalent | Notes |
 |---|---|---|
-| `<terms>` layer | `pub.layers.annotation#annotationLayer(kind="token-tag")` | Term-level annotations. |
+| `<terms>` layer | `pub.layers.annotation.annotationLayer(kind="token-tag")` | Term-level annotations. |
 | `<term>` | Multiple `annotation` objects across layers | NAF's `<term>` bundles POS, lemma, morphology, and sense into a single element. Layers separates these into distinct annotation layers: `subkind="pos"` for `@pos`, `subkind="lemma"` for `@lemma`, `subkind="morph"` for `@morphofeat`, `subkind="sense"` for `<externalRef>`. |
 | `<term @pos>` | `annotationLayer(kind="token-tag", subkind="pos")` | POS tag. |
 | `<term @lemma>` | `annotationLayer(kind="token-tag", subkind="lemma")` | Lemma. |
@@ -85,7 +85,7 @@ NAF is a layered stand-off annotation format designed for NLP pipeline interoper
 
 | NAF Element | Layers Equivalent | Notes |
 |---|---|---|
-| `<coreferences>` layer | `pub.layers.annotation#clusterSet(kind="coreference")` | Coreference chains. |
+| `<coreferences>` layer | `pub.layers.annotation.clusterSet(kind="coreference")` | Coreference chains. |
 | `<coref>` | `cluster` | A coreference chain. `@type` → `cluster.features`. |
 | `<span>` (within coref) | `cluster.memberIds` → annotation UUIDs | Mentions in the chain. |
 
@@ -117,7 +117,7 @@ NAF is a layered stand-off annotation format designed for NLP pipeline interoper
 
 | NAF Feature | Layers Equivalent | Notes |
 |---|---|---|
-| `<nafHeader>` | `pub.layers.expression` metadata + `features` | Document metadata. |
+| `<nafHeader>` | `pub.layers.expression.expression` metadata + `features` | Document metadata. |
 | `<linguisticProcessors>` | `pub.layers.defs#annotationMetadata.tool` per layer | Each layer records its producing tool. |
 | `<lp @name @version @timestamp>` | `annotationMetadata` fields | Tool name, version, and timestamp. |
 | `<fileDesc>` | Expression fields | File description. |

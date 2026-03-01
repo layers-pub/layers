@@ -9,6 +9,7 @@ Alignment records for parallel structure correspondence. Handles interlinear glo
 ## Types
 
 ### alignment
+**NSID:** `pub.layers.alignment.alignment`
 **Type:** Record
 
 An alignment between two parallel sequences. The sequences can be tokenizations, annotation layers, expressions (for parallel text), or tiers. Links establish many-to-many correspondence between elements indexed by position.
@@ -29,3 +30,29 @@ An alignment between two parallel sequences. The sequences can be tokenizations,
 | `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
+
+## XRPC Queries
+
+### getAlignment
+**NSID:** `pub.layers.alignment.getAlignment`
+
+Retrieve a single alignment record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the alignment record. |
+
+**Output**: The alignment record object.
+
+### listAlignments
+**NSID:** `pub.layers.alignment.listAlignments`
+
+List alignment records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: alignment[], cursor?: string }`

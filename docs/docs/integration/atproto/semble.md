@@ -28,7 +28,7 @@ Semble records live in user PDSes under the `network.cosmik.*` namespace. Layers
 
 ```json
 {
-  "$type": "pub.layers.expression",
+  "$type": "pub.layers.expression.expression",
   "sourceRef": "at://did:plc:researcher/network.cosmik.item/abc123",
   "text": "...",
   "kind": "document"
@@ -39,8 +39,8 @@ Semble records live in user PDSes under the `network.cosmik.*` namespace. Layers
 
 | Type | Role |
 |---|---|
-| `pub.layers.expression` | `sourceRef` points to a Semble record |
-| `pub.layers.annotation#annotationLayer` | Linguistic annotation layers over referenced content |
+| `pub.layers.expression.expression` | `sourceRef` points to a Semble record |
+| `pub.layers.annotation.annotationLayer` | Linguistic annotation layers over referenced content |
 
 ## Discovery
 

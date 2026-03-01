@@ -9,6 +9,7 @@ Annotation ontology definitions. Defines the types, labels, and relationships us
 ## Types
 
 ### ontology
+**NSID:** `pub.layers.ontology.ontology`
 **Type:** Record
 
 An annotation ontology: a collection of typed definitions (entity types, event types, role types, relation types) that together form a complete annotation framework.
@@ -26,6 +27,7 @@ An annotation ontology: a collection of typed definitions (entity types, event t
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### typeDef
+**NSID:** `pub.layers.ontology.typeDef`
 **Type:** Record
 
 A type definition within an ontology. Covers entity types, event types, role types, and relation types in a single unified model.
@@ -38,25 +40,76 @@ A type definition within an ontology. Covers entity types, event types, role typ
 | `typeKind` | string | Type kind slug (fallback when typeKindUri unavailable). Known values: `entity-type`, `situation-type`, `role-type`, `relation-type`, `attribute-type` |
 | `gloss` | string | Rich text definition/gloss of this type. May include references to other types and Wikidata entities. |
 | `parentTypeRef` | at-uri | Reference to a parent type (for type hierarchies/inheritance). |
-| `allowedRoles` | array | For frame/event types: the roles that can be filled. Array of ref: `#roleSlot` |
+| `allowedRoles` | array | For frame/event types: the roles that can be filled. Array of ref: `pub.layers.ontology.defs#roleSlot` |
 | `allowedValues` | array | For attribute types: enumerated allowed values. Array of strings |
 | `knowledgeRefs` | array | Knowledge graph groundings (Wikidata, chive.pub, FrameNet, etc.). Array of ref: `pub.layers.defs#knowledgeRef` |
 | `features` | ref | Open-ended features. For `relation-type` typeDefs, standardized feature keys include: `symmetric` (boolean, if true A→B implies B→A), `transitive` (boolean, if true A→B and B→C implies A→C), `reflexive` (boolean, if true A→A is valid), `inverse` (AT-URI of the inverse relation typeDef), `domain` (AT-URI of required source type), `range` (AT-URI of required target type). Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### roleSlot
+**NSID:** `pub.layers.ontology.defs#roleSlot`
 **Type:** Object
 
-A role/argument slot in a frame or event type definition. Structurally parallel to pub.layers.resource#slot: both represent named positions with type constraints.
+A role/argument slot in a frame or event type definition. Structurally parallel to `pub.layers.resource.defs#slot`: both represent named positions with type constraints.
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `roleName` | string | The role label (e.g., Agent, Patient, Theme, ARG0). |
 | `roleDescription` | string | Description of the role. |
-| `fillerTypeRefs` | array | References to allowed filler types (pub.layers.ontology#typeDef AT-URIs). Array of at-uri |
-| `collectionRef` | at-uri | AT-URI of a pub.layers.resource#collection constraining allowed fillers. |
+| `fillerTypeRefs` | array | References to allowed filler types (`pub.layers.ontology.typeDef` AT-URIs). Array of at-uri |
+| `collectionRef` | at-uri | AT-URI of a `pub.layers.resource.collection` constraining allowed fillers. |
 | `required` | boolean | Whether this role is obligatory. |
 | `defaultValue` | string | Default filler value if not explicitly filled. |
 | `constraints` | array | Declarative constraints on fillers of this role. Array of ref: `pub.layers.defs#constraint` |
 | `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
 | `features` | ref | Open-ended features for this role slot. Ref: `pub.layers.defs#featureMap` |
+
+## XRPC Queries
+
+### getOntology
+**NSID:** `pub.layers.ontology.getOntology`
+
+Retrieve a single ontology record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the ontology record. |
+
+**Output**: The ontology record object.
+
+### listOntologies
+**NSID:** `pub.layers.ontology.listOntologies`
+
+List ontology records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: ontology[], cursor?: string }`
+
+### getTypeDef
+**NSID:** `pub.layers.ontology.getTypeDef`
+
+Retrieve a single type definition record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the type definition record. |
+
+**Output**: The type definition record object.
+
+### listTypeDefs
+**NSID:** `pub.layers.ontology.listTypeDefs`
+
+List type definition records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: typeDef[], cursor?: string }`

@@ -14,7 +14,7 @@ Layers distinguishes **media time** from **semantic time**:
 
 - **Semantic time** (`temporalExpression`): *what time* a linguistic expression refers to. Expressed as ISO 8601 values with granularity, calendar, modifiers, and document function. Used for temporal annotation: "this expression refers to March 2024."
 
-Media time lives on [anchors](../foundations/primitives.md#anchor) (`pub.layers.defs#anchor.temporalSpan`). Semantic time lives on [annotations](../lexicons/annotation.md) (`pub.layers.annotation#annotation.temporal`). They are independent: a temporal expression annotation at 3:45 in a recording might refer to "next Tuesday."
+Media time lives on [anchors](../foundations/primitives.md#anchor) (`pub.layers.defs#anchor.temporalSpan`). Semantic time lives on [annotations](../lexicons/annotation.md) (`pub.layers.annotation.defs#annotation.temporal`). They are independent: a temporal expression annotation at 3:45 in a recording might refer to "next Tuesday."
 
 ## Temporal Primitives
 
@@ -50,7 +50,7 @@ The complete temporal annotation, packaging:
 
 ## Temporal Relations
 
-Temporal relations between annotations use [`pub.layers.graph#graphEdge`](../lexicons/graph.md) with Allen's 13 interval relations as `edgeType` values:
+Temporal relations between annotations use [`pub.layers.graph.graphEdge`](../lexicons/graph.md) with Allen's 13 interval relations as `edgeType` values:
 
 | Relation | Inverse | Meaning |
 |----------|---------|---------|
@@ -161,11 +161,11 @@ The `label` field on a temporal graphEdge can carry the linguistic signal/connec
 **Temporal relation (graphEdge):**
 ```json
 {
-  "source": { "recordRef": "at://did:plc:.../pub.layers.annotation/...", "objectId": "timex-1-uuid" },
-  "target": { "recordRef": "at://did:plc:.../pub.layers.annotation/...", "objectId": "timex-2-uuid" },
+  "source": { "recordRef": "at://did:plc:.../pub.layers.annotation.annotationLayer/...", "objectId": "timex-1-uuid" },
+  "target": { "recordRef": "at://did:plc:.../pub.layers.annotation.annotationLayer/...", "objectId": "timex-2-uuid" },
   "edgeType": "before",
   "label": "before",
-  "confidence": 9500
+  "confidence": 950
 }
 ```
 
@@ -275,7 +275,7 @@ ELAN and similar multimedia annotation tools use timeline-based representation w
 | Symbolic tier (dependent) | `annotationLayer` with `parentLayerRef` | References parent time-aligned tier |
 | Time slot | Implicit in `temporalSpan.start` / `temporalSpan.ending` | Millisecond precision |
 | Controlled vocabulary | `ontologyRef` on `annotationLayer` | Points to ontology defining the label set |
-| Forced alignment | `pub.layers.alignment` with `kind="audio-to-text"` | Alignment between audio and text segments |
+| Forced alignment | `pub.layers.alignment.alignment` with `kind="audio-to-text"` | Alignment between audio and text segments |
 
 ## See Also
 

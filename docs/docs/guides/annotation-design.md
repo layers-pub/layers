@@ -49,8 +49,8 @@ All values are community-expandable via `sourceMethodUri`.
 
 ```json
 {
-  "$type": "pub.layers.annotation#annotationLayer",
-  "expression": "at://did:plc:corpus/pub.layers.expression/sent-42",
+  "$type": "pub.layers.annotation.annotationLayer",
+  "expression": "at://did:plc:corpus/pub.layers.expression.expression/sent-42",
   "kind": "token-tag",
   "subkind": "pos",
   "formalism": "universal-dependencies",
@@ -133,7 +133,7 @@ All values are community-expandable via `methodUri`.
 }
 ```
 
-The `agreementThreshold` (0-10000 scale) specifies the agreement level above which adjudication is skipped. Items with agreement above this threshold are accepted automatically; only disagreements below the threshold trigger adjudication.
+The `agreementThreshold` (0-1000 scale) specifies the agreement level above which adjudication is skipped. Items with agreement above this threshold are accepted automatically; only disagreements below the threshold trigger adjudication.
 
 ### Quality Criteria
 
@@ -142,7 +142,7 @@ The `qualityCriteria` array specifies acceptance criteria, analogous to how `exp
 | Field | Description |
 |-------|-------------|
 | `metric` | Agreement or quality metric: `cohens-kappa`, `fleiss-kappa`, `krippendorff-alpha`, `percent-agreement`, `f1`, `smatch`, `uas`, `las`, `correlation`, `custom` |
-| `threshold` | Minimum acceptable value (0-10000 scale) |
+| `threshold` | Minimum acceptable value (0-1000 scale) |
 | `scope` | Evaluation scope: `item`, `layer`, `document`, `corpus`, `custom` |
 | `features` | Additional parameters (e.g., label subset, confidence interval) |
 
@@ -167,11 +167,11 @@ All metric and scope values are community-expandable via `metricUri` and `scopeU
 
 ### Guidelines Reference
 
-The `guidelinesRef` field points to the annotation guidelines document. This can be a `pub.layers.persona` record (which has `guidelines` text and `guidelinesBlob` fields), an eprint, or any AT-URI. The `guidelinesVersion` field tracks which version of the guidelines annotators followed.
+The `guidelinesRef` field points to the annotation guidelines document. This can be a `pub.layers.persona.persona` record (which has `guidelines` text and `guidelinesBlob` fields), an eprint, or any AT-URI. The `guidelinesVersion` field tracks which version of the guidelines annotators followed.
 
 ```json
 {
-  "guidelinesRef": "at://did:plc:project/pub.layers.persona/ud-v2-guidelines",
+  "guidelinesRef": "at://did:plc:project/pub.layers.persona.persona/ud-v2-guidelines",
   "guidelinesVersion": "2.14"
 }
 ```
@@ -182,14 +182,14 @@ A UD-style treebank with double annotation and expert adjudication:
 
 ```json
 {
-  "$type": "pub.layers.corpus#main",
+  "$type": "pub.layers.corpus.corpus",
   "name": "English Web Treebank",
   "version": "2.14",
   "language": "en",
   "domain": "web",
   "license": "CC-BY-SA-4.0",
   "ontologyRefs": [
-    "at://did:plc:ud/pub.layers.ontology/universal-dependencies-v2"
+    "at://did:plc:ud/pub.layers.ontology.ontology/universal-dependencies-v2"
   ],
   "annotationDesign": {
     "redundancy": {
@@ -213,7 +213,7 @@ A UD-style treebank with double annotation and expert adjudication:
         "scope": "corpus"
       }
     ],
-    "guidelinesRef": "at://did:plc:ud/pub.layers.persona/ud-guidelines",
+    "guidelinesRef": "at://did:plc:ud/pub.layers.persona.persona/ud-guidelines",
     "guidelinesVersion": "2.14",
     "annotationRounds": 2
   }
@@ -224,7 +224,7 @@ A crowd-sourced NER corpus with majority vote:
 
 ```json
 {
-  "$type": "pub.layers.corpus#main",
+  "$type": "pub.layers.corpus.corpus",
   "name": "CoNLL-2003 NER Annotations",
   "language": "en",
   "domain": "news",
@@ -253,7 +253,7 @@ An AMR sembank with discussion-based reconciliation:
 
 ```json
 {
-  "$type": "pub.layers.corpus#main",
+  "$type": "pub.layers.corpus.corpus",
   "name": "AMR 3.0",
   "language": "en",
   "domain": "news",

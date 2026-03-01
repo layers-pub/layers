@@ -1,0 +1,73 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.resource.collection",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A named collection of linguistic resource entries. Abstract enough to represent bead Lexicons, FrameNet frame inventories, PropBank frame files, WordNet synsets, morphological paradigm tables, gazetteers, stop-word lists, etc.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["name", "createdAt"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Human-readable name for this collection.",
+            "maxLength": 512
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 10000
+          },
+          "kindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the collection kind definition node. Community-expandable via knowledge graph."
+          },
+          "kind": {
+            "type": "string",
+            "description": "Collection kind slug (fallback when kindUri unavailable).",
+            "knownValues": ["lexicon", "frame-inventory", "gazetteer", "paradigm", "stop-list", "stimulus-pool", "custom"],
+            "maxLength": 128
+          },
+          "language": {
+            "type": "string",
+            "description": "BCP-47 language tag.",
+            "maxLength": 32
+          },
+          "version": {
+            "type": "string",
+            "description": "Version string (e.g., 'FrameNet 1.7', 'PropBank 3.4').",
+            "maxLength": 64
+          },
+          "ontologyRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to a pub.layers.ontology defining the type system for entries in this collection."
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "maxLength": 32,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who curated this collection, with what tool."
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

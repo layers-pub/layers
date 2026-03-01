@@ -1,0 +1,156 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.judgment.experimentDef",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "Definition of an annotation or judgment experiment.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["name", "createdAt"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 512
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 50000
+          },
+          "measureTypeUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the measure type definition node. Community-expandable via knowledge graph."
+          },
+          "measureType": {
+            "type": "string",
+            "description": "What property or behavior is being measured (fallback when measureTypeUri unavailable).",
+            "knownValues": [
+              "acceptability",
+              "inference",
+              "similarity",
+              "plausibility",
+              "comprehension",
+              "preference",
+              "extraction",
+              "reading-time",
+              "production",
+              "custom"
+            ],
+            "maxLength": 128
+          },
+          "taskTypeUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the response instrument definition node. Community-expandable via knowledge graph."
+          },
+          "taskType": {
+            "type": "string",
+            "description": "Response instrument: how the response is collected (fallback when taskTypeUri unavailable).",
+            "knownValues": [
+              "forced-choice",
+              "multi-select",
+              "ordinal-scale",
+              "magnitude",
+              "binary",
+              "categorical",
+              "free-text",
+              "cloze",
+              "span-labeling",
+              "custom"
+            ],
+            "maxLength": 128
+          },
+          "guidelines": {
+            "type": "string",
+            "maxLength": 100000
+          },
+          "ontologyRef": {
+            "type": "string",
+            "format": "at-uri"
+          },
+          "personaRef": {
+            "type": "string",
+            "format": "at-uri"
+          },
+          "corpusRef": {
+            "type": "string",
+            "format": "at-uri"
+          },
+          "templateRefs": {
+            "type": "array",
+            "description": "References to pub.layers.resource#template records used to generate stimuli for this experiment.",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "collectionRefs": {
+            "type": "array",
+            "description": "References to pub.layers.resource#collection records providing filler pools for this experiment.",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "scaleMin": {
+            "type": "integer",
+            "description": "Minimum scale value for ordinal-scale judgments."
+          },
+          "scaleMax": {
+            "type": "integer",
+            "description": "Maximum scale value."
+          },
+          "labels": {
+            "type": "array",
+            "description": "Available labels for categorical judgments.",
+            "maxLength": 256,
+            "items": {
+              "type": "string",
+              "maxLength": 512
+            }
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "Knowledge graph references (e.g., theoretical framework, methodology citation, task ontology).",
+            "maxLength": 32,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "presentation": {
+            "type": "ref",
+            "ref": "pub.layers.judgment.defs#presentationSpec",
+            "description": "How stimuli are displayed to participants."
+          },
+          "recordingMethods": {
+            "type": "array",
+            "description": "Data capture instruments used in this experiment.",
+            "maxLength": 16,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.judgment.defs#recordingMethod"
+            }
+          },
+          "design": {
+            "type": "ref",
+            "ref": "pub.layers.judgment.defs#experimentDesign",
+            "description": "Experiment design parameters: list constraints, distribution strategy, item order."
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

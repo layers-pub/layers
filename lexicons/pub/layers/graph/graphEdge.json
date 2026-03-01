@@ -1,0 +1,89 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.graph.graphEdge",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A single directed typed edge between any two Layers objects. Supports multidigraphs and cycles. Source and target use objectRef, which can point to local UUIDs, remote AT-URIs, or external knowledge graph nodes.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["source", "target", "edgeType", "createdAt"],
+        "properties": {
+          "source": {
+            "type": "ref",
+            "ref": "pub.layers.defs#objectRef",
+            "description": "Source node: use localId for same-record UUID, recordRef for cross-record AT-URI, knowledgeRef for external KG."
+          },
+          "target": {
+            "type": "ref",
+            "ref": "pub.layers.defs#objectRef",
+            "description": "Target node: use localId for same-record UUID, recordRef for cross-record AT-URI, knowledgeRef for external KG."
+          },
+          "edgeTypeUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the edge type definition node. Community-expandable via knowledge graph."
+          },
+          "edgeType": {
+            "type": "string",
+            "description": "Edge type slug (fallback when edgeTypeUri unavailable).",
+            "knownValues": [
+              "reply-to", "quote", "repost", "translation-of", "continuation",
+              "summary-of", "revision-of", "correction-of",
+              "coreference", "causal", "part-of", "member-of",
+              "type-of", "same-as", "related-to", "derived-from",
+              "supports", "contradicts", "discourse", "bridging",
+              "grounding", "instance-of", "denotes", "describes",
+              "specializes", "elaborates", "produced-by", "described-in",
+              "annotates", "see-also",
+              "before", "after", "meets", "met-by",
+              "overlaps", "overlapped-by", "starts", "started-by",
+              "during", "contains", "finishes", "finished-by",
+              "equals", "simultaneous",
+              "initiates", "culminates", "terminates", "continues", "reinitiates",
+              "disconnected", "externally-connected", "partially-overlapping",
+              "tangential-proper-part", "non-tangential-proper-part",
+              "tangential-proper-part-inverse", "non-tangential-proper-part-inverse",
+              "spatially-equal",
+              "north-of", "south-of", "east-of", "west-of",
+              "above", "below", "in-front-of", "behind", "left-of", "right-of",
+              "near", "far", "adjacent",
+              "custom"
+            ],
+            "maxLength": 128
+          },
+          "label": {
+            "type": "string",
+            "description": "Optional edge label.",
+            "maxLength": 512
+          },
+          "ordinal": {
+            "type": "integer",
+            "description": "Optional ordering among edges of the same type.",
+            "minimum": 0
+          },
+          "confidence": {
+            "type": "integer",
+            "description": "Confidence 0-1000.",
+            "minimum": 0,
+            "maximum": 1000
+          },
+          "properties": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Edge properties as key-value pairs."
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

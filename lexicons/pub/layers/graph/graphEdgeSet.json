@@ -1,0 +1,79 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.graph.graphEdgeSet",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A batch of typed, directed edges between Layers objects. Use for bulk edge creation when many edges share the same provenance and context.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["edges", "createdAt"],
+        "properties": {
+          "expression": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Optional primary expression context."
+          },
+          "edgeTypeUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the edge type definition node. Community-expandable via knowledge graph."
+          },
+          "edgeType": {
+            "type": "string",
+            "description": "Edge type slug shared by all edges in this set (fallback when edgeTypeUri unavailable).",
+            "knownValues": [
+              "coreference", "causal", "part-of", "member-of",
+              "type-of", "same-as", "related-to", "derived-from",
+              "supports", "contradicts", "discourse", "bridging",
+              "before", "after", "meets", "met-by",
+              "overlaps", "overlapped-by", "starts", "started-by",
+              "during", "contains", "finishes", "finished-by",
+              "equals", "simultaneous",
+              "initiates", "culminates", "terminates", "continues", "reinitiates",
+              "disconnected", "externally-connected", "partially-overlapping",
+              "tangential-proper-part", "non-tangential-proper-part",
+              "tangential-proper-part-inverse", "non-tangential-proper-part-inverse",
+              "spatially-equal",
+              "north-of", "south-of", "east-of", "west-of",
+              "above", "below", "in-front-of", "behind", "left-of", "right-of",
+              "near", "far", "adjacent",
+              "custom"
+            ],
+            "maxLength": 128
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.graph.defs#graphEdgeEntry"
+            }
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata"
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "Knowledge graph references for this edge set (e.g., the relation ontology it implements, source methodology).",
+            "maxLength": 32,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features (e.g., extraction method, model version, confidence threshold)."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

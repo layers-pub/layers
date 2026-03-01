@@ -458,7 +458,7 @@
 
     "textQuoteSelector": {
       "type": "object",
-      "description": "W3C TextQuoteSelector — select text by quoting it with surrounding context. Compatible with at.margin.annotation and the W3C Web Annotation Data Model.",
+      "description": "W3C TextQuoteSelector: selects text by quoting it with surrounding context. Compatible with at.margin.annotation and the W3C Web Annotation Data Model.",
       "required": ["exact"],
       "properties": {
         "exact": {
@@ -481,7 +481,7 @@
 
     "textPositionSelector": {
       "type": "object",
-      "description": "W3C TextPositionSelector — select by character offsets. Semantically equivalent to pub.layers.defs#span but named for W3C compatibility with at.margin.",
+      "description": "W3C TextPositionSelector: selects by character offsets. Semantically equivalent to pub.layers.defs#span but named for W3C compatibility with at.margin.",
       "required": ["start", "end"],
       "properties": {
         "start": {
@@ -499,7 +499,7 @@
 
     "fragmentSelector": {
       "type": "object",
-      "description": "W3C FragmentSelector — select by URI fragment identifier.",
+      "description": "W3C FragmentSelector: selects by URI fragment identifier.",
       "required": ["value"],
       "properties": {
         "value": {
@@ -549,7 +549,7 @@
 
     "anchor": {
       "type": "object",
-      "description": "Abstract anchor: how an annotation attaches to its source data. This is a polymorphic type — at least one anchoring field should be present. Consumers dispatch on which field(s) are populated.",
+      "description": "Abstract anchor: how an annotation attaches to its source data. This is a polymorphic type; at least one anchoring field should be present. Consumers dispatch on which field(s) are populated.",
       "properties": {
         "textSpan": {
           "type": "ref",
@@ -605,9 +605,9 @@
         },
         "confidence": {
           "type": "integer",
-          "description": "Alignment confidence 0-10000.",
+          "description": "Alignment confidence 0-1000.",
           "minimum": 0,
-          "maximum": 10000
+          "maximum": 1000
         },
         "label": {
           "type": "string",
@@ -679,9 +679,9 @@
         },
         "confidence": {
           "type": "integer",
-          "description": "Confidence score scaled 0-10000 (to avoid floats). 10000 = maximum confidence.",
+          "description": "Confidence score scaled 0-1000 (to avoid floats). 1000 = maximum confidence.",
           "minimum": 0,
-          "maximum": 10000
+          "maximum": 1000
         },
         "personaRef": {
           "type": "string",
@@ -824,7 +824,7 @@
 
     "objectRef": {
       "type": "object",
-      "description": "A composable reference to any Layers object, whether local (same record, by UUID), remote (different record, by AT-URI + optional object UUID), or external (knowledge graph entry). This is the universal cross-referencing primitive — consumers dispatch on which field(s) are populated. Used by argumentRef, graphNode, alignment endpoints, and any other cross-object pointer.",
+      "description": "A composable reference to any Layers object, whether local (same record, by UUID), remote (different record, by AT-URI + optional object UUID), or external (knowledge graph entry). This is the universal cross-referencing primitive; consumers dispatch on which field(s) are populated. Used by argumentRef, graphNode, alignment endpoints, and any other cross-object pointer.",
       "properties": {
         "localId": {
           "type": "ref",

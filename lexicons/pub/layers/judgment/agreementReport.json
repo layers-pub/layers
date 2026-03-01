@@ -1,0 +1,62 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.judgment.agreementReport",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "An inter-annotator agreement report summarizing agreement metrics across judgment sets.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["experimentRef", "createdAt"],
+        "properties": {
+          "experimentRef": {
+            "type": "string",
+            "format": "at-uri"
+          },
+          "judgmentSetRefs": {
+            "type": "array",
+            "description": "The judgment sets compared.",
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "metricUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the metric definition node. Community-expandable via knowledge graph."
+          },
+          "metric": {
+            "type": "string",
+            "description": "Metric slug (fallback when metricUri unavailable).",
+            "knownValues": ["cohens-kappa", "fleiss-kappa", "krippendorff-alpha", "percent-agreement", "correlation", "f1", "custom"],
+            "maxLength": 128
+          },
+          "value": {
+            "type": "integer",
+            "description": "Metric value scaled 0-1000.",
+            "minimum": 0,
+            "maximum": 1000
+          },
+          "numAnnotators": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "numItems": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

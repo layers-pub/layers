@@ -1,0 +1,112 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.expression.expression",
+  "description": "An Expression is the primary document model in Layers. It represents any linguistic unit (a document, transcript, recording, paragraph, sentence, word, morpheme) with recursive nesting via parent references. Inspired by Concrete's Communication, generalized to support recursive sub-expression structure.",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "An expression record representing a linguistic data source or unit at any granularity, from full documents down to individual morphemes.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["id", "kind", "createdAt"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "A corpus-level unique identifier (headline, URL, document ID, etc.).",
+            "maxLength": 1024
+          },
+          "kindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the expression kind definition node. Community-expandable via knowledge graph."
+          },
+          "kind": {
+            "type": "string",
+            "description": "Expression kind slug (fallback when kindUri unavailable).",
+            "knownValues": ["document", "transcript", "dialogue", "social-media", "email", "article", "recording", "video", "multimodal", "code", "section", "paragraph", "chapter", "turn", "utterance", "heading", "list", "sentence", "clause", "phrase", "word", "morpheme", "character", "other"],
+            "maxLength": 128
+          },
+          "text": {
+            "type": "string",
+            "description": "The full raw text of the expression. All character-offset spans reference this string.",
+            "maxLength": 10000000
+          },
+          "parentRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to the parent Expression this one is nested within. Absent for top-level expressions (documents, recordings, etc.)."
+          },
+          "anchor": {
+            "type": "ref",
+            "ref": "pub.layers.defs#anchor",
+            "description": "How this expression attaches to its parent (character span, temporal span, etc.)."
+          },
+          "mediaRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to an associated media record (audio, video, image)."
+          },
+          "mediaBlob": {
+            "type": "blob",
+            "description": "Optional inline media blob.",
+            "accept": ["audio/*", "video/*", "image/*"],
+            "maxSize": 52428800
+          },
+          "language": {
+            "type": "string",
+            "description": "BCP-47 language tag for the primary language.",
+            "maxLength": 32
+          },
+          "languages": {
+            "type": "array",
+            "description": "Additional BCP-47 tags for multilingual or code-switching expressions.",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata"
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Arbitrary document-level features and metadata."
+          },
+          "sourceUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL of the external web resource this expression was derived from or annotates. The appview indexes this field to discover co-located annotations from other ATProto apps.",
+            "maxLength": 4096
+          },
+          "sourceRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of an external ATProto record this expression is derived from or annotates (e.g., a standard.site Leaflet post, a com.whtwnd blog entry, an app.bsky.feed.post, an at.margin.bookmark)."
+          },
+          "eprintRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to an eprint record that this expression is associated with."
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "References to knowledge base entries relevant to this expression.",
+            "maxLength": 128,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

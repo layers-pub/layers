@@ -28,7 +28,7 @@ An `expression` record sets `sourceRef` to the AT-URI of a Leaflet post. The app
 
 ```json
 {
-  "$type": "pub.layers.expression",
+  "$type": "pub.layers.expression.expression",
   "sourceRef": "at://did:plc:author/site.standard.post/abc123",
   "text": "...",
   "kind": "article"
@@ -39,9 +39,9 @@ An `expression` record sets `sourceRef` to the AT-URI of a Leaflet post. The app
 
 | Type | Role |
 |---|---|
-| `pub.layers.expression` | `sourceRef` points to `site.standard.*` AT-URI |
-| `pub.layers.segmentation` | Tokenization of the post text |
-| `pub.layers.annotation#annotationLayer` | Linguistic annotation layers over the post |
+| `pub.layers.expression.expression` | `sourceRef` points to `site.standard.*` AT-URI |
+| `pub.layers.segmentation.segmentation` | Tokenization of the post text |
+| `pub.layers.annotation.annotationLayer` | Linguistic annotation layers over the post |
 
 ## Discovery
 

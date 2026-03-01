@@ -4,7 +4,34 @@ All notable changes to the Layers lexicon schemas will be documented in this fil
 
 This project follows [Semantic Versioning](https://semver.org/).
 
-## [0.3.0] — 2026-02-26
+## [0.4.0] - 2026-03-01
+
+### Changed
+
+- **Breaking:** Restructured all lexicons into directory-based NSIDs for ATProto compliance. Each record type is now its own lexicon file with the record as the `main` def. Shared object types moved to namespace `defs.json` files.
+  - `pub.layers.expression` → `pub.layers.expression.expression`
+  - `pub.layers.annotation` → `pub.layers.annotation.annotationLayer`, `pub.layers.annotation.clusterSet`
+  - `pub.layers.corpus` → `pub.layers.corpus.corpus`, `pub.layers.corpus.membership`
+  - `pub.layers.ontology` → `pub.layers.ontology.ontology`, `pub.layers.ontology.typeDef`
+  - `pub.layers.resource` → `pub.layers.resource.entry`, `pub.layers.resource.collection`, `pub.layers.resource.collectionMembership`, `pub.layers.resource.template`, `pub.layers.resource.filling`, `pub.layers.resource.templateComposition`
+  - `pub.layers.judgment` → `pub.layers.judgment.experimentDef`, `pub.layers.judgment.judgmentSet`, `pub.layers.judgment.agreementReport`
+  - `pub.layers.graph` → `pub.layers.graph.graphNode`, `pub.layers.graph.graphEdge`, `pub.layers.graph.graphEdgeSet`
+  - `pub.layers.eprint` → `pub.layers.eprint.eprint`, `pub.layers.eprint.dataLink`
+  - `pub.layers.segmentation` → `pub.layers.segmentation.segmentation`
+  - `pub.layers.alignment` → `pub.layers.alignment.alignment`
+  - `pub.layers.media` → `pub.layers.media.media`
+  - `pub.layers.persona` → `pub.layers.persona.persona`
+- **Breaking:** All cross-file `#localRef` references updated to fully qualified `pub.layers.<ns>.defs#name` form.
+- **Breaking:** Simplified `pub.layers.segmentation` to tokenization-only. Removed `section`, `sentence`, `sectionWithSentences`, and `sentenceWithTokenizations` types from `pub.layers.segmentation.defs`. Structural hierarchy (sections, sentences, paragraphs) is now expressed via expression records with `parentRef`. Added `expressionRef` field on `tokenization` to scope tokenizations to specific sub-expressions.
+- **Breaking:** Changed confidence and agreement metric scales from 0-10000 to 0-1000 across all lexicons (`annotation.defs`, `defs`, `graph.graphEdge`, `graph.defs`, `corpus.defs`, `judgment.defs`, `judgment.agreementReport`).
+
+### Added
+
+- XRPC query lexicons for all 25 record types: `get<Record>` and `list<Records>` queries with domain-specific filter parameters.
+- Namespace `defs.json` files for shared object types in: annotation, corpus, eprint, graph, judgment, media, ontology, resource, segmentation.
+
+
+## [0.3.0] - 2026-02-26
 
 ### Added
 
@@ -15,7 +42,7 @@ This project follows [Semantic Versioning](https://semver.org/).
 - `sourceMethodUri` / `sourceMethod` field on `annotationLayer` for per-layer annotation source tracking (`manual-native`, `manual-corrected`, `automatic`, `automatic-corrected`, `converted`, `converted-corrected`, `crowd-sourced`), following UD's per-layer annotation source convention.
 - Annotation Design guide with composability table across 8 project types.
 
-## [0.2.0] — 2026-02-26
+## [0.2.0] - 2026-02-26
 
 ### Added
 
@@ -37,7 +64,7 @@ This project follows [Semantic Versioning](https://semver.org/).
 
 - `rankValue` field from `judgment` object (use `scalarValue` for rank positions).
 
-## [0.1.0] — 2026-02-23
+## [0.1.0] - 2026-02-23
 
 ### Added
 
@@ -45,8 +72,7 @@ This project follows [Semantic Versioning](https://semver.org/).
 - Core primitives: `objectRef`, `anchor`, `constraint`, `agentRef`, `knowledgeRef`, `featureMap`, `annotationMetadata` (`pub.layers.defs`).
 - Document model with text, metadata, and source tracking (`pub.layers.communication`).
 - Corpus collections with membership records (`pub.layers.corpus`).
-- Segmentation bindings linking structure to communications (`pub.layers.segmentation`).
-- Structural elements: sections, sentences, tokens, tokenizations (`pub.layers.structure`).
+- Tokenization strategies and token sequences (`pub.layers.segmentation`).
 - Annotation type systems with role slots and inheritance (`pub.layers.ontology`).
 - Unified annotation model with layers, clusters, and multi-modal anchoring (`pub.layers.annotation`).
 - Linguistic judgment experiments with scales and items (`pub.layers.judgment`).

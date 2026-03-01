@@ -3,7 +3,18 @@ import { join } from 'path';
 import { Lexicons } from '@atproto/lexicon';
 
 const LEXICON_DIR = './lexicons/pub/layers';
-const files = readdirSync(LEXICON_DIR).filter(f => f.endsWith('.json')).sort();
+
+function findLexiconFiles(dir) {
+  const results = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const fullPath = join(dir, entry.name);
+    if (entry.isDirectory()) results.push(...findLexiconFiles(fullPath));
+    else if (entry.name.endsWith('.json')) results.push(fullPath);
+  }
+  return results.sort();
+}
+
+const files = findLexiconFiles(LEXICON_DIR);
 
 console.log(`Found ${files.length} lexicon files\n`);
 
@@ -11,10 +22,9 @@ console.log(`Found ${files.length} lexicon files\n`);
 const docs = [];
 let parseErrors = 0;
 
-for (const file of files) {
-  const path = join(LEXICON_DIR, file);
+for (const path of files) {
   const raw = JSON.parse(readFileSync(path, 'utf8'));
-  docs.push({ file, doc: raw });
+  docs.push({ file: path, doc: raw });
 }
 
 // Phase 2: Add all to Lexicons registry (validates cross-references between lexicons)

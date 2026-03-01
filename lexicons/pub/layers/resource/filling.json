@@ -1,0 +1,75 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.resource.filling",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A filled template: a template with all slots mapped to specific fillers, producing a rendered text. Generalizes bead's FilledTemplate and Item. The rendered text can optionally be materialized as a pub.layers.expression for annotation. Fillings are composable: they reference templates, entries, and communications via AT-URIs.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["templateRef", "slotFillings", "createdAt"],
+        "properties": {
+          "templateRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the template being filled."
+          },
+          "slotFillings": {
+            "type": "array",
+            "description": "The slot→filler mappings.",
+            "maxLength": 64,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.resource.defs#slotFilling"
+            }
+          },
+          "renderedText": {
+            "type": "string",
+            "description": "The fully rendered text after substitution.",
+            "maxLength": 100000
+          },
+          "expressionRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the pub.layers.expression materializing this filling (for annotation)."
+          },
+          "strategyUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the filling strategy definition node. Community-expandable via knowledge graph."
+          },
+          "strategy": {
+            "type": "string",
+            "description": "Filling strategy slug (fallback when strategyUri unavailable).",
+            "knownValues": ["exhaustive", "random", "stratified", "mlm", "csp", "mixed", "manual", "custom"],
+            "maxLength": 128
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: what tool/process generated this filling."
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "Knowledge graph references (e.g., generation model in a KB, sampling distribution, linguistic theory motivating the filling).",
+            "maxLength": 32,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features: model name for MLM filling, seed for random, solver stats for CSP, etc."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

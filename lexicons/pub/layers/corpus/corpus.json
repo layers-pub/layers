@@ -1,0 +1,96 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.corpus.corpus",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A corpus: a curated collection of expressions.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["name", "createdAt"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Corpus name.",
+            "maxLength": 512
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 50000
+          },
+          "version": {
+            "type": "string",
+            "maxLength": 64
+          },
+          "language": {
+            "type": "string",
+            "description": "Primary BCP-47 language tag.",
+            "maxLength": 32
+          },
+          "languages": {
+            "type": "array",
+            "description": "All languages represented.",
+            "maxLength": 128,
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "domainUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the domain definition node. Community-expandable via knowledge graph."
+          },
+          "domain": {
+            "type": "string",
+            "description": "Domain slug (fallback when domainUri unavailable).",
+            "knownValues": ["news", "biomedical", "legal", "social-media", "dialogue", "literary", "scientific", "web", "spoken", "custom"],
+            "maxLength": 256
+          },
+          "license": {
+            "type": "string",
+            "description": "License identifier (e.g., 'CC-BY-4.0', 'LDC-User-Agreement').",
+            "maxLength": 256
+          },
+          "ontologyRefs": {
+            "type": "array",
+            "description": "Ontologies used in this corpus.",
+            "maxLength": 32,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "eprintRefs": {
+            "type": "array",
+            "description": "Eprint links for this corpus.",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "expressionCount": {
+            "type": "integer",
+            "description": "Number of expressions in the corpus.",
+            "minimum": 0
+          },
+          "annotationDesign": {
+            "type": "ref",
+            "ref": "pub.layers.corpus.defs#annotationDesign",
+            "description": "Annotation project design: annotator assignment, adjudication, and quality criteria."
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

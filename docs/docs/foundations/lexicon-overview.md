@@ -9,21 +9,21 @@ Layers consists of 13 lexicons organized into core pipeline layers, parallel tra
 
 ## Lexicon Directory
 
-| Lexicon | ID | Purpose |
-|---------|----|---------|
+| Namespace | Record NSIDs | Purpose |
+|-----------|-------------|---------|
 | [Definitions](../lexicons/defs.md) | `pub.layers.defs` | Core primitives: objectRef, anchor, constraint, agentRef, annotationMetadata, knowledgeRef, featureMap, alignmentLink |
-| [Expression](../lexicons/expression.md) | `pub.layers.expression` | Any linguistic unit (document, paragraph, sentence, word, morpheme) with recursive nesting |
-| [Segmentation](../lexicons/segmentation.md) | `pub.layers.segmentation` | Tokenization, chunking, segmentation boundaries, span indices |
-| [Annotation](../lexicons/annotation.md) | `pub.layers.annotation` | Linguistic labels and categories (POS, NER, SRL, discourse, etc.) |
-| [Ontology](../lexicons/ontology.md) | `pub.layers.ontology` | Label definitions, linguistic categories, theory/framework records |
-| [Corpus](../lexicons/corpus.md) | `pub.layers.corpus` | Corpus metadata, membership, and statistics |
-| [Resource](../lexicons/resource.md) | `pub.layers.resource` | Lexical entries, collections, stimulus templates, fillings, and template compositions |
-| [Judgment](../lexicons/judgment.md) | `pub.layers.judgment` | Human judgments, model predictions, confidence, disagreement, experiment design |
-| [Alignment](../lexicons/alignment.md) | `pub.layers.alignment` | Cross-record linking, token correspondence, equivalence |
-| [Graph](../lexicons/graph.md) | `pub.layers.graph` | Generic typed property graph for knowledge representation and cross-referencing |
-| [Persona](../lexicons/persona.md) | `pub.layers.persona` | Agent personas, theoretical frameworks, backgrounds |
-| [Media](../lexicons/media.md) | `pub.layers.media` | Audio, video, image, and paged document references |
-| [Eprint](../lexicons/eprint.md) | `pub.layers.eprint` | Eprint linkage, data provenance, scholarly metadata, reproducibility |
+| [Expression](../lexicons/expression.md) | `pub.layers.expression.expression` | Any linguistic unit (document, paragraph, sentence, word, morpheme) with recursive nesting |
+| [Segmentation](../lexicons/segmentation.md) | `pub.layers.segmentation.segmentation`, `pub.layers.segmentation.defs` | Tokenization strategies, token sequences, sub-expression scoping |
+| [Annotation](../lexicons/annotation.md) | `pub.layers.annotation.annotationLayer`, `pub.layers.annotation.clusterSet`, `pub.layers.annotation.defs` | Linguistic labels and categories (POS, NER, SRL, discourse, etc.) |
+| [Ontology](../lexicons/ontology.md) | `pub.layers.ontology.ontology`, `pub.layers.ontology.typeDef`, `pub.layers.ontology.defs` | Label definitions, linguistic categories, theory/framework records |
+| [Corpus](../lexicons/corpus.md) | `pub.layers.corpus.corpus`, `pub.layers.corpus.membership`, `pub.layers.corpus.defs` | Corpus metadata, membership, and statistics |
+| [Resource](../lexicons/resource.md) | `pub.layers.resource.entry`, `pub.layers.resource.collection`, `pub.layers.resource.template`, `pub.layers.resource.filling`, `pub.layers.resource.templateComposition`, `pub.layers.resource.collectionMembership`, `pub.layers.resource.defs` | Lexical entries, collections, stimulus templates, fillings, and template compositions |
+| [Judgment](../lexicons/judgment.md) | `pub.layers.judgment.experimentDef`, `pub.layers.judgment.judgmentSet`, `pub.layers.judgment.agreementReport`, `pub.layers.judgment.defs` | Human judgments, model predictions, confidence, disagreement, experiment design |
+| [Alignment](../lexicons/alignment.md) | `pub.layers.alignment.alignment` | Cross-record linking, token correspondence, equivalence |
+| [Graph](../lexicons/graph.md) | `pub.layers.graph.graphNode`, `pub.layers.graph.graphEdge`, `pub.layers.graph.graphEdgeSet`, `pub.layers.graph.defs` | Generic typed property graph for knowledge representation and cross-referencing |
+| [Persona](../lexicons/persona.md) | `pub.layers.persona.persona` | Agent personas, theoretical frameworks, backgrounds |
+| [Media](../lexicons/media.md) | `pub.layers.media.media`, `pub.layers.media.defs` | Audio, video, image, and paged document references |
+| [Eprint](../lexicons/eprint.md) | `pub.layers.eprint.eprint`, `pub.layers.eprint.dataLink`, `pub.layers.eprint.defs` | Eprint linkage, data provenance, scholarly metadata, reproducibility |
 
 ## Lexicon Organization
 
@@ -41,7 +41,7 @@ pub.layers.segmentation (Tokenization)
 pub.layers.annotation (Labels)
 ```
 
-Expressions are recursive: a document contains paragraphs, which contain sentences, which contain words. Each expression can reference its parent via `parentRef`, and segmentation records define the ordered decomposition of a parent expression into child expressions. Structure types (section, sentence, word, morpheme, etc.) are expression `kind` values, not a separate lexicon.
+Expressions are recursive: a document contains paragraphs, which contain sentences, which contain words. Each expression can reference its parent via `parentRef`. Structure types (section, sentence, word, morpheme, etc.) are expression `kind` values, not a separate lexicon. Segmentation records provide tokenizations that decompose expressions into ordered token sequences.
 
 ### Parallel Tracks
 
@@ -140,7 +140,7 @@ Foundation for all other lexicons. Defines abstract, composable primitives:
 
 **Used by**: All other lexicons
 
-**File**: `schemas/defs.json`
+**File**: `schemas/pub/layers/defs.json`
 
 ### pub.layers.expression (Linguistic Units)
 
@@ -156,21 +156,22 @@ Any linguistic unit, from a single morpheme to a full document, with recursive n
 
 **Used by**: All downstream layers
 
-**File**: `schemas/expression.json`
+**Directory**: `schemas/pub/layers/expression/` (expression.json, defs.json, get/list queries)
 
-### pub.layers.segmentation (Tokenization & Chunking)
+### pub.layers.segmentation (Tokenization)
 
-Defines how a parent expression is broken into child expressions:
+Provides token-level decomposition of expressions:
 
-- Ordered decomposition of expressions into sub-expressions
 - Tokenization strategies (whitespace, BPE, morphological, etc.)
+- Multiple tokenizations per expression for interlinear glossing or alternative segmentation
+- Each tokenization can scope to a specific sub-expression via `expressionRef`
 - Index-based access for efficient token retrieval
 
 **Depends on**: `pub.layers.defs`, `pub.layers.expression`
 
 **Used by**: `pub.layers.annotation`
 
-**File**: `schemas/segmentation.json`
+**Directory**: `schemas/pub/layers/segmentation/` (segmentation.json, defs.json, get/list queries)
 
 ### pub.layers.annotation (Linguistic Annotations)
 
@@ -187,7 +188,7 @@ Labels, categories, semantic roles, discourse relations:
 
 **Used by**: `pub.layers.alignment`, integration layers
 
-**File**: `schemas/annotation.json`
+**Directory**: `schemas/pub/layers/annotation/` (annotationLayer.json, clusterSet.json, defs.json, get/list queries)
 
 ## Parallel Support Layers
 
@@ -205,7 +206,7 @@ Authority records for linguistic categories, tag sets, frameworks:
 
 **Used by**: `pub.layers.annotation`, `pub.layers.graph`
 
-**File**: `schemas/ontology.json`
+**Directory**: `schemas/pub/layers/ontology/` (ontology.json, typeDef.json, defs.json, get/list queries)
 
 ### pub.layers.corpus (Corpus Metadata)
 
@@ -219,7 +220,7 @@ Corpus records, membership, and statistics:
 
 **Used by**: `pub.layers.annotation` (corpus context), `pub.layers.eprint`
 
-**File**: `schemas/corpus.json`
+**Directory**: `schemas/pub/layers/corpus/` (corpus.json, membership.json, defs.json, get/list queries)
 
 ### pub.layers.resource (Lexical Resources & Templates)
 
@@ -235,7 +236,7 @@ Lexical entries, collections, stimulus templates, fillings, and compositions:
 
 **Used by**: `pub.layers.judgment` (stimulus generation)
 
-**File**: `schemas/resource.json`
+**Directory**: `schemas/pub/layers/resource/` (entry.json, collection.json, template.json, filling.json, templateComposition.json, collectionMembership.json, defs.json, get/list queries)
 
 ### pub.layers.judgment (Judgments & Experiments)
 
@@ -250,7 +251,7 @@ Human judgments, model predictions, experiment design:
 
 **Used by**: `pub.layers.annotation`, applications for filtering/ranking
 
-**File**: `schemas/judgment.json`
+**Directory**: `schemas/pub/layers/judgment/` (experimentDef.json, judgmentSet.json, agreementReport.json, defs.json, get/list queries)
 
 ### pub.layers.alignment (Cross-Record Linking)
 
@@ -265,7 +266,7 @@ Linking annotations across records and layers:
 
 **Used by**: All layers (enables multi-layer composition)
 
-**File**: `schemas/alignment.json`
+**Directory**: `schemas/pub/layers/alignment/` (alignment.json, get/list queries)
 
 ## Integration Layers
 
@@ -283,7 +284,7 @@ Generic typed property graph for knowledge representation and cross-referencing:
 
 **Used by**: `pub.layers.annotation` (via knowledgeRef), all layers (via objectRef-based cross-referencing)
 
-**File**: `schemas/graph.json`
+**Directory**: `schemas/pub/layers/graph/` (graphNode.json, graphEdge.json, graphEdgeSet.json, defs.json, get/list queries)
 
 ### pub.layers.persona (Agent Personas)
 
@@ -297,7 +298,7 @@ Agent personas, theoretical frameworks, methodological backgrounds:
 
 **Used by**: `pub.layers.annotation` (via agentRef.personaRef)
 
-**File**: `schemas/persona.json`
+**Directory**: `schemas/pub/layers/persona/` (persona.json, get/list queries)
 
 ### pub.layers.media (Multimodal References)
 
@@ -312,7 +313,7 @@ Audio, video, image, and paged document references:
 
 **Used by**: `pub.layers.expression` (source documents), `pub.layers.segmentation` (temporal/spatial anchors)
 
-**File**: `schemas/media.json`
+**Directory**: `schemas/pub/layers/media/` (media.json, defs.json, get/list queries)
 
 ### pub.layers.eprint (Eprint & Data Provenance)
 
@@ -327,7 +328,64 @@ Eprint linkage, data provenance, reproducibility, and scholarly metadata:
 
 **Used by**: `pub.layers.expression` (eprintRef), discovery/search
 
-**File**: `schemas/eprint.json`
+**Directory**: `schemas/pub/layers/eprint/` (eprint.json, dataLink.json, defs.json, get/list queries)
+
+## XRPC Queries
+
+Every record type in Layers has corresponding XRPC query lexicons following a consistent `get<Record>` / `list<Records>` pattern. These queries enable efficient retrieval of individual records by AT-URI and paginated listing of records within a repository.
+
+### Query Pattern
+
+For each record NSID `pub.layers.<namespace>.<record>`, two query lexicons are generated:
+
+| Query | NSID | Purpose |
+|-------|------|---------|
+| Get | `pub.layers.<namespace>.get<Record>` | Retrieve a single record by its AT-URI |
+| List | `pub.layers.<namespace>.list<Records>` | List records of this type with pagination |
+
+### Get Query Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the record to retrieve |
+
+**Output**: The full record object.
+
+### List Query Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository to list records from |
+| `limit` | integer | Maximum number of records to return (1-100, default 50) |
+| `cursor` | string | Pagination cursor from previous response |
+
+**Output**: An object with `records` (array of record objects) and `cursor` (string, present if more results are available).
+
+### Example: Annotation Queries
+
+```
+pub.layers.annotation.getAnnotationLayer    → retrieve a single annotation layer
+pub.layers.annotation.listAnnotationLayers  → list annotation layers in a repo
+pub.layers.annotation.getClusterSet         → retrieve a single cluster set
+pub.layers.annotation.listClusterSets       → list cluster sets in a repo
+```
+
+### Complete Query Reference
+
+| Namespace | Queries |
+|-----------|---------|
+| expression | `getExpression`, `listExpressions` |
+| segmentation | `getSegmentation`, `listSegmentations` |
+| annotation | `getAnnotationLayer`, `listAnnotationLayers`, `getClusterSet`, `listClusterSets` |
+| ontology | `getOntology`, `listOntologies`, `getTypeDef`, `listTypeDefs` |
+| corpus | `getCorpus`, `listCorpora`, `getMembership`, `listMemberships` |
+| resource | `getEntry`, `listEntries`, `getCollection`, `listCollections`, `getTemplate`, `listTemplates`, `getFilling`, `listFillings`, `getTemplateComposition`, `listTemplateCompositions`, `getCollectionMembership`, `listCollectionMemberships` |
+| judgment | `getExperimentDef`, `listExperimentDefs`, `getJudgmentSet`, `listJudgmentSets`, `getAgreementReport`, `listAgreementReports` |
+| alignment | `getAlignment`, `listAlignments` |
+| graph | `getGraphNode`, `listGraphNodes`, `getGraphEdge`, `listGraphEdges`, `getGraphEdgeSet`, `listGraphEdgeSets` |
+| persona | `getPersona`, `listPersonas` |
+| media | `getMedia`, `listMedia` |
+| eprint | `getEprint`, `listEprints`, `getDataLink`, `listDataLinks` |
 
 ## See Also
 

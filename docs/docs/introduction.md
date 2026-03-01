@@ -36,7 +36,7 @@ Layers solves this by:
 
 ## Status
 
-Layers is in **v0.3.0 draft** status, in active development and accepting comments and discussion. File issues or participate on GitHub: https://github.com/layers-pub/layers
+Layers is in **[v0.4.0 draft](https://github.com/layers-pub/layers/releases/tag/v0.4.0)** status, in active development and accepting comments and discussion. File issues or participate on GitHub: https://github.com/layers-pub/layers
 
 ## Architecture Overview
 
@@ -45,7 +45,7 @@ Layers is organized around a **core pipeline** of annotation layers, with **para
 ```mermaid
 flowchart TD
     E["<b>Expression</b><br/><i>document, paragraph, sentence,<br/>word, morpheme</i>"]
-    S["<b>Segmentation</b><br/><i>tokenization, chunking,<br/>segmentation bounds</i>"]
+    S["<b>Segmentation</b><br/><i>tokenization strategies,<br/>token sequences</i>"]
     A["<b>Annotation</b><br/><i>POS, NER, semantic roles,<br/>ERP components, fixations</i>"]
 
     E ==> S ==> A
@@ -80,7 +80,7 @@ flowchart TD
     class G,M,EP,P integ
 ```
 
-**Core pipeline** (blue): Expressions are recursive: a document contains paragraphs, which contain sentences, which contain words, which contain morphemes. Segmentation records define the ordered decomposition of a parent expression into child expressions. Annotation layers attach linguistic labels to any level of the hierarchy.
+**Core pipeline** (blue): Expressions are recursive: a document contains paragraphs, which contain sentences, which contain words, which contain morphemes. Structural hierarchy is expressed via expression records with `parentRef`. Segmentation records provide tokenizations that decompose expressions into ordered token sequences. Annotation layers attach linguistic labels to any level of the hierarchy.
 
 **Parallel tracks** (purple): Ontologies defines label systems and theoretical frameworks. Corpora collects expressions with annotation project design metadata (redundancy, adjudication, quality criteria). Resources provides lexical entries and stimulus templates. Judgments captures experiment definitions with four orthogonal dimensions (measure type, task type, presentation, recording). Alignment links structures across languages, modalities, and records.
 

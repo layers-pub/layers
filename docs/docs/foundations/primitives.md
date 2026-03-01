@@ -116,7 +116,7 @@ Three-way provenance tracking: agent + persona + tool, plus confidence and diges
 annotationMetadata = {
   agent: agentRef               // Who created the annotation
   timestamp: string (ISO 8601)  // When
-  confidence?: number           // 0.0–1.0 confidence score
+  confidence?: integer          // 0–1000 confidence score
 
   personaUri?: AtUri            // Explicit link to persona
   toolUri?: AtUri               // Link to tool record
@@ -170,7 +170,7 @@ temporalModifier = {
 
 **Dispatch convention**: Consumers check which `temporalEntity` fields are populated: `instant` only means a point, `intervalStart`+`intervalEnd` means a bounded interval, `duration` only means a pure duration, `earliest`+`latest` means uncertain bounds, `recurrence` means a repeating pattern.
 
-**Temporal relations** between annotations use [`graphEdge`](../lexicons/graph.md) with Allen's 13 interval relations as `edgeType` values: `before`, `after`, `meets`, `met-by`, `overlaps`, `overlapped-by`, `starts`, `started-by`, `during`, `contains`, `finishes`, `finished-by`, `equals`.
+**Temporal relations** between annotations use [`pub.layers.graph.graphEdge`](../lexicons/graph.md) with Allen's 13 interval relations as `edgeType` values: `before`, `after`, `meets`, `met-by`, `overlaps`, `overlapped-by`, `starts`, `started-by`, `during`, `contains`, `finishes`, `finished-by`, `equals`.
 
 **Use cases**:
 - Simple date: `{type: "date", value: {instant: "2024-03-15", granularity: "day"}}`
@@ -209,7 +209,7 @@ spatialModifier = {
 
 **Dispatch convention**: Consumers check which `spatialEntity` fields are populated: `bbox` only means a pixel bounding box, `geometry` + `type` means a typed geometry string, `geometry` + `geometryFormat` tells consumers how to parse the string.
 
-**Spatial relations** between annotations use [`graphEdge`](../lexicons/graph.md) with RCC-8 topological relations as `edgeType` values: `disconnected`, `externally-connected`, `partially-overlapping`, `tangential-proper-part`, `non-tangential-proper-part`, `tangential-proper-part-inverse`, `non-tangential-proper-part-inverse`, `spatially-equal`. Directional relations: `north-of`, `south-of`, `east-of`, `west-of`, `above`, `below`, `in-front-of`, `behind`, `left-of`, `right-of`. Distance relations: `near`, `far`, `adjacent`.
+**Spatial relations** between annotations use [`pub.layers.graph.graphEdge`](../lexicons/graph.md) with RCC-8 topological relations as `edgeType` values: `disconnected`, `externally-connected`, `partially-overlapping`, `tangential-proper-part`, `non-tangential-proper-part`, `tangential-proper-part-inverse`, `non-tangential-proper-part-inverse`, `spatially-equal`. Directional relations: `north-of`, `south-of`, `east-of`, `west-of`, `above`, `below`, `in-front-of`, `behind`, `left-of`, `right-of`. Distance relations: `near`, `far`, `adjacent`.
 
 **Use cases**:
 - Pixel bounding box: `{type: "region", value: {bbox: {x: 100, y: 50, width: 200, height: 150}}}`

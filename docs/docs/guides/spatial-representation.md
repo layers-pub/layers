@@ -14,7 +14,7 @@ Layers distinguishes **media space** from **semantic space**:
 
 - **Semantic space** (`spatialExpression`): *what place or region* a linguistic expression refers to. Expressed as geographic coordinates, named locations, or relative positions. Used for spatial annotation: "this expression refers to downtown Tokyo."
 
-Media space lives on [anchors](../foundations/primitives.md#anchor) (`pub.layers.defs#anchor.spatioTemporalAnchor`). Semantic space lives on [annotations](../lexicons/annotation.md) (`pub.layers.annotation#annotation.spatial`). They are independent: a spatial annotation at pixel (100, 50) in a satellite image might refer to "the Eiffel Tower at 48.8584° N, 2.2945° E."
+Media space lives on [anchors](../foundations/primitives.md#anchor) (`pub.layers.defs#anchor.spatioTemporalAnchor`). Semantic space lives on [annotations](../lexicons/annotation.md) (`pub.layers.annotation.defs#annotation.spatial`). They are independent: a spatial annotation at pixel (100, 50) in a satellite image might refer to "the Eiffel Tower at 48.8584° N, 2.2945° E."
 
 ## Spatial Primitives
 
@@ -51,7 +51,7 @@ The complete spatial annotation, packaging:
 
 ## Spatial Relations
 
-Spatial relations between annotations use [`pub.layers.graph#graphEdge`](../lexicons/graph.md) with RCC-8 topological relations, directional relations, and distance relations as `edgeType` values.
+Spatial relations between annotations use [`pub.layers.graph.graphEdge`](../lexicons/graph.md) with RCC-8 topological relations, directional relations, and distance relations as `edgeType` values.
 
 ### RCC-8 (Region Connection Calculus)
 
@@ -233,11 +233,11 @@ The `label` field on spatial graphEdges can carry the linguistic spatial signal 
 **Spatial relation (graphEdge):**
 ```json
 {
-  "source": { "recordRef": "at://did:plc:.../pub.layers.annotation/...", "objectId": { "value": "place-1-uuid" } },
-  "target": { "recordRef": "at://did:plc:.../pub.layers.annotation/...", "objectId": { "value": "place-2-uuid" } },
+  "source": { "recordRef": "at://did:plc:.../pub.layers.annotation.annotationLayer/...", "objectId": { "value": "place-1-uuid" } },
+  "target": { "recordRef": "at://did:plc:.../pub.layers.annotation.annotationLayer/...", "objectId": { "value": "place-2-uuid" } },
   "edgeType": "north-of",
   "label": "north of",
-  "confidence": 9500
+  "confidence": 950
 }
 ```
 

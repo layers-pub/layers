@@ -1,0 +1,55 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.graph.graphNode",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A standalone node in the property graph. Represents entities, concepts, situations, claims, or any domain object that does not have another Layers record. Existing Layers records (expressions, annotations, typeDefs) are implicitly nodes via objectRef.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["nodeType", "createdAt"],
+        "properties": {
+          "nodeTypeUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the node type definition node. Community-expandable via knowledge graph."
+          },
+          "nodeType": {
+            "type": "string",
+            "description": "Node type slug (fallback when nodeTypeUri unavailable).",
+            "knownValues": ["entity", "concept", "situation", "state", "time", "location", "claim", "proposition", "custom"],
+            "maxLength": 128
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable node label.",
+            "maxLength": 1024
+          },
+          "properties": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Node properties as key-value pairs."
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "Knowledge graph references grounding this node (Wikidata, chive.pub, FrameNet, etc.).",
+            "maxLength": 64,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

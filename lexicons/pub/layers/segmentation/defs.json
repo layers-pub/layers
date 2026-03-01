@@ -1,0 +1,71 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.segmentation.defs",
+  "defs": {
+    "token": {
+      "type": "object",
+      "description": "A single token within a tokenization.",
+      "required": ["tokenIndex"],
+      "properties": {
+        "tokenIndex": {
+          "type": "integer",
+          "description": "Position of this token in the tokenization (0-based).",
+          "minimum": 0
+        },
+        "text": {
+          "type": "string",
+          "description": "The surface form of the token.",
+          "maxLength": 4096
+        },
+        "textSpan": {
+          "type": "ref",
+          "ref": "pub.layers.defs#span",
+          "description": "Character offsets into the expression text."
+        },
+        "temporalSpan": {
+          "type": "ref",
+          "ref": "pub.layers.defs#temporalSpan"
+        }
+      }
+    },
+    "tokenization": {
+      "type": "object",
+      "description": "An ordered sequence of tokens for an expression or sub-expression. Multiple tokenizations can coexist for the same expression (e.g., whitespace vs. BPE vs. morphological), enabling interlinear glossing, alternative segmentation strategies, or multi-granularity analysis.",
+      "required": ["uuid", "kind", "tokens"],
+      "properties": {
+        "uuid": {
+          "type": "ref",
+          "ref": "pub.layers.defs#uuid"
+        },
+        "kindUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the tokenization kind definition node. Community-expandable via knowledge graph."
+        },
+        "kind": {
+          "type": "string",
+          "description": "Tokenization kind slug (fallback when kindUri unavailable).",
+          "knownValues": ["whitespace", "penn-treebank", "bpe", "sentencepiece", "character", "morphological", "custom"],
+          "maxLength": 128
+        },
+        "expressionRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "Reference to the specific sub-expression this tokenization covers (e.g., a sentence-level expression). If absent, covers the entire expression referenced by the segmentation record."
+        },
+        "tokens": {
+          "type": "array",
+          "description": "The ordered token sequence.",
+          "items": {
+            "type": "ref",
+            "ref": "#token"
+          }
+        },
+        "metadata": {
+          "type": "ref",
+          "ref": "pub.layers.defs#annotationMetadata"
+        }
+      }
+    }
+  }
+}

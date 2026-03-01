@@ -1,0 +1,116 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.media.media",
+  "description": "Media source records for audio, video, image, and document data associated with expressions. Modality-specific metadata is factored into composable object types (audioInfo, videoInfo, documentInfo) so that multimodal media can carry all relevant technical metadata.",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A media source record (audio, video, image, or document) that can be referenced by expressions and annotations. Modality-specific metadata lives in composable audioInfo/videoInfo/documentInfo objects.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["kind", "createdAt"],
+        "properties": {
+          "kindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the media kind definition node. Community-expandable via knowledge graph."
+          },
+          "kind": {
+            "type": "string",
+            "description": "Media kind slug (fallback when kindUri unavailable).",
+            "knownValues": ["audio", "video", "image", "document"],
+            "maxLength": 128
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 1024
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 10000
+          },
+          "blob": {
+            "type": "blob",
+            "description": "The media blob.",
+            "accept": ["audio/*", "video/*", "image/*", "application/pdf"],
+            "maxSize": 104857600
+          },
+          "externalUri": {
+            "type": "string",
+            "format": "uri",
+            "description": "URI for externally hosted media.",
+            "maxLength": 2048
+          },
+          "mimeType": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "durationMs": {
+            "type": "integer",
+            "description": "Duration in milliseconds (for audio/video).",
+            "minimum": 0
+          },
+          "fileSizeBytes": {
+            "type": "integer",
+            "description": "File size in bytes.",
+            "minimum": 0
+          },
+          "parentMediaRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the parent media record this excerpt/clip was extracted from."
+          },
+          "startOffsetMs": {
+            "type": "integer",
+            "description": "Offset in milliseconds where this excerpt starts within the parent media. Used with parentMediaRef.",
+            "minimum": 0
+          },
+          "audio": {
+            "type": "ref",
+            "ref": "pub.layers.media.defs#audioInfo",
+            "description": "Audio-specific metadata. Present for audio files and videos with audio tracks."
+          },
+          "video": {
+            "type": "ref",
+            "ref": "pub.layers.media.defs#videoInfo",
+            "description": "Video-specific metadata. Present for video files and image sequences."
+          },
+          "document": {
+            "type": "ref",
+            "ref": "pub.layers.media.defs#documentInfo",
+            "description": "Document-specific metadata. Present for scanned documents, manuscripts, etc."
+          },
+          "language": {
+            "type": "string",
+            "description": "BCP-47 language tag.",
+            "maxLength": 32
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "Knowledge graph references.",
+            "maxLength": 32,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who created/uploaded this media record, with what tool."
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features: recording conditions, speaker metadata, quality metrics, consent, etc."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

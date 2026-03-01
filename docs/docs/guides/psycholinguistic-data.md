@@ -52,7 +52,7 @@ Stimuli are constructed via the template-filling pipeline (see the [Judgment Dat
 
 ```json
 {
-  "$type": "pub.layers.expression",
+  "$type": "pub.layers.expression.expression",
   "kind": "sentence",
   "text": "The cat chased the mouse across the garden",
   "language": "en"
@@ -63,8 +63,8 @@ A segmentation record defines the regions of interest:
 
 ```json
 {
-  "$type": "pub.layers.segmentation",
-  "expression": "at://did:plc:researcher/pub.layers.expression/item-42",
+  "$type": "pub.layers.segmentation.segmentation",
+  "expression": "at://did:plc:researcher/pub.layers.expression.expression/item-42",
   "kind": "region",
   "tokens": [
     { "text": "The cat", "start": 0, "end": 7 },
@@ -81,7 +81,7 @@ Per-region reading times are recorded as judgments. Each judgment references the
 
 ```json
 {
-  "$type": "pub.layers.judgment#judgmentSet",
+  "$type": "pub.layers.judgment.judgmentSet",
   "experimentRef": "at://did:plc:researcher/pub.layers.judgment.experimentDef/spr-study",
   "agent": {
     "id": "participant-017",
@@ -89,7 +89,7 @@ Per-region reading times are recorded as judgments. Each judgment references the
   },
   "judgments": [
     {
-      "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42" },
+      "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42" },
       "categoricalValue": "yes",
       "responseTimeMs": 1842,
       "behavioralData": {
@@ -111,7 +111,7 @@ The experiment definition specifies measure type, presentation method, recording
 
 ```json
 {
-  "$type": "pub.layers.judgment#experimentDef",
+  "$type": "pub.layers.judgment.experimentDef",
   "name": "Garden-path SPR study",
   "measureType": "reading-time",
   "presentation": {
@@ -153,8 +153,8 @@ Fixations are annotations with `temporalSpan` anchors on the stimulus expression
 
 ```json
 {
-  "$type": "pub.layers.annotation#annotationLayer",
-  "expression": "at://did:plc:researcher/pub.layers.expression/item-42",
+  "$type": "pub.layers.annotation.annotationLayer",
+  "expression": "at://did:plc:researcher/pub.layers.expression.expression/item-42",
   "kind": "tier",
   "subkind": "fixation",
   "annotations": [
@@ -202,7 +202,7 @@ Saccades are represented as graph edges between consecutive fixation annotations
 
 ```json
 {
-  "$type": "pub.layers.graph#graphEdge",
+  "$type": "pub.layers.graph.graphEdge",
   "source": { "localId": "fix-001" },
   "target": { "localId": "fix-002" },
   "edgeType": "saccade",
@@ -224,7 +224,7 @@ The eye-tracking device and raw data file are recorded as a media record:
 
 ```json
 {
-  "$type": "pub.layers.media",
+  "$type": "pub.layers.media.media",
   "kind": "document",
   "title": "Eye-tracking data for SPR study",
   "externalUri": "https://example.com/data/et-session-017.edf",
@@ -252,7 +252,7 @@ The EEG data file is a media record with modality-specific features:
 
 ```json
 {
-  "$type": "pub.layers.media",
+  "$type": "pub.layers.media.media",
   "kind": "document",
   "title": "EEG recording session 017",
   "externalUri": "https://example.com/data/sub-017_task-reading_eeg.edf",
@@ -279,8 +279,8 @@ Each electrode's spatial position is represented using `spatialExpression` with 
 
 ```json
 {
-  "$type": "pub.layers.annotation#annotationLayer",
-  "expression": "at://did:plc:researcher/pub.layers.expression/session-017",
+  "$type": "pub.layers.annotation.annotationLayer",
+  "expression": "at://did:plc:researcher/pub.layers.expression.expression/session-017",
   "kind": "tier",
   "subkind": "electrode-montage",
   "annotations": [
@@ -329,8 +329,8 @@ Event-related potential components are annotations with temporal anchors specify
 
 ```json
 {
-  "$type": "pub.layers.annotation#annotationLayer",
-  "expression": "at://did:plc:researcher/pub.layers.expression/item-42",
+  "$type": "pub.layers.annotation.annotationLayer",
+  "expression": "at://did:plc:researcher/pub.layers.expression.expression/item-42",
   "kind": "span",
   "subkind": "erp-component",
   "annotations": [
@@ -341,7 +341,7 @@ Event-related potential components are annotations with temporal anchors specify
         "temporalSpan": { "start": 300, "end": 500 }
       },
       "label": "N400",
-      "confidence": 8500,
+      "confidence": 850,
       "features": {
         "features": [
           { "key": "peakLatency", "value": 412 },
@@ -368,7 +368,7 @@ Event-related potential components are annotations with temporal anchors specify
         "temporalSpan": { "start": 500, "end": 800 }
       },
       "label": "P600",
-      "confidence": 7200,
+      "confidence": 720,
       "features": {
         "features": [
           { "key": "peakLatency", "value": 650 },
@@ -398,14 +398,14 @@ Alignment records link EEG epochs to the stimulus expressions they correspond to
 
 ```json
 {
-  "$type": "pub.layers.alignment",
+  "$type": "pub.layers.alignment.alignment",
   "kind": "signal-to-stimulus",
   "subkind": "epoch-to-item",
   "source": {
-    "recordRef": "at://did:plc:researcher/pub.layers.media/eeg-session-017"
+    "recordRef": "at://did:plc:researcher/pub.layers.media.media/eeg-session-017"
   },
   "target": {
-    "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42"
+    "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42"
   },
   "links": [
     {
@@ -435,7 +435,7 @@ MEG uses magnetometers and gradiometers rather than electrodes. The media record
 
 ```json
 {
-  "$type": "pub.layers.media",
+  "$type": "pub.layers.media.media",
   "kind": "document",
   "title": "MEG recording session 017",
   "externalUri": "https://example.com/data/sub-017_task-reading_meg.fif",
@@ -460,8 +460,8 @@ Source-localized MEG data uses `spatialExpression` with MNI brain coordinates:
 
 ```json
 {
-  "$type": "pub.layers.annotation#annotationLayer",
-  "expression": "at://did:plc:researcher/pub.layers.expression/item-42",
+  "$type": "pub.layers.annotation.annotationLayer",
+  "expression": "at://did:plc:researcher/pub.layers.expression.expression/item-42",
   "kind": "span",
   "subkind": "source-estimate",
   "annotations": [
@@ -511,7 +511,7 @@ The fMRI data file is a media record with acquisition-specific features:
 
 ```json
 {
-  "$type": "pub.layers.media",
+  "$type": "pub.layers.media.media",
   "kind": "document",
   "title": "fMRI task run 1, subject 017",
   "externalUri": "https://example.com/data/sub-017_task-reading_bold.nii.gz",
@@ -538,8 +538,8 @@ Regions of interest are annotations with `spatialExpression` referencing brain a
 
 ```json
 {
-  "$type": "pub.layers.annotation#annotationLayer",
-  "expression": "at://did:plc:researcher/pub.layers.expression/session-017",
+  "$type": "pub.layers.annotation.annotationLayer",
+  "expression": "at://did:plc:researcher/pub.layers.expression.expression/session-017",
   "kind": "span",
   "subkind": "roi",
   "annotations": [
@@ -588,8 +588,8 @@ BOLD activation differences between conditions are annotation layers with both s
 
 ```json
 {
-  "$type": "pub.layers.annotation#annotationLayer",
-  "expression": "at://did:plc:researcher/pub.layers.expression/session-017",
+  "$type": "pub.layers.annotation.annotationLayer",
+  "expression": "at://did:plc:researcher/pub.layers.expression.expression/session-017",
   "kind": "span",
   "subkind": "contrast",
   "annotations": [
@@ -636,14 +636,14 @@ Event onsets linking fMRI volumes to stimulus presentations use alignment record
 
 ```json
 {
-  "$type": "pub.layers.alignment",
+  "$type": "pub.layers.alignment.alignment",
   "kind": "signal-to-stimulus",
   "subkind": "volume-to-item",
   "source": {
-    "recordRef": "at://did:plc:researcher/pub.layers.media/fmri-run1"
+    "recordRef": "at://did:plc:researcher/pub.layers.media.media/fmri-run1"
   },
   "target": {
-    "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42"
+    "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42"
   },
   "links": [
     {

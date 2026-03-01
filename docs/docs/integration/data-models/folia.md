@@ -1,4 +1,4 @@
-# FoLiA (Format for Linguistic Annotation)
+# FoLiA
 
 <div className="metadata-card">
 <dl>
@@ -23,14 +23,14 @@ FoLiA is a rich XML-based format for linguistic annotation developed at Radboud 
 
 | FoLiA Element | Layers Equivalent | Notes |
 |---|---|---|
-| `<FoLiA>` (document) | `pub.layers.expression` | Root document. FoLiA's `@xml:id` → AT-URI. |
+| `<FoLiA>` (document) | `pub.layers.expression.expression` | Root document. FoLiA's `@xml:id` → AT-URI. |
 | `<metadata>` | Expression fields + `features` | Document-level metadata. |
 | `<text>` | `pub.layers.expression.text` | Primary text content. |
-| `<div>` (division) | `pub.layers.expression` (kind: `section`) | Document divisions. |
-| `<p>` (paragraph) | `pub.layers.expression` (kind: `section`) with `subkind="paragraph"` | Paragraph sections. |
-| `<s>` (sentence) | `pub.layers.expression` (kind: `sentence`) | Sentence boundaries. |
-| `<w>` (word) | `pub.layers.expression` (kind: `token`) | Word tokens. |
-| `<morpheme>` | `pub.layers.expression` (kind: `token`) in a `tokenization(kind="morphological")` | Morpheme-level tokens within a word, linked by `pub.layers.alignment`. |
+| `<div>` (division) | `pub.layers.expression.expression` (kind: `section`) | Document divisions. |
+| `<p>` (paragraph) | `pub.layers.expression.expression` (kind: `section`) with `subkind="paragraph"` | Paragraph sections. |
+| `<s>` (sentence) | `pub.layers.expression.expression` (kind: `sentence`) | Sentence boundaries. |
+| `<w>` (word) | `pub.layers.expression.expression` (kind: `token`) | Word tokens. |
+| `<morpheme>` | `pub.layers.expression.expression` (kind: `token`) in a `tokenization(kind="morphological")` | Morpheme-level tokens within a word, linked by `pub.layers.alignment.alignment`. |
 
 ### Annotation Layers
 
@@ -47,7 +47,7 @@ FoLiA is a rich XML-based format for linguistic annotation developed at Radboud 
 | `<dependency>` | `annotationLayer(kind="graph", subkind="dependency")` | Dependency relations. `<dep>` → dependent token; `<hd>` → head token; `@class` → relation label. |
 | `<syntax>` | `annotationLayer(kind="tree", subkind="constituency")` | Constituency parse. `<su>` (syntactic unit) → annotation with `parentId`/`childIds`. |
 | `<semroles>` | `annotationLayer(kind="span", subkind="frame")` | Semantic role labeling. `<semrole @class>` → `argumentRef.role`. |
-| `<coreferences>` | `pub.layers.annotation#clusterSet` with `kind="coreference"` | Coreference chains. |
+| `<coreferences>` | `pub.layers.annotation.clusterSet` with `kind="coreference"` | Coreference chains. |
 | `<sentiment>` | `annotationLayer(kind="span", subkind="sentiment")` | Sentiment annotation. |
 | `<statement>` | `annotationLayer(kind="span")` with custom `subkind` (e.g., `"attribution"`) | Attribution/statement annotation. |
 | `<observation>` | `annotationLayer(kind="span")` with custom `subkind` | Observation annotations. |
@@ -75,7 +75,7 @@ FoLiA has a sophisticated system for representing corrections, alternatives, and
 | `@processor` (on annotations) | `annotationLayer.metadata.tool` | Per-layer tool attribution. |
 | `@set` (annotation set) | `annotationLayer.labelSet` or `ontologyRef` | Tagset/label-set identifier. FoLiA sets define valid label values. Layers uses `ontologyRef` for formal type systems and `labelSet` for simpler tag sets. |
 | `@class` (annotation value) | `annotation.label` | The annotation value from the set. |
-| `@confidence` | `annotation.confidence` | Confidence score (0-10000 scaled from FoLiA's 0.0-1.0). |
+| `@confidence` | `annotation.confidence` | Confidence score (0-1000 scaled from FoLiA's 0.0-1.0). |
 | `@datetime` | `annotationMetadata.timestamp` | Creation timestamp. |
 | `@n` (ordinal) | `annotation.features.ordinal` or array index | Ordering information. |
 
@@ -85,5 +85,5 @@ FoLiA has a sophisticated system for representing corrections, alternatives, and
 |---|---|---|
 | `<wref>` (word reference) | `anchor.tokenRefSequence` | References to words in span annotations. FoLiA's `@id`-based references → Layers token index references. |
 | Discontinuous spans | `anchor.tokenRefSequence` with non-contiguous `tokenIndexes` | FoLiA supports discontinuous spans via multiple `<wref>` elements. Layers's `tokenRefSequence` supports the same pattern. |
-| `<relation>` | `pub.layers.graph#graphEdge` or `annotation.arguments` | Typed relations between annotation elements. |
+| `<relation>` | `pub.layers.graph.graphEdge` or `annotation.arguments` | Typed relations between annotation elements. |
 

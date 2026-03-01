@@ -1,0 +1,67 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.ontology.defs",
+  "defs": {
+    "roleSlot": {
+      "type": "object",
+      "description": "A role/argument slot in a frame or situation type definition. Structurally parallel to pub.layers.resource#slot: both represent named positions with type constraints. roleSlot is ontology-level (what roles a frame type allows); resource slot is template-level (what variables a template exposes).",
+      "required": ["roleName"],
+      "properties": {
+        "roleName": {
+          "type": "string",
+          "description": "The role label (e.g., Agent, Patient, Theme, ARG0).",
+          "maxLength": 256
+        },
+        "roleDescription": {
+          "type": "string",
+          "maxLength": 2048
+        },
+        "fillerTypeRefs": {
+          "type": "array",
+          "description": "References to allowed filler types (pub.layers.ontology#typeDef AT-URIs).",
+          "maxLength": 32,
+          "items": {
+            "type": "string",
+            "format": "at-uri"
+          }
+        },
+        "collectionRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of a pub.layers.resource#collection constraining allowed fillers."
+        },
+        "required": {
+          "type": "boolean",
+          "description": "Whether this role is obligatory."
+        },
+        "defaultValue": {
+          "type": "string",
+          "description": "Default filler value if not explicitly filled.",
+          "maxLength": 4096
+        },
+        "constraints": {
+          "type": "array",
+          "description": "Declarative constraints on fillers of this role (e.g., selectional restrictions, agreement requirements).",
+          "maxLength": 32,
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#constraint"
+          }
+        },
+        "knowledgeRefs": {
+          "type": "array",
+          "maxLength": 16,
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#knowledgeRef"
+          }
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features for this role slot (e.g., semantic type, animacy preference, optionality conditions)."
+        }
+      }
+    }
+  }
+}

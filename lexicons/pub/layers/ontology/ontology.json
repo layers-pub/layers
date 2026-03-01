@@ -1,0 +1,66 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.ontology.ontology",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "An annotation ontology: a collection of typed definitions (entity types, situation types, role types, relation types) that together form a complete annotation framework.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["name", "createdAt"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Human-readable name for this ontology.",
+            "maxLength": 512
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of the ontology's purpose and scope.",
+            "maxLength": 10000
+          },
+          "version": {
+            "type": "string",
+            "description": "Semantic version string.",
+            "maxLength": 32
+          },
+          "domainUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the domain definition node. Community-expandable via knowledge graph."
+          },
+          "domain": {
+            "type": "string",
+            "description": "Domain slug (fallback when domainUri unavailable).",
+            "knownValues": ["general", "biomedical", "legal", "financial", "news", "social-media", "scientific", "intelligence", "dialogue", "multimodal", "custom"],
+            "maxLength": 128
+          },
+          "parentRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to a parent ontology this one extends."
+          },
+          "personaRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to the persona that created/owns this ontology."
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "Knowledge graph references grounding this ontology.",
+            "maxLength": 64,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

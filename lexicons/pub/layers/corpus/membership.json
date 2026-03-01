@@ -1,0 +1,55 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.corpus.membership",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A record indicating that a expression belongs to a corpus, with optional split assignment.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["corpusRef", "expressionRef", "createdAt"],
+        "properties": {
+          "corpusRef": {
+            "type": "string",
+            "format": "at-uri"
+          },
+          "expressionRef": {
+            "type": "string",
+            "format": "at-uri"
+          },
+          "splitUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the split definition node. Community-expandable via knowledge graph."
+          },
+          "split": {
+            "type": "string",
+            "description": "Split slug (fallback when splitUri unavailable).",
+            "knownValues": ["train", "dev", "test", "unlabeled"],
+            "maxLength": 64
+          },
+          "ordinal": {
+            "type": "integer",
+            "description": "Ordering index within the corpus.",
+            "minimum": 0
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who assigned this expression to this corpus, when, with what tool."
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features for this membership (e.g., source file, import batch, quality flags)."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

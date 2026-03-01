@@ -9,6 +9,7 @@ Media source records for audio, video, image, and document data associated with 
 ## Types
 
 ### audioInfo
+**NSID:** `pub.layers.media.defs#audioInfo`
 **Type:** Object
 
 Composable audio metadata. Attach to any media record representing audio content: standalone audio files, audio tracks in video, etc.
@@ -23,10 +24,11 @@ Composable audio metadata. Attach to any media record representing audio content
 | `bitRateMode` | string | Bitrate mode. Known values: `cbr` (constant), `vbr` (variable). |
 | `numberOfSamples` | integer | Total number of audio samples. Enables sample-accurate alignment (Praat, ELAN, forced alignment tools). |
 | `speakerCount` | integer | Number of distinct speakers (for spoken language data). |
-| `transcriptRef` | at-uri | AT-URI of a `pub.layers.expression` containing the transcript. |
-| `segmentationRef` | at-uri | AT-URI of a `pub.layers.segmentation` record structuring the transcript. |
+| `transcriptRef` | at-uri | AT-URI of a `pub.layers.expression.expression` containing the transcript. |
+| `segmentationRef` | at-uri | AT-URI of a `pub.layers.segmentation.segmentation` record structuring the transcript. |
 
 ### videoInfo
+**NSID:** `pub.layers.media.defs#videoInfo`
 **Type:** Object
 
 Composable video metadata. Attach to any media record representing video content.
@@ -43,6 +45,7 @@ Composable video metadata. Attach to any media record representing video content
 | `scanType` | string | Scan type. Known values: `progressive`, `interlaced`. Affects frame extraction for annotation. |
 
 ### documentInfo
+**NSID:** `pub.layers.media.defs#documentInfo`
 **Type:** Object
 
 Composable document/image metadata. Attach to any media record representing scanned documents, manuscripts, printed text, or other page-based media for OCR/HTR annotation workflows.
@@ -56,7 +59,8 @@ Composable document/image metadata. Attach to any media record representing scan
 | `writingDirection` | string | Primary text direction. Known values: `ltr`, `rtl`, `ttb`, `btt` |
 | `ocrEngine` | string | OCR/HTR engine identifier (e.g., 'tesseract-5.3', 'transkribus', 'abbyy', 'google-vision'). |
 
-### main
+### media
+**NSID:** `pub.layers.media.media`
 **Type:** Record
 
 A media source record (audio, video, image, or document) that can be referenced by expressions and annotations. Modality-specific metadata lives in composable `audioInfo`/`videoInfo`/`documentInfo` objects.
@@ -74,9 +78,9 @@ A media source record (audio, video, image, or document) that can be referenced 
 | `fileSizeBytes` | integer | File size in bytes. |
 | `parentMediaRef` | at-uri | AT-URI of the parent media record this excerpt/clip was extracted from. For provenance tracking of media segments. |
 | `startOffsetMs` | integer | Offset in milliseconds where this excerpt starts within the parent media. Used with `parentMediaRef`. |
-| `audio` | ref | Audio-specific metadata. Ref: `#audioInfo` |
-| `video` | ref | Video-specific metadata. Ref: `#videoInfo` |
-| `document` | ref | Document-specific metadata. Ref: `#documentInfo` |
+| `audio` | ref | Audio-specific metadata. Ref: `pub.layers.media.defs#audioInfo` |
+| `video` | ref | Video-specific metadata. Ref: `pub.layers.media.defs#videoInfo` |
+| `document` | ref | Document-specific metadata. Ref: `pub.layers.media.defs#documentInfo` |
 | `language` | string | BCP-47 language tag. |
 | `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
 | `metadata` | ref | Provenance: who created/uploaded this media record. Ref: `pub.layers.defs#annotationMetadata` |
@@ -131,9 +135,9 @@ Speaker metadata uses the pattern `speaker.{id}.*` where `{id}` is a speaker ide
 | `quality.snrDb` | Signal-to-noise ratio in decibels (string-encoded integer, e.g., '42'). |
 | `quality.pesq` | PESQ score (string-encoded integer scaled by 100, e.g., '350' = 3.50). |
 | `quality.polqa` | POLQA score (string-encoded integer scaled by 100). |
-| `quality.stoi` | Short-Time Objective Intelligibility (string-encoded integer 0-10000, e.g., '9500' = 0.95). |
+| `quality.stoi` | Short-Time Objective Intelligibility (string-encoded integer 0-1000, e.g., '950' = 0.95). |
 | `quality.clippingDetected` | Whether audio clipping was detected: `true` or `false`. |
-| `quality.silenceRatio` | Proportion of recording that is silence (string-encoded integer 0-10000, e.g., '1500' = 15%). |
+| `quality.silenceRatio` | Proportion of recording that is silence (string-encoded integer 0-1000, e.g., '150' = 15%). |
 | `quality.rating` | Subjective quality rating: `poor`, `fair`, `good`, `excellent` |
 
 ### Multi-Stream Synchronization
@@ -239,3 +243,29 @@ Several categories of metadata are better placed on other Layers record types:
 - **Analysis parameters** (Praat settings, window size, step size, frequency range) → `annotationMetadata.features` on the annotation layer that contains the derived measurements
 - **Corpus-level statistics** (total hours, speaker count, language distribution) → `pub.layers.corpus` features
 - **Temporal alignment** (millisecond/frame/sample alignment of annotations to media) → handled by `pub.layers.defs#temporalSpan` and `pub.layers.defs#anchor`
+
+## XRPC Queries
+
+### getMedia
+**NSID:** `pub.layers.media.getMedia`
+
+Retrieve a single media record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the media record. |
+
+**Output**: The media record object.
+
+### listMedia
+**NSID:** `pub.layers.media.listMedia`
+
+List media records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: media[], cursor?: string }`

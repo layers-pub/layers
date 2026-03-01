@@ -25,11 +25,11 @@ AMR represents sentence meaning as a rooted, directed, labeled graph. Nodes are 
 
 | AMR Concept | Layers Equivalent | Notes |
 |---|---|---|
-| AMR graph | `pub.layers.annotation#annotationLayer` with `kind="graph"` and `formalism="AMR"` | The entire AMR graph is one annotation layer. |
-| Concept node | `pub.layers.annotation#annotation` | Each AMR concept is an annotation with `label` = concept name (e.g., `want-01`, `boy`, `go-02`). `ontologyTypeRef` can point to the PropBank frameset definition. |
+| AMR graph | `pub.layers.annotation.annotationLayer` with `kind="graph"` and `formalism="AMR"` | The entire AMR graph is one annotation layer. |
+| Concept node | `pub.layers.annotation.defs#annotation` | Each AMR concept is an annotation with `label` = concept name (e.g., `want-01`, `boy`, `go-02`). `ontologyTypeRef` can point to the PropBank frameset definition. |
 | Root node | The annotation with no incoming `headIndex` | Or explicitly marked via features. |
 | Named entity | `annotation` with `label` = entity type + features containing `:name` and `:opN` values | AMR represents named entities as type + name structure. |
-| Edge (role) | `pub.layers.annotation#argumentRef` | ARG0, ARG1, etc. map to `argumentRef.role`. The child concept maps to `argumentRef.annotationId`. |
+| Edge (role) | `pub.layers.annotation.defs#argumentRef` | ARG0, ARG1, etc. map to `argumentRef.role`. The child concept maps to `argumentRef.annotationId`. |
 | Non-core relations | `argumentRef` with role = `:mod`, `:location`, `:time`, `:manner`, etc. | AMR's non-core relations use the same `argumentRef` mechanism with different role labels. |
 | Reentrancy (shared nodes) | Multiple `argumentRef` entries pointing to the same annotation UUID | AMR allows a concept to fill multiple roles. Layers handles this by having multiple `argumentRef` entries with the same `annotationId`. |
 | Constants | `annotation.value` | String/number constants (dates, quantities, etc.) stored in `value`. |
@@ -40,9 +40,9 @@ AMR represents sentence meaning as a rooted, directed, labeled graph. Nodes are 
 
 | AMR Feature | Layers Representation | Notes |
 |---|---|---|
-| Multi-sentence AMR | Multiple annotation layers (one per sentence) + `pub.layers.graph#graphEdgeSet` for cross-sentence links | Cross-sentence coreference and relations use graph edge sets. |
-| AMR coreference | `pub.layers.annotation#clusterSet` or AMR reentrancy | Within-sentence: reentrancy (shared UUIDs). Cross-sentence: clusterSet. |
-| Document-level AMR | `pub.layers.graph#graphEdgeSet` | Relations between sentence-level AMR graphs. |
+| Multi-sentence AMR | Multiple annotation layers (one per sentence) + `pub.layers.graph.graphEdgeSet` for cross-sentence links | Cross-sentence coreference and relations use graph edge sets. |
+| AMR coreference | `pub.layers.annotation.clusterSet` or AMR reentrancy | Within-sentence: reentrancy (shared UUIDs). Cross-sentence: clusterSet. |
+| Document-level AMR | `pub.layers.graph.graphEdgeSet` | Relations between sentence-level AMR graphs. |
 
 ## UCCA (Universal Conceptual Cognitive Annotation)
 
@@ -70,7 +70,7 @@ DRS provides box-based semantic representations with discourse referents and con
 | Discourse referent | `annotation` with `label` = variable name | Variables introduced in a box. |
 | Condition | `annotation` with `label` = predicate | Predicates over referents. |
 | Nested DRS (conditional, negation) | `annotation.childIds` containing sub-box annotations | Box embedding via parent-child structure. |
-| Cross-box anaphora | `argumentRef` or `pub.layers.graph#graphEdge` | References across box boundaries. |
+| Cross-box anaphora | `argumentRef` or `pub.layers.graph.graphEdge` | References across box boundaries. |
 
 ## EDS/DMRS (Elementary/Dependency Minimal Recursion Semantics)
 

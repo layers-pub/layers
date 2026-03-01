@@ -1,0 +1,54 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.resource.templateComposition",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A composition of templates (sequence, tree, or other structure). Used for multi-part stimuli, template hierarchies, and complex item construction.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["compositionType", "members", "createdAt"],
+        "properties": {
+          "compositionTypeUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the composition type definition node. Community-expandable via knowledge graph."
+          },
+          "compositionType": {
+            "type": "string",
+            "description": "Composition type slug (fallback when compositionTypeUri unavailable).",
+            "knownValues": ["sequence", "tree", "parallel", "alternation", "custom"],
+            "maxLength": 128
+          },
+          "members": {
+            "type": "array",
+            "description": "Ordered members of this composition.",
+            "maxLength": 256,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.resource.defs#templateMember"
+            }
+          },
+          "experimentRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to the experiment this composition was designed for."
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata"
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-# TEI (Text Encoding Initiative)
+# TEI
 
 <div className="metadata-card">
 <dl>
@@ -23,26 +23,26 @@ TEI is an XML-based standard for encoding literary and linguistic texts. It prov
 
 | TEI Element | Layers Equivalent | Notes |
 |---|---|---|
-| `<TEI>` | `pub.layers.expression` (record) | Root document container. TEI's `@xml:id` maps to the record's AT-URI. |
-| `<teiHeader>` | `pub.layers.expression` metadata fields + `features` | TEI header metadata (fileDesc, encodingDesc, profileDesc, revisionDesc) maps to expression-level fields and features. |
+| `<TEI>` | `pub.layers.expression.expression` (record) | Root document container. TEI's `@xml:id` maps to the record's AT-URI. |
+| `<teiHeader>` | `pub.layers.expression.expression` metadata fields + `features` | TEI header metadata (fileDesc, encodingDesc, profileDesc, revisionDesc) maps to expression-level fields and features. |
 | `<text>` | `pub.layers.expression.text` | Primary textual content. |
-| `<body>` | Implicit in `pub.layers.segmentation` | The body structure is captured by the segmentation hierarchy. |
-| `<div>` (division) | `pub.layers.expression` (kind: `section`) | Nested divisions map to sections with `kind` discriminating division types (chapter, part, act, scene, etc.). TEI's nested `<div>` structure is flattened into sections with parent-child relationships tracked via features or section ordering. |
-| `<p>` (paragraph) | `pub.layers.expression` (kind: `section`) with `subkind="paragraph"` | Paragraph-level sections. |
-| `<s>` (sentence) | `pub.layers.expression` (kind: `sentence`) | Sentence segmentation. |
-| `<w>` (word) | `pub.layers.expression` (kind: `token`) | Word-level tokenization. TEI's `@lemma`, `@pos`, `@msd` attributes map to separate annotation layers. |
-| `<c>` (character) | `pub.layers.expression` (kind: `token`) in a `tokenization(kind="character")` | Character-level tokenization. |
-| `<pc>` (punctuation) | `pub.layers.expression` (kind: `token`) with feature `isPunctuation=true` | Punctuation characters as tokens. |
+| `<body>` | Implicit in `pub.layers.expression.expression` hierarchy via `parentRef` | The body structure is captured by the expression hierarchy: divisions, paragraphs, and sentences are nested expressions with `parentRef` chains. Tokenization is handled separately via `pub.layers.segmentation.segmentation`. |
+| `<div>` (division) | `pub.layers.expression.expression` (kind: `section`) | Nested divisions map to sections with `kind` discriminating division types (chapter, part, act, scene, etc.). TEI's nested `<div>` structure is flattened into sections with parent-child relationships tracked via features or section ordering. |
+| `<p>` (paragraph) | `pub.layers.expression.expression` (kind: `section`) with `subkind="paragraph"` | Paragraph-level sections. |
+| `<s>` (sentence) | `pub.layers.expression.expression` (kind: `sentence`) | Sentence segmentation. |
+| `<w>` (word) | `pub.layers.expression.expression` (kind: `token`) | Word-level tokenization. TEI's `@lemma`, `@pos`, `@msd` attributes map to separate annotation layers. |
+| `<c>` (character) | `pub.layers.expression.expression` (kind: `token`) in a `tokenization(kind="character")` | Character-level tokenization. |
+| `<pc>` (punctuation) | `pub.layers.expression.expression` (kind: `token`) with feature `isPunctuation=true` | Punctuation characters as tokens. |
 
 ### Speaker and Dialogue
 
 | TEI Element | Layers Equivalent | Notes |
 |---|---|---|
-| `<sp>` (speech) | `pub.layers.expression` (kind: `section`) with `subkind="turn"` + `speaker` | Dialogue turns with speaker identification. |
+| `<sp>` (speech) | `pub.layers.expression.expression` (kind: `section`) with `subkind="turn"` + `speaker` | Dialogue turns with speaker identification. |
 | `<speaker>` | `expression.speaker` | Speaker identifier. |
-| `<stage>` (stage direction) | `pub.layers.expression` (kind: `section`) with `subkind` set via `subkindUri` (e.g., `"stage-direction"`) | Stage directions as community-defined section kinds. |
-| `<lg>` (line group) | `pub.layers.expression` (kind: `section`) with subkind via `subkindUri` (e.g., `"stanza"`) | Poetic stanzas. |
-| `<l>` (verse line) | `pub.layers.expression` (kind: `section`) with subkind via `subkindUri` (e.g., `"verse-line"`) | Individual verse lines. |
+| `<stage>` (stage direction) | `pub.layers.expression.expression` (kind: `section`) with `subkind` set via `subkindUri` (e.g., `"stage-direction"`) | Stage directions as community-defined section kinds. |
+| `<lg>` (line group) | `pub.layers.expression.expression` (kind: `section`) with subkind via `subkindUri` (e.g., `"stanza"`) | Poetic stanzas. |
+| `<l>` (verse line) | `pub.layers.expression.expression` (kind: `section`) with subkind via `subkindUri` (e.g., `"verse-line"`) | Individual verse lines. |
 
 ### Linguistic Annotation
 
@@ -62,7 +62,7 @@ TEI is an XML-based standard for encoding literary and linguistic texts. It prov
 | TEI Element | Layers Equivalent | Notes |
 |---|---|---|
 | `<app>` (apparatus entry) | `annotationLayer(kind="span")` with `subkind` via `subkindUri` (e.g., `"apparatus-entry"`) | Variant readings. Each `<rdg>` (reading) is an annotation with the variant text in `value` and witness in `features`. |
-| `<rdg>` (reading) | `pub.layers.annotation#annotation` | Individual manuscript readings. `@wit` (witness sigla) → `features`. |
+| `<rdg>` (reading) | `pub.layers.annotation.defs#annotation` | Individual manuscript readings. `@wit` (witness sigla) → `features`. |
 | `<lem>` (lemma/preferred reading) | `annotation` with feature `isLemma=true` | The preferred reading among variants. |
 | `<note>` (editorial note) | `annotationLayer(kind="span", subkind="comment")` | Notes and commentary. |
 | `<gap>` / `<unclear>` / `<supplied>` | `annotationLayer(kind="span")` with custom `subkind` | Transcription uncertainty markers. |
@@ -73,13 +73,13 @@ TEI is an XML-based standard for encoding literary and linguistic texts. It prov
 
 | TEI Element | Layers Equivalent | Notes |
 |---|---|---|
-| `<fileDesc>` | `pub.layers.expression` fields + `features` | File description metadata. |
+| `<fileDesc>` | `pub.layers.expression.expression` fields + `features` | File description metadata. |
 | `<sourceDesc>` | `pub.layers.expression.sourceUrl` + `sourceRef` | Source document references. |
-| `<bibl>` / `<biblStruct>` | `pub.layers.eprint` | Bibliographic references link to eprint records. |
+| `<bibl>` / `<biblStruct>` | `pub.layers.eprint.eprint` | Bibliographic references link to eprint records. |
 | `<respStmt>` | `pub.layers.defs#annotationMetadata` | Responsibility statements map to annotation metadata. |
-| `<encodingDesc>` | `pub.layers.ontology` + annotation layer metadata | Encoding description (tagset declarations, etc.) maps to ontology definitions. |
-| `<taxonomy>` / `<category>` | `pub.layers.ontology#typeDef` hierarchy | Classification taxonomies. |
-| `<particDesc>` / `<person>` | `pub.layers.persona` or `features` | Participant descriptions in spoken text corpora. |
+| `<encodingDesc>` | `pub.layers.ontology.ontology` + annotation layer metadata | Encoding description (tagset declarations, etc.) maps to ontology definitions. |
+| `<taxonomy>` / `<category>` | `pub.layers.ontology.typeDef` hierarchy | Classification taxonomies. |
+| `<particDesc>` / `<person>` | `pub.layers.persona.persona` or `features` | Participant descriptions in spoken text corpora. |
 
 ### Stand-Off Annotation (TEI)
 
@@ -87,8 +87,8 @@ TEI supports stand-off annotation via `@xml:id` references and `<spanGrp>`/`<spa
 
 | TEI Stand-Off Element | Layers Equivalent | Notes |
 |---|---|---|
-| `<spanGrp>` | `pub.layers.annotation#annotationLayer` | Group of stand-off spans. |
-| `<span @from @to>` | `pub.layers.annotation#annotation` with `anchor.textSpan` | Stand-off span with character offsets. |
-| `<link>` / `<linkGrp>` | `pub.layers.graph#graphEdge` | Typed links between elements. |
-| `<interp>` / `<interpGrp>` | `pub.layers.annotation#annotationLayer` | Interpretive annotation groups. |
+| `<spanGrp>` | `pub.layers.annotation.annotationLayer` | Group of stand-off spans. |
+| `<span @from @to>` | `pub.layers.annotation.defs#annotation` with `anchor.textSpan` | Stand-off span with character offsets. |
+| `<link>` / `<linkGrp>` | `pub.layers.graph.graphEdge` | Typed links between elements. |
+| `<interp>` / `<interpGrp>` | `pub.layers.annotation.annotationLayer` | Interpretive annotation groups. |
 

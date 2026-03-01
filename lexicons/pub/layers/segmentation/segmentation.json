@@ -1,0 +1,53 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.segmentation.segmentation",
+  "description": "A segmentation record that binds one or more tokenizations to an expression. Each tokenization can cover the whole expression or a specific sub-expression (e.g., a sentence). Multiple segmentations can coexist for the same expression, enabling alternative tokenization strategies.",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A segmentation of an expression into tokenizations. Structural hierarchy (sections, sentences, paragraphs) is expressed via expression records with parentRef; this record provides the token-level decomposition.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["expression", "tokenizations", "createdAt"],
+        "properties": {
+          "expression": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to the expression this segmentation applies to."
+          },
+          "tokenizations": {
+            "type": "array",
+            "description": "The tokenizations in this segmentation. Each tokenization can optionally scope to a sub-expression via expressionRef.",
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.segmentation.defs#tokenization"
+            }
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata"
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "Knowledge graph references (e.g., tokenizer algorithm, sentence splitting model).",
+            "maxLength": 16,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features (e.g., tokenizer version, parameters, language model used)."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

@@ -71,7 +71,7 @@ Participants rate on a bounded discrete scale (Likert, slider). Responses go in 
 
 ```json
 {
-  "$type": "pub.layers.judgment#experimentDef",
+  "$type": "pub.layers.judgment.experimentDef",
   "name": "Naturalness rating study",
   "measureType": "acceptability",
   "taskType": "ordinal-scale",
@@ -83,7 +83,7 @@ Participants rate on a bounded discrete scale (Likert, slider). Responses go in 
 
 ```json
 {
-  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42" },
+  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42" },
   "scalarValue": 5,
   "responseTimeMs": 1560
 }
@@ -95,7 +95,7 @@ Participants choose a label from a fixed set of unordered categories. Responses 
 
 ```json
 {
-  "$type": "pub.layers.judgment#experimentDef",
+  "$type": "pub.layers.judgment.experimentDef",
   "name": "Semantic relation classification",
   "measureType": "inference",
   "taskType": "categorical",
@@ -106,10 +106,10 @@ Participants choose a label from a fixed set of unordered categories. Responses 
 
 ```json
 {
-  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/pair-15" },
+  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/pair-15" },
   "categoricalValue": "cause",
   "responseTimeMs": 2340,
-  "confidence": 8000
+  "confidence": 800
 }
 ```
 
@@ -119,7 +119,7 @@ Participants pick exactly one option from a small set (2AFC, NAFC). Responses go
 
 ```json
 {
-  "$type": "pub.layers.judgment#experimentDef",
+  "$type": "pub.layers.judgment.experimentDef",
   "name": "Translation quality comparison",
   "measureType": "preference",
   "taskType": "forced-choice",
@@ -130,10 +130,10 @@ Participants pick exactly one option from a small set (2AFC, NAFC). Responses go
 
 ```json
 {
-  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/pair-15" },
+  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/pair-15" },
   "categoricalValue": "a",
   "responseTimeMs": 4200,
-  "confidence": 7500
+  "confidence": 750
 }
 ```
 
@@ -143,7 +143,7 @@ Participants pick one or more options from a set. Responses go in `behavioralDat
 
 ```json
 {
-  "$type": "pub.layers.judgment#experimentDef",
+  "$type": "pub.layers.judgment.experimentDef",
   "name": "Sentiment intensity BWS",
   "measureType": "preference",
   "taskType": "multi-select",
@@ -153,7 +153,7 @@ Participants pick one or more options from a set. Responses go in `behavioralDat
 
 ```json
 {
-  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/tuple-8" },
+  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/tuple-8" },
   "behavioralData": {
     "features": [
       { "key": "best", "value": "item-a" },
@@ -170,7 +170,7 @@ Participants give a yes/no response. Responses go in `categoricalValue`.
 
 ```json
 {
-  "$type": "pub.layers.judgment#experimentDef",
+  "$type": "pub.layers.judgment.experimentDef",
   "name": "Grammaticality judgment",
   "measureType": "acceptability",
   "taskType": "binary",
@@ -181,7 +181,7 @@ Participants give a yes/no response. Responses go in `categoricalValue`.
 
 ```json
 {
-  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42" },
+  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42" },
   "categoricalValue": "yes",
   "responseTimeMs": 980
 }
@@ -193,7 +193,7 @@ Participants provide open-ended text responses. Responses go in `freeText`.
 
 ```json
 {
-  "$type": "pub.layers.judgment#experimentDef",
+  "$type": "pub.layers.judgment.experimentDef",
   "name": "Paraphrase generation",
   "measureType": "similarity",
   "taskType": "free-text",
@@ -203,7 +203,7 @@ Participants provide open-ended text responses. Responses go in `freeText`.
 
 ```json
 {
-  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42" },
+  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42" },
   "freeText": "The mouse was chased by the cat through the garden",
   "responseTimeMs": 8450
 }
@@ -215,7 +215,7 @@ Participants select and optionally label text regions. Responses go in `textSpan
 
 ```json
 {
-  "$type": "pub.layers.judgment#experimentDef",
+  "$type": "pub.layers.judgment.experimentDef",
   "name": "Argument span identification",
   "measureType": "extraction",
   "taskType": "span-labeling",
@@ -225,7 +225,7 @@ Participants select and optionally label text regions. Responses go in `textSpan
 
 ```json
 {
-  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42" },
+  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42" },
   "textSpan": { "start": 0, "end": 7 },
   "responseTimeMs": 3200
 }
@@ -237,7 +237,7 @@ Participants provide an unbounded numeric value (magnitude estimation). Response
 
 ```json
 {
-  "$type": "pub.layers.judgment#experimentDef",
+  "$type": "pub.layers.judgment.experimentDef",
   "name": "Magnitude estimation of naturalness",
   "measureType": "acceptability",
   "taskType": "magnitude",
@@ -247,7 +247,7 @@ Participants provide an unbounded numeric value (magnitude estimation). Response
 
 ```json
 {
-  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42" },
+  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42" },
   "scalarValue": 230,
   "responseTimeMs": 2100
 }
@@ -259,7 +259,7 @@ Participants fill in blanks in a stimulus. Responses go in `freeText`.
 
 ```json
 {
-  "$type": "pub.layers.judgment#experimentDef",
+  "$type": "pub.layers.judgment.experimentDef",
   "name": "Cloze probability estimation",
   "measureType": "comprehension",
   "taskType": "cloze",
@@ -269,7 +269,7 @@ Participants fill in blanks in a stimulus. Responses go in `freeText`.
 
 ```json
 {
-  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression/item-42" },
+  "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42" },
   "freeText": "dog",
   "responseTimeMs": 1200
 }
@@ -363,7 +363,7 @@ The `recordingMethods` array on `experimentDef` declares what instruments captur
 | `skin-conductance` | Galvanic skin response |
 | `ecog` | Intracranial EEG / electrocorticography |
 
-All values are community-expandable via `methodUri`. Detailed acquisition parameters (sample rate, channel count, montage) belong on `pub.layers.media` records, not the experiment definition. See the [Psycholinguistic Data guide](./psycholinguistic-data.md) for media record examples.
+All values are community-expandable via `methodUri`. Detailed acquisition parameters (sample rate, channel count, montage) belong on `pub.layers.media.media` records, not the experiment definition. See the [Psycholinguistic Data guide](./psycholinguistic-data.md) for media record examples.
 
 ### Examples
 
@@ -371,7 +371,7 @@ EEG study with RSVP and a behavioral task:
 
 ```json
 {
-  "$type": "pub.layers.judgment#experimentDef",
+  "$type": "pub.layers.judgment.experimentDef",
   "name": "N400 semantic violation study",
   "measureType": "acceptability",
   "taskType": "binary",
@@ -395,7 +395,7 @@ Eye-tracking natural reading with no explicit task:
 
 ```json
 {
-  "$type": "pub.layers.judgment#experimentDef",
+  "$type": "pub.layers.judgment.experimentDef",
   "name": "Garden-path reading study",
   "measureType": "reading-time",
   "presentation": {
@@ -412,7 +412,7 @@ Self-paced reading:
 
 ```json
 {
-  "$type": "pub.layers.judgment#experimentDef",
+  "$type": "pub.layers.judgment.experimentDef",
   "name": "Garden-path SPR study",
   "measureType": "reading-time",
   "presentation": {
@@ -432,7 +432,7 @@ fMRI with auditory narrative (passive):
 
 ```json
 {
-  "$type": "pub.layers.judgment#experimentDef",
+  "$type": "pub.layers.judgment.experimentDef",
   "name": "Narrative comprehension fMRI",
   "measureType": "comprehension",
   "presentation": {
@@ -455,7 +455,7 @@ A template contains text with `{slotName}` placeholders, plus slot definitions t
 
 ```json
 {
-  "$type": "pub.layers.resource#template",
+  "$type": "pub.layers.resource.template",
   "name": "Transitive sentence template",
   "text": "{subject} {verb} {object} {adjunct}",
   "language": "en",
@@ -499,7 +499,7 @@ A filling maps each slot to a specific filler and records the rendered text:
 
 ```json
 {
-  "$type": "pub.layers.resource#filling",
+  "$type": "pub.layers.resource.filling",
   "templateRef": "at://did:plc:researcher/pub.layers.resource.template/transitive-template",
   "slotFillings": [
     {
@@ -525,7 +525,7 @@ A filling maps each slot to a specific filler and records the rendered text:
   ],
   "renderedText": "The cat chased the mouse across the garden",
   "strategy": "exhaustive",
-  "expressionRef": "at://did:plc:researcher/pub.layers.expression/item-42"
+  "expressionRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42"
 }
 ```
 
@@ -535,7 +535,7 @@ Multi-part stimuli (context + target + question) use template compositions:
 
 ```json
 {
-  "$type": "pub.layers.resource#templateComposition",
+  "$type": "pub.layers.resource.templateComposition",
   "name": "Reading comprehension item",
   "compositionType": "sequence",
   "members": [
@@ -574,7 +574,7 @@ The `experimentDef` record specifies the full experimental design, including lis
 
 ```json
 {
-  "$type": "pub.layers.judgment#experimentDef",
+  "$type": "pub.layers.judgment.experimentDef",
   "name": "Relative clause attachment ambiguity",
   "measureType": "acceptability",
   "taskType": "ordinal-scale",
@@ -587,7 +587,7 @@ The `experimentDef` record specifies the full experimental design, including lis
   "scaleMin": 1,
   "scaleMax": 7,
   "guidelines": "Read each sentence and rate how natural it sounds...",
-  "ontologyRef": "at://did:plc:researcher/pub.layers.ontology/rc-attachment-types",
+  "ontologyRef": "at://did:plc:researcher/pub.layers.ontology.ontology/rc-attachment-types",
   "templateRefs": [
     "at://did:plc:researcher/pub.layers.resource.template/rc-high-attach",
     "at://did:plc:researcher/pub.layers.resource.template/rc-low-attach"
@@ -685,7 +685,7 @@ Eye-tracking data collected during a judgment task can be stored alongside the j
       { "key": "eyetracking.numFixations", "value": 8 },
       { "key": "eyetracking.numRegressions", "value": 2 },
       { "key": "eyetracking.firstFixationDuration", "value": 245 },
-      { "key": "eyetracking.gazeDataRef", "value": "at://did:plc:researcher/pub.layers.media/et-session-017" }
+      { "key": "eyetracking.gazeDataRef", "value": "at://did:plc:researcher/pub.layers.media.media/et-session-017" }
     ]
   }
 }
@@ -719,7 +719,7 @@ The `agreementReport` record summarizes inter-annotator agreement across judgmen
 
 ```json
 {
-  "$type": "pub.layers.judgment#agreementReport",
+  "$type": "pub.layers.judgment.agreementReport",
   "experimentRef": "at://did:plc:researcher/pub.layers.judgment.experimentDef/ner-study",
   "judgmentSetRefs": [
     "at://did:plc:annotator1/pub.layers.judgment.judgmentSet/ner-batch1",
@@ -736,7 +736,7 @@ The `agreementReport` record summarizes inter-annotator agreement across judgmen
 
 ```json
 {
-  "$type": "pub.layers.judgment#agreementReport",
+  "$type": "pub.layers.judgment.agreementReport",
   "experimentRef": "at://did:plc:researcher/pub.layers.judgment.experimentDef/naturalness-study",
   "judgmentSetRefs": [
     "at://did:plc:annotator1/pub.layers.judgment.judgmentSet/nat-batch1",
@@ -754,14 +754,14 @@ The `agreementReport` record summarizes inter-annotator agreement across judgmen
 
 | Metric | Use Case | Scale |
 |--------|----------|-------|
-| `cohens-kappa` | Two annotators, categorical data | 0-10000 (maps to 0.0-1.0) |
-| `fleiss-kappa` | Multiple annotators, categorical data | 0-10000 |
-| `krippendorff-alpha` | Any number of annotators, any scale type | 0-10000 |
-| `percent-agreement` | Simple agreement percentage | 0-10000 |
-| `correlation` | Ordinal-scale judgments | 0-10000 (maps to 0.0-1.0) |
-| `f1` | Span labeling overlap | 0-10000 |
+| `cohens-kappa` | Two annotators, categorical data | 0-1000 (maps to 0.0-1.0) |
+| `fleiss-kappa` | Multiple annotators, categorical data | 0-1000 |
+| `krippendorff-alpha` | Any number of annotators, any scale type | 0-1000 |
+| `percent-agreement` | Simple agreement percentage | 0-1000 |
+| `correlation` | Ordinal-scale judgments | 0-1000 (maps to 0.0-1.0) |
+| `f1` | Span labeling overlap | 0-1000 |
 
-All metric values use the 0-10000 integer scale for consistent representation without floating-point issues. The `metricUri` field allows community-defined metrics beyond these known values.
+All metric values use the 0-1000 integer scale for consistent representation without floating-point issues. The `metricUri` field allows community-defined metrics beyond these known values.
 
 ## See Also
 

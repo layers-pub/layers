@@ -1,0 +1,93 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.persona.persona",
+  "description": "Persona records define annotation frameworks and analyst perspectives. Different personas can annotate the same data with different ontologies and interpretive frameworks, following FOVEA's persona-based approach.",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A persona representing an annotator's role, expertise, and interpretive framework.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["name", "createdAt"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The persona name (e.g., 'Syntactician', 'Intelligence Analyst', 'Biomedical NER Annotator').",
+            "maxLength": 256
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the persona's role, expertise, and information needs.",
+            "maxLength": 10000
+          },
+          "domainUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the domain definition node. Community-expandable via knowledge graph."
+          },
+          "domain": {
+            "type": "string",
+            "description": "Domain slug (fallback when domainUri unavailable).",
+            "knownValues": ["linguistics", "nlp", "biomedical", "legal", "intelligence", "social-science", "humanities", "custom"],
+            "maxLength": 256
+          },
+          "kindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the persona kind definition node. Community-expandable via knowledge graph."
+          },
+          "kind": {
+            "type": "string",
+            "description": "Persona kind slug (fallback when kindUri unavailable).",
+            "knownValues": ["human-annotator", "ml-model", "guidelines-persona", "expert-panel", "crowd-worker", "custom"],
+            "maxLength": 128
+          },
+          "parentRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of a parent persona this one specializes (e.g., 'Biomedical NER Annotator' specializes 'NER Annotator')."
+          },
+          "ontologyRefs": {
+            "type": "array",
+            "description": "Ontologies this persona uses for annotation.",
+            "maxLength": 32,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "guidelines": {
+            "type": "string",
+            "description": "Annotation guidelines text.",
+            "maxLength": 100000
+          },
+          "guidelinesBlob": {
+            "type": "blob",
+            "description": "Annotation guidelines document.",
+            "accept": ["application/pdf", "text/markdown", "text/plain"],
+            "maxSize": 10485760
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "Knowledge graph references (e.g., ORCID, institutional identifiers, Wikidata for organizations).",
+            "maxLength": 32,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features: expertise level, certification, language proficiency, inter-annotator reliability, etc."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

@@ -26,27 +26,27 @@ Chive (chive.pub) is a decentralized eprint service built on ATProto. It hosts s
 
 Layers provides two integration points for Chive:
 
-- `pub.layers.eprint` connects Layers data (corpora, annotation layers, model outputs) to specific Chive eprints, including reproducibility metadata (code URI, commit hash, random seed). (Chive-specific eprint linking previously in `pub.layers.chive#eprintDataLink` has been absorbed into the general-purpose `pub.layers.eprint` lexicon.)
-- `pub.layers.graph#graphEdge` connects individual Layers objects (annotations, expressions) to Chive knowledge graph nodes via edges with types like `grounding`, `instance-of`, or `denotes`.
+- `pub.layers.eprint.eprint` connects Layers data (corpora, annotation layers, model outputs) to specific Chive eprints, including reproducibility metadata (code URI, commit hash, random seed). (Chive-specific eprint linking previously in `pub.layers.chive#eprintDataLink` has been absorbed into the general-purpose `pub.layers.eprint` namespace.)
+- `pub.layers.graph.graphEdge` connects individual Layers objects (annotations, expressions) to Chive knowledge graph nodes via edges with types like `grounding`, `instance-of`, or `denotes`.
 
 Expressions can also reference eprints directly via `eprintRef`:
 
 ```json
 {
-  "$type": "pub.layers.expression",
+  "$type": "pub.layers.expression.expression",
   "text": "...",
   "eprintRef": "at://did:plc:author/pub.chive.eprint/abc123"
 }
 ```
 
-The `pub.layers.eprint` lexicon handles both Chive-specific and general-purpose eprint linking for identifiers such as DOI, arXiv, ACL Anthology, Semantic Scholar, and PubMed.
+The `pub.layers.eprint` namespace handles both Chive-specific and general-purpose eprint linking for identifiers such as DOI, arXiv, ACL Anthology, Semantic Scholar, and PubMed.
 
 ## Layers Types Involved
 
 | Type | Role |
 |---|---|
-| `pub.layers.eprint` | Links corpus/annotation data to eprints (including Chive eprints) by AT-URI, DOI, arXiv ID, or other identifiers |
-| `pub.layers.graph#graphEdge` | Links a Layers object to a Chive knowledge graph node (via `target.knowledgeRef` with `source="chive.pub"`) |
+| `pub.layers.eprint.eprint` | Links corpus/annotation data to eprints (including Chive eprints) by AT-URI, DOI, arXiv ID, or other identifiers |
+| `pub.layers.graph.graphEdge` | Links a Layers object to a Chive knowledge graph node (via `target.knowledgeRef` with `source="chive.pub"`) |
 | `pub.layers.expression.eprintRef` | Direct AT-URI reference from expression to eprint |
 
 ## Discovery

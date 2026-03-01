@@ -1,0 +1,211 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.annotation.annotationLayer",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A named layer of annotations over an expression. All annotation types use this single record type. The combination of kind, subkind, and formalism tells the appview how to render. Multiple layers can coexist for the same expression.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["expression", "kind", "annotations", "createdAt"],
+        "properties": {
+          "expression": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "The expression this annotation layer applies to."
+          },
+          "kindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the annotation kind definition node. Community-expandable via knowledge graph."
+          },
+          "kind": {
+            "type": "string",
+            "description": "Primary annotation kind slug (fallback when kindUri unavailable). Determines the structural interpretation of annotations in this layer.",
+            "knownValues": [
+              "token-tag",
+              "span",
+              "relation",
+              "tree",
+              "graph",
+              "tier",
+              "document-tag"
+            ],
+            "maxLength": 128
+          },
+          "subkindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the annotation subkind definition node. Community-expandable via knowledge graph."
+          },
+          "subkind": {
+            "type": "string",
+            "description": "Annotation subkind slug (fallback when subkindUri unavailable). The appview uses this for specialized rendering.",
+            "knownValues": [
+              "pos",
+              "xpos",
+              "ner",
+              "lemma",
+              "morph",
+              "supersense",
+              "sense",
+              "chunk",
+              "speaker",
+              "gloss",
+              "phonetic",
+              "prosody",
+              "tobi",
+              "language-id",
+              "entity-mention",
+              "situation-mention",
+              "frame",
+              "predicate",
+              "discourse-unit",
+              "speech-act",
+              "temporal-expression",
+              "temporal-signal",
+              "spatial-expression",
+              "spatial-signal",
+              "spatial-relation",
+              "location-mention",
+              "sentiment",
+              "emotion",
+              "stance",
+              "information-structure",
+              "error",
+              "correction",
+              "code-switch",
+              "highlight",
+              "comment",
+              "bookmark",
+              "temporal-value",
+              "temporal-vagueness",
+              "dependency",
+              "enhanced-dependency",
+              "constituency",
+              "ccg",
+              "coreference",
+              "bridging",
+              "temporal-relation",
+              "causal-relation",
+              "discourse-relation",
+              "custom"
+            ],
+            "maxLength": 128
+          },
+          "formalismUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the formalism definition node. Community-expandable via knowledge graph."
+          },
+          "formalism": {
+            "type": "string",
+            "description": "Formalism slug (fallback when formalismUri unavailable). The linguistic formalism or annotation standard used.",
+            "knownValues": [
+              "universal-dependencies",
+              "penn-treebank",
+              "stanford",
+              "prague",
+              "propbank",
+              "framenet",
+              "verbnet",
+              "amr",
+              "ucca",
+              "rst",
+              "erst",
+              "sdrt",
+              "pdtb",
+              "timeml",
+              "iso-space",
+              "spatialml",
+              "conll-u",
+              "brat",
+              "elan",
+              "leipzig-glossing",
+              "ipa",
+              "tobi",
+              "bpe",
+              "sentencepiece",
+              "unimorph",
+              "wals",
+              "custom"
+            ],
+            "maxLength": 128
+          },
+          "sourceMethodUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the annotation source method definition node. Community-expandable via knowledge graph."
+          },
+          "sourceMethod": {
+            "type": "string",
+            "description": "How this annotation layer was produced (fallback when sourceMethodUri unavailable). Follows UD's per-layer annotation source tracking.",
+            "knownValues": [
+              "manual-native",
+              "manual-corrected",
+              "automatic",
+              "automatic-corrected",
+              "converted",
+              "converted-corrected",
+              "crowd-sourced",
+              "custom"
+            ],
+            "maxLength": 128
+          },
+          "labelSet": {
+            "type": "string",
+            "description": "Identifier for the label set used (e.g., 'universal-pos', 'ontonotes-ner', 'penn-treebank-pos').",
+            "maxLength": 256
+          },
+          "ontologyRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to a pub.layers.ontology defining the types used in this layer."
+          },
+          "tokenizationId": {
+            "type": "ref",
+            "ref": "pub.layers.defs#uuid",
+            "description": "For token-aligned layers (kind=token-tag, dependency, constituency, etc.): the tokenization these annotations are aligned to."
+          },
+          "rank": {
+            "type": "integer",
+            "description": "Rank among k-best alternatives (1 = best).",
+            "minimum": 1
+          },
+          "alternativesRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to the top-ranked layer in a k-best group."
+          },
+          "parentLayerRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "For dependent/subordinate layers: the parent layer this one subdivides or refines. Supports ELAN-style tier dependencies, error-correction pairs, etc."
+          },
+          "language": {
+            "type": "string",
+            "description": "BCP-47 language tag for this annotation layer, if different from the expression's language.",
+            "maxLength": 64
+          },
+          "annotations": {
+            "type": "array",
+            "description": "The annotations in this layer.",
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.annotation.defs#annotation"
+            }
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

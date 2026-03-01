@@ -23,21 +23,21 @@ Salt is a graph-based meta-model for linguistic annotation that serves as the co
 
 | Salt Concept | Layers Equivalent | Notes |
 |---|---|---|
-| `SDocument` | `pub.layers.expression` | Root document container. |
-| `SDocumentGraph` | All annotation layers + segmentation for an expression | The set of all annotations over a document. |
-| `SCorpus` | `pub.layers.corpus` | Corpus container. |
+| `SDocument` | `pub.layers.expression.expression` | Root document container. |
+| `SDocumentGraph` | All annotation layers + expression hierarchy + segmentation (tokenization) for an expression | The set of all annotations over a document. Structural hierarchy is represented by expression records with `parentRef`; tokenization is in segmentation records. |
+| `SCorpus` | `pub.layers.corpus.corpus` | Corpus container. |
 | `SCorpusGraph` | Corpus membership records | Corpus hierarchy. |
 | `STextualDS` (textual data source) | `pub.layers.expression.text` | Primary text data. The SofA. |
-| `SMedialDS` (media data source) | `pub.layers.media` | Audio/video primary data. |
+| `SMedialDS` (media data source) | `pub.layers.media.media` | Audio/video primary data. |
 | `STimeline` | Implicit in `pub.layers.defs#temporalSpan` | Salt's timeline for spoken data alignment. Time points map to millisecond values. |
 
 ### Annotation Nodes
 
 | Salt Node Type | Layers Equivalent | Notes |
 |---|---|---|
-| `SToken` | `pub.layers.expression` (kind: `token`) | Token node with text span. |
-| `SSpan` | `pub.layers.annotation#annotation` with `anchor.tokenRefSequence` | Span over tokens (e.g., NP, entity mention). |
-| `SStructure` | `pub.layers.annotation#annotation` with `parentId`/`childIds` | Hierarchical node (constituency tree node, discourse unit). |
+| `SToken` | `pub.layers.expression.expression` (kind: `token`) | Token node with text span. |
+| `SSpan` | `pub.layers.annotation.defs#annotation` with `anchor.tokenRefSequence` | Span over tokens (e.g., NP, entity mention). |
+| `SStructure` | `pub.layers.annotation.defs#annotation` with `parentId`/`childIds` | Hierarchical node (constituency tree node, discourse unit). |
 
 ### Annotation Edges
 
@@ -47,7 +47,7 @@ Salt is a graph-based meta-model for linguistic annotation that serves as the co
 | `STimelineRelation` | Temporal anchoring via `annotation.anchor.temporalSpan` | Token-to-timeline anchoring for spoken data. |
 | `SSpanningRelation` | `annotation.anchor.tokenRefSequence` | Span-to-token membership. |
 | `SDominanceRelation` | `annotation.parentId`/`annotation.childIds` | Parent-child edges in hierarchical structures (constituency trees). |
-| `SPointingRelation` | `pub.layers.graph#graphEdge` or `annotation.headIndex`/`argumentRef` | Directed edge between nodes (dependency arcs, coreference links, discourse relations). |
+| `SPointingRelation` | `pub.layers.graph.graphEdge` or `annotation.headIndex`/`argumentRef` | Directed edge between nodes (dependency arcs, coreference links, discourse relations). |
 | `SOrderRelation` | Token ordering via `tokenIndex` | Sequential ordering of tokens. |
 | `SMedialRelation` | `annotation.anchor.temporalSpan` | Node-to-media timeline anchoring. |
 
@@ -58,7 +58,7 @@ Salt is a graph-based meta-model for linguistic annotation that serves as the co
 | `SAnnotation` (on node) | `annotation.label`, `annotation.value`, or `annotation.features` | Key-value annotations on nodes. |
 | `SAnnotation` (on edge) | `graphEdge.properties` or `annotation.label` (for dependency labels) | Key-value annotations on edges. |
 | `SMetaAnnotation` | `pub.layers.defs#annotationMetadata` + `featureMap` | Document and corpus-level metadata. |
-| `SLayer` | `pub.layers.annotation#annotationLayer` | Named annotation layers grouping nodes and edges. Salt layers map directly to Layers annotation layers. |
+| `SLayer` | `pub.layers.annotation.annotationLayer` | Named annotation layers grouping nodes and edges. Salt layers map directly to Layers annotation layers. |
 
 ### Multi-Layer Architecture
 
@@ -74,9 +74,9 @@ Salt explicitly supports multiple annotation layers over the same primary data, 
 
 | PAULA Element | Layers Equivalent | Notes |
 |---|---|---|
-| `<paula>` (document) | `pub.layers.expression` | Document root. |
+| `<paula>` (document) | `pub.layers.expression.expression` | Document root. |
 | `<body>` (primary data) | `expression.text` | Primary text. |
-| `<markList>` (token/span markables) | `pub.layers.expression` tokens + annotation spans | Token and span definitions. |
+| `<markList>` (token/span markables) | `pub.layers.expression.expression` tokens + annotation spans | Token and span definitions. |
 | `<mark>` | `token` or `annotation` | Individual markable. |
 | `<structList>` | `annotationLayer` with hierarchical annotations | Structural annotations (trees). |
 | `<struct>` | `annotation` with `parentId`/`childIds` | Structural node. |

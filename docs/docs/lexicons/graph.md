@@ -9,6 +9,7 @@ Generic typed property graph for knowledge representation and cross-referencing.
 ## Types
 
 ### graphNode
+**NSID:** `pub.layers.graph.graphNode`
 **Type:** Record
 
 A standalone graph node for entities, concepts, situations, or other objects that don't have another Layers record. Existing Layers records (expressions, annotations, typeDefs) are implicitly nodes via `objectRef`. This record is only needed for nodes that exist purely in the graph.
@@ -24,6 +25,7 @@ A standalone graph node for entities, concepts, situations, or other objects tha
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### graphEdge
+**NSID:** `pub.layers.graph.graphEdge`
 **Type:** Record
 
 A single directed, typed edge between any two Layers objects. Supports multidigraphs (multiple edges between the same pair of nodes) and cycles. Source and target can be any combination of local annotations (by UUID), remote records (by AT-URI), or external knowledge graph nodes (by `knowledgeRef`).
@@ -36,7 +38,7 @@ A single directed, typed edge between any two Layers objects. Supports multidigr
 | `edgeType` | string | Edge type slug (fallback). See edge type categories below. |
 | `label` | string | Optional edge label. For temporal edges, can carry the linguistic signal/connective (e.g., "before", "since"). For spatial edges, can carry the spatial signal (e.g., "in", "near", "above"). |
 | `ordinal` | integer | Optional ordering among edges of the same type from the same source. |
-| `confidence` | integer | Confidence score 0-10000. |
+| `confidence` | integer | Confidence score 0-1000. |
 | `properties` | ref | Ref: `pub.layers.defs#featureMap` |
 | `metadata` | ref | Ref: `pub.layers.defs#annotationMetadata` |
 | `createdAt` | datetime | Record creation timestamp. |
@@ -97,6 +99,7 @@ A single directed, typed edge between any two Layers objects. Supports multidigr
 **Generic:** `custom`
 
 ### graphEdgeSet
+**NSID:** `pub.layers.graph.graphEdgeSet`
 **Type:** Record
 
 A batch of typed, directed edges for efficient bulk operations. All edges in the set share the same edge type and optional expression context. Use `graphEdge` for individual edges; use `graphEdgeSet` for bulk imports, model outputs, or annotations that produce many edges at once.
@@ -106,13 +109,14 @@ A batch of typed, directed edges for efficient bulk operations. All edges in the
 | `expression` | at-uri | Optional primary expression context. |
 | `edgeTypeUri` | at-uri | AT-URI of the edge type definition node. Community-expandable via knowledge graph. |
 | `edgeType` | string | Edge type slug shared by all edges in this set (fallback). Same categories as `graphEdge.edgeType`. |
-| `edges` | array | The edges. Array of ref: `#graphEdgeEntry` |
+| `edges` | array | The edges. Array of ref: `pub.layers.graph.defs#graphEdgeEntry` |
 | `metadata` | ref | Ref: `pub.layers.defs#annotationMetadata` |
 | `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
 | `features` | ref | Open-ended features (e.g., extraction method, model version). Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### graphEdgeEntry
+**NSID:** `pub.layers.graph.defs#graphEdgeEntry`
 **Type:** Object
 
 A single directed edge within a `graphEdgeSet`. Can optionally override the set-level edge type.
@@ -124,5 +128,79 @@ A single directed edge within a `graphEdgeSet`. Can optionally override the set-
 | `edgeType` | string | Edge type slug (fallback). |
 | `source` | ref | Source node. Ref: `pub.layers.defs#objectRef` |
 | `target` | ref | Target node. Ref: `pub.layers.defs#objectRef` |
-| `confidence` | integer | Confidence score 0-10000. |
+| `confidence` | integer | Confidence score 0-1000. |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
+
+## XRPC Queries
+
+### getGraphNode
+**NSID:** `pub.layers.graph.getGraphNode`
+
+Retrieve a single graph node record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the graph node record. |
+
+**Output**: The graph node record object.
+
+### listGraphNodes
+**NSID:** `pub.layers.graph.listGraphNodes`
+
+List graph node records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: graphNode[], cursor?: string }`
+
+### getGraphEdge
+**NSID:** `pub.layers.graph.getGraphEdge`
+
+Retrieve a single graph edge record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the graph edge record. |
+
+**Output**: The graph edge record object.
+
+### listGraphEdges
+**NSID:** `pub.layers.graph.listGraphEdges`
+
+List graph edge records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: graphEdge[], cursor?: string }`
+
+### getGraphEdgeSet
+**NSID:** `pub.layers.graph.getGraphEdgeSet`
+
+Retrieve a single graph edge set record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the graph edge set record. |
+
+**Output**: The graph edge set record object.
+
+### listGraphEdgeSets
+**NSID:** `pub.layers.graph.listGraphEdgeSets`
+
+List graph edge set records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: graphEdgeSet[], cursor?: string }`

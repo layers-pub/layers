@@ -8,7 +8,8 @@ An Expression is any linguistic unit in Layers, from a single morpheme to a full
 
 ## Types
 
-### main
+### expression
+**NSID:** `pub.layers.expression.expression`
 **Type:** Record
 
 An expression record representing any linguistic unit, from a full document to a single morpheme, with optional recursive nesting.
@@ -32,3 +33,29 @@ An expression record representing any linguistic unit, from a full document to a
 | `anchor` | ref | How this expression attaches to its parent (character span, temporal span, etc.). Ref: `pub.layers.defs#anchor` |
 | `languages` | array | Additional BCP-47 language tags for multilingual or code-switching expressions. Array of strings |
 | `createdAt` | datetime | Record creation timestamp. |
+
+## XRPC Queries
+
+### getExpression
+**NSID:** `pub.layers.expression.getExpression`
+
+Retrieve a single expression record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the expression record. |
+
+**Output**: The expression record object.
+
+### listExpressions
+**NSID:** `pub.layers.expression.listExpressions`
+
+List expression records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: expression[], cursor?: string }`

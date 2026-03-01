@@ -20,7 +20,7 @@ Every annotation attaches to source data through an [`anchor`](../foundations/pr
 | `pageAnchor` | Paged documents | `{page, x, y, width, height}` |
 | `externalTarget` | Web/External | URL or resource identifier |
 
-The same `pub.layers.annotation#annotation` record type is used regardless of modality. A POS tag on a text token and a label on a video region differ only in their anchor kind.
+The same `pub.layers.annotation.defs#annotation` record type is used regardless of modality. A POS tag on a text token and a label on a video region differ only in their anchor kind.
 
 ## Expressions Across Modalities
 
@@ -38,7 +38,7 @@ Each expression can reference its parent via `parentRef` and specify how it atta
 
 ## Media Records
 
-[Media records](../lexicons/media.md) (`pub.layers.media`) store technical metadata about source files. An expression references its media via the `mediaRef` field.
+[Media records](../lexicons/media.md) (`pub.layers.media.media`) store technical metadata about source files. An expression references its media via the `mediaRef` field.
 
 ```
 Expression (kind="recording", text="Hello world")
@@ -112,7 +112,7 @@ Audio annotation uses `temporalSpan` anchors with millisecond offsets. The expre
 
 Multiple annotation layers (speaker turns, transcription, POS tags, prosody) can all reference the same temporal spans, building up layers of analysis.
 
-For forced alignment between audio and text, use [`pub.layers.alignment`](../lexicons/alignment.md) with `kind="audio-to-text"`.
+For forced alignment between audio and text, use [`pub.layers.alignment.alignment`](../lexicons/alignment.md) with `kind="audio-to-text"`.
 
 ## Annotating Video
 
@@ -216,7 +216,7 @@ Web content uses `externalTarget` anchors combined with W3C selectors:
 {
   "anchor": {
     "kind": "externalTarget",
-    "sourceUri": "at://did:plc:.../pub.layers.expression/...",
+    "sourceUri": "at://did:plc:.../pub.layers.expression.expression/...",
     "selector": {
       "type": "TextQuoteSelector",
       "exact": "linguistic annotation",
@@ -243,7 +243,7 @@ Expression (kind="multimodal")
         └── links video temporal spans to transcript tokens
 ```
 
-The [`pub.layers.alignment`](../lexicons/alignment.md) lexicon connects annotations across modalities. An `audio-to-text` alignment links temporal spans in the audio/video to token ranges in the transcript.
+The [`pub.layers.alignment.alignment`](../lexicons/alignment.md) lexicon connects annotations across modalities. An `audio-to-text` alignment links temporal spans in the audio/video to token ranges in the transcript.
 
 ## Semantic Time and Space
 

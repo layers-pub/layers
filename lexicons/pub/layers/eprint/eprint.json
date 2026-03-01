@@ -1,0 +1,115 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.eprint.eprint",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A link between a Layers data record and an eprint.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["eprintIdentifier", "linkType", "createdAt"],
+        "properties": {
+          "eprintIdentifier": {
+            "type": "string",
+            "description": "The eprint identifier (DOI, arXiv ID, ACL Anthology ID, etc.).",
+            "maxLength": 512
+          },
+          "eprintIdentifierTypeUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the identifier type definition node. Community-expandable via knowledge graph."
+          },
+          "eprintIdentifierType": {
+            "type": "string",
+            "description": "Identifier type slug (fallback when eprintIdentifierTypeUri unavailable).",
+            "knownValues": ["doi", "arxiv", "acl-anthology", "semantic-scholar", "pubmed", "isbn", "url", "at-uri", "custom"],
+            "maxLength": 128
+          },
+          "eprintUri": {
+            "type": "string",
+            "format": "uri",
+            "description": "Full URI of the eprint."
+          },
+          "platformEprintRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the eprint record on its publication platform (e.g., chive.pub, any ATProto-native publication service)."
+          },
+          "linkTypeUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the link type definition node. Community-expandable via knowledge graph."
+          },
+          "linkType": {
+            "type": "string",
+            "description": "Link type slug (fallback when linkTypeUri unavailable).",
+            "knownValues": [
+              "produced-by",
+              "described-in",
+              "evaluated-in",
+              "replicated-from",
+              "extends",
+              "supplements",
+              "cited-in",
+              "annotates",
+              "training-data-for",
+              "test-data-for"
+            ],
+            "maxLength": 128
+          },
+          "expressionRefs": {
+            "type": "array",
+            "description": "References to Layers expressions linked to this eprint.",
+            "maxLength": 1000,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "annotationRefs": {
+            "type": "array",
+            "description": "References to specific annotation records linked to this eprint.",
+            "maxLength": 1000,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "corpusRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to a corpus record."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the relationship.",
+            "maxLength": 10000
+          },
+          "citation": {
+            "type": "string",
+            "description": "Full citation string.",
+            "maxLength": 4096
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "Knowledge graph references (e.g., Wikidata for the venue, DBLP, Semantic Scholar corpus ID).",
+            "maxLength": 32,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

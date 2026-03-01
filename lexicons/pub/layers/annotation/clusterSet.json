@@ -1,0 +1,67 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.annotation.clusterSet",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "Groups annotations into equivalence classes. Used for coreference resolution (entity clusters, situation clusters), bridging anaphora grouping, and any annotation clustering task.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["kind", "clusters", "createdAt"],
+        "properties": {
+          "expression": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Primary expression context. Optional for cross-document clustering."
+          },
+          "expressionRefs": {
+            "type": "array",
+            "description": "For cross-document clustering: all expressions these clusters span.",
+            "maxLength": 10000,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "corpusRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Corpus these clusters span (for cross-document clustering)."
+          },
+          "kindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the clustering kind definition node. Community-expandable via knowledge graph."
+          },
+          "kind": {
+            "type": "string",
+            "description": "Clustering kind slug (fallback when kindUri unavailable).",
+            "knownValues": ["coreference", "situation-coreference", "bridging", "same-as", "clustering", "custom"],
+            "maxLength": 128
+          },
+          "layerRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "The annotation layer whose annotations these clusters group."
+          },
+          "clusters": {
+            "type": "array",
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.annotation.defs#cluster"
+            }
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

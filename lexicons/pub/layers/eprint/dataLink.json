@@ -1,0 +1,90 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.eprint.dataLink",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A link from an eprint to the Layers data it produced or is associated with. Generalizes the former chive-specific eprintDataLink.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["eprintUri", "dataKind", "createdAt"],
+        "properties": {
+          "eprintUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the eprint on its publication platform."
+          },
+          "eprintDid": {
+            "type": "string",
+            "format": "did",
+            "description": "DID of the eprint author/owner on the publication platform."
+          },
+          "dataKindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the data kind definition node. Community-expandable via knowledge graph."
+          },
+          "dataKind": {
+            "type": "string",
+            "description": "Data kind slug (fallback when dataKindUri unavailable).",
+            "knownValues": [
+              "corpus",
+              "annotation-layer",
+              "model-output",
+              "gold-standard",
+              "evaluation-data",
+              "supplementary",
+              "replication"
+            ],
+            "maxLength": 128
+          },
+          "corpusRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to a Layers corpus."
+          },
+          "expressionRefs": {
+            "type": "array",
+            "description": "References to specific Layers expressions.",
+            "maxLength": 10000,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "annotationRefs": {
+            "type": "array",
+            "description": "References to specific annotation records.",
+            "maxLength": 10000,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 10000
+          },
+          "paperSection": {
+            "type": "string",
+            "description": "Which section of the paper this data corresponds to (e.g., 'Section 4.2', 'Table 3', 'Appendix A').",
+            "maxLength": 256
+          },
+          "reproducibility": {
+            "type": "ref",
+            "ref": "pub.layers.eprint.defs#reproducibilityInfo"
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

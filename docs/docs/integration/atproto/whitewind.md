@@ -28,7 +28,7 @@ An `expression` record sets `sourceRef` to the AT-URI of a WhiteWind blog entry.
 
 ```json
 {
-  "$type": "pub.layers.expression",
+  "$type": "pub.layers.expression.expression",
   "sourceRef": "at://did:plc:author/com.whtwnd.blog.entry/abc123",
   "text": "...",
   "kind": "article"
@@ -39,9 +39,9 @@ An `expression` record sets `sourceRef` to the AT-URI of a WhiteWind blog entry.
 
 | Type | Role |
 |---|---|
-| `pub.layers.expression` | `sourceRef` points to `com.whtwnd.*` AT-URI |
-| `pub.layers.segmentation` | Tokenization of the blog entry text |
-| `pub.layers.annotation#annotationLayer` | Linguistic annotation layers over the entry |
+| `pub.layers.expression.expression` | `sourceRef` points to `com.whtwnd.*` AT-URI |
+| `pub.layers.segmentation.segmentation` | Tokenization of the blog entry text |
+| `pub.layers.annotation.annotationLayer` | Linguistic annotation layers over the entry |
 
 ## Discovery
 

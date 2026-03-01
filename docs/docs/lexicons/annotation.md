@@ -9,6 +9,7 @@ Unified abstract annotation model. All annotation types (token tags, span labels
 ## Types
 
 ### annotationLayer
+**NSID:** `pub.layers.annotation.annotationLayer`
 **Type:** Record
 
 A named layer of annotations over an expression. All annotation types use this single record type. The combination of kind, subkind, and formalism tells the appview how to render.
@@ -25,17 +26,18 @@ A named layer of annotations over an expression. All annotation types use this s
 | `sourceMethodUri` | at-uri | AT-URI of the annotation source method definition node. Community-expandable via knowledge graph. |
 | `sourceMethod` | string | How this annotation layer was produced (fallback when sourceMethodUri unavailable). Known values: `manual-native`, `manual-corrected`, `automatic`, `automatic-corrected`, `converted`, `converted-corrected`, `crowd-sourced`, `custom` |
 | `labelSet` | string | Identifier for the label set used (e.g., 'universal-pos', 'ontonotes-ner'). |
-| `ontologyRef` | at-uri | Reference to a pub.layers.ontology defining the types used in this layer. |
+| `ontologyRef` | at-uri | Reference to a `pub.layers.ontology.ontology` defining the types used in this layer. |
 | `tokenizationId` | ref | For token-aligned layers: the tokenization these annotations are aligned to. Ref: `pub.layers.defs#uuid` |
 | `parentLayerRef` | at-uri | For dependent/subordinate layers: the parent layer this one subdivides or refines. |
 | `language` | string | BCP-47 language tag for this annotation layer, if different from the expression's language. |
-| `annotations` | array | The annotations in this layer. Array of ref: `#annotation` |
+| `annotations` | array | The annotations in this layer. Array of ref: `pub.layers.annotation.defs#annotation` |
 | `rank` | integer | Rank among k-best alternatives (1 = best). Absent if this is the only/primary analysis. |
 | `alternativesRef` | at-uri | Reference to the top-ranked (rank=1) layer in a k-best group. Absent on the top-ranked layer itself. |
 | `metadata` | ref | Ref: `pub.layers.defs#annotationMetadata` |
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### annotation
+**NSID:** `pub.layers.annotation.defs#annotation`
 **Type:** Object
 
 A single abstract annotation. The fields populated depend on the layer's kind/subkind. For token-tags: tokenIndex + label. For spans: anchor + label. For trees: anchor + label + parentId/childIds. For relations: anchor + arguments.
@@ -52,15 +54,16 @@ A single abstract annotation. The fields populated depend on the layer's kind/su
 | `childIds` | array | Child annotation UUIDs in tree structures. Array of ref: `pub.layers.defs#uuid` |
 | `headIndex` | integer | Head/governor token index for directed arcs (dependency parsing). -1 for root. |
 | `targetIndex` | integer | Dependent/target token index for directed arcs. |
-| `arguments` | array | Role/argument fillers for predicate-argument structures. Array of ref: `#argumentRef` |
-| `confidence` | integer | Confidence score 0-10000. |
-| `ontologyTypeRef` | at-uri | Reference to a type definition in a pub.layers.ontology. |
+| `arguments` | array | Role/argument fillers for predicate-argument structures. Array of ref: `pub.layers.annotation.defs#argumentRef` |
+| `confidence` | integer | Confidence score 0-1000. |
+| `ontologyTypeRef` | at-uri | Reference to a type definition in a `pub.layers.ontology.typeDef`. |
 | `knowledgeRefs` | array | Links to external knowledge bases. Array of ref: `pub.layers.defs#knowledgeRef` |
 | `temporal` | ref | Structured temporal annotation. For `temporal-expression`, `temporal-value`, and `temporal-vagueness` subkinds. Subsumes TimeML TIMEX3 and OWL-Time. Ref: `pub.layers.defs#temporalExpression` |
 | `spatial` | ref | Structured spatial annotation. For `spatial-expression` and `location-mention` subkinds. Subsumes ISO-Space (ISO 24617-7), SpatialML, and GeoJSON/WKT geometries. Ref: `pub.layers.defs#spatialExpression` |
 | `features` | ref | Open-ended features. Ref: `pub.layers.defs#featureMap` |
 
 ### argumentRef
+**NSID:** `pub.layers.annotation.defs#argumentRef`
 **Type:** Object
 
 A role/argument reference in a predicate-argument structure. Uses the composable objectRef to point to another annotation.
@@ -72,6 +75,7 @@ A role/argument reference in a predicate-argument structure. Uses the composable
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 
 ### clusterSet
+**NSID:** `pub.layers.annotation.clusterSet`
 **Type:** Record
 
 Groups annotations into equivalence classes. Used for coreference resolution, bridging anaphora grouping, and any annotation clustering task.
@@ -84,11 +88,12 @@ Groups annotations into equivalence classes. Used for coreference resolution, br
 | `kindUri` | at-uri | AT-URI of the clustering kind definition node. Community-expandable via knowledge graph. |
 | `kind` | string | Clustering kind slug (fallback). Known values: `coreference`, `situation-coreference`, `bridging`, `same-as`, `clustering`, `custom` |
 | `layerRef` | at-uri | The annotation layer whose annotations these clusters group. |
-| `clusters` | array | The clusters. Array of ref: `#cluster` |
+| `clusters` | array | The clusters. Array of ref: `pub.layers.annotation.defs#cluster` |
 | `metadata` | ref | Ref: `pub.layers.defs#annotationMetadata` |
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### cluster
+**NSID:** `pub.layers.annotation.defs#cluster`
 **Type:** Object
 
 A cluster of annotations (e.g., coreferent entity mentions, situation mentions referring to the same situation).
@@ -100,3 +105,53 @@ A cluster of annotations (e.g., coreferent entity mentions, situation mentions r
 | `members` | array | References to the annotations in this cluster. Array of ref: `pub.layers.defs#objectRef` |
 | `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
+
+## XRPC Queries
+
+### getAnnotationLayer
+**NSID:** `pub.layers.annotation.getAnnotationLayer`
+
+Retrieve a single annotation layer record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the annotation layer record. |
+
+**Output**: The annotation layer record object.
+
+### listAnnotationLayers
+**NSID:** `pub.layers.annotation.listAnnotationLayers`
+
+List annotation layer records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: annotationLayer[], cursor?: string }`
+
+### getClusterSet
+**NSID:** `pub.layers.annotation.getClusterSet`
+
+Retrieve a single cluster set record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the cluster set record. |
+
+**Output**: The cluster set record object.
+
+### listClusterSets
+**NSID:** `pub.layers.annotation.listClusterSets`
+
+List cluster set records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: clusterSet[], cursor?: string }`

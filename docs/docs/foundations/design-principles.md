@@ -17,7 +17,7 @@ Layers makes no commitment to any linguistic theory. All labels, categories, typ
 
 Rather than defining dozens of specialized record types (OneRecord for POS tagging, AnotherRecord for NER, ThirdRecord for SRL), Layers defines a **single annotation type** discriminated by enumerated `kind` and `subkind` fields. All annotation logic flows through the same schema, reducing duplication and making composition transparent.
 
-> A token-level POS tag, a span-level named entity, and a sentence-level sentiment annotation all use the same `pub.layers.annotation.annotation` record type, differing only in `kind` ("token", "span", "sentence"), `subkind` ("pos-tag", "named-entity", "sentiment"), and their anchors.
+> A token-level POS tag, a span-level named entity, and a sentence-level sentiment annotation all use the same `pub.layers.annotation.annotationLayer` record type, differing only in `kind` ("token", "span", "sentence"), `subkind` ("pos-tag", "named-entity", "sentiment"), and their anchors.
 
 ## 3. Stand-Off Architecture
 

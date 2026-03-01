@@ -1,0 +1,83 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.ontology.typeDef",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A type definition within an ontology. Covers entity types, situation types, role types, and relation types in a single unified model.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["ontologyRef", "name", "typeKind", "createdAt"],
+        "properties": {
+          "ontologyRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "The ontology this type belongs to."
+          },
+          "name": {
+            "type": "string",
+            "description": "The type name/label.",
+            "maxLength": 512
+          },
+          "typeKindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the type kind definition node. Community-expandable via knowledge graph."
+          },
+          "typeKind": {
+            "type": "string",
+            "description": "Type kind slug (fallback when typeKindUri unavailable).",
+            "knownValues": ["entity-type", "situation-type", "role-type", "relation-type", "attribute-type"],
+            "maxLength": 128
+          },
+          "gloss": {
+            "type": "string",
+            "description": "Rich text definition/gloss of this type. May include references to other types and Wikidata entities, following FOVEA conventions.",
+            "maxLength": 10000
+          },
+          "parentTypeRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to a parent type (for type hierarchies/inheritance)."
+          },
+          "allowedRoles": {
+            "type": "array",
+            "description": "For frame/situation types: the roles that can be filled.",
+            "maxLength": 64,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.ontology.defs#roleSlot"
+            }
+          },
+          "allowedValues": {
+            "type": "array",
+            "description": "For attribute types: enumerated allowed values.",
+            "maxLength": 256,
+            "items": {
+              "type": "string",
+              "maxLength": 512
+            }
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "Knowledge graph groundings (Wikidata, chive.pub, FrameNet, etc.).",
+            "maxLength": 32,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

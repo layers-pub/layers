@@ -1,0 +1,82 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.resource.template",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A parameterized text template with named variable slots. Generalizes bead's Template (text pattern with {slotName} placeholders, slot definitions, and cross-slot constraints) and similar pattern structures used for stimulus generation, item construction, data augmentation, and controlled natural language. Templates are composable: they can reference ontologies, collections, and other templates.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["text", "slots", "createdAt"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Human-readable template name.",
+            "maxLength": 512
+          },
+          "text": {
+            "type": "string",
+            "description": "Template text with {slotName} placeholders (e.g., '{subject} {verb} the {object}').",
+            "maxLength": 50000
+          },
+          "language": {
+            "type": "string",
+            "description": "BCP-47 language tag.",
+            "maxLength": 32
+          },
+          "slots": {
+            "type": "array",
+            "description": "The named slots in this template.",
+            "maxLength": 64,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.resource.defs#slot"
+            }
+          },
+          "constraints": {
+            "type": "array",
+            "description": "Cross-slot constraints (e.g., agreement, semantic compatibility). These apply across multiple slots in this template.",
+            "maxLength": 64,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#constraint"
+            }
+          },
+          "ontologyRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to the ontology defining the type system used by this template."
+          },
+          "experimentRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to the experiment this template was designed for."
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "maxLength": 32,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who designed this template, with what tool."
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features: measureType, taskType, category, domain, etc."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

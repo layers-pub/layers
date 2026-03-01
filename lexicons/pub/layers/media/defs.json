@@ -1,0 +1,149 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.media.defs",
+  "defs": {
+    "audioInfo": {
+      "type": "object",
+      "description": "Composable audio metadata. Attach to any media record representing audio content: standalone audio files, audio tracks in video, etc.",
+      "properties": {
+        "sampleRate": {
+          "type": "integer",
+          "description": "Audio sample rate in Hz (e.g., 8000, 16000, 22050, 44100, 48000).",
+          "minimum": 1
+        },
+        "channels": {
+          "type": "integer",
+          "description": "Number of audio channels.",
+          "minimum": 1
+        },
+        "bitDepth": {
+          "type": "integer",
+          "description": "Audio bit depth (e.g., 16, 24, 32).",
+          "minimum": 1
+        },
+        "codec": {
+          "type": "string",
+          "description": "Audio codec identifier (e.g., 'pcm_s16le', 'aac', 'opus', 'flac').",
+          "maxLength": 128
+        },
+        "bitRate": {
+          "type": "integer",
+          "description": "Audio bitrate in bits per second.",
+          "minimum": 1
+        },
+        "bitRateMode": {
+          "type": "string",
+          "description": "Bitrate mode.",
+          "knownValues": ["cbr", "vbr"],
+          "maxLength": 16
+        },
+        "numberOfSamples": {
+          "type": "integer",
+          "description": "Total number of audio samples. Enables sample-accurate alignment.",
+          "minimum": 0
+        },
+        "speakerCount": {
+          "type": "integer",
+          "description": "Number of distinct speakers (for spoken language data).",
+          "minimum": 0
+        },
+        "transcriptRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of a pub.layers.expression containing the transcript."
+        },
+        "segmentationRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of a pub.layers.segmentation record structuring the transcript."
+        }
+      }
+    },
+    "videoInfo": {
+      "type": "object",
+      "description": "Composable video metadata. Attach to any media record representing video content.",
+      "properties": {
+        "width": {
+          "type": "integer",
+          "description": "Width in pixels.",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "description": "Height in pixels.",
+          "minimum": 1
+        },
+        "frameRate": {
+          "type": "integer",
+          "description": "Frame rate scaled by 100 (e.g., 2997 = 29.97fps). Avoids floats.",
+          "minimum": 1
+        },
+        "codec": {
+          "type": "string",
+          "description": "Video codec identifier (e.g., 'h264', 'h265', 'vp9', 'av1', 'prores').",
+          "maxLength": 128
+        },
+        "aspectRatio": {
+          "type": "string",
+          "description": "Display aspect ratio (e.g., '16:9', '4:3', '1:1').",
+          "maxLength": 32
+        },
+        "colorSpace": {
+          "type": "string",
+          "description": "Color space.",
+          "knownValues": ["rgb", "yuv420", "yuv422", "yuv444", "grayscale"],
+          "maxLength": 32
+        },
+        "bitRate": {
+          "type": "integer",
+          "description": "Video bitrate in bits per second.",
+          "minimum": 1
+        },
+        "scanType": {
+          "type": "string",
+          "description": "Scan type. Affects frame extraction for annotation.",
+          "knownValues": ["progressive", "interlaced"],
+          "maxLength": 32
+        }
+      }
+    },
+    "documentInfo": {
+      "type": "object",
+      "description": "Composable document/image metadata. Attach to any media record representing scanned documents, manuscripts, printed text, or other page-based media for OCR/HTR annotation workflows.",
+      "properties": {
+        "dpi": {
+          "type": "integer",
+          "description": "Scanning resolution in dots per inch (300+ recommended for OCR).",
+          "minimum": 1
+        },
+        "colorMode": {
+          "type": "string",
+          "description": "Scan color mode.",
+          "knownValues": ["color", "grayscale", "bitonal"],
+          "maxLength": 32
+        },
+        "pageCount": {
+          "type": "integer",
+          "description": "Number of pages in the document.",
+          "minimum": 1
+        },
+        "scriptSystem": {
+          "type": "string",
+          "description": "Writing system (ISO 15924 codes: 'Latn', 'Arab', 'Deva', 'Hans', 'Hant', 'Cyrl', 'Grek', etc.).",
+          "maxLength": 32
+        },
+        "writingDirection": {
+          "type": "string",
+          "description": "Primary text direction.",
+          "knownValues": ["ltr", "rtl", "ttb", "btt"],
+          "maxLength": 8
+        },
+        "ocrEngine": {
+          "type": "string",
+          "description": "OCR/HTR engine identifier (e.g., 'tesseract-5.3', 'transkribus', 'abbyy', 'google-vision').",
+          "maxLength": 256
+        }
+      }
+    }
+  }
+}

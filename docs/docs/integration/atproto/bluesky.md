@@ -28,22 +28,22 @@ An `expression` record sets `sourceRef` to the AT-URI of a Bluesky post. Annotat
 
 ```json
 {
-  "$type": "pub.layers.expression",
+  "$type": "pub.layers.expression.expression",
   "sourceRef": "at://did:plc:alice/app.bsky.feed.post/3k2a5b",
   "text": "the full post text",
   "kind": "social-media"
 }
 ```
 
-Annotation layers (POS tagging, NER, sentiment, discourse analysis, etc.) reference the expression and its segmentation as usual.
+Annotation layers (POS tagging, NER, sentiment, discourse analysis, etc.) reference the expression and its tokenization (via segmentation) as usual.
 
 ## Layers Types Involved
 
 | Type | Role |
 |---|---|
-| `pub.layers.expression` | `sourceRef` points to `app.bsky.feed.post` AT-URI |
-| `pub.layers.segmentation` | Tokenization of the post text |
-| `pub.layers.annotation#annotationLayer` | Linguistic annotation layers over the post |
+| `pub.layers.expression.expression` | `sourceRef` points to `app.bsky.feed.post` AT-URI |
+| `pub.layers.segmentation.segmentation` | Tokenization of the post text |
+| `pub.layers.annotation.annotationLayer` | Linguistic annotation layers over the post |
 
 ## Discovery
 

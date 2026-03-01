@@ -28,7 +28,7 @@ Layers `media` records can reference ATFile-hosted files via `externalUri`, or a
 
 ```json
 {
-  "$type": "pub.layers.media",
+  "$type": "pub.layers.media.media",
   "kind": "audio",
   "externalUri": "at://did:plc:owner/blue.zio.atfile.upload/abc123",
   "mimeType": "audio/wav",
@@ -46,8 +46,8 @@ This is relevant for multimodal annotation: audio/video files stored via ATFile 
 
 | Type | Role |
 |---|---|
-| `pub.layers.media` | `externalUri` points to `blue.zio.atfile.*` AT-URI |
-| `pub.layers.expression` | `mediaRef` references a Layers media record backed by ATFile |
+| `pub.layers.media.media` | `externalUri` points to `blue.zio.atfile.*` AT-URI |
+| `pub.layers.expression.expression` | `mediaRef` references a Layers media record backed by ATFile |
 | `pub.layers.defs#temporalSpan` | Temporal anchoring into ATFile-hosted audio/video |
 
 ## Discovery

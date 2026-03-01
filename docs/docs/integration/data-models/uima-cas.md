@@ -1,4 +1,4 @@
-# UIMA/CAS (Apache)
+# UIMA/CAS
 
 <div className="metadata-card">
 <dl>
@@ -23,23 +23,23 @@ UIMA is a framework for building text analytics pipelines. The Common Analysis S
 
 | UIMA/CAS Concept | Layers Equivalent | Notes |
 |---|---|---|
-| **CAS** (document container) | `pub.layers.expression` (record) | The CAS contains one or more SofAs plus all annotations. A Layers expression is the equivalent root container. |
-| **SofA** (Subject of Analysis) | `pub.layers.expression.text` + `pub.layers.media` | UIMA supports multiple SofAs (e.g., original text + translation + audio). Layers handles this with separate `expression` records linked by `pub.layers.alignment` for parallel text, and `mediaRef` for multimedia. |
-| **View** (named perspective) | `pub.layers.persona` + separate annotation layers | UIMA views partition annotations by perspective. Layers achieves this through persona-specific annotation layers with `metadata.personaRef`. |
-| **Type System** | `pub.layers.ontology` | UIMA's type system descriptor defines annotation types with inheritance. Layers's `ontology` with `typeDef` and `parentTypeRef` provides equivalent type hierarchies. |
-| **Type** | `pub.layers.ontology#typeDef` | A named type with features and parent type. `typeKind` + `allowedRoles` + `allowedValues` cover UIMA's feature declarations. |
-| **Feature** (on a type) | `pub.layers.ontology#roleSlot` + `typeDef.allowedValues` | UIMA features on types (e.g., `entityType` feature on `NamedEntity` type) map to role slots or allowed values on type definitions. |
-| **Annotation** (base type) | `pub.layers.annotation#annotation` | The base UIMA `Annotation` type has `begin`, `end` (character offsets) and a reference to its SofA. Layers's `annotation` has `anchor.textSpan` (begin/end) and the layer references an `expression`. |
-| **AnnotationBase** | `pub.layers.annotation#annotation` | Common fields: `uuid`, `confidence`, `features`. |
+| **CAS** (document container) | `pub.layers.expression.expression` (record) | The CAS contains one or more SofAs plus all annotations. A Layers expression is the equivalent root container. |
+| **SofA** (Subject of Analysis) | `pub.layers.expression.text` + `pub.layers.media.media` | UIMA supports multiple SofAs (e.g., original text + translation + audio). Layers handles this with separate `expression` records linked by `pub.layers.alignment.alignment` for parallel text, and `mediaRef` for multimedia. |
+| **View** (named perspective) | `pub.layers.persona.persona` + separate annotation layers | UIMA views partition annotations by perspective. Layers achieves this through persona-specific annotation layers with `metadata.personaRef`. |
+| **Type System** | `pub.layers.ontology.ontology` | UIMA's type system descriptor defines annotation types with inheritance. Layers's `ontology` with `typeDef` and `parentTypeRef` provides equivalent type hierarchies. |
+| **Type** | `pub.layers.ontology.typeDef` | A named type with features and parent type. `typeKind` + `allowedRoles` + `allowedValues` cover UIMA's feature declarations. |
+| **Feature** (on a type) | `pub.layers.ontology.defs#roleSlot` + `typeDef.allowedValues` | UIMA features on types (e.g., `entityType` feature on `NamedEntity` type) map to role slots or allowed values on type definitions. |
+| **Annotation** (base type) | `pub.layers.annotation.defs#annotation` | The base UIMA `Annotation` type has `begin`, `end` (character offsets) and a reference to its SofA. Layers's `annotation` has `anchor.textSpan` (begin/end) and the layer references an `expression`. |
+| **AnnotationBase** | `pub.layers.annotation.defs#annotation` | Common fields: `uuid`, `confidence`, `features`. |
 
 ### UIMA Built-in Types
 
 | UIMA Type | Layers Equivalent | Notes |
 |---|---|---|
-| `uima.tcas.Annotation` | `pub.layers.annotation#annotation` | Base annotation with span. |
-| `uima.tcas.DocumentAnnotation` | `pub.layers.expression` | Document-level metadata. |
+| `uima.tcas.Annotation` | `pub.layers.annotation.defs#annotation` | Base annotation with span. |
+| `uima.tcas.DocumentAnnotation` | `pub.layers.expression.expression` | Document-level metadata. |
 | `uima.cas.TOP` | No direct equivalent needed | Root of type hierarchy, implicit in Layers. |
-| `uima.cas.AnnotationBase` | `pub.layers.annotation#annotation` | Base for all annotations. |
+| `uima.cas.AnnotationBase` | `pub.layers.annotation.defs#annotation` | Base for all annotations. |
 | `uima.cas.FSArray` | `annotation.childIds` or `argumentRef[]` | Feature structure arrays. |
 | `uima.cas.StringList`/`IntegerList` | `pub.layers.defs#featureMap` | Typed lists in features. |
 
@@ -71,6 +71,6 @@ These UIMA-based tools define standard annotation layers:
 |---|---|---|
 | Feature structure | `pub.layers.defs#featureMap` | Key-value pairs on annotations. |
 | Typed feature | `pub.layers.defs#feature` (key + value) | UIMA features are typed (String, Integer, etc.); Layers features are string-encoded with consumer-side parsing. |
-| Feature structure inheritance | `pub.layers.ontology#typeDef.parentTypeRef` | Type inheritance in the ontology system. |
-| Range type | `pub.layers.ontology#roleSlot.fillerTypeRefs` | Constraints on what types a feature can hold. |
+| Feature structure inheritance | `pub.layers.ontology.typeDef.parentTypeRef` | Type inheritance in the ontology system. |
+| Range type | `pub.layers.ontology.defs#roleSlot.fillerTypeRefs` | Constraints on what types a feature can hold. |
 

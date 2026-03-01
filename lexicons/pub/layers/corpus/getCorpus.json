@@ -1,0 +1,30 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.corpus.getCorpus",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "Get a single corpus by its AT-URI.",
+      "parameters": {
+        "type": "params",
+        "required": ["uri"],
+        "properties": {
+          "uri": { "type": "string", "format": "at-uri" }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["uri", "cid", "value"],
+          "properties": {
+            "uri": { "type": "string", "format": "at-uri" },
+            "cid": { "type": "string", "format": "cid" },
+            "value": { "type": "ref", "ref": "pub.layers.corpus.corpus#main" }
+          }
+        }
+      },
+      "errors": [{ "name": "RecordNotFound" }]
+    }
+  }
+}

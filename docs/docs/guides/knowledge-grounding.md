@@ -77,10 +77,10 @@ A [`graphEdge`](../lexicons/graph.md#graphedge) is a typed, directed relationshi
 
 ```json
 {
-  "source": { "recordRef": "at://did:plc:.../pub.layers.annotation/layer1", "objectId": "mention-uuid" },
+  "source": { "recordRef": "at://did:plc:.../pub.layers.annotation.annotationLayer/layer1", "objectId": "mention-uuid" },
   "target": { "recordRef": "at://did:plc:.../pub.layers.graph.graphNode/obama" },
   "edgeType": "grounding",
-  "confidence": 9500
+  "confidence": 950
 }
 ```
 
@@ -117,7 +117,7 @@ A [`typeDef`](../lexicons/ontology.md#typedef) record defines a single type with
 
 ```json
 {
-  "ontologyRef": "at://did:plc:.../pub.layers.ontology/ontonotes-ner",
+  "ontologyRef": "at://did:plc:.../pub.layers.ontology.ontology/ontonotes-ner",
   "name": "PERSON",
   "typeKind": "entity-type",
   "gloss": "People, including fictional characters",
@@ -139,7 +139,7 @@ An annotation layer references its ontology via `ontologyRef`:
 {
   "kind": "span",
   "subkind": "ner",
-  "ontologyRef": "at://did:plc:.../pub.layers.ontology/ontonotes-ner",
+  "ontologyRef": "at://did:plc:.../pub.layers.ontology.ontology/ontonotes-ner",
   "annotations": [
     {
       "label": "PERSON",
@@ -163,7 +163,7 @@ The [`pub.layers.persona`](../lexicons/persona.md) lexicon defines annotator per
   "domain": "linguistics",
   "kind": "human-annotator",
   "ontologyRefs": [
-    "at://did:plc:.../pub.layers.ontology/x-bar-theory"
+    "at://did:plc:.../pub.layers.ontology.ontology/x-bar-theory"
   ]
 }
 ```
@@ -219,7 +219,7 @@ For predicate-argument structures (PropBank, FrameNet, VerbNet), grounding conne
   "kind": "span",
   "subkind": "frame",
   "formalism": "framenet",
-  "ontologyRef": "at://did:plc:.../pub.layers.ontology/framenet-1.7",
+  "ontologyRef": "at://did:plc:.../pub.layers.ontology.ontology/framenet-1.7",
   "annotations": [
     {
       "label": "Destroying",

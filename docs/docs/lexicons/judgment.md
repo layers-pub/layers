@@ -9,6 +9,7 @@ Linguistic judgment records for annotation experiments, crowdsourced judgments, 
 ## Types
 
 ### experimentDef
+**NSID:** `pub.layers.judgment.experimentDef`
 **Type:** Record
 
 Definition of an annotation or judgment experiment.
@@ -25,11 +26,11 @@ Definition of an annotation or judgment experiment.
 | `ontologyRef` | at-uri | Reference to the ontology used. |
 | `personaRef` | at-uri | Reference to the persona defining the annotation framework. |
 | `corpusRef` | at-uri | Reference to the corpus. |
-| `templateRefs` | array | References to pub.layers.resource#template records used to generate stimuli. Array of at-uri |
-| `collectionRefs` | array | References to pub.layers.resource#collection records providing filler pools. Array of at-uri |
-| `presentation` | ref | How stimuli are displayed to participants. Ref: `#presentationSpec` |
-| `recordingMethods` | array | Data capture instruments used in this experiment. Array of ref: `#recordingMethod` |
-| `design` | ref | Experiment design specification (list constraints, distribution, item order). Ref: `#experimentDesign` |
+| `templateRefs` | array | References to `pub.layers.resource.template` records used to generate stimuli. Array of at-uri |
+| `collectionRefs` | array | References to `pub.layers.resource.collection` records providing filler pools. Array of at-uri |
+| `presentation` | ref | How stimuli are displayed to participants. Ref: `pub.layers.judgment.defs#presentationSpec` |
+| `recordingMethods` | array | Data capture instruments used in this experiment. Array of ref: `pub.layers.judgment.defs#recordingMethod` |
+| `design` | ref | Experiment design specification (list constraints, distribution, item order). Ref: `pub.layers.judgment.defs#experimentDesign` |
 | `scaleMin` | integer | Minimum scale value for ordinal-scale judgments. |
 | `scaleMax` | integer | Maximum scale value. |
 | `labels` | array | Available labels for categorical judgments. Array of strings |
@@ -38,6 +39,7 @@ Definition of an annotation or judgment experiment.
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### judgmentSet
+**NSID:** `pub.layers.judgment.judgmentSet`
 **Type:** Record
 
 A set of judgments from a single annotator for an experiment.
@@ -46,13 +48,14 @@ A set of judgments from a single annotator for an experiment.
 |-------|------|-------------|
 | `experimentRef` | at-uri | Reference to the experiment. |
 | `agent` | ref | The agent who produced this judgment set. Ref: `pub.layers.defs#agentRef` |
-| `judgments` | array | The judgments. Array of ref: `#judgment` |
+| `judgments` | array | The judgments. Array of ref: `pub.layers.judgment.defs#judgment` |
 | `metadata` | ref | Ref: `pub.layers.defs#annotationMetadata` |
 | `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
 | `features` | ref | Open-ended features (e.g., annotator demographics, session metadata, completion time). Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### judgment
+**NSID:** `pub.layers.judgment.defs#judgment`
 **Type:** Object
 
 A single judgment about a linguistic item.
@@ -60,24 +63,25 @@ A single judgment about a linguistic item.
 | Field | Type | Description |
 |-------|------|-------------|
 | `item` | ref | Reference to the item being judged. Ref: `pub.layers.defs#objectRef` |
-| `fillingRef` | at-uri | Reference to the pub.layers.resource#filling that generated the item being judged. |
+| `fillingRef` | at-uri | Reference to the `pub.layers.resource.filling` that generated the item being judged. |
 | `categoricalValue` | string | Categorical judgment label. |
 | `scalarValue` | integer | Numeric response value (ordinal-scale rating, magnitude estimate, or rank position). |
 | `textSpan` | ref | Selected text span for span-labeling tasks. Ref: `pub.layers.defs#span` |
 | `freeText` | string | Free-text response. |
 | `responseTimeMs` | integer | Response time in milliseconds. |
-| `confidence` | integer | Confidence score 0-10000. |
+| `confidence` | integer | Confidence score 0-1000. |
 | `behavioralData` | ref | Behavioral analytics (e.g., mouse movements, keystroke patterns, eye tracking). Ref: `pub.layers.defs#featureMap` |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 
 ### experimentDesign
+**NSID:** `pub.layers.judgment.defs#experimentDesign`
 **Type:** Object
 
 Experiment design specification controlling how items are distributed, ordered, and timed.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `listConstraints` | array | Constraints on how items are distributed into lists. Array of ref: `#listConstraint` |
+| `listConstraints` | array | Constraints on how items are distributed into lists. Array of ref: `pub.layers.judgment.defs#listConstraint` |
 | `distributionStrategyUri` | at-uri | AT-URI of the distribution strategy definition node. Community-expandable via knowledge graph. |
 | `distributionStrategy` | string | Distribution strategy slug (fallback). Known values: `latin-square`, `random`, `blocked`, `stratified`, `custom` |
 | `itemOrderUri` | at-uri | AT-URI of the item order definition node. Community-expandable via knowledge graph. |
@@ -86,6 +90,7 @@ Experiment design specification controlling how items are distributed, ordered, 
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 
 ### listConstraint
+**NSID:** `pub.layers.judgment.defs#listConstraint`
 **Type:** Object
 
 A constraint on how experimental items are distributed into lists (e.g., Latin square balancing, no two items of the same condition adjacent).
@@ -99,6 +104,7 @@ A constraint on how experimental items are distributed into lists (e.g., Latin s
 | `constraint` | ref | Formal constraint expression. Ref: `pub.layers.defs#constraint` |
 
 ### presentationSpec
+**NSID:** `pub.layers.judgment.defs#presentationSpec`
 **Type:** Object
 
 How stimuli are displayed to participants.
@@ -115,6 +121,7 @@ How stimuli are displayed to participants.
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 
 ### recordingMethod
+**NSID:** `pub.layers.judgment.defs#recordingMethod`
 **Type:** Object
 
 A data capture instrument used in an experiment.
@@ -126,6 +133,7 @@ A data capture instrument used in an experiment.
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 
 ### agreementReport
+**NSID:** `pub.layers.judgment.agreementReport`
 **Type:** Record
 
 An inter-annotator agreement report summarizing agreement metrics across judgment sets.
@@ -136,8 +144,82 @@ An inter-annotator agreement report summarizing agreement metrics across judgmen
 | `judgmentSetRefs` | array | The judgment sets compared. Array of at-uri |
 | `metricUri` | at-uri | AT-URI of the metric definition node. Community-expandable via knowledge graph. |
 | `metric` | string | Metric slug (fallback). Known values: `cohens-kappa`, `fleiss-kappa`, `krippendorff-alpha`, `percent-agreement`, `correlation`, `f1`, `custom` |
-| `value` | integer | Metric value scaled 0-10000. |
+| `value` | integer | Metric value scaled 0-1000. |
 | `numAnnotators` | integer | Number of annotators. |
 | `numItems` | integer | Number of items judged. |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
+
+## XRPC Queries
+
+### getExperimentDef
+**NSID:** `pub.layers.judgment.getExperimentDef`
+
+Retrieve a single experiment definition record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the experiment definition record. |
+
+**Output**: The experiment definition record object.
+
+### listExperimentDefs
+**NSID:** `pub.layers.judgment.listExperimentDefs`
+
+List experiment definition records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: experimentDef[], cursor?: string }`
+
+### getJudgmentSet
+**NSID:** `pub.layers.judgment.getJudgmentSet`
+
+Retrieve a single judgment set record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the judgment set record. |
+
+**Output**: The judgment set record object.
+
+### listJudgmentSets
+**NSID:** `pub.layers.judgment.listJudgmentSets`
+
+List judgment set records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: judgmentSet[], cursor?: string }`
+
+### getAgreementReport
+**NSID:** `pub.layers.judgment.getAgreementReport`
+
+Retrieve a single agreement report record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the agreement report record. |
+
+**Output**: The agreement report record object.
+
+### listAgreementReports
+**NSID:** `pub.layers.judgment.listAgreementReports`
+
+List agreement report records in a repository with pagination.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `repo` | did (required) | The DID of the repository. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: agreementReport[], cursor?: string }`

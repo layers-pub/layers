@@ -4,40 +4,77 @@ sidebar_label: "Segmentation"
 
 # pub.layers.segmentation
 
-A segmentation record that binds a hierarchical document structure (sections containing sentences containing tokenizations) to an expression. Multiple segmentations can coexist for the same expression.
+A segmentation record that binds one or more tokenizations to an expression. Each tokenization can cover the whole expression or a specific sub-expression (e.g., a sentence). Multiple segmentations can coexist for the same expression, enabling alternative tokenization strategies.
+
+Structural hierarchy (sections, sentences, paragraphs, turns) is expressed via expression records with `parentRef` and appropriate `kind` values. The segmentation record provides the token-level decomposition only.
 
 ## Types
 
-### main
+### segmentation
+**NSID:** `pub.layers.segmentation.segmentation`
 **Type:** Record
 
-A complete segmentation of an expression into sections, sentences, and tokenizations.
+A segmentation of an expression into tokenizations.
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `expression` | at-uri | Reference to the expression this segmentation applies to. |
-| `sections` | array | The ordered sections of the expression. Array of ref: `#sectionWithSentences` |
+| `tokenizations` | array | The tokenizations in this segmentation. Each can optionally scope to a sub-expression via `expressionRef`. Array of ref: `pub.layers.segmentation.defs#tokenization` |
 | `metadata` | ref | Ref: `pub.layers.defs#annotationMetadata` |
-| `knowledgeRefs` | array | Knowledge graph references (e.g., segmentation algorithm, sentence splitting model). Array of ref: `pub.layers.defs#knowledgeRef` |
-| `features` | ref | Open-ended features (e.g., segmenter version, parameters, language model used). Ref: `pub.layers.defs#featureMap` |
+| `knowledgeRefs` | array | Knowledge graph references (e.g., tokenizer algorithm, sentence splitting model). Array of ref: `pub.layers.defs#knowledgeRef` |
+| `features` | ref | Open-ended features (e.g., tokenizer version, parameters, language model used). Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
 
-### sectionWithSentences
+### tokenization
+**NSID:** `pub.layers.segmentation.defs#tokenization`
 **Type:** Object
 
-A section paired with its constituent sentences and their tokenizations.
+An ordered sequence of tokens for an expression or sub-expression. Multiple tokenizations can coexist for the same expression (e.g., whitespace vs. BPE vs. morphological), enabling interlinear glossing, alternative segmentation strategies, or multi-granularity analysis. Use `pub.layers.alignment.alignment` to map between tokenizations.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `section` | ref | Ref: `pub.layers.expression#section`. Section, sentence, token, and tokenization are `kind` values on Expression records. |
-| `sentences` | array | Sentences within this section. Array of ref: `#sentenceWithTokenizations` |
+| `uuid` | ref | Ref: `pub.layers.defs#uuid` |
+| `kindUri` | at-uri | AT-URI of the tokenization kind definition node. Community-expandable via knowledge graph. |
+| `kind` | string | Tokenization kind slug (fallback when kindUri unavailable). Known values: `whitespace`, `penn-treebank`, `bpe`, `sentencepiece`, `character`, `morphological`, `custom` |
+| `expressionRef` | at-uri | Reference to the specific sub-expression this tokenization covers (e.g., a sentence-level expression). If absent, covers the entire expression referenced by the segmentation record. |
+| `tokens` | array | The ordered token sequence. Array of ref: `pub.layers.segmentation.defs#token` |
+| `metadata` | ref | Ref: `pub.layers.defs#annotationMetadata` |
 
-### sentenceWithTokenizations
+### token
+**NSID:** `pub.layers.segmentation.defs#token`
 **Type:** Object
 
-A sentence paired with one or more tokenizations. Multiple tokenizations support interlinear glossing (word-level + morpheme-level), alternative segmentation strategies, or multi-granularity analysis. Use pub.layers.alignment to map between tokenizations.
+A single token within a tokenization.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `sentence` | ref | Ref: `pub.layers.expression#sentence` |
-| `tokenizations` | array | One or more tokenizations of this sentence. The first is conventionally the primary/word-level tokenization. Array of ref: `pub.layers.expression#tokenization` |
+| `tokenIndex` | integer | Position of this token in the tokenization (0-based). |
+| `text` | string | The surface form of the token. |
+| `textSpan` | ref | Character offsets into the expression text. Ref: `pub.layers.defs#span` |
+| `temporalSpan` | ref | Temporal span for audio/video-grounded tokens. Ref: `pub.layers.defs#temporalSpan` |
+
+## XRPC Queries
+
+### getSegmentation
+**NSID:** `pub.layers.segmentation.getSegmentation`
+
+Retrieve a single segmentation record by AT-URI.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uri` | at-uri (required) | The AT-URI of the segmentation record. |
+
+**Output**: The segmentation record object.
+
+### listSegmentations
+**NSID:** `pub.layers.segmentation.listSegmentations`
+
+List segmentation records for a given expression.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `expression` | at-uri (required) | The expression to list segmentations for. |
+| `limit` | integer | Maximum number of records to return (1-100, default 50). |
+| `cursor` | string | Pagination cursor from previous response. |
+
+**Output**: `{ records: segmentation[], cursor?: string }`

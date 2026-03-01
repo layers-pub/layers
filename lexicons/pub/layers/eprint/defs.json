@@ -1,0 +1,37 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.eprint.defs",
+  "defs": {
+    "reproducibilityInfo": {
+      "type": "object",
+      "description": "Information about how to reproduce the data from the eprint.",
+      "properties": {
+        "codeUri": {
+          "type": "string",
+          "format": "uri",
+          "description": "URI of the code repository.",
+          "maxLength": 2048
+        },
+        "commitHash": {
+          "type": "string",
+          "description": "Git commit hash for reproducibility.",
+          "maxLength": 64
+        },
+        "command": {
+          "type": "string",
+          "description": "Command to reproduce the data.",
+          "maxLength": 4096
+        },
+        "environment": {
+          "type": "string",
+          "description": "Environment specification (Docker image, conda env, etc.).",
+          "maxLength": 2048
+        },
+        "randomSeed": {
+          "type": "integer",
+          "description": "Random seed used."
+        }
+      }
+    }
+  }
+}

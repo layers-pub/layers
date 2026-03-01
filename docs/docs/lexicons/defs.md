@@ -264,7 +264,7 @@ A single link in an alignment between two parallel sequences. Maps element(s) in
 |-------|------|-------------|
 | `sourceIndices` | array | Indices into the source sequence. Array of integers |
 | `targetIndices` | array | Indices into the target sequence. Array of integers |
-| `confidence` | integer | Alignment confidence 0-10000. |
+| `confidence` | integer | Alignment confidence 0-1000. |
 | `label` | string | Optional label for the alignment link (e.g., alignment type). |
 | `knowledgeRefs` | array | Knowledge graph references for this link. Array of ref: `#knowledgeRef` |
 | `features` | ref | Ref: `#featureMap` |
@@ -291,7 +291,7 @@ Metadata about who or what produced an annotation, when, and with what confidenc
 | `agent` | ref | The agent (human or model) that produced this annotation. Distinct from personaRef and tool. Ref: `#agentRef` |
 | `tool` | string | Name or identifier of the software tool used to produce this annotation (e.g., 'spaCy 3.7', 'brat 1.3', 'ELAN 6.4'). |
 | `timestamp` | datetime | When the annotation was produced. |
-| `confidence` | integer | Confidence score scaled 0-10000. 10000 = maximum confidence. |
+| `confidence` | integer | Confidence score scaled 0-1000. 1000 = maximum confidence. |
 | `personaRef` | at-uri | Reference to the persona/annotation framework under which this annotation was produced. |
 | `digest` | string | Content hash for integrity verification. |
 | `dependencies` | array | References to upstream records this annotation was derived from (provenance chain). Array of ref: `#objectRef` |

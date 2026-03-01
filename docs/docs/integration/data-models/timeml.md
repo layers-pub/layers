@@ -64,7 +64,7 @@ Layers fully subsumes TimeML through three mechanisms:
 
 | TimeML Attribute | Layers Equivalent | Notes |
 |---|---|---|
-| `TLINK` | `pub.layers.graph#graphEdge` | A directed temporal relation between two annotations |
+| `TLINK` | `pub.layers.graph.graphEdge` | A directed temporal relation between two annotations |
 | `lid` | graphEdge record rkey | Unique identifier |
 | `relType` | `graphEdge.edgeType` | See relation mapping below |
 | `timeID` / `eventInstanceID` (source) | `graphEdge.source` | `objectRef` to source annotation |
@@ -96,7 +96,7 @@ Layers fully subsumes TimeML through three mechanisms:
 
 | TimeML Attribute | Layers Equivalent | Notes |
 |---|---|---|
-| `ALINK` | `pub.layers.graph#graphEdge` | Aspectual relation between events |
+| `ALINK` | `pub.layers.graph.graphEdge` | Aspectual relation between events |
 | `relType` | `graphEdge.edgeType` | `INITIATES` to `initiates`, `CULMINATES` to `culminates`, `TERMINATES` to `terminates`, `CONTINUES` to `continues`, `REINITIATES` to `reinitiates` |
 | `eventInstanceID` | `graphEdge.source` | Source event |
 | `relatedToEventInstance` | `graphEdge.target` | Target event |
@@ -106,7 +106,7 @@ Layers fully subsumes TimeML through three mechanisms:
 
 | TimeML Attribute | Layers Equivalent | Notes |
 |---|---|---|
-| `SLINK` | `pub.layers.graph#graphEdge` with `edgeType="discourse"` | Subordination is a discourse relation |
+| `SLINK` | `pub.layers.graph.graphEdge` with `edgeType="discourse"` | Subordination is a discourse relation |
 | `relType` (MODAL, EVIDENTIAL, NEG_EVIDENTIAL, FACTIVE, COUNTER_FACTIVE, CONDITIONAL) | `graphEdge.label` | The specific subordination type as the edge label |
 | `eventInstanceID` | `graphEdge.source` | Subordinating event |
 | `subordinatedEventInstance` | `graphEdge.target` | Subordinated event |
@@ -115,7 +115,7 @@ Layers fully subsumes TimeML through three mechanisms:
 
 A TimeML-annotated document can be converted to Layers records as follows:
 
-1. Create a `pub.layers.expression` record with `kind="document"` from the source text
+1. Create a `pub.layers.expression.expression` record with `kind="document"` from the source text
 2. For each `TIMEX3`, create an annotation in an `annotationLayer` with `kind="span"`, `subkind="temporal-expression"`, `formalism="timeml"`. Populate the `temporal` field with a `temporalExpression` containing the normalized value, modifier, anchor, and function
 3. For each `EVENT`, create an annotation in an `annotationLayer` with `kind="span"`, `subkind="situation-mention"`, `formalism="timeml"`. Store `class` in `label`; `tense`, `aspect`, `polarity`, `modality` in `features`
 4. For each `SIGNAL`, create an annotation in an `annotationLayer` with `kind="span"`, `subkind="temporal-signal"`, `formalism="timeml"`
