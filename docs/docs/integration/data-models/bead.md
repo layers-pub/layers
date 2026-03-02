@@ -5,7 +5,7 @@
 <dt>Model</dt>
 <dd>bead</dd>
 <dt>Origin</dt>
-<dd>University of Rochester FACTS.lab</dd>
+<dd><a href="https://factslab.io">FACTS.lab</a></dd>
 <dt>Specification</dt>
 <dd><a href="https://github.com/factslab/bead">github.com/factslab/bead</a></dd>
 <dt>Key Reference</dt>

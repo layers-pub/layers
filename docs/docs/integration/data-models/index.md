@@ -13,9 +13,9 @@ The goal is not to replicate each framework's API or file format, but to show th
 
 | Framework | Origin | Primary Focus |
 |-----------|--------|---------------|
-| [Concrete](./concrete) | HLTCOE, Johns Hopkins | Multi-layer NLP pipeline output |
-| [bead](./bead) | FACTS.lab, Johns Hopkins | Template-based judgment experiments |
-| [FOVEA](./fovea) | parafovea project | Persona-driven annotation with ontologies |
+| [Concrete](./concrete) | JHU HLTCOE | Multi-layer NLP pipeline output |
+| [bead](./bead) | FACTS.lab | Template-based judgment experiments |
+| [FOVEA](./fovea) | FACTS.lab | Persona-driven annotation with ontologies |
 | [LAF/GrAF](./laf-graf) | ISO 24612 | Stand-off graph annotation |
 | [UIMA/CAS](./uima-cas) | Apache/OASIS | Type system-driven analysis |
 | [CoNLL](./conll) | CoNLL shared tasks | Column-based token annotation |
