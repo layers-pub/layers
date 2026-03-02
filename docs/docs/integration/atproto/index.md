@@ -19,6 +19,7 @@ Layers is a native participant in the AT Protocol ecosystem. ATProto records are
 | WhiteWind | `com.whtwnd.*` | [WhiteWind](./whitewind) |
 | ATFile | `blue.zio.atfile.*` | [ATFile](./atfile) |
 | Bluesky Labels | `com.atproto.label.*` | [Labels](./labels) |
+| Seams | `community.lexicon.annotation.*` | [Seams](./seams) |
 
 ## How Integration Works
 
