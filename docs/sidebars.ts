@@ -94,6 +94,7 @@ const sidebars: SidebarsConfig = {
             'integration/atproto/whitewind',
             'integration/atproto/atfile',
             'integration/atproto/labels',
+            'integration/atproto/seams',
           ],
         },
       ],
