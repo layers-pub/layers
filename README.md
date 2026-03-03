@@ -24,52 +24,68 @@
 
 ## What is Layers?
 
-Layers is a set of [AT Protocol Lexicon](https://atproto.com/guides/lexicon) schemas under the `pub.layers.*` namespace. It defines a composable interchange format for annotations across text, audio, video, and image modalities.
+Layers is a set of [AT Protocol Lexicon](https://atproto.com/guides/lexicon) schemas under the `pub.layers.*` namespace. It defines a composable interchange format for linguistic annotations across text, audio, video, and image modalities, psycholinguistic and neurolinguistic signals, and offline judgment and experiment data.
 
-Layers subsumes 15+ major annotation data models (CoNLL, CoNLL-U, brat, ELAN, TEI, WebVTT, Universal Dependencies, AMT, SRL, ARK, and others) while maintaining a theory-neutral, modular architecture. All annotation data lives in user-controlled Personal Data Servers (PDSes); Layers provides the schema and protocols for interoperability.
+Layers subsumes 15+ major annotation data models (CoNLL, CoNLL-U, brat, ELAN, TEI, WebVTT, Universal Dependencies, AMT, SRL, ARK, and others) while maintaining a theory-neutral, modular architecture. All data lives in user-controlled Personal Data Servers (PDSes); Layers provides the schema and protocols for interoperability.
 
 ## Architecture overview
 
-Layers is organized around a pipeline of annotation layers, each building on primitives from the layer before:
+Layers is organized around a core pipeline of annotation layers, with parallel tracks for experimental and analytical workflows and integration layers connecting to the ATProto ecosystem:
 
 ```
-Expression (any linguistic unit: document, paragraph, sentence, word, morpheme)
-       ↓
-Segmentation (tokenization strategies, token sequences)
-       ↓
-Annotation (linguistic labels: POS, NER, semantic roles, etc.)
+Core Pipeline
+  Expression (any linguistic unit: document, paragraph, sentence, word, morpheme)
+         ↓
+  Segmentation (tokenization strategies, token sequences)
+         ↓
+  Annotation (linguistic labels: POS, NER, semantic roles, etc.)
+
+Parallel Tracks
+  Ontology · Corpus · Resource · Judgment · Alignment
+
+Integration Layers
+  Graph · Eprint · Media · Persona · Changelog
 ```
 
-Parallel tracks (ontology, corpus, resource, judgment, alignment) integrate this pipeline with external systems. Integration layers (graph, eprint, media, persona) connect Layers to the broader ATProto ecosystem. See the [documentation](https://docs.layers.pub) for the full architecture.
+See the [documentation](https://docs.layers.pub) for the full architecture, including dependency graphs and cross-referencing patterns.
 
 ## Lexicons
 
-| Lexicon | Purpose |
-|---------|---------|
+14 lexicon namespaces define 26 record types and 90 lexicon schemas:
+
+| Namespace | Purpose |
+|-----------|---------|
 | `pub.layers.defs` | Shared primitives: anchors, selectors, metadata, cross-references |
-| `pub.layers.expression` | Primary document/expression model |
+| `pub.layers.expression` | Recursive document and expression model |
 | `pub.layers.segmentation` | Tokenization strategies and token sequences |
-| `pub.layers.annotation` | Unified abstract annotation model |
-| `pub.layers.ontology` | Annotation type systems and role slots |
-| `pub.layers.corpus` | Named corpus collections |
-| `pub.layers.resource` | Lexical entries, templates, fillings |
-| `pub.layers.judgment` | Linguistic judgment experiments |
-| `pub.layers.alignment` | Parallel structure correspondence |
-| `pub.layers.graph` | Knowledge graph integration |
-| `pub.layers.persona` | Annotator personas and frameworks |
-| `pub.layers.media` | Audio, video, image metadata |
-| `pub.layers.eprint` | Scholarly metadata and eprint linkage |
+| `pub.layers.annotation` | Annotation layers and cluster sets |
+| `pub.layers.ontology` | Annotation type systems, role slots, and theoretical frameworks |
+| `pub.layers.corpus` | Corpus collections with annotation design metadata |
+| `pub.layers.resource` | Lexical entries, stimulus templates, fillings, and collections |
+| `pub.layers.judgment` | Experiment definitions, judgment sets, and agreement reports |
+| `pub.layers.alignment` | Cross-lingual and cross-modal structure correspondence |
+| `pub.layers.graph` | Typed property graph nodes, edges, and edge sets |
+| `pub.layers.persona` | Annotator personas and annotation frameworks |
+| `pub.layers.media` | Audio, video, image, and signal metadata |
+| `pub.layers.eprint` | Scholarly metadata and data provenance links |
+| `pub.layers.changelog` | Structured change tracking with sub-record targeting |
 
 ## Project structure
 
 ```
 layers/
 ├── lexicons/               # ATProto lexicon schemas (pub.layers.*)
-│   └── pub/layers/         # 13 lexicon JSON files
+│   └── pub/layers/         # 14 namespace directories, 90 JSON files
+│       ├── defs.json        # Shared primitives
+│       ├── expression/      # Record types, queries, and namespace defs
+│       ├── annotation/
+│       ├── ...
+│       └── changelog/
 ├── docs/                   # Docusaurus documentation site (docs.layers.pub)
-│   ├── docs/              # Markdown source files
+│   ├── docs/               # Markdown source files
 │   ├── docusaurus.config.ts
 │   └── sidebars.ts
+├── CHANGELOG.md
 └── validate-lexicons.mjs   # Lexicon validation script
 ```
 
@@ -86,4 +102,4 @@ This project is in the design phase. Open [issues](https://github.com/layers-pub
 
 ## License
 
-Copyright © 2026 Aaron Steven White. Licensed under [CC-BY-SA-4.0](LICENSE).
+Licensed under [CC-BY-SA-4.0](LICENSE).
