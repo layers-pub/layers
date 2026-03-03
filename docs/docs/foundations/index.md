@@ -16,4 +16,4 @@ This section covers:
 
 - **[Flexible Enums](./flexible-enums.md)**: The URI+slug pattern that allows the community to mint new annotation kinds, tag sets, and categories without schema changes.
 
-- **[Lexicon Overview](./lexicon-overview.md)**: The 13 lexicons organized into core pipeline layers, parallel tracks, and integration layers, with a dependency graph showing how they compose.
+- **[Lexicon Overview](./lexicon-overview.md)**: The 14 lexicons organized into core pipeline layers, parallel tracks, integration layers, and a cross-cutting changelog layer, with a dependency graph showing how they compose.

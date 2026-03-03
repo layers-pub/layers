@@ -1,0 +1,107 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.changelog.defs",
+  "defs": {
+    "semanticVersion": {
+      "type": "object",
+      "description": "A semantic version following the major.minor.patch convention.",
+      "required": ["major", "minor", "patch"],
+      "properties": {
+        "major": {
+          "type": "integer",
+          "description": "Major version number.",
+          "minimum": 0
+        },
+        "minor": {
+          "type": "integer",
+          "description": "Minor version number.",
+          "minimum": 0
+        },
+        "patch": {
+          "type": "integer",
+          "description": "Patch version number.",
+          "minimum": 0
+        }
+      }
+    },
+    "changeSection": {
+      "type": "object",
+      "description": "A group of changes under a single category.",
+      "required": ["category", "items"],
+      "properties": {
+        "category": {
+          "type": "string",
+          "description": "Category of changes.",
+          "knownValues": [
+            "annotations",
+            "segmentation",
+            "text",
+            "ontology",
+            "corpus",
+            "alignment",
+            "graph",
+            "experiment",
+            "resource",
+            "media",
+            "provenance",
+            "references",
+            "corrections",
+            "other"
+          ],
+          "maxLength": 128
+        },
+        "items": {
+          "type": "array",
+          "description": "Individual change items in this section.",
+          "maxLength": 50,
+          "items": {
+            "type": "ref",
+            "ref": "#changeItem"
+          }
+        }
+      }
+    },
+    "changeItem": {
+      "type": "object",
+      "description": "An individual change entry. The targets field uses objectRef for machine-readable sub-record targeting, allowing a change item to point at specific objects within the subject record.",
+      "required": ["description"],
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Description of the change.",
+          "maxLength": 2000
+        },
+        "changeType": {
+          "type": "string",
+          "description": "Type of change.",
+          "knownValues": ["added", "changed", "removed", "fixed", "deprecated"],
+          "maxLength": 32
+        },
+        "targets": {
+          "type": "array",
+          "description": "Specific objects that changed. Uses recordRef + objectId for sub-record targeting (e.g., a specific annotation within an annotation layer).",
+          "maxLength": 20,
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#objectRef"
+          }
+        },
+        "fieldPath": {
+          "type": "string",
+          "description": "Path to the changed field within the target (e.g., 'annotations/3/label', 'formalism', 'annotationDesign/guidelinesRef').",
+          "maxLength": 200
+        },
+        "previousValue": {
+          "type": "string",
+          "description": "Previous value as a display string.",
+          "maxLength": 1000
+        },
+        "newValue": {
+          "type": "string",
+          "description": "New value as a display string.",
+          "maxLength": 1000
+        }
+      }
+    }
+  }
+}

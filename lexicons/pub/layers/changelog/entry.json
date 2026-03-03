@@ -1,0 +1,56 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.changelog.entry",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A changelog entry describing changes to any Layers record.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["subject", "subjectCollection", "summary", "sections", "createdAt"],
+        "properties": {
+          "subject": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the record this changelog describes (any pub.layers.* record)."
+          },
+          "subjectCollection": {
+            "type": "string",
+            "description": "The NSID of the subject record's collection (e.g., 'pub.layers.annotation.annotationLayer'). Enables efficient filtering by record type without resolving the AT-URI.",
+            "maxLength": 256
+          },
+          "version": {
+            "type": "ref",
+            "ref": "pub.layers.changelog.defs#semanticVersion",
+            "description": "Semantic version this changelog describes."
+          },
+          "previousVersion": {
+            "type": "ref",
+            "ref": "pub.layers.changelog.defs#semanticVersion",
+            "description": "Previous semantic version."
+          },
+          "summary": {
+            "type": "string",
+            "description": "One-line summary of changes.",
+            "maxLength": 500
+          },
+          "sections": {
+            "type": "array",
+            "description": "Categorized change sections.",
+            "maxLength": 20,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.changelog.defs#changeSection"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When this changelog entry was created."
+          }
+        }
+      }
+    }
+  }
+}

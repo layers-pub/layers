@@ -5,7 +5,7 @@ sidebar_position: 5
 
 # Lexicon Overview
 
-Layers consists of 13 lexicons organized into core pipeline layers, parallel tracks, and integration layers.
+Layers consists of 14 lexicons organized into core pipeline layers, parallel tracks, integration layers, and a cross-cutting changelog layer.
 
 ## Lexicon Directory
 
@@ -24,6 +24,7 @@ Layers consists of 13 lexicons organized into core pipeline layers, parallel tra
 | [Persona](../lexicons/persona.md) | `pub.layers.persona.persona` | Agent personas, theoretical frameworks, backgrounds |
 | [Media](../lexicons/media.md) | `pub.layers.media.media`, `pub.layers.media.defs` | Audio, video, image, and paged document references |
 | [Eprint](../lexicons/eprint.md) | `pub.layers.eprint.eprint`, `pub.layers.eprint.dataLink`, `pub.layers.eprint.defs` | Eprint linkage, data provenance, scholarly metadata, reproducibility |
+| [Changelog](../lexicons/changelog.md) | `pub.layers.changelog.entry`, `pub.layers.changelog.defs` | Structured change tracking for any Layers record, with sub-record precision via objectRef |
 
 ## Lexicon Organization
 
@@ -62,6 +63,10 @@ These lexicons connect Layers to the ATProto ecosystem:
 - **pub.layers.media**: Audio, video, image, and paged document references
 - **pub.layers.eprint**: Eprint linkage, data provenance, reproducibility information, and scholarly metadata
 
+### Cross-Cutting Layer
+
+- **pub.layers.changelog**: Structured change tracking for any Layers record, with sub-record precision via `objectRef`
+
 ## Dependency Graph
 
 ```mermaid
@@ -82,6 +87,8 @@ graph TD
     PERSONA["<b>pub.layers.persona</b><br/>Agent Personas"]
     MEDIA["<b>pub.layers.media</b><br/>Media References"]
     EPRINT["<b>pub.layers.eprint</b><br/>Eprint & Data Provenance"]
+
+    CHANGELOG["<b>pub.layers.changelog</b><br/>Change Tracking"]
 
     DEFS --> EXPR
     DEFS --> SEG
@@ -110,15 +117,19 @@ graph TD
     MEDIA --> EXPR
     EPRINT --> CORPUS
 
-    classDef pipeline fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    classDef parallel fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    classDef integration fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    classDef primitives fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+    DEFS --> CHANGELOG
+
+    classDef pipeline fill:#001673,stroke:#2c6faa,color:#fff,stroke-width:2px
+    classDef parallel fill:#5D0073,stroke:#7d3c98,color:#fff,stroke-width:2px
+    classDef integration fill:#167300,stroke:#1e8449,color:#fff,stroke-width:2px
+    classDef primitives fill:#004D40,stroke:#00897B,color:#fff,stroke-width:2px
+    classDef crosscutting fill:#730000,stroke:#b71c1c,color:#fff,stroke-width:2px
 
     class DEFS primitives
     class EXPR,SEG,ANN pipeline
     class CORPUS,RESOURCE,ONTO,JUDGE,ALIGN parallel
     class GRAPH,PERSONA,MEDIA,EPRINT integration
+    class CHANGELOG crosscutting
 ```
 
 ## Pipeline Layers
@@ -330,6 +341,24 @@ Eprint linkage, data provenance, reproducibility, and scholarly metadata:
 
 **Directory**: `schemas/pub/layers/eprint/` (eprint.json, dataLink.json, defs.json, get/list queries)
 
+## Cross-Cutting Layer
+
+### pub.layers.changelog (Change Tracking)
+
+Structured changelog records for tracking changes to any Layers record:
+
+- Changelog entries targeting any `pub.layers.*` record via AT-URI
+- Sub-record precision via `objectRef` (e.g., point at a specific annotation within a layer)
+- Categorized change sections (annotations, segmentation, text, ontology, corpus, etc.)
+- Individual change items with type (added, changed, removed, fixed, deprecated), field path, and before/after values
+- Optional semantic versioning for records that carry version fields
+
+**Depends on**: `pub.layers.defs` (uses `objectRef` for sub-record targeting)
+
+**References**: All other namespaces (the `subject` field can point to any record type)
+
+**Directory**: `schemas/pub/layers/changelog/` (entry.json, defs.json, get/list queries)
+
 ## XRPC Queries
 
 Every record type in Layers has corresponding XRPC query lexicons following a consistent `get<Record>` / `list<Records>` pattern. These queries enable efficient retrieval of individual records by AT-URI and paginated listing of records within a repository.
@@ -386,6 +415,7 @@ pub.layers.annotation.listClusterSets       → list cluster sets in a repo
 | persona | `getPersona`, `listPersonas` |
 | media | `getMedia`, `listMedia` |
 | eprint | `getEprint`, `listEprints`, `getDataLink`, `listDataLinks` |
+| changelog | `getEntry`, `listEntries`, `listByCollection` |
 
 ## See Also
 

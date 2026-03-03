@@ -7,7 +7,7 @@ slug: /
 
 ## What is Layers?
 
-Layers is a set of ATProto Lexicon v1 schemas for representing, sharing, and interlinking linguistic data in a decentralized network. It defines a composable interchange format that covers three broad categories of data:
+Layers is a set of ATProto Lexicon schemas for representing, sharing, and interlinking linguistic data in a decentralized network. It defines a composable interchange format that covers three broad categories of data:
 
 - **Linguistic annotations** across text, audio, video, and image modalities: part-of-speech tags, named entities, syntactic parses, semantic roles, discourse relations, coreference, temporal and spatial expressions, interlinear glossed text, and more. See the [Multimodal Annotation guide](./guides/multimodal-annotation.md) for how the same annotation schema works across modalities.
 
@@ -36,7 +36,7 @@ Layers solves this by:
 
 ## Status
 
-Layers is in **[v0.4.0 draft](https://github.com/layers-pub/layers/releases/tag/v0.4.0)** status, in active development and accepting comments and discussion. File issues or participate on GitHub: https://github.com/layers-pub/layers
+Layers is in **[v0.5.0 draft](https://github.com/layers-pub/layers/releases/tag/v0.5.0)** status, in active development and accepting comments and discussion. File issues or participate on GitHub: https://github.com/layers-pub/layers
 
 ## Architecture Overview
 

@@ -4,6 +4,26 @@ All notable changes to the Layers lexicon schemas will be documented in this fil
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.5.0] - 2026-03-03
+
+### Added
+
+- `pub.layers.changelog` namespace for structured change tracking across all Layers record types.
+  - `pub.layers.changelog.entry` record type with subject targeting (any `pub.layers.*` record), categorized change sections, and optional semantic versioning.
+  - `pub.layers.changelog.defs` with shared object types: `semanticVersion`, `changeSection`, `changeItem`.
+  - `changeItem.targets` uses `objectRef` for machine-readable sub-record targeting (e.g., a specific annotation within a layer, a specific typeDef within an ontology).
+  - `changeItem.fieldPath` for field-level change tracking within targeted objects.
+  - 14 change categories: `annotations`, `segmentation`, `text`, `ontology`, `corpus`, `alignment`, `graph`, `experiment`, `resource`, `media`, `provenance`, `references`, `corrections`, `other`.
+  - 5 change types: `added`, `changed`, `removed`, `fixed`, `deprecated`.
+  - XRPC queries: `getEntry`, `listEntries` (by subject record), `listByCollection` (by collection NSID).
+- Comprehensive AppView Plans documentation (13 pages): technology stack, database design, firehose ingestion, indexing strategy, API design, query and discovery, background jobs, caching strategy, observability, testing strategy, deployment, security, and plugin system.
+- Seams.so ATProto ecosystem integration documentation.
+
+### Changed
+
+- Updated XRPC query count from 25 to 26 record types across all documentation.
+- Updated lexicon namespace count from 13 to 14 across all documentation.
+
 ## [0.4.0] - 2026-03-01
 
 ### Changed
