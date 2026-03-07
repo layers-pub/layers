@@ -17,7 +17,7 @@ This page documents every technology in the Layers appview stack, including vers
 
 **Node.js 22+** is the current LTS line. It provides native ESM support without transpilation flags, a stable `fetch` implementation, and performance improvements in the V8 engine (Maglev compiler, resizable ArrayBuffers) that benefit high-throughput firehose processing.
 
-**TypeScript 5.9+** is configured in strict mode with `experimentalDecorators` enabled for dependency injection via tsyringe. Strict mode catches null/undefined errors at compile time across all 26 record type handlers. Decorator support enables constructor-based DI without manual wiring:
+**TypeScript 5.9+** is configured in strict mode with `experimentalDecorators` enabled for dependency injection via tsyringe. While TC39 stage 3 decorators are now available natively in TypeScript 5.9+, tsyringe still requires the legacy `experimentalDecorators` flag. This is the same trade-off Chive makes. Strict mode catches null/undefined errors at compile time across all 26 record type handlers. Decorator support enables constructor-based DI without manual wiring:
 
 ```typescript
 @injectable()
@@ -40,14 +40,17 @@ export class ExpressionIndexer {
 | Zod | 4+ | Runtime validation and TypeScript type inference |
 | @hono/zod-openapi | latest | OpenAPI 3.1 generation from Zod schemas |
 
-**Hono 4+** serves as the HTTP framework for both XRPC and REST endpoints. It was selected for its benchmark performance (consistently fastest in Node.js HTTP framework comparisons), minimal footprint, and native middleware composition. Middleware chains handle authentication, rate limiting, request logging, and error normalization:
+**Hono 4+** serves as the HTTP framework for both XRPC and REST endpoints. It was selected for its benchmark performance (consistently fastest in Node.js HTTP framework comparisons), minimal footprint, and native middleware composition. The middleware stack follows Chive's 7-layer ordering:
 
 ```typescript
 const app = new Hono()
-  .use('*', rateLimiter())
-  .use('*', requestLogger())
-  .use('/xrpc/*', xrpcAuth())
-  .use('/api/*', bearerAuth())
+  .use('*', secureHeaders())       // 1. Security headers (HSTS, X-Frame, CSP)
+  .use('*', cors(corsConfig))      // 2. CORS handling
+  .use('*', serviceInjection())    // 3. Inject services into context (tsyringe)
+  .use('*', requestContext())      // 4. Request ID, timing, child logger
+  .use('*', authenticate())        // 5. OAuth token / service auth JWT verification
+  .use('*', rateLimiter())         // 6. Tiered rate limiting (Redis sorted sets)
+  .onError(errorHandler)           // 7. Structured error responses
 ```
 
 The appview exposes a **dual XRPC + REST API surface**:
@@ -55,7 +58,7 @@ The appview exposes a **dual XRPC + REST API surface**:
 - **XRPC endpoints** implement the ATProto-native query interface. Clients using `@atproto/api` interact with these directly. All 38+ query endpoints defined in the [API Design](./api-design) page are served here.
 - **REST endpoints** provide search, composite queries, and convenience routes for web clients and third-party integrations that do not use the ATProto SDK.
 
-**Zod 4+** provides runtime validation with automatic TypeScript type inference. Every request body, query parameter, and response payload is defined as a Zod schema. Invalid requests are rejected before reaching handler logic:
+**Zod 4+** provides runtime validation with automatic TypeScript type inference. Zod 4 delivers 2-3x performance improvement over Zod 3 in benchmarks, which matters for high-throughput firehose validation. Every request body, query parameter, and response payload is defined as a Zod schema. Invalid requests are rejected before reaching handler logic:
 
 ```typescript
 const SearchParams = z.object({
@@ -87,6 +90,51 @@ These packages are maintained by Bluesky PBC and provide the canonical implement
 - **@atproto/lexicon** parses the 26 `pub.layers.*` lexicon JSON files and validates incoming records against their schemas during firehose ingestion. Records that fail validation are routed to the dead letter queue. See [Firehose Ingestion](./firehose-ingestion) for the validation pipeline.
 - **@atproto/xrpc-server** provides the XRPC route registration, method handler signature, and error response formatting that the ATProto ecosystem expects.
 - **@atproto/oauth-client-node** implements the OAuth 2.0 + PKCE flow for user authentication. See [Authentication](./authentication) for the full auth flow.
+
+## Error Handling
+
+| Technology | Version | Role |
+|---|---|---|
+| Custom `Result<T, E>` | — | Typed error handling monad |
+| Custom `LayersError` hierarchy | — | Structured error classification |
+
+Following Chive's `src/types/result.ts` pattern, all fallible operations return a `Result<T, E>` monad instead of throwing exceptions. This provides explicit, type-safe error handling at every call site:
+
+```typescript
+// src/types/result.ts
+type Result<T, E = LayersError> =
+  | { ok: true; value: T }
+  | { ok: false; error: E }
+
+function Ok<T>(value: T): Result<T, never> { return { ok: true, value } }
+function Err<E>(error: E): Result<never, E> { return { ok: false, error } }
+
+// Combinators: isOk(), isErr(), unwrap(), unwrapOr(), map(), mapErr(), andThen()
+```
+
+The `LayersError` hierarchy (in `src/types/errors.ts`) mirrors Chive's `ChiveError`:
+
+| Error Class | HTTP Status | Use Case |
+|---|---|---|
+| `ComplianceError` | — | ATProto violations (write to PDS, blob storage, non-rebuildable state) |
+| `NotFoundError` | 404 | Record not found |
+| `ValidationError` | 400 | Invalid input (Zod failures, business rules) |
+| `AuthenticationError` | 401 | Missing or invalid credentials |
+| `AuthorizationError` | 403 | Insufficient permissions |
+| `RateLimitError` | 429 | Rate limit exceeded (includes `retryAfter`) |
+| `DatabaseError` | 500 | Storage backend failures |
+| `ServiceUnavailableError` | 503 | Downstream service unreachable |
+| `PluginError` | 500 | Plugin execution failure |
+| `SandboxViolationError` | 500 | Plugin exceeded resource limits or attempted forbidden operation |
+
+```typescript
+// Usage in handlers — no throws, explicit error paths
+async function getExpression(uri: string): Promise<Result<Expression>> {
+  const record = await pgPolicy.execute(() => pg.query(sql, [uri]))
+  if (!record.rows[0]) return Err(new NotFoundError(`Expression not found: ${uri}`))
+  return Ok(record.rows[0])
+}
+```
 
 ## Databases
 
@@ -178,12 +226,13 @@ LIMIT 100
 | Role | Session cache, rate limiting, BullMQ job queue backend, pub/sub |
 | Key features | In-memory performance, TTL-based expiry, Streams, pub/sub |
 
-Redis serves four distinct functions:
+Redis is accessed via **ioredis**, matching Chive's client choice for its cluster support, pipelining, and Lua scripting. Redis serves four distinct functions:
 
 1. **Session cache**: Stores authenticated user sessions with TTL-based expiry, avoiding per-request database lookups.
-2. **Rate limiting**: Implements sliding-window rate limiting per DID using `INCR` and `PEXPIRE`.
+2. **Rate limiting**: Implements sliding-window rate limiting using Redis sorted sets (`ZREMRANGEBYSCORE` + `ZCARD` + `ZADD` + `EXPIRE` pipeline), with tiered limits per user role (Anonymous 60/min, Authenticated 300/min, Premium 1000/min, Admin 5000/min) and a configurable fail-open/fail-closed mode.
 3. **Job queue backend**: BullMQ uses Redis Streams for persistent, ordered job queues with at-least-once delivery.
 4. **Pub/sub**: Real-time event notifications for connected clients (e.g., "new annotation on this expression").
+5. **Authorization cache**: Role assignments cached in sorted sets for fast RBAC lookups.
 
 ## Job Queue
 
@@ -254,17 +303,27 @@ m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 
 | Technology | Version | Role |
 |---|---|---|
-| Pino | 10+ | Structured JSON logging |
-| OpenTelemetry | 0.208+ | Distributed tracing with OTLP exporter |
+| Pino | 10+ | Structured JSON logging with PII redaction |
+| OpenTelemetry | 1.x | Distributed tracing, metrics, and logs (stable SDK) |
 | prom-client | 15+ | Prometheus metrics |
 | Grafana | latest | Dashboards and alerting |
+| Grafana Alloy | latest | Next-gen telemetry collector (replaces Grafana Agent) |
 
-**Pino 10+** produces structured JSON logs with automatic redaction of sensitive fields (tokens, passwords, PII). It is the fastest Node.js logging library by benchmark, which matters for high-throughput firehose processing where logging overhead is measurable. Log levels are configured per namespace:
+**Pino 10+** produces structured JSON logs with automatic redaction of sensitive fields. It is the fastest Node.js logging library by benchmark, which matters for high-throughput firehose processing where logging overhead is measurable. Following Chive's pattern, the logger automatically injects OpenTelemetry trace context (`traceId`, `spanId`) into every log entry via a Pino `mixin()` function, and redacts a comprehensive set of sensitive fields:
 
 ```typescript
 const logger = pino({
   level: 'info',
-  redact: ['req.headers.authorization', 'user.email'],
+  redact: [
+    'req.headers.authorization', 'req.headers.cookie',
+    '*.password', '*.token', '*.apiKey', '*.secret',
+    '*.credential', '*.accessToken', '*.refreshToken', '*.privateKey',
+  ],
+  mixin() {
+    const span = trace.getActiveSpan()
+    const ctx = span?.spanContext()
+    return ctx ? { traceId: ctx.traceId, spanId: ctx.spanId } : {}
+  },
   transport: {
     target: 'pino-pretty',
     options: { colorize: process.env.NODE_ENV !== 'production' },
@@ -272,7 +331,7 @@ const logger = pino({
 })
 ```
 
-**OpenTelemetry 0.208+** provides distributed tracing across the appview's async processing pipeline. Traces follow a firehose event from ingestion through queue processing, database writes, and index updates. The OTLP exporter sends traces to a collector (Jaeger or Grafana Tempo) for visualization and debugging.
+**OpenTelemetry 1.x** (stable SDK) provides distributed tracing across the appview's async processing pipeline. The SDK has graduated from 0.x to stable 1.x, providing API guarantees. Traces follow a firehose event from ingestion through queue processing, database writes, and index updates. The OTLP exporter sends traces to a collector (Grafana Tempo in production, Jaeger in development). The OTel Logs bridge can also route Pino logs through the OTel Collector for unified observability.
 
 **prom-client 15+** exposes Prometheus-format metrics at `/metrics`. Key metrics include:
 
@@ -287,36 +346,47 @@ const logger = pino({
 
 | Technology | Version | Role |
 |---|---|---|
-| Docker | latest | Container builds (multi-stage, Alpine base) |
+| Docker | latest | Container builds (multi-stage, distroless runtime) |
 | Kubernetes | 1.28+ | Container orchestration |
 | Kustomize | latest | Environment-specific configuration overlays |
+| ArgoCD / Flux | latest | GitOps continuous delivery |
 | External Secrets Operator | latest | Production secrets management |
 | cert-manager | latest | TLS certificate automation |
+| Sigstore cosign | latest | Container image signing and verification |
 
-**Docker** builds use multi-stage Dockerfiles with Alpine base images to minimize image size. The build stage compiles TypeScript with `tsc`, prunes dev dependencies, and copies only production artifacts to the runtime stage:
+**Docker** builds use multi-stage Dockerfiles with **distroless runtime images** for minimal attack surface. The build stage compiles TypeScript with `tsc` on Alpine, then copies only production artifacts to a distroless image that contains no shell, package manager, or unnecessary binaries. Separate compose files match Chive's pattern: `docker-compose.yml` (dev), `docker-compose.prod.yml`, `docker-compose.ci.yml`, `docker-compose.observability.yml`:
 
 ```dockerfile
-FROM node:22-alpine AS build
+FROM node:22-alpine AS deps
 WORKDIR /app
 COPY pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN corepack enable && pnpm install --frozen-lockfile
+
+FROM node:22-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN pnpm build && pnpm prune --prod
 
-FROM node:22-alpine
+FROM gcr.io/distroless/nodejs22-debian12
 WORKDIR /app
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/node_modules ./node_modules
-CMD ["node", "dist/main.js"]
+USER 1001
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+CMD ["dist/index.js"]
 ```
 
-**Kubernetes** manages deployment with Horizontal Pod Autoscaler (HPA) for scaling API and worker pods based on CPU/memory utilization and custom metrics (queue depth), Pod Disruption Budgets (PDB) for safe rollouts, and liveness/readiness probes that verify database connectivity.
+**Kubernetes** manages deployment with Horizontal Pod Autoscaler (HPA) for scaling API and worker pods based on CPU/memory utilization and custom metrics (queue depth), Pod Disruption Budgets (PDB) for safe rollouts, and liveness/readiness probes that verify database connectivity. An optional Helm chart in `k8s/helm/` provides templated deployment alongside the Kustomize approach.
 
-**Kustomize** provides base manifests with overlays for dev, staging, and production environments. Each overlay adjusts resource limits, replica counts, database connection strings, and feature flags without duplicating manifests.
+**Kustomize** provides base manifests with overlays for dev, staging, and production environments. Each overlay adjusts resource limits, replica counts, database connection strings, and feature flags without duplicating manifests. Additional directories: `k8s/monitoring/` (ServiceMonitors, Prometheus rules, Grafana dashboards), `k8s/disaster-recovery/` (backup CronJobs), `k8s/secrets/` (ExternalSecret definitions).
+
+**ArgoCD / Flux** provides GitOps-based continuous delivery, replacing manual `kubectl apply`. Infrastructure state is declared in Git; ArgoCD `Application` or Flux `Kustomization` manifests in `k8s/` drive automated reconciliation.
 
 **External Secrets Operator** syncs secrets from a cloud provider's secret manager (AWS Secrets Manager, GCP Secret Manager, or HashiCorp Vault) into Kubernetes secrets. Database credentials, API keys, and signing keys never appear in manifests or environment variables.
 
 **cert-manager** automates TLS certificate issuance and renewal via Let's Encrypt, eliminating manual certificate management.
+
+**Sigstore cosign** signs container images in CI for supply chain verification. Every image pushed to the registry is signed with a keyless signature, and Kubernetes admission controllers verify signatures before allowing deployment.
 
 See [Deployment](./deployment) for the full deployment architecture, CI/CD pipeline, and backup strategy.
 
@@ -356,6 +426,8 @@ See [Testing Strategy](./testing-strategy) for the full testing architecture.
 | Technology | Version | Role |
 |---|---|---|
 | isolated-vm | 6+ | V8 isolate sandbox per plugin |
+| EventEmitter2 | latest | Async event bus for plugin hooks |
+| AJV | latest | JSON Schema validation for plugin manifests |
 
 **isolated-vm 6+** provides a secure execution environment for third-party plugins. Each plugin runs in its own V8 isolate with no access to the host Node.js process, filesystem, or network. The appview injects a controlled API surface into each isolate.
 
@@ -392,6 +464,7 @@ See [Plugin System](./plugin-system) for the full plugin architecture.
 |---|---|---|
 | Turbo | 2+ | Monorepo build orchestration |
 | @atproto/lex-cli | latest | TypeScript codegen from lexicon JSON |
+| node-pg-migrate | latest | PostgreSQL schema migrations |
 | ESLint | 9+ | Linting (flat config) |
 | Prettier | 3+ | Code formatting |
 | Husky | 9+ | Git hook management |
@@ -404,37 +477,45 @@ See [Plugin System](./plugin-system) for the full plugin architecture.
 lex-cli gen-ts ./lexicons --out ./packages/shared/src/lexicon-types
 ```
 
+**node-pg-migrate** manages PostgreSQL schema migrations as TypeScript files in `src/storage/postgresql/migrations/`, following Chive's migration pattern.
+
 **ESLint 9+** uses the flat config format (`eslint.config.js`) with strict TypeScript rules. **Prettier 3+** handles formatting. **Husky 9+** runs lint and format checks on pre-commit hooks to prevent CI failures.
 
 ## Resilience
 
 | Technology | Version | Role |
 |---|---|---|
-| cockatiel | 3+ | Circuit breaker, bulkhead, timeout |
-| p-queue | 9+ | Concurrency control |
-| p-retry | 7+ | Exponential backoff retry |
+| cockatiel | 3+ | Circuit breaker, retry, bulkhead, timeout |
 
-**cockatiel 3+** implements resilience patterns for external service calls (database queries, DID resolution, PDS requests):
+**cockatiel 3+** is the sole resilience library, following Chive's pattern of consolidating all resilience patterns into a single composable policy chain. Every external service call (database queries, DID resolution, PDS requests, Elasticsearch queries, Neo4j operations) is wrapped in a cockatiel policy:
 
-- **Circuit breaker**: Opens after a configurable failure threshold (default: 5 failures in 30 seconds), preventing cascading failures. Half-open state tests recovery before closing.
+- **Circuit breaker**: Opens after a configurable failure threshold (default: 5 consecutive failures), preventing cascading failures. Half-open state tests recovery after a timeout (default: 30s) before closing.
+- **Retry**: Exponential backoff with jitter for transient failures (default: 3 attempts, 1s base delay, 10s max delay).
 - **Bulkhead**: Limits concurrent requests to each external service, preventing one slow service from exhausting the connection pool.
 - **Timeout**: Enforces per-request timeouts for database queries and HTTP calls.
 
 ```typescript
-const pgPolicy = Policy.wrap(
-  Policy.handleAll()
-    .retry().attempts(3).exponential(),
-  Policy.timeout(5000),
-  Policy.circuitBreaker(5, Duration.ofSeconds(30)),
-  Policy.bulkhead(20),
-)
+import { Policy, Duration } from 'cockatiel'
+
+function createResiliencePolicy(name: string, logger: ILogger) {
+  return Policy.wrap(
+    Policy.handleAll()
+      .retry().attempts(3).exponential({ initialDelay: 1000, maxDelay: 10000 }),
+    Policy.timeout(5000),
+    Policy.circuitBreaker(5, Duration.ofSeconds(30)),
+    Policy.bulkhead(20),
+  )
+}
+
+// Applied to all storage adapters
+const pgPolicy = createResiliencePolicy('postgresql', logger)
+const esPolicy = createResiliencePolicy('elasticsearch', logger)
+const neo4jPolicy = createResiliencePolicy('neo4j', logger)
 
 const result = await pgPolicy.execute(() => pg.query(sql))
 ```
 
-**p-queue 9+** controls concurrency for bulk operations (batch indexing, format imports) to prevent resource exhaustion. Each queue has a configurable concurrency limit and can pause/resume based on system load.
-
-**p-retry 7+** provides exponential backoff retry with jitter for transient failures (network timeouts, temporary database unavailability). It is used for operations outside the cockatiel policy chain, such as one-off administrative tasks.
+Policies are created per-service and shared across all callers, matching Chive's `src/services/common/resilience.ts` pattern.
 
 ## Decision Log
 
@@ -447,10 +528,17 @@ Key architectural decisions, recorded in ADR (Architecture Decision Record) styl
 | Search engine | Elasticsearch | Faceted search, custom analyzers for linguistic data, nested objects | Meilisearch (lacks nested), Typesense (lacks custom analyzers) |
 | Graph database | Neo4j | Native graph storage, Cypher query language, APOC library | PostgreSQL recursive CTEs (poor performance at depth), Dgraph (less mature) |
 | Job queue | BullMQ | Redis-backed, per-queue concurrency, priority, DLQ, dashboard | Temporal (complex setup), pg-boss (single-database bottleneck) |
-| Plugin sandbox | isolated-vm | V8 isolate per plugin, memory/CPU limits, no host access | vm2 (deprecated, security issues), Deno subprocesses (heavier) |
+| Plugin sandbox | isolated-vm | V8 isolate per plugin, memory/CPU limits, no host access | vm2 (deprecated, security issues), Deno subprocesses (heavier), WASI (not yet mature for Node.js plugins) |
 | Validation | Zod | TypeScript type inference, composable, OpenAPI generation | Joi (no type inference), AJV (JSON Schema only) |
 | Logging | Pino | Fastest Node.js logger, structured JSON, redaction | Winston (slower), Bunyan (unmaintained) |
 | DI framework | tsyringe | Decorator-based, lightweight, TypeScript-native | InversifyJS (heavier), manual DI (tedious at scale) |
+| Error handling | Custom `Result<T, E>` | Zero deps, Chive compatibility, explicit error paths | Effect-TS (heavy, steep learning curve), neverthrow (less composable), thrown exceptions (implicit, untyped) |
+| DB migrations | node-pg-migrate | TypeScript migration files, Chive precedent, fine-grained control | Drizzle ORM (AT-URI schemas don't map well to ORMs), Kysely (good but unnecessary abstraction layer) |
+| Resilience | cockatiel only | Single composable policy chain, Chive precedent | p-queue + p-retry (multiple libraries for same concern), Polly.js (less maintained) |
+| Container runtime | Distroless | No shell, no package manager, minimal CVE surface | Alpine (has shell and apk, larger attack surface), scratch (too minimal, missing libc) |
+| Deployment model | GitOps (ArgoCD/Flux) | Declarative, auditable, self-healing | Manual `kubectl apply` (error-prone, no drift detection), Helm-only (no GitOps reconciliation) |
+| Container signing | Sigstore cosign | Keyless signing, industry standard, K8s admission controller support | Notary v2 (less ecosystem support), GPG (manual key management) |
+| TS decorators | `experimentalDecorators` | Required by tsyringe; TC39 stage 3 decorators not yet supported | TC39 decorators (tsyringe incompatible), no decorators (manual DI wiring) |
 
 ## See Also
 

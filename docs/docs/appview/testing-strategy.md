@@ -28,6 +28,19 @@ graph TD
     class E2E,PERF slow
 ```
 
+## Test Configuration Files
+
+Following Chive's pattern, four separate Vitest configs target different test tiers:
+
+| Config | Scope | Database Required |
+|--------|-------|-------------------|
+| `vitest.unit.config.ts` | Unit tests with mocks | No |
+| `vitest.config.ts` | Integration tests with Testcontainers | Yes (PG, ES, Neo4j, Redis) |
+| `vitest.compliance.config.ts` | Lexicon schema compliance | Yes |
+| `vitest.pre-deployment.config.ts` | Staging health checks | Staging environment |
+
+A top-level `__mocks__/` directory provides manual mocks (e.g., `__mocks__/isolated-vm.js`) shared across all test tiers. Storage adapter tests are co-located in `src/storage/*/__tests__/`.
+
 ## Unit Tests
 
 **Tool:** Vitest 4+
@@ -50,8 +63,8 @@ Unit tests cover individual functions and classes in isolation, with all externa
 ### Mocking Strategy
 
 - Database clients: mocked via Vitest's `vi.mock()` or manual test doubles
-- Redis: mocked with in-memory Map
-- `isolated-vm`: mocked in `__mocks__/isolated-vm.js` (returns deterministic sandbox results)
+- Redis: mocked with in-memory Map (via `ioredis-mock`)
+- `isolated-vm`: mocked in top-level `__mocks__/isolated-vm.js` (returns deterministic sandbox results)
 - ATProto client: mocked to return fixture records
 
 ### Coverage Requirements
@@ -196,6 +209,22 @@ Test fixtures include reference files from the [data model integration documenta
 
 Performance tests run in CI against a staging environment after each release. Results are compared against baselines stored in the repository. A > 20% regression in any p95 metric fails the pipeline.
 
+## Pre-Deployment Tests
+
+**Tool:** Vitest 4+
+**Config:** `vitest.pre-deployment.config.ts`
+**Run:** `pnpm test:pre-deployment`
+
+Pre-deployment tests run against the staging environment after deployment to verify:
+
+- API health endpoints respond correctly
+- All four database connections are healthy
+- Firehose consumer is connected and processing events
+- XRPC endpoints return valid responses for known test records
+- Rate limiting is enforced at configured tiers
+
+These tests are automatically triggered by the CI/CD pipeline after staging deployment and must pass before production promotion.
+
 ## CI Integration
 
 ### Test Pipeline Configuration
@@ -230,6 +259,11 @@ stages:
 ```
 
 Unit tests and lint/typecheck run on every push. Integration and compliance tests run on every PR. E2E tests run against the staging environment after merge. Performance tests run on release candidates.
+
+## Future Considerations
+
+- **Vitest browser mode**: Vitest 4+ supports browser mode for component tests, which could be used for frontend testing in the `web/` directory.
+- **Testcontainers Cloud**: Shared container pools in CI for faster test execution and reduced resource consumption.
 
 ## See Also
 

@@ -7,6 +7,20 @@ sidebar_position: 7
 
 The appview answers two categories of questions: **retrieval** (get a specific record by its AT-URI) and **discovery** (find records matching some criteria). Retrieval hits PostgreSQL directly. Discovery queries fan out across PostgreSQL, Elasticsearch, and Neo4j depending on the query shape.
 
+## Service Layer
+
+Query logic is encapsulated in service classes in `src/services/`, matching Chive's pattern:
+
+| Service | File | Responsibility |
+|---------|------|----------------|
+| `SearchService` | `src/services/search/search-service.ts` | Full-text search, faceted filtering via Elasticsearch |
+| `RankingService` | `src/services/search/ranking-service.ts` | Result scoring by confidence, recency, persona reputation |
+| `AutocompleteService` | `src/services/search/autocomplete-service.ts` | Expression text, ontology names, label value completion |
+| `QueryCache` | `src/services/search/query-cache.ts` | Redis-backed TTL cache for ES query results |
+| `DiscoveryService` | `src/services/discovery/discovery-service.ts` | Recommendations: "similar annotations", "related corpora" |
+
+All service methods return `Result<T, LayersError>` and are injected via tsyringe.
+
 ## Discovery Use Cases
 
 | Use Case | Primary Backend | Query Shape |
@@ -271,6 +285,11 @@ Redis caches frequently accessed data to reduce database load:
 | `corpus_stats:{uri}` | 15 min | Materialized corpus statistics |
 
 Cache invalidation: when a record is updated or deleted via the firehose, its cache key and related cache keys are evicted immediately.
+
+## Future Considerations
+
+- **Semantic search**: ES `dense_vector` fields could enable vector-based semantic search over annotation label embeddings, complementing keyword-based faceting with similarity-based retrieval.
+- **Learning-to-rank**: A `RelevanceLogger` (analogous to Chive's) could collect click-through data on search results to train a learning-to-rank model for improved result ordering.
 
 ## See Also
 

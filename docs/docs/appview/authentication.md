@@ -5,6 +5,24 @@ sidebar_position: 8
 
 # Authentication and Authorization
 
+## Auth Module Structure
+
+The auth module is organized in `src/auth/`, matching Chive's directory layout:
+
+```
+src/auth/
+├── atproto-oauth/     # OAuth client, session store, state store
+├── authorization/     # Casbin service, model.conf, default-policy.csv
+├── did/               # DID resolver, DID verifier, Redis cache
+├── jwt/               # JWT service, key manager
+├── mfa/               # MFA service (WebAuthn + TOTP)
+├── scopes/            # Layers-specific scope definitions
+├── service-auth/      # Service-to-service JWT verification (indexer↔API)
+├── session/           # SessionManager, RefreshTokenManager
+├── webauthn/          # WebAuthn credential registration and verification
+└── zero-trust/        # Zero-trust policy enforcement (NIST SP 800-207)
+```
+
 ## ATProto OAuth 2.0
 
 The appview authenticates users via ATProto's OAuth 2.0 + PKCE flow, using `@atproto/oauth-client-node`. The user's DID (Decentralized Identifier) serves as their identity across the protocol.
@@ -52,7 +70,38 @@ After OAuth authentication, the appview issues its own JWT session token (via th
 | `exp` | Expiration (default: 24 hours) |
 | `iss` | AppView service DID |
 
-Tokens are signed with `JWT_SECRET` (HS256). Session refresh extends the expiration without re-authenticating against the PDS.
+Tokens are signed with `JWT_SECRET` (HS256). The `SessionManager` and `RefreshTokenManager` are separate classes in `src/auth/session/`, matching Chive's pattern. Session refresh extends the expiration without re-authenticating against the PDS.
+
+## Service Authentication
+
+For machine-to-machine communication (e.g., indexer↔API), the `ServiceAuthVerifier` in `src/auth/service-auth/` verifies JWTs issued by the calling service's DID. This matches Chive's service auth pattern:
+
+```typescript
+// Service auth JWT claims
+{
+  iss: "did:web:layers.pub:indexer",  // Calling service DID
+  sub: "did:web:layers.pub",          // Target service DID
+  aud: "https://layers.pub",
+  exp: <timestamp>,
+  lxm: "pub.layers.expression.*",    // Lexicon method scope
+  iat: <timestamp>
+}
+```
+
+## Layers-Specific Scopes
+
+Scopes control fine-grained API access, defined in `src/auth/scopes/`:
+
+| Scope | Description |
+|-------|-------------|
+| `read:records` | Read all public records |
+| `write:expression` | Create/update expressions |
+| `write:annotation` | Create/update annotation layers |
+| `write:corpus` | Create/manage corpora and memberships |
+| `write:ontology` | Create/manage ontologies and type definitions |
+| `write:experiment` | Create/manage experiment definitions |
+| `admin:dlq` | View and replay dead letter queue entries |
+| `admin:users` | Manage user roles and permissions |
 
 ## Authorization Model
 
@@ -133,11 +182,21 @@ Time-based one-time passwords are supported via `@otplib`. Users scan a QR code 
 
 MFA is optional by default and can be enforced per-role by the administrator.
 
+## Zero-Trust Architecture
+
+Following Chive's zero-trust model and NIST SP 800-207, the appview enforces:
+
+- **Every request authenticated**: No implicit access; defaults to deny. Anonymous users have read-only access to public records with strict rate limiting.
+- **mTLS between services**: The API server and firehose indexer communicate over mutual TLS in production. Database connections use TLS with certificate verification.
+- **Trust scoring**: The `ZeroTrustService` in `src/auth/zero-trust/` computes a trust score for each request based on authentication strength (password vs. passkey vs. service auth), DID verification freshness, and request context.
+- **Audit logging**: All authentication and authorization events are logged with tamper-resistant structured entries for compliance.
+- **Redis-backed authorization cache**: Role assignments are cached in Redis sorted sets for sub-millisecond RBAC lookups, matching Chive's `AuthorizationService`.
+
 ## Security Considerations
 
 ### Rate Limiting
 
-See [API Design](./api-design) for tiered rate limiting by authentication status.
+See [API Design](./api-design) for the 4-tier rate limiting model with sliding window sorted-set algorithm.
 
 ### Input Validation
 
@@ -156,7 +215,12 @@ The appview allows cross-origin requests only from configured origins. The defau
 | `OAUTH_CLIENT_SECRET` | Environment variable (dev), External Secrets Operator (production) |
 | Database credentials | Environment variable (dev), External Secrets Operator (production) |
 
-No secrets are stored in code or version control. Production deployments use the [External Secrets Operator](https://external-secrets.io/) to inject secrets from a vault (e.g., HashiCorp Vault, AWS Secrets Manager) into Kubernetes pods.
+No secrets are stored in code or version control. Production deployments use the [External Secrets Operator](https://external-secrets.io/) to inject secrets from a vault (e.g., HashiCorp Vault, AWS Secrets Manager) into Kubernetes pods. Secrets are refreshed on a 1-hour interval.
+
+## Future Considerations
+
+- **Passkeys-first**: The industry is shifting toward passkeys as the primary authentication method (FIDO Alliance 2025 adoption milestones). The appview already supports WebAuthn and can transition to passkeys-first when adoption reaches critical mass.
+- **DPoP tokens**: The emerging [DPoP](https://datatracker.ietf.org/doc/html/rfc9449) (Demonstrating Proof of Possession) standard binds tokens to specific clients, preventing token theft/replay. Monitor ATProto ecosystem adoption.
 
 ## See Also
 

@@ -16,14 +16,15 @@ Both surfaces share the same validation layer (Zod schemas generated from lexico
 
 ### Middleware Stack
 
-Requests pass through middleware in this order:
+Requests pass through a 7-layer middleware stack, matching Chive's ordering:
 
-1. **secureHeaders** (X-Frame-Options, CSP, HSTS)
-2. **CORS** (configurable origin allowlist)
-3. **requestContext** (request ID, timing, logger correlation)
-4. **authentication** (ATProto OAuth token validation, JWT session)
-5. **rateLimiting** (tiered by user role, Redis-backed sliding window)
-6. **errorHandler** (structured error responses with request ID)
+1. **secureHeaders** — X-Frame-Options, CSP, HSTS, X-Content-Type-Options
+2. **CORS** — configurable origin allowlist
+3. **serviceInjection** — injects tsyringe services into Hono context
+4. **requestContext** — request ID (`req_<timestamp>_<random>`), timing, child logger with W3C Trace Context propagation (`traceparent` header)
+5. **authentication** — ATProto OAuth token validation, service auth JWT verification (for indexer↔API), DID resolution with Redis cache
+6. **rateLimiting** — tiered by user role, Redis sorted-set sliding window, with fail-open/fail-closed configuration
+7. **errorHandler** — maps `LayersError` hierarchy to structured responses with request ID
 
 ## XRPC Endpoints
 
@@ -58,14 +59,16 @@ Every record type follows the same `get` / `list` pattern defined by its lexicon
 
 XRPC routes are generated programmatically from lexicon JSON files using `@atproto/lex-cli` for TypeScript types and Zod for runtime validation:
 
+Handlers are organized by feature in `src/api/handlers/xrpc/{namespace}/` and `src/api/handlers/rest/v1/`, matching Chive's directory structure. XRPC handlers return `Result<T, LayersError>` instead of throwing:
+
 ```typescript
-// Generated from pub.layers.expression.getExpression lexicon
+// src/api/handlers/xrpc/expression/getExpression.ts
 app.get('/xrpc/pub.layers.expression.getExpression', async (c) => {
-  const { uri } = getExpressionSchema.parse(c.req.query());
-  const record = await expressionService.getByUri(uri);
-  if (!record) throw new XRPCError(404, 'RecordNotFound');
-  return c.json(record);
-});
+  const params = getExpressionSchema.parse(c.req.query())
+  const result = await expressionService.getByUri(params.uri)
+  if (!result.ok) return c.json({ error: result.error.code, message: result.error.message }, 404)
+  return c.json(result.value)
+})
 ```
 
 ## REST API
@@ -164,19 +167,47 @@ XRPC endpoints are documented separately through lexicon JSON files, which serve
 
 ## Rate Limiting
 
-Rate limits are tiered by authentication status and enforced via Redis sliding window counters:
+Rate limits are tiered by authentication status and enforced via a Redis sorted-set sliding window algorithm, matching Chive's 4-tier model:
 
 | Tier | Requests/Minute | Applies To |
 |---|---|---|
-| Anonymous | 60 | Unauthenticated requests |
-| Authenticated | 300 | Logged-in users |
-| Service | 1000 | Machine-to-machine (service auth) |
+| Anonymous | 60 | Unauthenticated requests (keyed by IP) |
+| Authenticated | 300 | Logged-in users (keyed by DID) |
+| Premium | 1000 | Premium-tier users (keyed by DID) |
+| Admin | 5000 | Administrators (keyed by DID) |
 
-Rate limit headers (`X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`) are included in every response.
+**Autocomplete endpoints** (`/api/v1/*/autocomplete`) have separate, stricter limits: Anonymous 10/min, Authenticated 50/min.
+
+### Sliding Window Algorithm
+
+```typescript
+// Redis pipeline — atomic check-and-increment
+async function checkRateLimit(redis: Redis, key: string, limit: number, windowMs: number) {
+  const now = Date.now()
+  const windowStart = now - windowMs
+  const pipe = redis.pipeline()
+  pipe.zremrangebyscore(key, 0, windowStart)  // Remove expired entries
+  pipe.zcard(key)                              // Count current window
+  pipe.zadd(key, now, `${now}:${requestId}`)  // Add this request
+  pipe.expire(key, Math.ceil(windowMs / 1000) + 1)  // Set TTL
+  const results = await pipe.exec()
+  const count = results[1][1] as number
+  return { allowed: count < limit, remaining: Math.max(0, limit - count - 1) }
+}
+```
+
+The rate limiter is configurable for **fail-open** (allow if Redis down — availability priority) or **fail-closed** (deny if Redis down — zero-trust priority).
+
+### Response Headers
+
+Both legacy and IETF draft rate limit headers are included in every response:
+
+- `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset` (legacy, GitHub/Stripe convention)
+- `RateLimit-Policy`, `RateLimit-Limit`, `RateLimit-Remaining` (IETF draft)
 
 ## Error Handling
 
-All errors follow a consistent structure:
+All errors use the `LayersError` hierarchy (see [Technology Stack](./technology-stack#error-handling)). The error handler middleware maps each error type to the appropriate HTTP status code and returns a consistent structure:
 
 ```json
 {
@@ -186,7 +217,17 @@ All errors follow a consistent structure:
 }
 ```
 
-XRPC errors use ATProto error codes. REST errors use standard HTTP status codes with the same body format.
+| Error Type | HTTP Status | XRPC Error Code |
+|---|---|---|
+| `NotFoundError` | 404 | `RecordNotFound` |
+| `ValidationError` | 400 | `InvalidRequest` |
+| `AuthenticationError` | 401 | `AuthRequired` |
+| `AuthorizationError` | 403 | `Forbidden` |
+| `RateLimitError` | 429 | `RateLimitExceeded` |
+| `DatabaseError` | 500 | `InternalServerError` |
+| `ServiceUnavailableError` | 503 | `ServiceUnavailable` |
+
+XRPC errors use ATProto error codes. REST errors use standard HTTP status codes. Both share the same body format.
 
 ## See Also
 

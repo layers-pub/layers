@@ -9,7 +9,7 @@ sidebar_position: 11
 
 ### Docker Multi-Stage Build
 
-The appview uses a multi-stage Dockerfile to produce a minimal production image:
+The appview uses a multi-stage Dockerfile with a **distroless runtime image** for minimal attack surface:
 
 ```dockerfile
 # Stage 1: Dependencies
@@ -20,24 +20,38 @@ COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 RUN pnpm install --frozen-lockfile
 
 # Stage 2: Build
-FROM deps AS builder
+FROM node:22-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN pnpm build
 RUN pnpm prune --prod
 
-# Stage 3: Runtime
-FROM node:22-alpine AS runtime
-RUN addgroup -g 1001 -S layers && adduser -u 1001 -S layers -G layers
+# Stage 3: Runtime (distroless — no shell, no package manager)
+FROM gcr.io/distroless/nodejs22-debian12
 WORKDIR /app
-COPY --from=builder --chown=layers:layers /app/dist ./dist
-COPY --from=builder --chown=layers:layers /app/node_modules ./node_modules
-COPY --from=builder --chown=layers:layers /app/package.json ./
-USER layers
+USER 1001
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./
 EXPOSE 3000
-CMD ["node", "dist/index.js"]
+CMD ["dist/index.js"]
 ```
 
-The final image runs as a non-root user (`layers:1001`) with no build tools, dev dependencies, or source code.
+The final image runs as a non-root user (UID 1001) with no build tools, dev dependencies, or source code. Images are signed with **Sigstore cosign** in CI for supply chain verification.
+
+### Docker Compose Files
+
+Multiple compose files match Chive's `docker/` directory pattern:
+
+| File | Purpose |
+|------|---------|
+| `docker/docker-compose.yml` | Development: PG, Redis, ES, Neo4j |
+| `docker/docker-compose.prod.yml` | Production: full stack with resource limits |
+| `docker/docker-compose.ci.yml` | CI testing: lightweight containers |
+| `docker/docker-compose.observability.yml` | Grafana, Tempo, Prometheus, OTEL Collector |
+
+Supporting configs: `docker/otel-collector-config.yaml`, `docker/prometheus.yml`.
 
 ### Image Variants
 
@@ -151,28 +165,52 @@ readinessProbe:
 
 ## Kustomize Overlays
 
-The Kubernetes manifests are organized with Kustomize:
+The Kubernetes manifests are organized with Kustomize, with additional directories matching Chive's `k8s/` structure:
 
 ```
 k8s/
 ├── base/
-│   ├── kustomization.yaml
-│   ├── api-deployment.yaml
-│   ├── indexer-deployment.yaml
-│   ├── api-service.yaml
-│   ├── hpa.yaml
-│   ├── pdb.yaml
-│   └── ingress.yaml
+│   ├── appview/              # API deployment, service, HPA, PDB
+│   ├── indexer/              # Indexer deployment
+│   ├── rbac/                 # ServiceAccounts, Roles, RoleBindings
+│   ├── ingress/              # Ingress with cert-manager annotations
+│   └── kustomization.yaml
 ├── overlays/
-│   ├── dev/
-│   │   └── kustomization.yaml   # Lower resources, single replica
-│   ├── staging/
-│   │   └── kustomization.yaml   # Production-like, staging secrets
-│   └── prod/
-│       └── kustomization.yaml   # Full resources, external secrets
+│   ├── dev/                  # Lower resources, single replica
+│   ├── staging/              # Production-like, staging secrets
+│   └── prod/                 # Full resources, external secrets
+├── helm/                     # Optional Helm chart for templated deployment
+│   └── layers-appview/
+├── monitoring/               # ServiceMonitors, Prometheus rules, Grafana dashboards
+├── disaster-recovery/        # Backup CronJobs (PG, ES, Neo4j)
+├── secrets/                  # ExternalSecret definitions
+└── gitops/                   # ArgoCD Application or Flux Kustomization manifests
 ```
 
 Each overlay patches resource limits, replica counts, environment variables, and secret references for its target environment.
+
+### GitOps Deployment
+
+Production deployments use **ArgoCD** or **Flux** for GitOps-based continuous delivery, replacing manual `kubectl apply`:
+
+```yaml
+# k8s/gitops/argocd-application.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: layers-appview
+spec:
+  source:
+    repoURL: https://github.com/layers-pub/layers
+    path: k8s/overlays/prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: layers
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+```
 
 ## Database Deployment
 
@@ -220,21 +258,24 @@ TLS termination is handled at the ingress controller (nginx-ingress) with certif
 
 1. **Lint**: ESLint + Prettier check
 2. **Type check**: `tsc --noEmit`
-3. **Unit tests**: Vitest
+3. **Unit tests**: Vitest (`vitest.unit.config.ts`)
 4. **Build**: TypeScript compilation + Docker image build
 5. **Push**: Push image to container registry with git SHA tag
+6. **Sign**: Sign image with **Sigstore cosign** (keyless) for supply chain verification
 
 ### Test Pipeline
 
-1. **Integration tests**: Vitest with Testcontainers (PG, ES, Neo4j, Redis)
-2. **Compliance tests**: Lexicon schema validation for all 26 record types
+1. **Integration tests**: Vitest with Testcontainers (PG, ES, Neo4j, Redis) (`vitest.config.ts`)
+2. **Compliance tests**: Lexicon schema validation for all 26 record types (`vitest.compliance.config.ts`)
 3. **E2E tests**: Playwright against a staging environment
+4. **Performance tests**: k6 load scenarios (release-only)
 
 ### Deploy Pipeline
 
-1. **Staging**: Automatic deploy on merge to `main`
-2. **Production**: Manual promotion from staging (approval gate)
-3. **Rollback**: Redeploy previous image tag via Kubernetes rollout
+1. **Staging**: Automatic deploy via GitOps (ArgoCD/Flux) on merge to `main`
+2. **Pre-deployment tests**: Health checks against staging (`vitest.pre-deployment.config.ts`)
+3. **Production**: Manual promotion from staging (approval gate)
+4. **Rollback**: Redeploy previous image tag via Kubernetes rollout or GitOps revert
 
 ## Backup and Recovery
 

@@ -11,6 +11,48 @@ The Layers appview extends its capabilities through a plugin system adapted from
 
 All plugins follow ATProto compliance rules: they can read firehose events and cache computed results but never write directly to user PDSes. Format importers that create records do so through the user's authenticated OAuth session, so the user's PDS remains the authoritative source.
 
+## Directory Structure
+
+The plugin system lives in `src/plugins/`, matching Chive's layout:
+
+```
+src/plugins/
+├── core/                # Plugin infrastructure
+│   ├── plugin-manager.ts
+│   ├── plugin-loader.ts
+│   ├── plugin-context.ts
+│   ├── event-bus.ts
+│   ├── scoped-event-bus.ts
+│   ├── plugin-registry.ts
+│   ├── manifest-schema.ts
+│   ├── import-scheduler.ts
+│   └── index.ts
+├── builtin/             # First-party plugins
+│   ├── base-plugin.ts
+│   ├── importer-plugin.ts
+│   ├── importing-plugin.ts    # Network-based API harvesting
+│   ├── backlink-plugin.ts     # Cross-reference to external systems
+│   ├── conll-importer/
+│   ├── brat-importer/
+│   ├── elan-importer/
+│   ├── praat-importer/
+│   └── tei-importer/
+├── sandbox/             # Isolation infrastructure
+│   ├── isolated-vm-sandbox.ts
+│   ├── permission-enforcer.ts
+│   └── resource-governor.ts
+└── index.ts             # Barrel exports: registerPluginSystem(), getPluginManager()
+```
+
+### Plugin Type Hierarchy
+
+| Base Class | Purpose | Example |
+|------------|---------|---------|
+| `ImporterPlugin` | File-based format import (parse local files) | CoNLL, BRAT, ELAN importers |
+| `ImportingPlugin` | Network-based API harvesting (fetch from remote APIs) | Wikidata, WordNet harvesters |
+| `BacklinkPlugin` | Cross-reference to external systems | Wikidata linker, FrameNet linker |
+| `RecordSearchPlugin` | Contribute search results from external sources | (future) |
+
 ## Architecture
 
 ```mermaid
@@ -566,6 +608,12 @@ describe('IsolatedVmSandbox', () => {
 ### Format Import Round-Trip Tests
 
 See [Testing Strategy](./testing-strategy) for the full round-trip test suite that verifies each importer against reference files.
+
+## Future Considerations
+
+- **WASI-based plugin sandboxing**: WebAssembly System Interface (WASI) is maturing as an alternative to `isolated-vm`. WASI would enable plugins written in any language (Rust, Go, Python) compiled to WASM, providing stronger isolation guarantees and potentially better performance for compute-heavy operations like large corpus parsing.
+- **V8 isolate improvements**: Node.js 22+ V8 engine improvements benefit `isolated-vm` performance (faster snapshot creation, reduced memory overhead per isolate).
+- **Plugin marketplace**: As the Layers ecosystem grows, a plugin registry (analogous to npm but for Layers plugins) could enable community-contributed importers, harvesters, and enrichment processors with verified manifests and security audits.
 
 ## See Also
 

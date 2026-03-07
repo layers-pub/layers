@@ -5,11 +5,25 @@ sidebar_position: 10
 
 # Observability and Monitoring
 
+## Module Structure
+
+The observability module lives in `src/observability/`, matching Chive's layout:
+
+| File | Responsibility |
+|------|----------------|
+| `logger.ts` | PinoLogger class with structured JSON output and PII redaction |
+| `telemetry.ts` | OpenTelemetry SDK initialization (`initTelemetry`) |
+| `tracer.ts` | Trace context helpers (get active span, inject context) |
+| `metrics-exporter.ts` | Prometheus metric definitions and registration |
+| `prometheus-registry.ts` | Centralized metric registry |
+| `freshness-metrics.ts` | Dedicated staleness/freshness tracking metrics |
+| `index.ts` | Barrel exports |
+
 ## Logging
 
 ### Pino Configuration
 
-The appview uses [Pino](https://getpino.io/) for structured JSON logging. Every log entry includes a request ID, timestamp, and OpenTelemetry trace/span IDs for correlation.
+The appview uses [Pino](https://getpino.io/) for structured JSON logging. Every log entry includes a request ID, timestamp, and OpenTelemetry trace/span IDs for correlation. The redaction list covers all sensitive field patterns matching Chive's comprehensive approach:
 
 ```typescript
 const logger = pino({
@@ -17,7 +31,12 @@ const logger = pino({
   formatters: {
     level: (label) => ({ level: label }),
   },
-  redact: ['req.headers.authorization', 'req.headers.cookie', 'password'],
+  redact: [
+    'req.headers.authorization', 'req.headers.cookie',
+    '*.password', '*.token', '*.apiKey', '*.apikey',
+    '*.secret', '*.credential', '*.accessToken',
+    '*.refreshToken', '*.privateKey',
+  ],
   mixin() {
     const span = trace.getActiveSpan();
     if (span) {
@@ -47,7 +66,7 @@ Every HTTP request gets a unique `requestId` (UUID v4) injected by the request c
 
 ### OpenTelemetry Setup
 
-The appview instruments all I/O boundaries with [OpenTelemetry](https://opentelemetry.io/):
+The appview uses **OpenTelemetry 1.x** (stable SDK) to instrument all I/O boundaries. The OTel Logs bridge can route Pino logs through the OTel Collector for unified observability. **Grafana Alloy** is the recommended next-gen collector, replacing the legacy Grafana Agent:
 
 | Instrumentation | Library | Traces |
 |---|---|---|
@@ -58,7 +77,7 @@ The appview instruments all I/O boundaries with [OpenTelemetry](https://opentele
 | Neo4j | Custom instrumentation | Cypher query spans |
 | BullMQ | Custom instrumentation | Job processing spans |
 
-Traces are exported via OTLP HTTP to a collector (Jaeger in development, Grafana Tempo in production).
+Traces are exported via OTLP HTTP to a collector (Jaeger in development, Grafana Tempo in production). A dedicated `MetricsService` class in `src/services/metrics/` provides a clean API for recording business metrics (view counts, search clicks, annotation activity).
 
 ### Span Hierarchy
 

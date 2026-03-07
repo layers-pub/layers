@@ -5,7 +5,9 @@ sidebar_position: 4
 
 # Firehose Ingestion Pipeline
 
-The firehose ingestion pipeline is the entry point for all `pub.layers.*` data into the appview. It subscribes to the ATProto relay's event stream, filters for Layers-relevant commits, validates records against their Lexicon schemas, and routes them through a dependency-aware job queue into PostgreSQL, Elasticsearch, and Neo4j.
+The firehose ingestion pipeline runs as a **separate process** (`src/indexer.ts`), independent of the API server (`src/index.ts`). This two-process architecture matches Chive's design: the indexer can crash, restart, or scale independently without affecting query serving.
+
+The pipeline subscribes to the ATProto relay's event stream, filters for Layers-relevant commits, validates records against their Lexicon schemas, and routes them through a dependency-aware job queue into PostgreSQL, Elasticsearch, and Neo4j.
 
 ## ATProto Firehose Overview
 
@@ -20,11 +22,53 @@ Each event carries a monotonically increasing **sequence number** (cursor). The 
 
 Commit events are the primary interest of the Layers appview. Each commit contains one or more **operations** (creates, updates, or deletes) on records within a user's repository. The operations include the collection NSID, the record key (rkey), and (for creates and updates) the record value encoded as a DAG-CBOR block within a CAR file.
 
+## Component Architecture
+
+The indexer process decomposes into 8 components in `src/services/indexing/`, matching Chive's granular pipeline:
+
+| Component | File | Responsibility |
+|-----------|------|----------------|
+| `FirehoseConsumer` | `firehose-consumer.ts` | WebSocket subscription, AsyncIterable event stream |
+| `EventFilter` | `event-filter.ts` | NSID filtering via `Set<string>` lookup |
+| `CommitHandler` | `commit-handler.ts` | CAR file parsing, DAG-CBOR record extraction |
+| `EventProcessor` | `event-processor.ts` | Routes validated events to storage backends |
+| `CursorManager` | `cursor-manager.ts` | Batch cursor persistence (every N events or T seconds) |
+| `EventQueue` | `event-queue.ts` | BullMQ queue dispatch with backpressure control |
+| `DLQHandler` | `dlq-handler.ts` | Dead letter queue with AlertService integration |
+| `ErrorClassifier` | `error-classifier.ts` | Classifies errors as retryable (transient) vs permanent |
+
+The initialization flow in `src/indexer.ts`:
+
+```typescript
+// src/indexer.ts — separate process from the API server
+const pg = await createPool(config.database)
+const redis = new Redis(config.redis)
+const es = new Client(config.elasticsearch)
+const neo4j = neo4jDriver(config.neo4j)
+
+const cursorManager = new CursorManager(pg, { batchSize: 1000, flushIntervalMs: 5000 })
+const errorClassifier = new ErrorClassifier()
+const dlqHandler = new DLQHandler(pg, alertService)
+const eventProcessor = new EventProcessor({ pg, es, neo4j, dlqHandler, errorClassifier })
+const eventQueue = new EventQueue(redis, { maxDepth: 10_000 })
+const eventFilter = new EventFilter(LAYERS_NSIDS)
+const commitHandler = new CommitHandler()
+
+const consumer = new FirehoseConsumer(config.relayUrl, cursorManager, {
+  eventFilter,
+  commitHandler,
+  eventProcessor,
+  eventQueue,
+})
+
+await consumer.start()
+```
+
 ## Subscription Management
 
 ### Connection
 
-The firehose consumer establishes a WebSocket connection to the relay at `wss://bsky.network` (configurable via `LAYERS_RELAY_URL`). The subscription request includes the last persisted cursor as a query parameter:
+The `FirehoseConsumer` establishes a WebSocket connection to the relay at `wss://bsky.network` (configurable via `LAYERS_RELAY_URL`). The subscription request includes the last persisted cursor as a query parameter:
 
 ```
 wss://bsky.network/xrpc/com.atproto.sync.subscribeRepos?cursor=12345678
@@ -34,7 +78,7 @@ If no cursor is persisted (first run or full rebuild), the consumer starts from 
 
 ### Cursor Persistence
 
-The current cursor is persisted to the `firehose_cursor` table in PostgreSQL. To avoid excessive write amplification, the cursor is flushed periodically (every 1000 events or every 5 seconds, whichever comes first) rather than on every event. On unclean shutdown, at most a few seconds of events are reprocessed. This is safe because all handlers are idempotent.
+The `CursorManager` persists the current cursor to the `firehose_cursor` table in PostgreSQL. To avoid excessive write amplification, the cursor is flushed in batches (every 1000 events or every 5 seconds, whichever comes first) rather than on every event. On unclean shutdown, at most a few seconds of events are reprocessed. This is safe because all handlers are idempotent.
 
 ```sql
 -- See Database Design for full schema
@@ -137,7 +181,19 @@ interface DLQEntry {
 }
 ```
 
-DLQ entries are stored in PostgreSQL and exposed through an admin API for inspection and replay. See [Background Jobs](./background-jobs) for DLQ monitoring and reprocessing.
+DLQ entries are stored in PostgreSQL and exposed through an admin API for inspection and replay. The `DLQHandler` integrates with the `AlertService` to send notifications when DLQ entries exceed configurable thresholds.
+
+### Error Classification
+
+The `ErrorClassifier` categorizes errors to determine retry behavior:
+
+| Category | Examples | Action |
+|----------|----------|--------|
+| **Retryable** | Network timeout, DB connection refused, ES bulk rejection | Re-queue with exponential backoff |
+| **Permanent** | Validation failure, malformed record, unknown collection NSID | Route to DLQ immediately |
+| **Dependency** | Missing referenced expression, missing ontology | Re-queue with dependency delay |
+
+See [Background Jobs](./background-jobs) for DLQ monitoring and reprocessing.
 
 ## Job Queue Architecture
 
@@ -396,6 +452,16 @@ The Grafana dashboard includes the following panels for firehose health:
 - **Validation failure rate**: Failures per second by stage and collection
 
 See [Observability](./observability) for the full dashboard and alerting configuration.
+
+## Future Considerations
+
+### WebTransport
+
+[WebTransport](https://w3c.github.io/webtransport/) is being monitored as a potential replacement for WebSocket-based firehose subscription. WebTransport provides multiplexed streams over HTTP/3, unreliable datagrams for non-critical events, and better congestion control. It is not yet adopted by ATProto relays but could improve ingestion performance for high-volume streams.
+
+### Structured Concurrency
+
+Node.js 22+ improvements to `AbortController` enable cleaner structured concurrency patterns for the firehose pipeline. Cancellation signals can propagate through the entire handler chain (`FirehoseConsumer` → `EventFilter` → `CommitHandler` → `EventProcessor`), ensuring graceful shutdown without orphaned async operations.
 
 ## See Also
 

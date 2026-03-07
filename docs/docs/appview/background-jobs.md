@@ -5,9 +5,50 @@ sidebar_position: 9
 
 # Background Jobs and Workers
 
+## Job vs Worker Distinction
+
+Following Chive's pattern, background work is split between two code locations:
+
+- **Jobs** (`src/jobs/`): Scheduled interval-based tasks that run within the API server process. Each job class implements `start()`, `stop()`, and `run()` methods with an `setInterval` timer.
+- **Workers** (`src/workers/`): BullMQ queue consumers that run within the indexer process. Each worker class processes jobs from a specific BullMQ queue.
+
+| Job | File | Schedule |
+|-----|------|----------|
+| `MaterializedViewRefreshJob` | `src/jobs/materialized-view-refresh-job.ts` | 15 min / 1 hour |
+| `StalenessDetectionJob` | `src/jobs/staleness-detection-job.ts` | Daily |
+| `ReconciliationJob` | `src/jobs/reconciliation-job.ts` | 6 hours (ES) / daily (Neo4j) |
+| `KnowledgeGraphLinkingJob` | `src/jobs/knowledge-graph-linking-job.ts` | On-demand |
+| `OntologySyncJob` | `src/jobs/ontology-sync-job.ts` | Hourly |
+| `ImportSchedulerJob` | `src/jobs/import-scheduler-job.ts` | On-demand |
+
+| Worker | File | Queue |
+|--------|------|-------|
+| `EnrichmentWorker` | `src/workers/enrichment-worker.ts` | `layers:enrichment` |
+| `FreshnessWorker` | `src/workers/freshness-worker.ts` | `layers:maintenance` |
+| `IndexRetryWorker` | `src/workers/index-retry-worker.ts` | DLQ replay |
+
+```typescript
+// src/jobs/staleness-detection-job.ts — interval-based job pattern
+class StalenessDetectionJob {
+  private timer: NodeJS.Timeout | null = null
+
+  async start(): Promise<void> {
+    this.timer = setInterval(() => {
+      this.run().catch(err => this.logger.error('Staleness detection failed', err))
+    }, this.intervalMs)
+  }
+
+  async stop(): Promise<void> {
+    if (this.timer) { clearInterval(this.timer); this.timer = null }
+  }
+
+  protected async run(): Promise<void> { /* compare indexed_at vs firehose cursor */ }
+}
+```
+
 ## Job Queue Architecture
 
-All background work runs through [BullMQ](https://docs.bullmq.io/) queues backed by Redis. Each queue has its own worker pool with configurable concurrency.
+All queue-based background work runs through [BullMQ](https://docs.bullmq.io/) queues backed by Redis. Each queue has its own worker pool with configurable concurrency.
 
 ### Queue Topology
 

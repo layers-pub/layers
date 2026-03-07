@@ -13,6 +13,11 @@ The Layers appview indexes all 26 `pub.layers.*` record types, maintains full-te
 
 ## Architecture at a Glance
 
+The appview runs as **two separate processes**, following Chive's two-process architecture:
+
+- **API Server** (`src/index.ts`): serves XRPC and REST queries, starts scheduled jobs
+- **Firehose Indexer** (`src/indexer.ts`): consumes the AT Protocol firehose, writes to all storage backends
+
 ```mermaid
 flowchart TD
     subgraph ATProto["AT Protocol Network"]
@@ -21,11 +26,14 @@ flowchart TD
         RELAY["Relay"]
     end
 
-    subgraph Ingestion["Ingestion Layer"]
-        FC["Firehose Consumer"]
-        EF["Event Filter<br/><i>26 pub.layers.* NSIDs</i>"]
-        JQ["Job Queue<br/><i>BullMQ</i>"]
+    subgraph Indexer["Firehose Indexer Process · src/indexer.ts"]
+        FC["FirehoseConsumer<br/><i>WebSocket</i>"]
+        EF["EventFilter<br/><i>26 pub.layers.* NSIDs</i>"]
+        CH["CommitHandler<br/><i>CAR parsing</i>"]
+        EP["EventProcessor"]
+        EQ["EventQueue<br/><i>BullMQ</i>"]
         DLQ["Dead Letter Queue"]
+        CM["CursorManager"]
     end
 
     subgraph Storage["Storage Layer"]
@@ -35,7 +43,7 @@ flowchart TD
         REDIS["Redis 7+<br/><i>Cache, sessions,<br/>rate limiting</i>"]
     end
 
-    subgraph API["API Layer"]
+    subgraph APIServer["API Server Process · src/index.ts"]
         HONO["Hono"]
         XRPC["XRPC Endpoints<br/><i>38+ queries</i>"]
         REST["REST Endpoints<br/><i>search, composite</i>"]
@@ -51,11 +59,12 @@ flowchart TD
     PDS1 --> RELAY
     PDS2 --> RELAY
     RELAY -->|WebSocket| FC
-    FC --> EF --> JQ
-    JQ -->|failed| DLQ
-    JQ --> PG
-    JQ --> ES
-    JQ --> NEO
+    FC --> EF --> CH --> EP --> EQ
+    EQ -->|failed| DLQ
+    EP --> PG
+    EP --> ES
+    EP --> NEO
+    FC -.->|cursor| CM --> PG
 
     HONO --> XRPC
     HONO --> REST
@@ -69,9 +78,9 @@ flowchart TD
     XRPC --> REDIS
     REST --> REDIS
 
-    JQ --> Workers
+    EQ --> Workers
     ENRICH --> PG
-    IMPORT --> JQ
+    IMPORT --> EQ
     MAINT --> PG
     MAINT --> ES
 
@@ -82,7 +91,7 @@ flowchart TD
     classDef worker fill:#730000,stroke:#b71c1c,color:#fff
 
     class PDS1,PDS2,RELAY atproto
-    class FC,EF,JQ,DLQ ingest
+    class FC,EF,CH,EP,EQ,DLQ,CM ingest
     class PG,ES,NEO,REDIS store
     class HONO,XRPC,REST,OPENAPI api
     class ENRICH,IMPORT,MAINT worker
@@ -121,11 +130,46 @@ Every `pub.layers.*` record type is indexed into one or more storage backends. P
 | `eprint.dataLink` | yes | — | yes | Eprint-corpus edges in Neo4j |
 | `changelog.entry` | yes | yes | — | Searchable by subject, collection, version |
 
+## Source Directory Layout
+
+The `src/` directory follows Chive's layered + feature-based hybrid organization:
+
+```
+src/
+├── api/              # Hono handlers (xrpc/, rest/), middleware, openapi
+├── atproto/          # AT Protocol client, repository access, errors
+├── auth/             # OAuth, JWT, DID, MFA, WebAuthn, zero-trust, authorization, scopes, session
+├── config/           # Configuration management
+├── jobs/             # Scheduled interval-based jobs (staleness, reconciliation)
+├── lexicons/         # Generated TypeScript types from lexicon JSON
+├── observability/    # Logger, telemetry, tracer, metrics-exporter
+├── plugins/          # core/, builtin/, sandbox/
+├── services/         # Business logic (indexing/, search/, enrichment/, import/, etc.)
+├── storage/          # postgresql/, elasticsearch/, neo4j/, redis/ adapters
+├── types/            # models, interfaces, errors.ts, result.ts
+├── utils/            # Shared utilities
+├── workers/          # BullMQ worker implementations
+├── index.ts          # API server entry point
+└── indexer.ts        # Firehose consumer entry point
+```
+
 ## Design Goals
 
 ### Follow Chive's Proven Architecture
 
-The Layers appview follows [Chive](https://chive.pub)'s production architecture closely. Chive is a running ATProto appview for scholarly eprints that has already solved the hard infrastructure problems (firehose subscription with cursor-based resumption, multi-database indexing, dual XRPC/REST APIs, BullMQ job queues, and Kubernetes deployment). Layers adopts the same technology stack, patterns, and operational practices.
+The Layers appview follows [Chive](https://chive.pub)'s production architecture closely. Chive is a running ATProto appview for scholarly eprints that has already solved the hard infrastructure problems (firehose subscription with cursor-based resumption, multi-database indexing, dual XRPC/REST APIs, BullMQ job queues, and Kubernetes deployment). Layers adopts the same technology stack, patterns, and operational practices, including the two-process split, layered directory structure, storage adapter interfaces, and dependency injection via tsyringe.
+
+### Type-Safe Error Handling
+
+All fallible operations return `Result<T, LayersError>` instead of throwing exceptions, following Chive's `Result<T, E>` pattern. The `LayersError` hierarchy provides typed error classification:
+
+- `ComplianceError` — ATProto compliance violations (write to PDS, blob storage, non-rebuildable state)
+- `NotFoundError`, `ValidationError` — client errors
+- `AuthenticationError`, `AuthorizationError`, `RateLimitError` — auth/access errors
+- `DatabaseError`, `ServiceUnavailableError` — infrastructure errors
+- `PluginError`, `SandboxViolationError` — plugin system errors
+
+See [Technology Stack](./technology-stack) for the full error handling architecture.
 
 ### Adapt for Layers-Specific Complexity
 
@@ -137,6 +181,17 @@ Where Layers diverges from Chive:
 - **Embedded annotation arrays** (an `annotationLayer` can contain hundreds of individual annotations) require careful normalization decisions per storage backend
 - **Format import pipeline** (CoNLL, BRAT, ELAN, TEI, etc.) extends the plugin system beyond Chive's harvester model
 - **Annotation workflow RBAC** (annotator, adjudicator, corpus manager) requires more granular authorization than Chive's publish/read model
+
+### Bleeding-Edge Infrastructure
+
+The appview targets 2026 best practices:
+
+- **OpenTelemetry 1.x stable** for unified observability (traces, metrics, logs)
+- **Distroless container images** (`gcr.io/distroless/nodejs22-debian12`) for minimal attack surface
+- **Sigstore cosign** for container image signing and supply chain verification
+- **GitOps via ArgoCD/Flux** for declarative, auditable deployments
+- **Zero-trust security** with mTLS between services, DPoP token binding, and passkeys-first authentication
+- **WebTransport** monitored as a future firehose transport alternative (multiplexed streams, better congestion control)
 
 ## Page Directory
 

@@ -16,6 +16,20 @@ Not all 26 record types have the same indexing requirements. They fall into four
 | Low-volume | `corpus`, `ontology`, `typeDef`, `experimentDef`, `persona`, `media`, `eprint` | Hundreds to thousands total | Immediate indexing |
 | Structural | `resource.*`, `judgment.*`, `clusterSet`, `dataLink`, `collectionMembership`, `templateComposition`, `changelog.entry` | Hundreds | Immediate indexing |
 
+## Indexing Infrastructure
+
+Indexing operations use dedicated utility classes in `src/storage/`, matching Chive's pattern:
+
+| Class | File | Role |
+|-------|------|------|
+| `DocumentMapper` | `src/storage/elasticsearch/document-mapper.ts` | Transforms PG rows to ES documents per record type |
+| `SearchQueryBuilder` | `src/storage/elasticsearch/search-query-builder.ts` | Composes ES search queries with type-safe filters |
+| `AggregationsBuilder` | `src/storage/elasticsearch/aggregations-builder.ts` | Constructs ES aggregation queries (facets, histograms) |
+| `IndexManager` | `src/storage/elasticsearch/index-manager.ts` | ES index creation, mapping updates, ILM policy application |
+| `SetupManager` | `src/storage/neo4j/setup-manager.ts` | Neo4j schema initialization (constraints, indexes from `schema/` directory) |
+
+All indexing operations are wrapped in cockatiel resilience policies and return `Result<T, LayersError>`. High-volume types use the ES `_bulk` API (ES 8.15+ improved error reporting) for batch writes.
+
 ## Indexing by Namespace
 
 ### Expression Indexing
@@ -166,6 +180,11 @@ When the Layers lexicon schema changes (new fields, changed types), run a migrat
 2. Updates ES mappings (adding new fields is non-breaking; type changes require re-index)
 3. Updates Neo4j constraints and indexes
 4. Triggers incremental re-index for affected record types
+
+## Future Considerations
+
+- **Incremental materialized views**: PostgreSQL is progressing toward native incremental materialized view refresh, which would replace the current periodic full-refresh approach with lower latency and less I/O.
+- **Vector search**: ES `dense_vector` fields could enable semantic annotation search using label embeddings, complementing the current keyword-based faceting.
 
 ## See Also
 

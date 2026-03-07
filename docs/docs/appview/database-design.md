@@ -25,6 +25,57 @@ The Layers appview indexes all 26 `pub.layers.*` record types across four storag
 
 Running all four adds operational complexity, but the alternative (forcing PostgreSQL to handle graph traversal or Elasticsearch to handle transactional writes) produces worse performance and more brittle code.
 
+## Storage Adapter Pattern
+
+Each database is accessed through an adapter implementing the `IStorageBackend` interface, following Chive's `src/storage/` pattern:
+
+```typescript
+// src/storage/postgresql/adapter.ts
+@singleton()
+class PostgreSQLAdapter implements IStorageBackend {
+  constructor(@inject('PgPool') private pool: Pool) {}
+
+  async storeRecord(table: string, data: PgRowData): Promise<Result<void>> { /* ... */ }
+  async getByUri(table: string, uri: string): Promise<Result<Record | null>> { /* ... */ }
+  async deleteByUri(table: string, uri: string): Promise<Result<void>> { /* ... */ }
+}
+
+// src/storage/elasticsearch/adapter.ts
+@singleton()
+class ElasticsearchAdapter implements ISearchBackend {
+  constructor(@inject('EsClient') private client: Client) {}
+
+  async indexDocument(index: string, doc: EsDocument): Promise<Result<void>> { /* ... */ }
+  async search(request: SearchRequest): Promise<Result<SearchResponse>> { /* ... */ }
+}
+
+// src/storage/neo4j/adapter.ts
+@singleton()
+class Neo4jAdapter implements IGraphBackend {
+  constructor(@inject('Neo4jDriver') private driver: Driver) {}
+
+  async mergeNode(label: string, props: NodeProperties): Promise<Result<void>> { /* ... */ }
+  async mergeEdge(from: string, to: string, type: string): Promise<Result<void>> { /* ... */ }
+}
+```
+
+Supporting utilities in each adapter directory:
+
+| File | Purpose |
+|------|---------|
+| `src/storage/postgresql/query-builder.ts` | Composable parameterized SQL builder |
+| `src/storage/postgresql/batch-operations.ts` | Bulk insert/upsert for firehose catchup |
+| `src/storage/postgresql/migrations/` | node-pg-migrate migration files |
+| `src/storage/elasticsearch/document-mapper.ts` | PG row → ES document transformation |
+| `src/storage/elasticsearch/templates/` | Index template JSON files |
+| `src/storage/elasticsearch/ilm/` | Index Lifecycle Management policies |
+| `src/storage/elasticsearch/index-manager.ts` | Index creation, mapping updates, ILM application |
+| `src/storage/neo4j/schema/` | `constraints.cypher`, `indexes.cypher` schema files |
+| `src/storage/neo4j/setup-manager.ts` | Schema initialization on startup |
+| `src/storage/redis/structures.ts` | Type-safe Redis key patterns |
+
+Connection pooling follows Chive's `createPool`/`closePool` pattern for clean lifecycle management. All adapter methods are wrapped in cockatiel resilience policies (circuit breaker + retry).
+
 ## PostgreSQL Schema
 
 PostgreSQL is the authoritative store. Every record ingested from the firehose is written here first. Tables follow consistent conventions:
