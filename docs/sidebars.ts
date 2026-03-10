@@ -44,6 +44,7 @@ const sidebars: SidebarsConfig = {
       label: 'Guides',
       items: [
         'guides/index',
+        'guides/annotation-design',
         'guides/temporal-representation',
         'guides/spatial-representation',
         'guides/multimodal-annotation',
@@ -102,7 +103,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'AppView Plans',
+      label: 'Developer Guide',
       collapsed: false,
       link: {
         type: 'doc',
@@ -110,16 +111,31 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         'appview/technology-stack',
-        'appview/database-design',
-        'appview/firehose-ingestion',
-        'appview/api-design',
-        'appview/indexing-strategy',
-        'appview/query-discovery',
-        'appview/authentication',
-        'appview/background-jobs',
-        'appview/observability',
-        'appview/deployment',
-        'appview/testing-strategy',
+        {
+          type: 'category',
+          label: 'Storage',
+          items: ['appview/database-design'],
+        },
+        {
+          type: 'category',
+          label: 'Services',
+          items: [
+            'appview/firehose-ingestion',
+            'appview/indexing-strategy',
+            'appview/query-discovery',
+            'appview/background-jobs',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'API',
+          items: ['appview/api-design', 'appview/authentication'],
+        },
+        {
+          type: 'category',
+          label: 'Operations',
+          items: ['appview/deployment', 'appview/observability', 'appview/testing-strategy'],
+        },
         'appview/plugin-system',
       ],
     },
