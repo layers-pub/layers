@@ -3,13 +3,13 @@ sidebar_label: Overview
 sidebar_position: 1
 ---
 
-# AppView Plans
+# AppView Architecture
 
 ## What is the Layers AppView?
 
-An ATProto **appview** is a read-only indexing service that subscribes to the protocol's firehose, extracts records it cares about, and serves them back through query endpoints. The appview never owns user data; all `pub.layers.*` records live in user-controlled Personal Data Servers (PDSes). If the appview's database disappears, nothing is lost because every record can be rebuilt from the firehose.
+The Layers appview is a read-only indexing service that subscribes to the ATProto firehose, extracts `pub.layers.*` records, and serves them back through query endpoints. The appview never owns user data; all records live in user-controlled Personal Data Servers (PDSes). If the appview's database disappears, nothing is lost because every record can be rebuilt from the firehose.
 
-The Layers appview indexes all 26 `pub.layers.*` record types, maintains full-text and faceted search indexes, builds a knowledge graph from cross-references, and exposes the results through XRPC and REST APIs.
+The appview indexes all 26 `pub.layers.*` record types, maintains full-text and faceted search indexes, builds a knowledge graph from cross-references, and exposes the results through XRPC and REST APIs.
 
 ## Architecture at a Glance
 
@@ -157,7 +157,7 @@ src/
 
 ### Follow Chive's Proven Architecture
 
-The Layers appview follows [Chive](https://chive.pub)'s production architecture closely. Chive is a running ATProto appview for scholarly eprints that has already solved the hard infrastructure problems (firehose subscription with cursor-based resumption, multi-database indexing, dual XRPC/REST APIs, BullMQ job queues, and Kubernetes deployment). Layers adopts the same technology stack, patterns, and operational practices, including the two-process split, layered directory structure, storage adapter interfaces, and dependency injection via tsyringe.
+The Layers appview follows [Chive](https://chive.pub)'s production architecture closely. Chive is a running ATProto appview for scholarly eprints that solved the hard infrastructure problems (firehose subscription with cursor-based resumption, multi-database indexing, dual XRPC/REST APIs, BullMQ job queues, and Kubernetes deployment). Layers uses the same technology stack, patterns, and operational practices, including the two-process split, layered directory structure, storage adapter interfaces, and dependency injection via tsyringe.
 
 ### Type-Safe Error Handling
 
@@ -182,9 +182,9 @@ Where Layers diverges from Chive:
 - **Format import pipeline** (CoNLL, BRAT, ELAN, TEI, etc.) extends the plugin system beyond Chive's harvester model
 - **Annotation workflow RBAC** (annotator, adjudicator, corpus manager) requires more granular authorization than Chive's publish/read model
 
-### Bleeding-Edge Infrastructure
+### Infrastructure
 
-The appview targets 2026 best practices:
+The appview uses 2026 best practices:
 
 - **OpenTelemetry 1.x stable** for unified observability (traces, metrics, logs)
 - **Distroless container images** (`gcr.io/distroless/nodejs22-debian12`) for minimal attack surface
@@ -208,7 +208,45 @@ The appview targets 2026 best practices:
 | [Observability](./observability)           | Logging, tracing, metrics, dashboards, alerting                                      |
 | [Deployment](./deployment)                 | Docker, Kubernetes, database deployment, CI/CD, backup                               |
 | [Testing Strategy](./testing-strategy)     | Unit, integration, compliance, E2E, performance                                      |
-| [Plugin System](./plugin-system)           | Sandboxed plugins, format importers, harvesters                                      |
+| [Plugin System](./plugin-system)           | Sandboxed plugins, format importers, exporters, harvesters, annotation tools         |
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 22+
+- pnpm 10+
+- Docker and Docker Compose (for local databases)
+
+### Local Development
+
+```bash
+# start local databases (PostgreSQL, Elasticsearch, Neo4j, Redis)
+docker compose -f docker/docker-compose.yml up -d
+
+# install dependencies
+pnpm install
+
+# run database migrations
+pnpm db:migrate:up
+
+# start the API server
+pnpm dev
+
+# start the firehose indexer (separate terminal)
+pnpm dev:indexer
+```
+
+### Quality Checks
+
+```bash
+pnpm typecheck        # TypeScript compilation (tsc --noEmit)
+pnpm lint             # ESLint (flat config)
+pnpm format           # Prettier formatting
+pnpm test:unit        # Vitest unit tests
+pnpm test:integration # Integration tests with Testcontainers
+pnpm test:compliance  # ATProto compliance validation (100% required)
+```
 
 ## See Also
 

@@ -7,7 +7,7 @@ sidebar_position: 13
 
 ## Overview
 
-The Layers appview extends its capabilities through a plugin system adapted from [Chive's](https://chive.pub) production architecture. Plugins run in sandboxed V8 isolates (via `isolated-vm`), subscribe to lifecycle events through a permission-filtered event bus, and interact with appview services through a scoped context object. The system supports two primary plugin categories: **format importers** (converting annotation formats like CoNLL-U, BRAT, ELAN, Praat, and TEI into Layers records) and **harvesters** (pulling metadata from external sources).
+The Layers appview extends its capabilities through a plugin system based on [Chive's](https://chive.pub) production architecture. Plugins run in sandboxed V8 isolates (via `isolated-vm`), subscribe to lifecycle events through a permission-filtered event bus, and interact with appview services through a scoped context object. The system supports six plugin categories: **format importers** (converting annotation formats like CoNLL-U, BRAT, ELAN, Praat, and TEI into Layers records), **harvesters** (pulling metadata from external sources), **annotation tools** (providing interactive annotation assistance in the workspace), **exporters** (converting Layers records to external formats), **enrichment processors** (augmenting indexed records with derived data), and **visualizations** (custom rendering for annotation data).
 
 All plugins follow ATProto compliance rules: they can read firehose events and cache computed results but never write directly to user PDSes. Format importers that create records do so through the user's authenticated OAuth session, so the user's PDS remains the authoritative source.
 
@@ -46,12 +46,15 @@ src/plugins/
 
 ### Plugin Type Hierarchy
 
-| Base Class           | Purpose                                               | Example                          |
-| -------------------- | ----------------------------------------------------- | -------------------------------- |
-| `ImporterPlugin`     | File-based format import (parse local files)          | CoNLL, BRAT, ELAN importers      |
-| `ImportingPlugin`    | Network-based API harvesting (fetch from remote APIs) | Wikidata, WordNet harvesters     |
-| `BacklinkPlugin`     | Cross-reference to external systems                   | Wikidata linker, FrameNet linker |
-| `RecordSearchPlugin` | Contribute search results from external sources       | (future)                         |
+| Base Class             | Purpose                                               | Example                           |
+| ---------------------- | ----------------------------------------------------- | --------------------------------- |
+| `ImporterPlugin`       | File-based format import (parse local files)          | CoNLL, BRAT, ELAN importers       |
+| `ExporterPlugin`       | Convert Layers records to external formats            | CoNLL-U exporter, BRAT exporter   |
+| `ImportingPlugin`      | Network-based API harvesting (fetch from remote APIs) | Wikidata, WordNet harvesters      |
+| `BacklinkPlugin`       | Cross-reference to external systems                   | Wikidata linker, FrameNet linker  |
+| `EnrichmentPlugin`     | Augment indexed records with derived data             | Language detector, entity linker  |
+| `AnnotationToolPlugin` | Interactive annotation assistance in the workspace    | Auto-suggest, pre-annotation tool |
+| `VisualizationPlugin`  | Custom rendering for annotation data                  | Tree visualizer, graph renderer   |
 
 ## Architecture
 
@@ -438,9 +441,9 @@ export interface FetchOptions {
 }
 ```
 
-### Potential Harvesters
+### Harvester Examples
 
-These harvesters are planned for future development:
+The following harvesters are available or under development:
 
 | Plugin ID                              | Source                    | Purpose                                                                                              |
 | -------------------------------------- | ------------------------- | ---------------------------------------------------------------------------------------------------- |
@@ -634,6 +637,31 @@ describe('IsolatedVmSandbox', () => {
 ### Format Import Round-Trip Tests
 
 See [Testing Strategy](./testing-strategy) for the full round-trip test suite that verifies each importer against reference files.
+
+## User-Contributed Plugins
+
+The plugin system supports community-contributed plugins. Users can author plugins by implementing one of the base plugin classes, providing a valid `manifest.json`, and packaging their plugin as a directory with a compiled entry point.
+
+### Contribution Workflow
+
+1. **Author**: Implement a plugin class extending one of the base types (`ImporterPlugin`, `ExporterPlugin`, `EnrichmentPlugin`, `AnnotationToolPlugin`, `VisualizationPlugin`, or `ImportingPlugin`).
+2. **Manifest**: Create a `manifest.json` declaring the plugin's identity, permissions, and resource limits.
+3. **Test**: Run the plugin against the test harness (see [Testing Plugins](#testing-plugins)) to verify correctness and sandbox compliance.
+4. **Package**: Bundle the compiled plugin and manifest into a directory.
+5. **Install**: Place the plugin directory in the configured `plugins/` directory. The `PluginLoader` discovers it on the next scan.
+
+### Security Review
+
+User-contributed plugins run inside `isolated-vm` sandboxes (unlike builtin plugins, which run in-process). The `PermissionEnforcer` restricts each plugin to its declared capabilities. Plugins that exceed their resource limits or attempt unauthorized operations are terminated automatically.
+
+Administrators can review installed plugins via the admin API:
+
+| Endpoint                         | Action                                          |
+| -------------------------------- | ----------------------------------------------- |
+| `GET /admin/plugins`             | List installed plugins with status and manifest |
+| `GET /admin/plugins/:id/metrics` | View resource usage metrics for a plugin        |
+| `POST /admin/plugins/:id/reload` | Reload a plugin (re-initialize from manifest)   |
+| `DELETE /admin/plugins/:id`      | Unload and remove a plugin                      |
 
 ## Future Considerations
 

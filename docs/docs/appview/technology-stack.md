@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # Technology Stack
 
-This page documents every technology in the Layers appview stack, including version pins, roles, and selection rationale. The stack follows [Chive](https://chive.pub)'s production architecture closely, extending it where Layers' 26 record types, discriminated annotation model, and dense cross-referencing require additional infrastructure.
+This page documents every technology in the Layers appview stack, including version pins, roles, and selection rationale. The stack follows [Chive](https://chive.pub)'s production architecture, extended where Layers' 26 record types, discriminated annotation model, and dense cross-referencing require additional infrastructure.
 
 ## Runtime and Language
 
@@ -40,7 +40,7 @@ export class ExpressionIndexer {
 | Zod               | 4+      | Runtime validation and TypeScript type inference |
 | @hono/zod-openapi | latest  | OpenAPI 3.1 generation from Zod schemas          |
 
-**Hono 4+** serves as the HTTP framework for both XRPC and REST endpoints. It was selected for its benchmark performance (consistently fastest in Node.js HTTP framework comparisons), minimal footprint, and native middleware composition. The middleware stack follows Chive's 7-layer ordering:
+**Hono 4+** serves as the HTTP framework for both XRPC and REST endpoints. It provides the fastest benchmark performance among Node.js HTTP frameworks, a minimal footprint, and native middleware composition. The middleware stack follows Chive's 7-layer ordering:
 
 ```typescript
 const app = new Hono()
@@ -210,7 +210,7 @@ Annotation layers are indexed as nested objects in Elasticsearch, enabling facet
 
 Neo4j stores the knowledge graph built from `graph.graphNode` and `graph.graphEdge` records, corpus membership edges, type hierarchy edges, alignment links, and cross-reference relationships. It answers queries that require multi-hop traversal: "find all annotations that reference an entity grounded in this Wikidata entry" or "find all corpora that contain expressions linked to this eprint."
 
-Neo4j was chosen over PostgreSQL recursive CTEs because graph traversal performance degrades significantly with depth in relational databases (each hop adds a self-join), while Neo4j's index-free adjacency provides constant-time per-hop traversal regardless of graph size.
+Neo4j is used instead of PostgreSQL recursive CTEs because graph traversal performance degrades significantly with depth in relational databases (each hop adds a self-join), while Neo4j's index-free adjacency provides constant-time per-hop traversal regardless of graph size.
 
 ```cypher
 // Find all annotations linked to expressions in a corpus
@@ -278,7 +278,7 @@ See [Background Jobs](./background-jobs) for the full worker architecture.
 
 **ATProto OAuth 2.0 + PKCE** is the primary authentication mechanism. Users authenticate with their ATProto identity (DID) through the standard OAuth flow. The `@atproto/oauth-client-node` package handles authorization URL generation, callback verification, token exchange, and token refresh.
 
-**jose 6+** signs and verifies JWT session tokens issued after OAuth completion. JWTs encode the user's DID, session ID, and permission claims. The library was chosen for its standards compliance (RFC 7515-7519), zero-dependency footprint, and Web Crypto API compatibility.
+**jose 6+** signs and verifies JWT session tokens issued after OAuth completion. JWTs encode the user's DID, session ID, and permission claims. The library provides standards compliance (RFC 7515-7519), a zero-dependency footprint, and Web Crypto API compatibility.
 
 **Casbin 5+** enforces role-based access control for annotation workflows. Layers requires more granular authorization than Chive's publish/read model: annotators, adjudicators, and corpus managers have different permissions over annotation layers, corpora, and experiment data. Casbin evaluates policies defined in a PERM model:
 
@@ -463,7 +463,7 @@ The plugin system supports three extension points:
 
 **Resource governor**: The isolate enforces CPU time limits (via V8's `--max-old-space-size` and wall-time interrupts), memory limits (per-isolate heap cap), and execution time limits (wall-clock timeout). Plugins that exceed limits are terminated and their jobs are retried or routed to the dead letter queue.
 
-isolated-vm was chosen over vm2 (deprecated due to security vulnerabilities) and Deno subprocesses (heavier resource footprint, more complex IPC).
+isolated-vm is used instead of vm2 (deprecated due to security vulnerabilities) and Deno subprocesses (heavier resource footprint, more complex IPC).
 
 See [Plugin System](./plugin-system) for the full plugin architecture.
 
@@ -524,6 +524,32 @@ const result = await pgPolicy.execute(() => pg.query(sql));
 ```
 
 Policies are created per-service and shared across all callers, matching Chive's `src/services/common/resilience.ts` pattern.
+
+## Frontend Stack
+
+The frontend lives in `web/` and uses the Next.js App Router with React 19.
+
+| Technology                     | Version | Role                                        |
+| ------------------------------ | ------- | ------------------------------------------- |
+| Next.js (App Router)           | 15+     | Server/client rendering, routing, SSR       |
+| React                          | 19+     | UI library                                  |
+| TanStack Query                 | 5+      | Data fetching, caching, mutations           |
+| openapi-fetch                  | latest  | Type-safe API client from OpenAPI spec      |
+| shadcn/ui + Radix UI           | latest  | Accessible, composable UI components        |
+| Tailwind CSS                   | 4+      | Utility-first styling                       |
+| @atproto/oauth-client-browser  | latest  | ATProto OAuth for browser-based auth        |
+| Grafana Faro                   | latest  | Frontend telemetry (errors, traces, vitals) |
+| Vitest + React Testing Library | latest  | Component unit tests                        |
+| Playwright                     | 1.57+   | End-to-end browser tests                    |
+| Storybook                      | 8+      | Component development and visual testing    |
+
+**Next.js 15+** with the App Router provides server-side rendering for SEO-critical pages (corpus browse, expression detail), React Server Components for data-heavy views, and client components for interactive annotation workspaces.
+
+**TanStack Query 5+** manages all server state: fetching records, caching responses, paginating search results, and invalidating stale data after mutations. It replaces manual `useEffect` + `useState` fetch patterns.
+
+**shadcn/ui** provides unstyled, accessible primitives built on Radix UI. Components are copied into `web/components/ui/` and customized with Tailwind CSS classes. The design system uses the Geist font family and a neutral slate palette.
+
+**@atproto/oauth-client-browser** handles the ATProto OAuth 2.0 + PKCE flow in the browser, managing authorization URL generation, token exchange, and session persistence in `localStorage`.
 
 ## Decision Log
 
