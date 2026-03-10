@@ -12,6 +12,11 @@
  * - span: click start and end tokens to select a contiguous span
  * - tokenSequence: click tokens to build an ordered sequence
  *
+ * When the annotation creation context is active and in annotate mode
+ * with a text-based kind (span or token-tag), a TextSelectionHandler
+ * is rendered over the text area to capture selections and convert
+ * them to annotation anchors.
+ *
  * @module
  */
 
@@ -26,10 +31,12 @@ import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useSegmentationsByExpression } from '@/lib/hooks/use-segmentations';
 
-import type { AnnotationLayerData, Token } from '../annotations/types';
+import type { Anchor, AnnotationItem, AnnotationLayerData, Token } from '../annotations/types';
 
+import { useOptionalAnnotationCreation } from './annotation-creation-context';
 import type { SelectionMode } from './annotation-workspace';
 import { MediaExpressionView } from './media-expression-view';
+import { TextSelectionHandler } from './text-selection-handler';
 import { TokenOverlay } from './token-overlay';
 
 interface ExpressionPanelProps {
@@ -86,6 +93,10 @@ function ExpressionPanel({
 }: ExpressionPanelProps): React.JSX.Element {
   const { data, isLoading } = useSegmentationsByExpression(expressionUri);
 
+  // Safely access the annotation creation context. Returns null when the
+  // panel is rendered outside an AnnotationCreationProvider.
+  const creationContext = useOptionalAnnotationCreation();
+
   const [selectedSegIndex, setSelectedSegIndex] = React.useState(0);
   // Local single-token selection for view mode (visual reference only)
   const [selectedTokenIndex, setSelectedTokenIndex] = React.useState<number | null>(null);
@@ -115,6 +126,68 @@ function ExpressionPanel({
   }, []);
 
   const isAnnotateMode = selectionMode !== 'view';
+
+  // Determine whether to show the TextSelectionHandler overlay.
+  // Active when the creation context is in annotate mode with span kind,
+  // and there is text to select.
+  const showTextSelectionHandler =
+    creationContext != null &&
+    creationContext.state.mode === 'annotate' &&
+    creationContext.state.kind === 'span' &&
+    text.length > 0;
+
+  /**
+   * Handles anchor creation from the TextSelectionHandler and pushes it
+   * into the annotation creation context.
+   */
+  const handleTextSelectionAnchor = React.useCallback(
+    (anchor: Anchor): void => {
+      if (!creationContext) return;
+
+      creationContext.dispatch({ type: 'SET_ANCHOR', anchor });
+
+      const item: AnnotationItem = {
+        id: crypto.randomUUID(),
+        label: '',
+        anchor,
+      };
+      creationContext.addItem(item);
+    },
+    [creationContext],
+  );
+
+  /**
+   * Renders the text content, optionally wrapped in a TextSelectionHandler
+   * when the creation context requests span-based annotation.
+   */
+  const renderTextContent = (textContent: string, tokenList: Token[]): React.JSX.Element => {
+    if (showTextSelectionHandler) {
+      return (
+        <TextSelectionHandler
+          text={textContent}
+          tokens={tokenList}
+          onCreateAnnotation={handleTextSelectionAnchor}
+          mode="span"
+        />
+      );
+    }
+
+    if (tokenList.length > 0) {
+      return (
+        <TokenOverlay
+          text={textContent}
+          tokens={tokenList}
+          selectedTokenIndex={selectedTokenIndex}
+          onTokenClick={handleTokenClick}
+          selectionMode={selectionMode}
+          selectedTokens={selectedTokens}
+          onSelectionChange={onSelectionChange}
+        />
+      );
+    }
+
+    return <p className="whitespace-pre-wrap leading-relaxed text-sm">{textContent}</p>;
+  };
 
   return (
     <Card className="h-full flex flex-col border-0 rounded-none shadow-none">
@@ -158,19 +231,7 @@ function ExpressionPanel({
               {text ? (
                 <>
                   <Separator />
-                  {tokens.length > 0 ? (
-                    <TokenOverlay
-                      text={text}
-                      tokens={tokens}
-                      selectedTokenIndex={selectedTokenIndex}
-                      onTokenClick={handleTokenClick}
-                      selectionMode={selectionMode}
-                      selectedTokens={selectedTokens}
-                      onSelectionChange={onSelectionChange}
-                    />
-                  ) : (
-                    <p className="whitespace-pre-wrap leading-relaxed text-sm">{text}</p>
-                  )}
+                  {renderTextContent(text, tokens)}
                 </>
               ) : null}
             </div>
@@ -180,18 +241,8 @@ function ExpressionPanel({
               <Skeleton className="h-4 w-5/6" />
               <Skeleton className="h-4 w-4/6" />
             </div>
-          ) : tokens.length > 0 ? (
-            <TokenOverlay
-              text={text}
-              tokens={tokens}
-              selectedTokenIndex={selectedTokenIndex}
-              onTokenClick={handleTokenClick}
-              selectionMode={selectionMode}
-              selectedTokens={selectedTokens}
-              onSelectionChange={onSelectionChange}
-            />
           ) : (
-            <p className="whitespace-pre-wrap leading-relaxed text-sm">{text}</p>
+            renderTextContent(text, tokens)
           )}
         </ScrollArea>
       </CardContent>

@@ -7,6 +7,10 @@
  * - span: click two tokens to select a contiguous range
  * - tokenSequence: click tokens to build an ordered sequence with numbering
  *
+ * When mounted inside an AnnotationCreationProvider and the context mode is
+ * 'annotate', the overlay automatically syncs its selection mode to the
+ * context's annotation kind and reports completed selections as anchors.
+ *
  * @module
  */
 
@@ -17,8 +21,9 @@ import * as React from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
-import type { Token } from '../annotations/types';
+import type { Anchor, Token } from '../annotations/types';
 
+import { useOptionalAnnotationCreation } from './annotation-creation-context';
 import type { SelectionMode } from './annotation-workspace';
 
 interface TokenOverlayProps {
@@ -64,10 +69,25 @@ const TokenOverlay = React.memo(function TokenOverlay({
   tokens,
   selectedTokenIndex,
   onTokenClick,
-  selectionMode = 'view',
+  selectionMode: selectionModeProp = 'view',
   selectedTokens,
   onSelectionChange,
 }: TokenOverlayProps): React.JSX.Element {
+  // Safely access the annotation creation context. Returns null when
+  // the overlay is rendered outside an AnnotationCreationProvider.
+  const creationContext = useOptionalAnnotationCreation();
+
+  // Derive the effective selection mode. When the creation context is active
+  // and in annotate mode with a text-based kind, override the prop.
+  const selectionMode = React.useMemo<SelectionMode>(() => {
+    if (creationContext && creationContext.state.mode === 'annotate') {
+      const { kind } = creationContext.state;
+      if (kind === 'token-tag') return 'token';
+      if (kind === 'span') return 'span';
+    }
+    return selectionModeProp;
+  }, [creationContext, selectionModeProp]);
+
   // For span mode: track the first endpoint so we can complete the span on second click
   const [spanStart, setSpanStart] = React.useState<number | null>(null);
 
@@ -84,6 +104,27 @@ const TokenOverlay = React.memo(function TokenOverlay({
 
   const emptySet = React.useMemo(() => new Set<number>(), []);
   const currentSelection = selectedTokens ?? emptySet;
+
+  // Report completed token selections to the creation context as anchors
+  const prevSelectionRef = React.useRef<ReadonlySet<number>>(emptySet);
+  React.useEffect(() => {
+    if (!creationContext || creationContext.state.mode !== 'annotate') return;
+    if (currentSelection === prevSelectionRef.current) return;
+    prevSelectionRef.current = currentSelection;
+
+    if (currentSelection.size === 0) return;
+
+    const indices = Array.from(currentSelection).sort((a, b) => a - b);
+    let anchor: Anchor;
+
+    if (indices.length === 1) {
+      anchor = { type: 'tokenRef', tokenIndex: indices[0] };
+    } else {
+      anchor = { type: 'tokenRefSequence', tokenIndices: indices };
+    }
+
+    creationContext.dispatch({ type: 'SET_ANCHOR', anchor });
+  }, [creationContext, currentSelection, emptySet]);
 
   const handleAnnotateClick = React.useCallback(
     (index: number, e: React.MouseEvent | React.KeyboardEvent) => {

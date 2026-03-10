@@ -8,6 +8,9 @@
  *
  * When `isEditable` is true and the user is authenticated, a toolbar appears
  * between the header and the panel group, and keyboard shortcuts are active.
+ * Annotation editors (text selection, dependency arcs, temporal spans, bounding
+ * boxes) are conditionally rendered based on the selected annotation kind from
+ * the creation context.
  *
  * @module
  */
@@ -25,10 +28,16 @@ import { useAnnotationLayersByExpression } from '@/lib/hooks/use-annotation-laye
 import { useSegmentationsByExpression } from '@/lib/hooks/use-segmentations';
 
 import { mapAnnotations } from '../annotations/map-annotation';
-import type { AnnotationLayerData, Token } from '../annotations/types';
+import type { Anchor, AnnotationItem, AnnotationLayerData, Token } from '../annotations/types';
 
-import { AnnotationCreationProvider } from './annotation-creation-context';
+import { AnnotationCreationProvider, useAnnotationCreation } from './annotation-creation-context';
 import { AnnotationToolbar } from './annotation-toolbar';
+import type { BoundingBoxData } from './bounding-box-editor';
+import { BoundingBoxEditor } from './bounding-box-editor';
+import type { DependencyArc } from './dependency-arc-diagram';
+import { DependencyArcEditor } from './dependency-arc-editor';
+import { TemporalAnnotationEditor } from './temporal-annotation-editor';
+import { TextSelectionHandler } from './text-selection-handler';
 
 import { AnnotationPanel } from './annotation-panel';
 import { ExpressionPanel } from './expression-panel';
@@ -44,6 +53,14 @@ interface AnnotationWorkspaceProps {
   text: string;
   /** Whether editing UI should be available (default true). */
   isEditable?: boolean;
+  /** URL of linked media (audio/video), for temporal annotation editing. */
+  mediaUrl?: string;
+  /** MIME type of linked media. */
+  mediaMimeType?: string;
+  /** Total media duration in seconds, for temporal annotation editing. */
+  mediaDuration?: number;
+  /** URL of linked image, for bounding box annotation editing. */
+  imageUrl?: string;
 }
 
 /**
@@ -84,6 +101,213 @@ function isInputFocused(): boolean {
   return false;
 }
 
+// =============================================================================
+// Editor wiring helpers
+// =============================================================================
+
+/**
+ * Renders the appropriate annotation editor based on the current creation
+ * context state. Only visible in annotate mode.
+ */
+function AnnotationEditors({
+  text,
+  tokens,
+  mediaDuration,
+  imageUrl,
+}: {
+  text: string;
+  tokens: Token[];
+  mediaDuration?: number;
+  imageUrl?: string;
+}): React.JSX.Element | null {
+  const { state, dispatch, addItem } = useAnnotationCreation();
+
+  // Media playback time for temporal editor (local tracking)
+  const [currentTime, setCurrentTime] = React.useState(0);
+
+  // Dependency arcs built during tree editing
+  const [pendingArcs, setPendingArcs] = React.useState<DependencyArc[]>([]);
+
+  // Bounding boxes built during bbox editing
+  const [pendingBoxes, setPendingBoxes] = React.useState<BoundingBoxData[]>([]);
+
+  // Only show editors when in annotate mode
+  if (state.mode !== 'annotate') return null;
+
+  const { kind, subkind } = state;
+
+  // Text-based annotations: span and token-tag kinds use TextSelectionHandler
+  if (kind === 'span' || kind === 'token-tag') {
+    const selectionMode = kind === 'span' ? 'span' : 'token';
+
+    const handleCreateFromSelection = (anchor: Anchor): void => {
+      dispatch({ type: 'SET_ANCHOR', anchor });
+
+      // Also add a pending item with the anchor so the user can label it
+      const item: AnnotationItem = {
+        id: crypto.randomUUID(),
+        label: '',
+        anchor,
+        tokenIndex: anchor.type === 'tokenRef' ? anchor.tokenIndex : undefined,
+      };
+      addItem(item);
+    };
+
+    return (
+      <div className="border rounded-md border-primary/30 bg-primary/5 p-2 mb-2">
+        <TextSelectionHandler
+          text={text}
+          tokens={tokens}
+          onCreateAnnotation={handleCreateFromSelection}
+          mode={selectionMode}
+        />
+      </div>
+    );
+  }
+
+  // Dependency tree editing (tree kind with dependency subkind)
+  if (kind === 'tree' && (subkind === 'dependency' || subkind === '')) {
+    const handleArcCreate = (arc: DependencyArc): void => {
+      setPendingArcs((prev) => [...prev, arc]);
+
+      const item: AnnotationItem = {
+        id: crypto.randomUUID(),
+        label: arc.label,
+        headIndex: arc.headIndex,
+        targetIndex: arc.targetIndex,
+      };
+      addItem(item);
+    };
+
+    const handleArcUpdate = (index: number, arc: DependencyArc): void => {
+      setPendingArcs((prev) => prev.map((a, i) => (i === index ? arc : a)));
+    };
+
+    const handleArcDelete = (index: number): void => {
+      const removed = pendingArcs[index];
+      setPendingArcs((prev) => prev.filter((_, i) => i !== index));
+
+      // Remove the corresponding pending item by matching head/target indices
+      if (removed) {
+        const matchingItem = state.pendingItems.find(
+          (item) =>
+            item.headIndex === removed.headIndex && item.targetIndex === removed.targetIndex,
+        );
+        if (matchingItem) {
+          dispatch({ type: 'REMOVE_ITEM', itemId: matchingItem.id });
+        }
+      }
+    };
+
+    return (
+      <div className="border rounded-md border-primary/30 bg-primary/5 p-2 mb-2">
+        <DependencyArcEditor
+          tokens={tokens}
+          arcs={pendingArcs}
+          color="oklch(0.6 0.15 260)"
+          onArcCreate={handleArcCreate}
+          onArcUpdate={handleArcUpdate}
+          onArcDelete={handleArcDelete}
+        />
+      </div>
+    );
+  }
+
+  // Temporal tier annotations
+  if (kind === 'tier' && mediaDuration != null && mediaDuration > 0) {
+    const handleCreateTemporal = (startTime: number, endTime: number, label: string): void => {
+      const anchor: Anchor = {
+        type: 'temporalSpan',
+        startTime,
+        endTime,
+      };
+      dispatch({ type: 'SET_ANCHOR', anchor });
+
+      const item: AnnotationItem = {
+        id: crypto.randomUUID(),
+        label,
+        anchor,
+      };
+      addItem(item);
+    };
+
+    return (
+      <div className="border rounded-md border-primary/30 bg-primary/5 p-2 mb-2">
+        <TemporalAnnotationEditor
+          duration={mediaDuration}
+          currentTime={currentTime}
+          onCreateAnnotation={handleCreateTemporal}
+          onSeek={setCurrentTime}
+          tierName={subkind || 'New Tier'}
+        />
+      </div>
+    );
+  }
+
+  // Bounding box annotations (for image-linked expressions)
+  if (imageUrl) {
+    const handleBoxCreate = (box: BoundingBoxData): void => {
+      setPendingBoxes((prev) => [...prev, box]);
+
+      const anchor: Anchor = {
+        type: 'boundingBox',
+        x: box.x,
+        y: box.y,
+        width: box.width,
+        height: box.height,
+      };
+      dispatch({ type: 'SET_ANCHOR', anchor });
+
+      const item: AnnotationItem = {
+        id: box.id,
+        label: box.label,
+        anchor,
+      };
+      addItem(item);
+    };
+
+    const handleBoxUpdate = (id: string, box: BoundingBoxData): void => {
+      setPendingBoxes((prev) => prev.map((b) => (b.id === id ? box : b)));
+
+      const anchor: Anchor = {
+        type: 'boundingBox',
+        x: box.x,
+        y: box.y,
+        width: box.width,
+        height: box.height,
+      };
+      dispatch({
+        type: 'UPDATE_ITEM',
+        itemId: id,
+        updates: { label: box.label, anchor },
+      });
+    };
+
+    const handleBoxDelete = (id: string): void => {
+      setPendingBoxes((prev) => prev.filter((b) => b.id !== id));
+      dispatch({ type: 'REMOVE_ITEM', itemId: id });
+    };
+
+    return (
+      <div className="border rounded-md border-primary/30 bg-primary/5 p-2 mb-2">
+        <BoundingBoxEditor
+          imageUrl={imageUrl}
+          boxes={pendingBoxes}
+          onBoxCreate={handleBoxCreate}
+          onBoxUpdate={handleBoxUpdate}
+          onBoxDelete={handleBoxDelete}
+        />
+      </div>
+    );
+  }
+
+  return null;
+}
+
+// =============================================================================
+// Main workspace
+// =============================================================================
+
 /**
  * Three-panel annotation workspace with optional editing support.
  *
@@ -96,6 +320,10 @@ function AnnotationWorkspace({
   expressionUri,
   text,
   isEditable = true,
+  mediaUrl,
+  mediaMimeType,
+  mediaDuration,
+  imageUrl,
 }: AnnotationWorkspaceProps): React.JSX.Element {
   const { isAuthenticated } = useAuth();
   const { data: segData } = useSegmentationsByExpression(expressionUri);
@@ -202,14 +430,14 @@ function AnnotationWorkspace({
       // Ctrl/Cmd+S: save current layer (prevent browser save dialog)
       if (isMeta && e.key === 's') {
         e.preventDefault();
-        // Save is handled by the annotation creation context (created by other agents)
+        // Save is handled by the annotation creation context
         return;
       }
 
       // Ctrl/Cmd+Z: undo last annotation item
       if (isMeta && e.key === 'z') {
         e.preventDefault();
-        // Undo is handled by the annotation creation context (created by other agents)
+        // Undo is handled by the annotation creation context
         return;
       }
 
@@ -234,11 +462,25 @@ function AnnotationWorkspace({
         </div>
       ) : null}
 
+      {/* Annotation editors appear above the panels when in annotate mode */}
+      {canEdit && isEditMode ? (
+        <div className="flex-shrink-0 px-2">
+          <AnnotationEditors
+            text={text}
+            tokens={tokens}
+            mediaDuration={mediaDuration}
+            imageUrl={imageUrl}
+          />
+        </div>
+      ) : null}
+
       <PanelGroup orientation="horizontal" className="flex-1 min-h-0">
         <Panel defaultSize={25} minSize={15} collapsible>
           <ExpressionPanel
             expressionUri={expressionUri}
             text={text}
+            mediaUrl={mediaUrl}
+            mediaMimeType={mediaMimeType}
             selectionMode={isEditMode ? selectionMode : 'view'}
             selectedTokens={selectedTokens}
             onSelectionChange={handleSelectionChange}

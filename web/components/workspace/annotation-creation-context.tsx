@@ -292,6 +292,17 @@ function useAnnotationCreation(): AnnotationCreationContextValue {
   return context;
 }
 
+/**
+ * Returns the annotation creation context value, or null if not inside a
+ * provider.
+ *
+ * Use this in components that may or may not be rendered inside an
+ * AnnotationCreationProvider (e.g., TokenOverlay, ExpressionPanel).
+ */
+function useOptionalAnnotationCreation(): AnnotationCreationContextValue | null {
+  return React.useContext(AnnotationCreationContext);
+}
+
 // =============================================================================
 // Helpers
 // =============================================================================
@@ -361,4 +372,4 @@ export type {
   AnnotationCreationContextValue,
   AnnotationCreationProviderProps,
 };
-export { AnnotationCreationProvider, useAnnotationCreation };
+export { AnnotationCreationProvider, useAnnotationCreation, useOptionalAnnotationCreation };
