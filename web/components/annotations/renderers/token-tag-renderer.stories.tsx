@@ -31,7 +31,12 @@ const sentenceTokens: Token[] = [
   { text: '.', index: 6, start: 22, end: 23 },
 ];
 
-function makeTokenTagItem(id: string, tokenIndex: number, label: string, confidence?: number): AnnotationItem {
+function makeTokenTagItem(
+  id: string,
+  tokenIndex: number,
+  label: string,
+  confidence?: number,
+): AnnotationItem {
   return {
     id,
     label,

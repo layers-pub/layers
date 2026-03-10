@@ -87,9 +87,7 @@ function mapAnchor(raw: ApiAnchor | undefined): Anchor | undefined {
 /**
  * Maps generated ArgumentRefs to the UI AnnotationArgument type.
  */
-function mapArguments(
-  raw: ApiArgumentRef[] | undefined,
-): AnnotationArgument[] | undefined {
+function mapArguments(raw: ApiArgumentRef[] | undefined): AnnotationArgument[] | undefined {
   if (!raw?.length) return undefined;
 
   return raw.map((arg) => ({

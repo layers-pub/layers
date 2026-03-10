@@ -58,7 +58,9 @@ function AgreementReportCard({ report }: AgreementReportCardProps): React.JSX.El
           </span>
           <span className="text-sm text-muted-foreground">/ 1.000</span>
         </div>
-        <p className="mt-1 text-xs text-muted-foreground">{report.value.numItems ?? 0} items evaluated</p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          {report.value.numItems ?? 0} items evaluated
+        </p>
       </CardContent>
     </Card>
   );

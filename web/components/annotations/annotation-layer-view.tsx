@@ -69,11 +69,7 @@ const AnnotationLayerView = React.memo(function AnnotationLayerView({
       return <DocumentTagRenderer layer={layer} color={color} />;
 
     default:
-      return (
-        <p className="text-sm text-muted-foreground">
-          Unknown annotation kind: {layer.kind}
-        </p>
-      );
+      return <p className="text-sm text-muted-foreground">Unknown annotation kind: {layer.kind}</p>;
   }
 });
 

@@ -64,8 +64,18 @@ const spanLayer: AnnotationLayerData = {
   subkind: 'ner',
   label: 'Entity Spans',
   items: [
-    { id: 'v-span-1', label: 'ANIMAL', anchor: { type: 'textSpan', start: 4, end: 7 }, confidence: 900 },
-    { id: 'v-span-2', label: 'OBJECT', anchor: { type: 'textSpan', start: 19, end: 22 }, confidence: 850 },
+    {
+      id: 'v-span-1',
+      label: 'ANIMAL',
+      anchor: { type: 'textSpan', start: 4, end: 7 },
+      confidence: 900,
+    },
+    {
+      id: 'v-span-2',
+      label: 'OBJECT',
+      anchor: { type: 'textSpan', start: 19, end: 22 },
+      confidence: 850,
+    },
   ],
 };
 
@@ -113,13 +123,55 @@ const treeLayer: AnnotationLayerData = {
   formalism: 'universal-dependencies',
   label: 'UD Dependencies',
   items: [
-    { id: 'v-dep-0', label: 'det', anchor: { type: 'tokenRef', tokenIndex: 0 }, headIndex: 1, targetIndex: 0 },
-    { id: 'v-dep-1', label: 'nsubj', anchor: { type: 'tokenRef', tokenIndex: 1 }, headIndex: 2, targetIndex: 1 },
-    { id: 'v-dep-2', label: 'root', anchor: { type: 'tokenRef', tokenIndex: 2 }, headIndex: -1, targetIndex: 2 },
-    { id: 'v-dep-3', label: 'case', anchor: { type: 'tokenRef', tokenIndex: 3 }, headIndex: 5, targetIndex: 3 },
-    { id: 'v-dep-4', label: 'det', anchor: { type: 'tokenRef', tokenIndex: 4 }, headIndex: 5, targetIndex: 4 },
-    { id: 'v-dep-5', label: 'obl', anchor: { type: 'tokenRef', tokenIndex: 5 }, headIndex: 2, targetIndex: 5 },
-    { id: 'v-dep-6', label: 'punct', anchor: { type: 'tokenRef', tokenIndex: 6 }, headIndex: 2, targetIndex: 6 },
+    {
+      id: 'v-dep-0',
+      label: 'det',
+      anchor: { type: 'tokenRef', tokenIndex: 0 },
+      headIndex: 1,
+      targetIndex: 0,
+    },
+    {
+      id: 'v-dep-1',
+      label: 'nsubj',
+      anchor: { type: 'tokenRef', tokenIndex: 1 },
+      headIndex: 2,
+      targetIndex: 1,
+    },
+    {
+      id: 'v-dep-2',
+      label: 'root',
+      anchor: { type: 'tokenRef', tokenIndex: 2 },
+      headIndex: -1,
+      targetIndex: 2,
+    },
+    {
+      id: 'v-dep-3',
+      label: 'case',
+      anchor: { type: 'tokenRef', tokenIndex: 3 },
+      headIndex: 5,
+      targetIndex: 3,
+    },
+    {
+      id: 'v-dep-4',
+      label: 'det',
+      anchor: { type: 'tokenRef', tokenIndex: 4 },
+      headIndex: 5,
+      targetIndex: 4,
+    },
+    {
+      id: 'v-dep-5',
+      label: 'obl',
+      anchor: { type: 'tokenRef', tokenIndex: 5 },
+      headIndex: 2,
+      targetIndex: 5,
+    },
+    {
+      id: 'v-dep-6',
+      label: 'punct',
+      anchor: { type: 'tokenRef', tokenIndex: 6 },
+      headIndex: 2,
+      targetIndex: 6,
+    },
   ],
 };
 
@@ -137,9 +189,7 @@ const documentTagLayer: AnnotationLayerData = {
   kind: 'document-tag',
   subkind: 'sentiment',
   label: 'Document Sentiment',
-  items: [
-    { id: 'v-doctag-1', label: 'sentiment', value: 'neutral', confidence: 780 },
-  ],
+  items: [{ id: 'v-doctag-1', label: 'sentiment', value: 'neutral', confidence: 780 }],
 };
 
 export const DocumentTag: Story = {

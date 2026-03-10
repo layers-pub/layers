@@ -113,9 +113,7 @@ function SearchResultCard({ uri, collection, highlights, score }: SearchResultCa
 
   // Build a snippet from highlights (join the first available field's fragments)
   const highlightEntries = Object.values(highlights);
-  const snippet = highlightEntries.length > 0
-    ? highlightEntries[0]?.join(' ... ') ?? ''
-    : '';
+  const snippet = highlightEntries.length > 0 ? (highlightEntries[0]?.join(' ... ') ?? '') : '';
 
   // Use the URI rkey as a fallback title
   const rkey = uri.split('/').pop() ?? uri;

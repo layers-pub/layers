@@ -60,14 +60,8 @@ function TypeDefForm({
         <Label htmlFor="typedef-gloss">
           Gloss <span className="text-muted-foreground font-normal">(optional)</span>
         </Label>
-        <Textarea
-          id="typedef-gloss"
-          placeholder="Definition of this type"
-          {...register('gloss')}
-        />
-        {errors.gloss && (
-          <p className="text-sm text-destructive mt-1">{errors.gloss.message}</p>
-        )}
+        <Textarea id="typedef-gloss" placeholder="Definition of this type" {...register('gloss')} />
+        {errors.gloss && <p className="text-sm text-destructive mt-1">{errors.gloss.message}</p>}
       </div>
 
       {parentUri && (

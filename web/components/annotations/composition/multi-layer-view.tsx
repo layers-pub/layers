@@ -36,9 +36,7 @@ interface MultiLayerViewProps {
  *
  * Assigns palette colors based on index order.
  */
-function mapToLayerData(
-  layers: AnnotationLayer[],
-): AnnotationLayerData[] {
+function mapToLayerData(layers: AnnotationLayer[]): AnnotationLayerData[] {
   return layers.map((layer, index) => ({
     uri: layer.uri,
     kind: layer.value.kind,
