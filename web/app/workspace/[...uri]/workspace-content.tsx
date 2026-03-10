@@ -2,7 +2,8 @@
  * Client component for the annotation workspace view.
  *
  * Reconstructs the AT-URI from route params, fetches the expression,
- * and renders the three-panel workspace layout.
+ * and renders the three-panel workspace layout. When the user is
+ * authenticated, editing controls are enabled.
  *
  * @module
  */
@@ -16,6 +17,7 @@ import {
   AnnotationWorkspace,
   AnnotationWorkspaceSkeleton,
 } from '@/components/workspace/annotation-workspace';
+import { useIsAuthenticated } from '@/lib/auth';
 import { useExpression } from '@/lib/hooks';
 
 interface WorkspaceContentProps {
@@ -25,9 +27,13 @@ interface WorkspaceContentProps {
 
 /**
  * Fetches the expression and renders the workspace or error/loading states.
+ *
+ * The workspace is editable when the user is authenticated. Unauthenticated
+ * users see a view-only workspace.
  */
 function WorkspaceContent({ uri }: WorkspaceContentProps): React.JSX.Element {
   const { data: expression, isLoading, isError, error } = useExpression(uri);
+  const isAuthenticated = useIsAuthenticated();
 
   if (isLoading) {
     return <AnnotationWorkspaceSkeleton />;
@@ -61,7 +67,13 @@ function WorkspaceContent({ uri }: WorkspaceContentProps): React.JSX.Element {
     );
   }
 
-  return <AnnotationWorkspace expressionUri={uri} text={expression.value.text ?? ''} />;
+  return (
+    <AnnotationWorkspace
+      expressionUri={uri}
+      text={expression.value.text ?? ''}
+      isEditable={isAuthenticated}
+    />
+  );
 }
 
 export { WorkspaceContent };

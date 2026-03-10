@@ -1,10 +1,13 @@
 /**
- * Three-panel annotation workspace layout.
+ * Three-panel annotation workspace layout with editing support.
  *
  * Uses react-resizable-panels for a horizontal layout with:
- * - Left panel (25%): expression text with segmentation overlay
- * - Center panel (50%): annotation layers using existing renderers
- * - Right panel (25%): metadata, layer controls, cross-references
+ * - Left panel (25%): expression text with segmentation overlay and token selection
+ * - Center panel (50%): annotation layers with inline editing controls
+ * - Right panel (25%): metadata, layer controls, cross-references, edit mode toggle
+ *
+ * When `isEditable` is true and the user is authenticated, a toolbar appears
+ * between the header and the panel group, and keyboard shortcuts are active.
  *
  * @module
  */
@@ -16,6 +19,7 @@ import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from 'reac
 
 import { Skeleton } from '@/components/ui/skeleton';
 import { getLayerColor } from '@/lib/annotation-palette';
+import { useAuth } from '@/lib/auth';
 import type { AnnotationLayer } from '@/lib/hooks/use-annotation-layers';
 import { useAnnotationLayersByExpression } from '@/lib/hooks/use-annotation-layers';
 import { useSegmentationsByExpression } from '@/lib/hooks/use-segmentations';
@@ -23,24 +27,30 @@ import { useSegmentationsByExpression } from '@/lib/hooks/use-segmentations';
 import { mapAnnotations } from '../annotations/map-annotation';
 import type { AnnotationLayerData, Token } from '../annotations/types';
 
+// Created by annotation tooling agents
+// import { AnnotationCreationProvider } from './annotation-creation-context';
+// import { AnnotationToolbar } from './annotation-toolbar';
+
 import { AnnotationPanel } from './annotation-panel';
 import { ExpressionPanel } from './expression-panel';
 import { MetadataPanel } from './metadata-panel';
+
+/** Token selection modes for the expression panel. */
+type SelectionMode = 'view' | 'token' | 'span' | 'tokenSequence';
 
 interface AnnotationWorkspaceProps {
   /** AT-URI of the expression. */
   expressionUri: string;
   /** Raw expression text. */
   text: string;
+  /** Whether editing UI should be available (default true). */
+  isEditable?: boolean;
 }
 
 /**
  * Transforms an API annotation layer record into the renderer data format.
  */
-function toLayerData(
-  layer: AnnotationLayer,
-  colorIndex: number,
-): AnnotationLayerData {
+function toLayerData(layer: AnnotationLayer, colorIndex: number): AnnotationLayerData {
   return {
     uri: layer.uri,
     kind: layer.value.kind,
@@ -64,15 +74,49 @@ function ResizeHandle(): React.JSX.Element {
 }
 
 /**
- * Three-panel annotation workspace for viewing expression annotations.
- *
- * This is a view-only workspace. No editing, creation, or mutation hooks.
- * The left panel shows the expression text, the center panel shows annotation
- * layers, and the right panel shows metadata and layer toggle controls.
+ * Checks whether the active element is a text input, textarea, or contenteditable.
  */
-function AnnotationWorkspace({ expressionUri, text }: AnnotationWorkspaceProps): React.JSX.Element {
+function isInputFocused(): boolean {
+  const active = document.activeElement;
+  if (!active) return false;
+  const tag = active.tagName.toLowerCase();
+  if (tag === 'input' || tag === 'textarea' || tag === 'select') return true;
+  if (active.getAttribute('contenteditable') === 'true') return true;
+  return false;
+}
+
+/**
+ * Three-panel annotation workspace with optional editing support.
+ *
+ * When `isEditable` is true and the user is authenticated, the workspace
+ * provides annotation creation and editing controls. Keyboard shortcuts
+ * include Escape (cancel), Ctrl/Cmd+S (save layer), Ctrl/Cmd+Z (undo),
+ * and E (toggle edit mode when not focused on an input).
+ */
+function AnnotationWorkspace({
+  expressionUri,
+  text,
+  isEditable = true,
+}: AnnotationWorkspaceProps): React.JSX.Element {
+  const { isAuthenticated } = useAuth();
   const { data: segData } = useSegmentationsByExpression(expressionUri);
   const { data: layerData } = useAnnotationLayersByExpression(expressionUri);
+
+  // Whether the workspace is currently in edit mode
+  const [isEditMode, setIsEditMode] = React.useState(false);
+
+  // Token selection mode for the expression panel
+  const [selectionMode, setSelectionMode] = React.useState<SelectionMode>('view');
+
+  // Selected tokens in the expression panel
+  const [selectedTokens, setSelectedTokens] = React.useState<ReadonlySet<number>>(new Set());
+
+  // Pending annotation items that have not been saved
+  const [pendingCount, setPendingCount] = React.useState(0);
+
+  // The editing controls are available only when the workspace is editable
+  // and the user is authenticated
+  const canEdit = isEditable && isAuthenticated;
 
   // Build tokens from the first segmentation's first tokenization
   const tokens: Token[] = React.useMemo(() => {
@@ -116,31 +160,154 @@ function AnnotationWorkspace({ expressionUri, text }: AnnotationWorkspaceProps):
     });
   }, []);
 
-  return (
-    <PanelGroup orientation="horizontal" className="h-full">
-      <Panel defaultSize={25} minSize={15} collapsible>
-        <ExpressionPanel expressionUri={expressionUri} text={text} />
-      </Panel>
+  const handleSelectionChange = React.useCallback((tokens: ReadonlySet<number>) => {
+    setSelectedTokens(tokens);
+  }, []);
 
-      <ResizeHandle />
+  const handleCancelAnnotation = React.useCallback(() => {
+    setSelectedTokens(new Set());
+    setSelectionMode('view');
+  }, []);
 
-      <Panel defaultSize={50} minSize={30}>
-        <AnnotationPanel expressionUri={expressionUri} text={text} tokens={tokens} />
-      </Panel>
+  const handleDiscardChanges = React.useCallback(() => {
+    setSelectedTokens(new Set());
+    setSelectionMode('view');
+    setPendingCount(0);
+    setIsEditMode(false);
+  }, []);
 
-      <ResizeHandle />
+  const handleToggleEditMode = React.useCallback(() => {
+    setIsEditMode((prev) => {
+      if (prev) {
+        // Exiting edit mode: clear selection state
+        setSelectedTokens(new Set());
+        setSelectionMode('view');
+      }
+      return !prev;
+    });
+  }, []);
 
-      <Panel defaultSize={25} minSize={15} collapsible>
-        <MetadataPanel
-          expressionUri={expressionUri}
-          text={text}
-          layers={layers}
-          visibleLayers={visibleLayers}
-          onToggleLayer={handleToggleLayer}
-        />
-      </Panel>
-    </PanelGroup>
+  // Keyboard shortcut handler
+  React.useEffect(() => {
+    if (!canEdit) return;
+
+    function handleKeyDown(e: KeyboardEvent): void {
+      const isMeta = e.metaKey || e.ctrlKey;
+
+      // Escape: cancel current annotation
+      if (e.key === 'Escape') {
+        handleCancelAnnotation();
+        return;
+      }
+
+      // Ctrl/Cmd+S: save current layer (prevent browser save dialog)
+      if (isMeta && e.key === 's') {
+        e.preventDefault();
+        // Save is handled by the annotation creation context (created by other agents)
+        return;
+      }
+
+      // Ctrl/Cmd+Z: undo last annotation item
+      if (isMeta && e.key === 'z') {
+        e.preventDefault();
+        // Undo is handled by the annotation creation context (created by other agents)
+        return;
+      }
+
+      // E: toggle edit mode (only when not in an input field)
+      if (e.key === 'e' && !isMeta && !e.shiftKey && !e.altKey && !isInputFocused()) {
+        handleToggleEditMode();
+        return;
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [canEdit, handleCancelAnnotation, handleToggleEditMode]);
+
+  const workspaceContent = (
+    <div className="flex h-full flex-col">
+      {/* Toolbar placeholder: AnnotationToolbar will be rendered here when available */}
+      {canEdit && isEditMode ? (
+        <div className="flex-shrink-0 border-b bg-muted/30 px-4 py-2">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <span className="font-medium text-foreground">Edit Mode</span>
+            <span>|</span>
+            <span>Selection: {selectionMode === 'view' ? 'none' : selectionMode}</span>
+            {selectedTokens.size > 0 ? (
+              <>
+                <span>|</span>
+                <span>{selectedTokens.size} token(s) selected</span>
+              </>
+            ) : null}
+            {pendingCount > 0 ? (
+              <>
+                <span>|</span>
+                <span className="text-amber-600">{pendingCount} unsaved</span>
+              </>
+            ) : null}
+            <div className="flex-1" />
+            <kbd className="rounded border bg-background px-1.5 py-0.5 text-[10px] font-mono">
+              E
+            </kbd>
+            <span>toggle edit</span>
+            <kbd className="rounded border bg-background px-1.5 py-0.5 text-[10px] font-mono">
+              Esc
+            </kbd>
+            <span>cancel</span>
+          </div>
+        </div>
+      ) : null}
+
+      <PanelGroup orientation="horizontal" className="flex-1 min-h-0">
+        <Panel defaultSize={25} minSize={15} collapsible>
+          <ExpressionPanel
+            expressionUri={expressionUri}
+            text={text}
+            selectionMode={isEditMode ? selectionMode : 'view'}
+            selectedTokens={selectedTokens}
+            onSelectionChange={handleSelectionChange}
+          />
+        </Panel>
+
+        <ResizeHandle />
+
+        <Panel defaultSize={50} minSize={30}>
+          <AnnotationPanel
+            expressionUri={expressionUri}
+            text={text}
+            tokens={tokens}
+            isEditMode={isEditMode}
+            onPendingCountChange={setPendingCount}
+          />
+        </Panel>
+
+        <ResizeHandle />
+
+        <Panel defaultSize={25} minSize={15} collapsible>
+          <MetadataPanel
+            expressionUri={expressionUri}
+            text={text}
+            layers={layers}
+            visibleLayers={visibleLayers}
+            onToggleLayer={handleToggleLayer}
+            isEditMode={isEditMode}
+            canEdit={canEdit}
+            pendingCount={pendingCount}
+            selectionMode={selectionMode}
+            onToggleEditMode={handleToggleEditMode}
+            onSelectionModeChange={setSelectionMode}
+            onDiscardChanges={handleDiscardChanges}
+          />
+        </Panel>
+      </PanelGroup>
+    </div>
   );
+
+  // TODO: Wrap in <AnnotationCreationProvider> when available (created by annotation tooling agents)
+  return workspaceContent;
 }
 
 /**
@@ -170,5 +337,5 @@ function AnnotationWorkspaceSkeleton(): React.JSX.Element {
   );
 }
 
-export type { AnnotationWorkspaceProps };
+export type { AnnotationWorkspaceProps, SelectionMode };
 export { AnnotationWorkspace, AnnotationWorkspaceSkeleton };

@@ -6,6 +6,12 @@
  * For expressions with linked media (audio/video), renders a media
  * player with tier timeline instead of (or above) the text display.
  *
+ * Supports multiple selection modes for annotation creation:
+ * - view: single-click visual reference (default)
+ * - token: click to toggle token selection
+ * - span: click start and end tokens to select a contiguous span
+ * - tokenSequence: click tokens to build an ordered sequence
+ *
  * @module
  */
 
@@ -13,6 +19,7 @@
 
 import * as React from 'react';
 
+import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
@@ -21,6 +28,7 @@ import { useSegmentationsByExpression } from '@/lib/hooks/use-segmentations';
 
 import type { AnnotationLayerData, Token } from '../annotations/types';
 
+import type { SelectionMode } from './annotation-workspace';
 import { MediaExpressionView } from './media-expression-view';
 import { TokenOverlay } from './token-overlay';
 
@@ -35,13 +43,36 @@ interface ExpressionPanelProps {
   mediaMimeType?: string;
   /** Tier annotation layers to display synced with media playback. */
   tierLayers?: AnnotationLayerData[];
+  /** Token selection mode (default 'view'). */
+  selectionMode?: SelectionMode;
+  /** Externally controlled set of selected token indices. */
+  selectedTokens?: ReadonlySet<number>;
+  /** Callback when the token selection changes. */
+  onSelectionChange?: (tokens: ReadonlySet<number>) => void;
+}
+
+/**
+ * Label text for the current selection mode badge.
+ */
+function selectionModeLabel(mode: SelectionMode): string {
+  switch (mode) {
+    case 'token':
+      return 'Token Select';
+    case 'span':
+      return 'Span Select';
+    case 'tokenSequence':
+      return 'Sequence Select';
+    default:
+      return '';
+  }
 }
 
 /**
  * Left workspace panel displaying the expression text with segmentation overlay.
  *
  * If multiple segmentations exist, a dropdown allows switching between them.
- * Tokens are clickable for visual reference (no editing).
+ * When in a selection mode other than 'view', the token overlay enables
+ * multi-token selection for annotation anchor creation.
  */
 function ExpressionPanel({
   expressionUri,
@@ -49,10 +80,14 @@ function ExpressionPanel({
   mediaUrl,
   mediaMimeType,
   tierLayers,
+  selectionMode = 'view',
+  selectedTokens,
+  onSelectionChange,
 }: ExpressionPanelProps): React.JSX.Element {
   const { data, isLoading } = useSegmentationsByExpression(expressionUri);
 
   const [selectedSegIndex, setSelectedSegIndex] = React.useState(0);
+  // Local single-token selection for view mode (visual reference only)
   const [selectedTokenIndex, setSelectedTokenIndex] = React.useState<number | null>(null);
 
   const segmentations = data?.records ?? [];
@@ -79,11 +114,20 @@ function ExpressionPanel({
     setSelectedTokenIndex((prev) => (prev === index ? null : index));
   }, []);
 
+  const isAnnotateMode = selectionMode !== 'view';
+
   return (
     <Card className="h-full flex flex-col border-0 rounded-none shadow-none">
       <CardHeader className="flex-shrink-0 pb-2">
         <div className="flex items-center justify-between gap-2">
-          <CardTitle className="text-sm">Expression</CardTitle>
+          <div className="flex items-center gap-2">
+            <CardTitle className="text-sm">Expression</CardTitle>
+            {isAnnotateMode ? (
+              <Badge variant="secondary" className="text-[10px]">
+                {selectionModeLabel(selectionMode)}
+              </Badge>
+            ) : null}
+          </div>
           {segmentations.length > 1 ? (
             <select
               className="text-xs border rounded px-2 py-1 bg-background"
@@ -120,6 +164,9 @@ function ExpressionPanel({
                       tokens={tokens}
                       selectedTokenIndex={selectedTokenIndex}
                       onTokenClick={handleTokenClick}
+                      selectionMode={selectionMode}
+                      selectedTokens={selectedTokens}
+                      onSelectionChange={onSelectionChange}
                     />
                   ) : (
                     <p className="whitespace-pre-wrap leading-relaxed text-sm">{text}</p>
@@ -139,6 +186,9 @@ function ExpressionPanel({
               tokens={tokens}
               selectedTokenIndex={selectedTokenIndex}
               onTokenClick={handleTokenClick}
+              selectionMode={selectionMode}
+              selectedTokens={selectedTokens}
+              onSelectionChange={onSelectionChange}
             />
           ) : (
             <p className="whitespace-pre-wrap leading-relaxed text-sm">{text}</p>
