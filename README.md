@@ -53,22 +53,22 @@ See the [documentation](https://docs.layers.pub) for the full architecture, incl
 
 14 lexicon namespaces define 26 record types and 90 lexicon schemas:
 
-| Namespace | Purpose |
-|-----------|---------|
-| `pub.layers.defs` | Shared primitives: anchors, selectors, metadata, cross-references |
-| `pub.layers.expression` | Recursive document and expression model |
-| `pub.layers.segmentation` | Tokenization strategies and token sequences |
-| `pub.layers.annotation` | Annotation layers and cluster sets |
-| `pub.layers.ontology` | Annotation type systems, role slots, and theoretical frameworks |
-| `pub.layers.corpus` | Corpus collections with annotation design metadata |
-| `pub.layers.resource` | Lexical entries, stimulus templates, fillings, and collections |
-| `pub.layers.judgment` | Experiment definitions, judgment sets, and agreement reports |
-| `pub.layers.alignment` | Cross-lingual and cross-modal structure correspondence |
-| `pub.layers.graph` | Typed property graph nodes, edges, and edge sets |
-| `pub.layers.persona` | Annotator personas and annotation frameworks |
-| `pub.layers.media` | Audio, video, image, and signal metadata |
-| `pub.layers.eprint` | Scholarly metadata and data provenance links |
-| `pub.layers.changelog` | Structured change tracking with sub-record targeting |
+| Namespace                 | Purpose                                                           |
+| ------------------------- | ----------------------------------------------------------------- |
+| `pub.layers.defs`         | Shared primitives: anchors, selectors, metadata, cross-references |
+| `pub.layers.expression`   | Recursive document and expression model                           |
+| `pub.layers.segmentation` | Tokenization strategies and token sequences                       |
+| `pub.layers.annotation`   | Annotation layers and cluster sets                                |
+| `pub.layers.ontology`     | Annotation type systems, role slots, and theoretical frameworks   |
+| `pub.layers.corpus`       | Corpus collections with annotation design metadata                |
+| `pub.layers.resource`     | Lexical entries, stimulus templates, fillings, and collections    |
+| `pub.layers.judgment`     | Experiment definitions, judgment sets, and agreement reports      |
+| `pub.layers.alignment`    | Cross-lingual and cross-modal structure correspondence            |
+| `pub.layers.graph`        | Typed property graph nodes, edges, and edge sets                  |
+| `pub.layers.persona`      | Annotator personas and annotation frameworks                      |
+| `pub.layers.media`        | Audio, video, image, and signal metadata                          |
+| `pub.layers.eprint`       | Scholarly metadata and data provenance links                      |
+| `pub.layers.changelog`    | Structured change tracking with sub-record targeting              |
 
 ## Project structure
 

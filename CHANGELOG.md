@@ -76,7 +76,6 @@ This project follows [Semantic Versioning](https://semver.org/).
 - XRPC query lexicons for all 25 record types: `get<Record>` and `list<Records>` queries with domain-specific filter parameters.
 - Namespace `defs.json` files for shared object types in: annotation, corpus, eprint, graph, judgment, media, ontology, resource, segmentation.
 
-
 ## [0.3.0] - 2026-02-26
 
 ### Added
