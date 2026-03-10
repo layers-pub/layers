@@ -1,0 +1,48 @@
+name: Performance Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      K6_BASE_URL:
+        description: 'Base URL of the target environment (e.g., https://staging.layers.pub)'
+        required: true
+        type: string
+
+jobs:
+  performance:
+    name: k6 Load Tests
+    runs-on: ubuntu-latest
+    env:
+      K6_BASE_URL: ${{ inputs.K6_BASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install k6
+        run: |
+          sudo gpg -k
+          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D68
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install -y k6
+
+      - name: Run health scenario (smoke test)
+        run: k6 run tests/performance/k6/scenarios/health.js
+
+      - name: Run read scenario
+        run: k6 run tests/performance/k6/scenarios/xrpc-read.js
+
+      - name: Run search scenario
+        run: k6 run tests/performance/k6/scenarios/xrpc-search.js
+
+      - name: Run list scenario
+        run: k6 run tests/performance/k6/scenarios/xrpc-list.js
+
+      - name: Upload k6 results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k6-results
+          path: |
+            k6-*.json
+            k6-*.html
+          retention-days: 30

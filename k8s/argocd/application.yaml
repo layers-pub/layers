@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: layers-appview
+  namespace: argocd
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: layers-deployments
+    notifications.argoproj.io/subscribe.on-sync-failed.slack: layers-deployments
+    notifications.argoproj.io/subscribe.on-health-degraded.slack: layers-deployments
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: layers
+  source:
+    repoURL: https://github.com/layers-pub/layers-pub
+    targetRevision: HEAD
+    path: layers/k8s/overlays/production
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: layers
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true
+      - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

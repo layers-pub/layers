@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: layers-config
+  namespace: layers
+data:
+  NODE_ENV: 'production'
+  LOG_LEVEL: 'info'
+  PORT: '3000'
+  OTEL_SERVICE_NAME: 'layers-appview'
+  OTEL_EXPORTER_OTLP_PROTOCOL: 'http/protobuf'
+  # Database hosts (connection strings with credentials come from secrets)
+  PG_HOST: 'postgresql.layers.svc.cluster.local'
+  PG_PORT: '5432'
+  PG_DATABASE: 'layers'
+  ES_NODE: 'http://elasticsearch.layers.svc.cluster.local:9200'
+  NEO4J_URI: 'bolt://neo4j.layers.svc.cluster.local:7687'
+  REDIS_HOST: 'redis.layers.svc.cluster.local'
+  REDIS_PORT: '6379'
+  # ATProto relay for firehose subscription
+  ATPROTO_RELAY_URL: 'wss://bsky.network'

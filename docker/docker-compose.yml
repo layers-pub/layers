@@ -1,0 +1,78 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: layers
+      POSTGRES_USER: layers
+      POSTGRES_PASSWORD: layers_dev
+    volumes:
+      - layers_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U layers']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - layers_network
+
+  elasticsearch:
+    image: elasticsearch:8.17.0
+    ports:
+      - '9200:9200'
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: 'false'
+      ES_JAVA_OPTS: '-Xms512m -Xmx512m'
+    volumes:
+      - layers_es_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -f http://localhost:9200/_cluster/health || exit 1']
+      interval: 15s
+      timeout: 10s
+      retries: 5
+    networks:
+      - layers_network
+
+  neo4j:
+    image: neo4j:5-community
+    ports:
+      - '7474:7474'
+      - '7687:7687'
+    environment:
+      NEO4J_AUTH: neo4j/layers_dev
+      NEO4J_PLUGINS: '["apoc"]'
+    volumes:
+      - layers_neo4j_data:/data
+    healthcheck:
+      test: ['CMD-SHELL', 'neo4j status || exit 1']
+      interval: 15s
+      timeout: 10s
+      retries: 5
+    networks:
+      - layers_network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - layers_redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - layers_network
+
+volumes:
+  layers_pg_data:
+  layers_es_data:
+  layers_neo4j_data:
+  layers_redis_data:
+
+networks:
+  layers_network:
+    driver: bridge

@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: layers
+
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - api-deployment.yaml
+  - api-service.yaml
+  - indexer-deployment.yaml
+  - hpa.yaml
+
+commonLabels:
+  app.kubernetes.io/part-of: layers-appview
+  app.kubernetes.io/managed-by: kustomize

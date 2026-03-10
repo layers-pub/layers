@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: layers
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Layers linguistic annotation appview
+  sourceRepos:
+    - https://github.com/layers-pub/layers-pub
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: layers
+  # Namespace-scoped only; no cluster-wide resources
+  clusterResourceWhitelist: []
+  namespaceResourceBlacklist:
+    - group: ''
+      kind: ResourceQuota
+    - group: ''
+      kind: LimitRange
+  roles:
+    - name: admin
+      description: Full access to the Layers project
+      policies:
+        - p, proj:layers:admin, applications, *, layers/*, allow
+      groups:
+        - layers-admins
+    - name: read-only
+      description: Read-only access for viewers
+      policies:
+        - p, proj:layers:read-only, applications, get, layers/*, allow
+      groups:
+        - layers-viewers
