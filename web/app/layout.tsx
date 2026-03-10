@@ -1,12 +1,15 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
-import { Providers } from '@/components/providers';
-import { FaroInit } from '@/components/observability/faro-init';
-import { MainLayout } from '@/components/layout/main-layout';
-import '@/styles/globals.css';
 import { Geist } from 'next/font/google';
+
+import { Providers } from '@/components/providers';
+import { ObservabilityProvider } from '@/lib/observability/context';
+import { FaroRouteTracker } from '@/components/observability/faro-route-tracker';
+import { MainLayout } from '@/components/layout/main-layout';
 import { cn } from '@/lib/utils';
+import '@/styles/globals.css';
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -39,12 +42,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-background font-sans antialiased">
-        <FaroInit />
-        <Providers>
-          <div className="relative flex min-h-screen flex-col">
-            <MainLayout>{children}</MainLayout>
-          </div>
-        </Providers>
+        <ObservabilityProvider>
+          <Providers>
+            <Suspense>
+              <FaroRouteTracker />
+            </Suspense>
+            <div className="relative flex min-h-screen flex-col">
+              <MainLayout>{children}</MainLayout>
+            </div>
+          </Providers>
+        </ObservabilityProvider>
       </body>
     </html>
   );
