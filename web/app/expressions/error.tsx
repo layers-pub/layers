@@ -12,6 +12,7 @@
 import { useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { FaroErrorBoundary } from '@/components/observability/faro-error-boundary';
 import { usePushError, useTraceId } from '@/lib/observability/context';
 
 export default function ExpressionsError({
@@ -29,15 +30,19 @@ export default function ExpressionsError({
   }, [error, pushError]);
 
   return (
-    <div className="container mx-auto flex flex-col items-center justify-center px-4 py-24 text-center">
-      <h2 className="text-2xl font-bold tracking-tight">Something went wrong</h2>
-      <p className="mt-2 text-muted-foreground">{error.message || 'Failed to load expressions.'}</p>
-      {traceId && (
-        <p className="mt-1 text-xs text-muted-foreground">Reference: {traceId.slice(0, 8)}</p>
-      )}
-      <Button variant="outline" className="mt-6" onClick={reset}>
-        Try again
-      </Button>
-    </div>
+    <FaroErrorBoundary componentName="ExpressionsErrorPage">
+      <div className="container mx-auto flex flex-col items-center justify-center px-4 py-24 text-center">
+        <h2 className="text-2xl font-bold tracking-tight">Something went wrong</h2>
+        <p className="mt-2 text-muted-foreground">
+          {error.message || 'Failed to load expressions.'}
+        </p>
+        {traceId && (
+          <p className="mt-1 text-xs text-muted-foreground">Reference: {traceId.slice(0, 8)}</p>
+        )}
+        <Button variant="outline" className="mt-6" onClick={reset}>
+          Try again
+        </Button>
+      </div>
+    </FaroErrorBoundary>
   );
 }
