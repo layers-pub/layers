@@ -11,6 +11,8 @@
 
 import createClient, { type Middleware } from 'openapi-fetch';
 
+import { events } from '@/lib/observability/custom-events';
+
 import type { paths } from './schema.generated';
 
 // =============================================================================
@@ -109,6 +111,26 @@ const authMiddleware: Middleware = {
   },
 };
 
+/**
+ * Middleware that tracks API call latency via observability events.
+ */
+const timingMiddleware: Middleware = {
+  async onRequest({ request }) {
+    // Store the start time as a custom header (stripped before fetch)
+    request.headers.set('X-Timing-Start', String(performance.now()));
+    return request;
+  },
+  async onResponse({ request, response }) {
+    const startStr = request.headers.get('X-Timing-Start');
+    if (startStr) {
+      const durationMs = Math.round(performance.now() - Number(startStr));
+      const url = new URL(request.url);
+      events.timing('api_call', durationMs, { endpoint: url.pathname });
+    }
+    return response;
+  },
+};
+
 // =============================================================================
 // API CLIENTS
 // =============================================================================
@@ -125,6 +147,7 @@ const authMiddleware: Middleware = {
  */
 const api = createClient<paths>({ baseUrl: getBaseUrl() });
 api.use(requestIdMiddleware);
+api.use(timingMiddleware);
 
 /**
  * Authenticated API client for requests requiring user authentication.
@@ -143,6 +166,7 @@ api.use(requestIdMiddleware);
 const authApi = createClient<paths>({ baseUrl: getBaseUrl() });
 authApi.use(requestIdMiddleware);
 authApi.use(authMiddleware);
+authApi.use(timingMiddleware);
 
 /**
  * Creates a server-side API client with Next.js caching.

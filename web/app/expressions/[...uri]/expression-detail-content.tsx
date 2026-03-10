@@ -6,6 +6,7 @@
  * @packageDocumentation
  */
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 
 import { CrossReferenceList } from '@/components/records/cross-reference-list';
@@ -20,6 +21,7 @@ import {
   useExpression,
   useSegmentationsByExpression,
 } from '@/lib/hooks';
+import { events } from '@/lib/observability/custom-events';
 import { encodeAtUri, formatRelativeTime } from '@/lib/utils/format';
 
 interface ExpressionDetailContentProps {
@@ -35,6 +37,10 @@ interface ExpressionDetailContentProps {
  */
 function ExpressionDetailContent({ uri }: ExpressionDetailContentProps) {
   const { data: expression, isLoading, isError, error } = useExpression(uri);
+
+  useEffect(() => {
+    events.expressionView({ expressionUri: uri, source: 'direct' });
+  }, [uri]);
 
   if (isLoading) {
     return (

@@ -6,7 +6,7 @@
  * @module
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AlertCircle, ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react';
 
@@ -23,6 +23,7 @@ import {
 import type { FieldMapping } from '@/components/import';
 import { useWizardPersistence } from '@/lib/hooks/use-wizard-persistence';
 import type { WizardPersistedState } from '@/lib/hooks/use-wizard-persistence';
+import { events } from '@/lib/observability/custom-events';
 
 type WizardStep = 'upload' | 'preview' | 'mapping' | 'validation' | 'importing';
 
@@ -70,6 +71,15 @@ function ImportWizardContent(): React.JSX.Element {
     useWizardPersistence();
 
   const currentStepIndex = STEPS.indexOf(state.currentStep);
+  const importStartTimeRef = useRef<number>(0);
+
+  // Track import start when entering the importing step
+  useEffect(() => {
+    if (state.currentStep === 'importing' && state.file && state.format) {
+      importStartTimeRef.current = performance.now();
+      events.importStart({ format: state.format, fileSize: state.file.size });
+    }
+  }, [state.currentStep, state.file, state.format]);
 
   // Persist state whenever step or mappings change
   useEffect(() => {
@@ -176,9 +186,20 @@ function ImportWizardContent(): React.JSX.Element {
   }, []);
 
   const handleImportComplete = useCallback(() => {
+    const durationMs =
+      importStartTimeRef.current > 0
+        ? Math.round(performance.now() - importStartTimeRef.current)
+        : 0;
+    events.importComplete({
+      format: state.format ?? 'unknown',
+      expressions: 0,
+      segmentations: 0,
+      layers: 0,
+      durationMs,
+    });
     clearSavedState();
     router.push('/expressions');
-  }, [router, clearSavedState]);
+  }, [router, clearSavedState, state.format]);
 
   return (
     <div className="mx-auto max-w-3xl space-y-8">

@@ -14,6 +14,7 @@ import * as React from 'react';
 import type { Agent } from '@atproto/api';
 
 import { COLLECTIONS } from '@/lib/atproto/record-creator';
+import { events } from '@/lib/observability/custom-events';
 
 import type { Anchor, AnnotationItem, AnnotationKind } from '../annotations/types';
 
@@ -239,6 +240,15 @@ function AnnotationCreationProvider({
         });
 
         dispatch({ type: 'RESET' });
+
+        // Track annotation creation
+        const firstAnchor = state.pendingItems[0]?.anchor;
+        events.annotationCreate({
+          expressionUri: state.expressionUri,
+          kind: state.kind,
+          subkind: state.subkind || undefined,
+          anchorType: firstAnchor?.type ?? 'none',
+        });
 
         return { uri: response.data.uri, cid: response.data.cid };
       } finally {

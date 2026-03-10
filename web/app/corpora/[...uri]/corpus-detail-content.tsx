@@ -6,11 +6,14 @@
  * @packageDocumentation
  */
 
+import { useEffect } from 'react';
+
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useCorpus } from '@/lib/hooks/use-corpora';
+import { events } from '@/lib/observability/custom-events';
 
 interface CorpusDetailContentProps {
   uri: string;
@@ -21,6 +24,15 @@ interface CorpusDetailContentProps {
  */
 function CorpusDetailContent({ uri }: CorpusDetailContentProps) {
   const { data: corpus, isLoading, error } = useCorpus(uri);
+
+  useEffect(() => {
+    if (corpus) {
+      events.corpusBrowse({
+        corpusUri: uri,
+        corpusName: corpus.value.name ?? '',
+      });
+    }
+  }, [uri, corpus]);
 
   if (isLoading) {
     return <CorpusDetailContentSkeleton />;

@@ -6,12 +6,15 @@
  * @packageDocumentation
  */
 
+import { useEffect } from 'react';
+
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TypeDefTree } from '@/components/ontologies/typedef-tree';
 import { useOntology } from '@/lib/hooks/use-ontologies';
+import { events } from '@/lib/observability/custom-events';
 
 interface OntologyDetailContentProps {
   uri: string;
@@ -22,6 +25,15 @@ interface OntologyDetailContentProps {
  */
 function OntologyDetailContent({ uri }: OntologyDetailContentProps) {
   const { data: ontology, isLoading, error } = useOntology(uri);
+
+  useEffect(() => {
+    if (ontology) {
+      events.ontologyBrowse({
+        ontologyUri: uri,
+        domain: ontology.value.domain ?? '',
+      });
+    }
+  }, [uri, ontology]);
 
   if (isLoading) {
     return <OntologyDetailContentSkeleton />;

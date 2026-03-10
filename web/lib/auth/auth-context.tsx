@@ -13,6 +13,8 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import type { ReactNode } from 'react';
 import { Agent } from '@atproto/api';
 
+import { events } from '@/lib/observability/custom-events';
+
 import type { AuthActions, AuthState, LayersUser } from './types';
 import { login as oauthLogin, logout as oauthLogout, restoreSession } from './oauth-client';
 
@@ -57,6 +59,7 @@ function AuthProvider({ children }: AuthProviderProps): React.JSX.Element {
             isAdmin: false,
           });
           setAgent(new Agent(session));
+          events.userAction({ action: 'login', result: 'success' });
         }
       } catch {
         // Session restore failed; user remains unauthenticated.
@@ -90,6 +93,7 @@ function AuthProvider({ children }: AuthProviderProps): React.JSX.Element {
     setIsLoading(true);
     try {
       await oauthLogout();
+      events.userAction({ action: 'logout' });
     } finally {
       setUser(null);
       setAgent(null);

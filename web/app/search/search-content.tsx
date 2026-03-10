@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SearchResultCard } from '@/components/search/search-result-card';
 import { useSearch } from '@/lib/hooks/use-search';
+import { events } from '@/lib/observability/custom-events';
 
 /** Debounce delay in milliseconds for search input. */
 const DEBOUNCE_MS = 300;
@@ -32,6 +33,28 @@ function SearchContent({ searchParamsPromise }: { searchParamsPromise: Promise<{
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { data, isLoading, isFetching } = useSearch(debouncedQuery);
+
+  // Track when the debounced query changes so we can compute search latency
+  const searchStartRef = useRef<number>(0);
+
+  useEffect(() => {
+    if (debouncedQuery.length > 0) {
+      searchStartRef.current = performance.now();
+    }
+  }, [debouncedQuery]);
+
+  // Track search results when they arrive
+  useEffect(() => {
+    if (data && debouncedQuery.length > 0 && !isLoading) {
+      const latency =
+        searchStartRef.current > 0 ? Math.round(performance.now() - searchStartRef.current) : 0;
+      events.search({
+        query: debouncedQuery,
+        resultCount: data.total,
+        latency,
+      });
+    }
+  }, [data, debouncedQuery, isLoading]);
 
   const handleInputChange = useCallback(
     (value: string) => {
@@ -101,14 +124,24 @@ function SearchContent({ searchParamsPromise }: { searchParamsPromise: Promise<{
 
       {!isLoading && data && data.results.length > 0 && (
         <div className="space-y-3">
-          {data.results.map((result) => (
-            <SearchResultCard
+          {data.results.map((result, index) => (
+            <div
               key={result.uri}
-              uri={result.uri}
-              collection={result.collection}
-              highlights={result.highlights}
-              score={result.score}
-            />
+              onClick={() => {
+                events.searchClick({
+                  query: debouncedQuery,
+                  itemUri: result.uri,
+                  position: index,
+                });
+              }}
+            >
+              <SearchResultCard
+                uri={result.uri}
+                collection={result.collection}
+                highlights={result.highlights}
+                score={result.score}
+              />
+            </div>
           ))}
         </div>
       )}
