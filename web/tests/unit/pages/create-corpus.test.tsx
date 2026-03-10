@@ -26,7 +26,9 @@ const { mockPush, mockCreateCorpusRecord, mockToast, mockAgent, getCurrentAgent,
       mockToast: { error: vi.fn(), success: vi.fn() },
       mockAgent: agent,
       getCurrentAgent: () => current,
-      setCurrentAgent: (a: typeof agent | null) => { current = a; },
+      setCurrentAgent: (a: typeof agent | null) => {
+        current = a;
+      },
     };
   });
 
@@ -79,7 +81,9 @@ describe('CreateCorpusContent', () => {
   it('renders the corpus creation form', () => {
     renderWithProviders(<CreateCorpusContent />);
 
-    expect(screen.getByText('Create Corpus', { selector: '[data-slot="card-title"]' })).toBeInTheDocument();
+    expect(
+      screen.getByText('Create Corpus', { selector: '[data-slot="card-title"]' }),
+    ).toBeInTheDocument();
     expect(screen.getByLabelText('Name')).toBeInTheDocument();
     expect(screen.getByLabelText('Description')).toBeInTheDocument();
   });
@@ -119,9 +123,7 @@ describe('CreateCorpusContent', () => {
     await user.click(screen.getByRole('button', { name: 'Create Corpus' }));
 
     await waitFor(() => {
-      expect(mockToast.error).toHaveBeenCalledWith(
-        'You must be logged in to create a corpus.',
-      );
+      expect(mockToast.error).toHaveBeenCalledWith('You must be logged in to create a corpus.');
     });
 
     expect(mockCreateCorpusRecord).not.toHaveBeenCalled();

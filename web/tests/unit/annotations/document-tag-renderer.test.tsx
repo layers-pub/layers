@@ -15,7 +15,13 @@ vi.mock('@/components/ui/tooltip', async () => {
   const R = await import('react');
   return {
     Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-    TooltipTrigger: ({ children, render }: { children: React.ReactNode; render?: React.ReactElement }) => {
+    TooltipTrigger: ({
+      children,
+      render,
+    }: {
+      children: React.ReactNode;
+      render?: React.ReactElement;
+    }) => {
       if (render && R.isValidElement(render)) {
         return R.cloneElement(render, {}, children);
       }
@@ -58,9 +64,7 @@ describe('DocumentTagRenderer', () => {
   });
 
   it('renders tag values (value preferred over label)', () => {
-    const items: AnnotationItem[] = [
-      makeItem({ id: '1', label: 'SENTIMENT', value: 'positive' }),
-    ];
+    const items: AnnotationItem[] = [makeItem({ id: '1', label: 'SENTIMENT', value: 'positive' })];
     const layer = makeLayer(items);
 
     renderWithProviders(<DocumentTagRenderer layer={layer} color={color} />);
@@ -81,9 +85,7 @@ describe('DocumentTagRenderer', () => {
     const items: AnnotationItem[] = [makeItem({ id: '1', label: 'joy' })];
     const layer = makeLayer(items);
 
-    const { container } = renderWithProviders(
-      <DocumentTagRenderer layer={layer} color={color} />,
-    );
+    const { container } = renderWithProviders(<DocumentTagRenderer layer={layer} color={color} />);
 
     // The AnnotationBadge uses color-mix with the provided oklch color
     const badge = container.querySelector('[data-slot="badge"]');
@@ -95,14 +97,10 @@ describe('DocumentTagRenderer', () => {
   });
 
   it('shows confidence indicator when confidence is present', () => {
-    const items: AnnotationItem[] = [
-      makeItem({ id: '1', label: 'positive', confidence: 850 }),
-    ];
+    const items: AnnotationItem[] = [makeItem({ id: '1', label: 'positive', confidence: 850 })];
     const layer = makeLayer(items);
 
-    const { container } = renderWithProviders(
-      <DocumentTagRenderer layer={layer} color={color} />,
-    );
+    const { container } = renderWithProviders(<DocumentTagRenderer layer={layer} color={color} />);
 
     // The ConfidenceIndicator renders a meter role element via the render prop
     const meter = container.querySelector('[role="meter"]');

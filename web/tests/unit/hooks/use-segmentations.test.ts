@@ -8,10 +8,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 
 import { createWrapper } from '@/tests/test-utils';
-import {
-  useSegmentation,
-  useSegmentationsByExpression,
-} from '@/lib/hooks/use-segmentations';
+import { useSegmentation, useSegmentationsByExpression } from '@/lib/hooks/use-segmentations';
 
 vi.mock('@/lib/api/client', () => ({
   api: {
@@ -52,20 +49,18 @@ describe('useSegmentation', () => {
     } as never);
 
     const { Wrapper } = createWrapper();
-    const { result } = renderHook(
-      () => useSegmentation(FIXTURE_SEGMENTATION.uri),
-      { wrapper: Wrapper },
-    );
+    const { result } = renderHook(() => useSegmentation(FIXTURE_SEGMENTATION.uri), {
+      wrapper: Wrapper,
+    });
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
 
     expect(result.current.data).toEqual(FIXTURE_SEGMENTATION);
-    expect(mockApi.GET).toHaveBeenCalledWith(
-      '/xrpc/pub.layers.segmentation.getSegmentation',
-      { params: { query: { uri: FIXTURE_SEGMENTATION.uri } } },
-    );
+    expect(mockApi.GET).toHaveBeenCalledWith('/xrpc/pub.layers.segmentation.getSegmentation', {
+      params: { query: { uri: FIXTURE_SEGMENTATION.uri } },
+    });
   });
 
   it('handles API errors', async () => {
@@ -103,19 +98,17 @@ describe('useSegmentationsByExpression', () => {
 
     const expressionUri = 'at://did:plc:testuser1/pub.layers.expression.expression/abc123';
     const { Wrapper } = createWrapper();
-    const { result } = renderHook(
-      () => useSegmentationsByExpression(expressionUri),
-      { wrapper: Wrapper },
-    );
+    const { result } = renderHook(() => useSegmentationsByExpression(expressionUri), {
+      wrapper: Wrapper,
+    });
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
 
     expect(result.current.data).toEqual(FIXTURE_SEGMENTATION_LIST);
-    expect(mockApi.GET).toHaveBeenCalledWith(
-      '/xrpc/pub.layers.segmentation.listSegmentations',
-      { params: { query: { expression: expressionUri } } },
-    );
+    expect(mockApi.GET).toHaveBeenCalledWith('/xrpc/pub.layers.segmentation.listSegmentations', {
+      params: { query: { expression: expressionUri } },
+    });
   });
 });

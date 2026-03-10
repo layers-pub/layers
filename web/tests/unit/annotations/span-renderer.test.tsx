@@ -15,7 +15,13 @@ vi.mock('@/components/ui/tooltip', async () => {
   const R = await import('react');
   return {
     Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-    TooltipTrigger: ({ children, render }: { children: React.ReactNode; render?: React.ReactElement }) => {
+    TooltipTrigger: ({
+      children,
+      render,
+    }: {
+      children: React.ReactNode;
+      render?: React.ReactElement;
+    }) => {
       if (render && R.isValidElement(render)) {
         return R.cloneElement(render, {}, children);
       }
@@ -138,9 +144,7 @@ describe('SpanRenderer', () => {
   it('handles empty items', () => {
     const layer = makeLayer([]);
 
-    renderWithProviders(
-      <SpanRenderer layer={layer} text={text} tokens={tokens} color={color} />,
-    );
+    renderWithProviders(<SpanRenderer layer={layer} text={text} tokens={tokens} color={color} />);
 
     // Full text rendered as a single unannotated segment
     expect(screen.getByText(text)).toBeInTheDocument();
@@ -169,9 +173,7 @@ describe('SpanRenderer', () => {
   it('shows empty state when text is empty', () => {
     const layer = makeLayer([]);
 
-    renderWithProviders(
-      <SpanRenderer layer={layer} text="" tokens={[]} color={color} />,
-    );
+    renderWithProviders(<SpanRenderer layer={layer} text="" tokens={[]} color={color} />);
 
     expect(screen.getByText('No text available for span display.')).toBeInTheDocument();
   });

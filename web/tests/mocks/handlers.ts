@@ -59,21 +59,18 @@ const getExpression = http.get('*/xrpc/pub.layers.expression.getExpression', ({ 
   return HttpResponse.json(fixture);
 });
 
-const listExpressions = http.get(
-  '*/xrpc/pub.layers.expression.listExpressions',
-  ({ request }) => {
-    const url = new URL(request.url);
-    const limit = parseLimit(url);
+const listExpressions = http.get('*/xrpc/pub.layers.expression.listExpressions', ({ request }) => {
+  const url = new URL(request.url);
+  const limit = parseLimit(url);
 
-    resetFixtureCounter();
-    const records = Array.from({ length: limit }, () => createExpressionRecordView());
+  resetFixtureCounter();
+  const records = Array.from({ length: limit }, () => createExpressionRecordView());
 
-    return HttpResponse.json({
-      records,
-      cursor: 'next-cursor-expressions',
-    });
-  },
-);
+  return HttpResponse.json({
+    records,
+    cursor: 'next-cursor-expressions',
+  });
+});
 
 // =============================================================================
 // Annotation handlers
@@ -194,23 +191,18 @@ const getOntology = http.get('*/xrpc/pub.layers.ontology.getOntology', ({ reques
   return HttpResponse.json(fixture);
 });
 
-const listOntologies = http.get(
-  '*/xrpc/pub.layers.ontology.listOntologies',
-  ({ request }) => {
-    const url = new URL(request.url);
-    const limit = parseLimit(url);
+const listOntologies = http.get('*/xrpc/pub.layers.ontology.listOntologies', ({ request }) => {
+  const url = new URL(request.url);
+  const limit = parseLimit(url);
 
-    resetFixtureCounter();
-    const records = Array.from({ length: Math.min(limit, 5) }, () =>
-      createOntologyRecordView(),
-    );
+  resetFixtureCounter();
+  const records = Array.from({ length: Math.min(limit, 5) }, () => createOntologyRecordView());
 
-    return HttpResponse.json({
-      records,
-      cursor: 'next-cursor-ontologies',
-    });
-  },
-);
+  return HttpResponse.json({
+    records,
+    cursor: 'next-cursor-ontologies',
+  });
+});
 
 // =============================================================================
 // Search handler

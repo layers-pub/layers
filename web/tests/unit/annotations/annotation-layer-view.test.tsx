@@ -29,9 +29,7 @@ vi.mock('@/components/annotations/renderers/tree-renderer', () => ({
 }));
 
 vi.mock('@/components/annotations/renderers/document-tag-renderer', () => ({
-  DocumentTagRenderer: () => (
-    <div data-testid="document-tag-renderer">DocumentTagRenderer</div>
-  ),
+  DocumentTagRenderer: () => <div data-testid="document-tag-renderer">DocumentTagRenderer</div>,
 }));
 
 vi.mock('@/components/annotations/renderers/graph-renderer', () => ({
@@ -60,7 +58,12 @@ function makeLayer(kind: string): AnnotationLayerData {
 describe('AnnotationLayerView', () => {
   it('dispatches to TokenTagRenderer for token-tag kind', () => {
     renderWithProviders(
-      <AnnotationLayerView layer={makeLayer('token-tag')} text={text} tokens={tokens} color={color} />,
+      <AnnotationLayerView
+        layer={makeLayer('token-tag')}
+        text={text}
+        tokens={tokens}
+        color={color}
+      />,
     );
     expect(screen.getByTestId('token-tag-renderer')).toBeInTheDocument();
   });
@@ -74,7 +77,12 @@ describe('AnnotationLayerView', () => {
 
   it('dispatches to RelationRenderer for relation kind', () => {
     renderWithProviders(
-      <AnnotationLayerView layer={makeLayer('relation')} text={text} tokens={tokens} color={color} />,
+      <AnnotationLayerView
+        layer={makeLayer('relation')}
+        text={text}
+        tokens={tokens}
+        color={color}
+      />,
     );
     expect(screen.getByTestId('relation-renderer')).toBeInTheDocument();
   });
@@ -88,7 +96,12 @@ describe('AnnotationLayerView', () => {
 
   it('dispatches to DocumentTagRenderer for document-tag kind', () => {
     renderWithProviders(
-      <AnnotationLayerView layer={makeLayer('document-tag')} text={text} tokens={tokens} color={color} />,
+      <AnnotationLayerView
+        layer={makeLayer('document-tag')}
+        text={text}
+        tokens={tokens}
+        color={color}
+      />,
     );
     expect(screen.getByTestId('document-tag-renderer')).toBeInTheDocument();
   });

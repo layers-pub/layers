@@ -46,9 +46,7 @@ vi.mock('@/components/annotations/composition/layer-toggle-sidebar', () => ({
 
 // Must import after mocks are set up.
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const { MultiLayerView } = await import(
-  '@/components/annotations/composition/multi-layer-view'
-);
+const { MultiLayerView } = await import('@/components/annotations/composition/multi-layer-view');
 
 const tokens: Token[] = [
   { text: 'The', index: 0, start: 0, end: 3 },
@@ -116,9 +114,7 @@ describe('MultiLayerView', () => {
       <MultiLayerView expressionUri={expressionUri} text={text} tokens={tokens} />,
     );
 
-    expect(
-      screen.getByText('No annotation layers for this expression.'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('No annotation layers for this expression.')).toBeInTheDocument();
   });
 
   it('renders layer toggle sidebar and annotation views', () => {

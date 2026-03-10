@@ -13,22 +13,30 @@ import { CreateExpressionContent } from '@/app/expressions/new/create-expression
 
 // ---- Mocks (vi.hoisted to avoid hoisting issues) ----
 
-const { mockPush, mockCreateExpressionRecord, mockToast, mockAgent, getCurrentAgent, setCurrentAgent } =
-  vi.hoisted(() => {
-    const agent = {
-      assertDid: 'did:plc:testuser1',
-      com: { atproto: { repo: { createRecord: vi.fn() } } },
-    };
-    let current: typeof agent | null = agent;
-    return {
-      mockPush: vi.fn(),
-      mockCreateExpressionRecord: vi.fn(),
-      mockToast: { error: vi.fn(), success: vi.fn() },
-      mockAgent: agent,
-      getCurrentAgent: () => current,
-      setCurrentAgent: (a: typeof agent | null) => { current = a; },
-    };
-  });
+const {
+  mockPush,
+  mockCreateExpressionRecord,
+  mockToast,
+  mockAgent,
+  getCurrentAgent,
+  setCurrentAgent,
+} = vi.hoisted(() => {
+  const agent = {
+    assertDid: 'did:plc:testuser1',
+    com: { atproto: { repo: { createRecord: vi.fn() } } },
+  };
+  let current: typeof agent | null = agent;
+  return {
+    mockPush: vi.fn(),
+    mockCreateExpressionRecord: vi.fn(),
+    mockToast: { error: vi.fn(), success: vi.fn() },
+    mockAgent: agent,
+    getCurrentAgent: () => current,
+    setCurrentAgent: (a: typeof agent | null) => {
+      current = a;
+    },
+  };
+});
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({
@@ -79,7 +87,9 @@ describe('CreateExpressionContent', () => {
   it('renders the expression creation form', () => {
     renderWithProviders(<CreateExpressionContent />);
 
-    expect(screen.getByText('Create Expression', { selector: '[data-slot="card-title"]' })).toBeInTheDocument();
+    expect(
+      screen.getByText('Create Expression', { selector: '[data-slot="card-title"]' }),
+    ).toBeInTheDocument();
     expect(screen.getByLabelText('Text')).toBeInTheDocument();
   });
 

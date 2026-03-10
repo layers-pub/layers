@@ -18,7 +18,13 @@ vi.mock('@/components/ui/tooltip', async () => {
   const R = await import('react');
   return {
     Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-    TooltipTrigger: ({ children, render }: { children: React.ReactNode; render?: React.ReactElement }) => {
+    TooltipTrigger: ({
+      children,
+      render,
+    }: {
+      children: React.ReactNode;
+      render?: React.ReactElement;
+    }) => {
       if (render && R.isValidElement(render)) {
         return R.cloneElement(render, {}, children);
       }

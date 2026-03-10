@@ -69,7 +69,9 @@ describe('mapAnchor', () => {
   });
 
   it('maps textSpan anchor (start, ending to start, end)', () => {
-    const result = mapAnchor({ textSpan: { start: 5, ending: 10 } } as Parameters<typeof mapAnchor>[0]);
+    const result = mapAnchor({ textSpan: { start: 5, ending: 10 } } as Parameters<
+      typeof mapAnchor
+    >[0]);
     expect(result).toEqual({
       type: 'textSpan',
       start: 5,
@@ -142,9 +144,7 @@ describe('mapAnnotation arguments', () => {
       ],
     } as Partial<ApiAnnotation>);
     const result = mapAnnotation(raw);
-    expect(result.arguments).toEqual([
-      { role: 'Agent', targetId: 'local-1' },
-    ]);
+    expect(result.arguments).toEqual([{ role: 'Agent', targetId: 'local-1' }]);
   });
 
   it('maps arguments with objectId', () => {
@@ -172,9 +172,7 @@ describe('mapAnnotation arguments', () => {
       ],
     } as Partial<ApiAnnotation>);
     const result = mapAnnotation(raw);
-    expect(result.arguments).toEqual([
-      { role: 'Arg0', targetId: '' },
-    ]);
+    expect(result.arguments).toEqual([{ role: 'Arg0', targetId: '' }]);
   });
 
   it('returns undefined for empty arguments array', () => {

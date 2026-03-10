@@ -48,20 +48,18 @@ describe('useExpression', () => {
     } as never);
 
     const { Wrapper } = createWrapper();
-    const { result } = renderHook(
-      () => useExpression(FIXTURE_EXPRESSION.uri),
-      { wrapper: Wrapper },
-    );
+    const { result } = renderHook(() => useExpression(FIXTURE_EXPRESSION.uri), {
+      wrapper: Wrapper,
+    });
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
 
     expect(result.current.data).toEqual(FIXTURE_EXPRESSION);
-    expect(mockApi.GET).toHaveBeenCalledWith(
-      '/xrpc/pub.layers.expression.getExpression',
-      { params: { query: { uri: FIXTURE_EXPRESSION.uri } } },
-    );
+    expect(mockApi.GET).toHaveBeenCalledWith('/xrpc/pub.layers.expression.getExpression', {
+      params: { query: { uri: FIXTURE_EXPRESSION.uri } },
+    });
   });
 
   it('sets error when API fails', async () => {
@@ -99,10 +97,7 @@ describe('useExpressions', () => {
 
     const filters = { limit: 25 };
     const { Wrapper } = createWrapper();
-    const { result } = renderHook(
-      () => useExpressions(filters),
-      { wrapper: Wrapper },
-    );
+    const { result } = renderHook(() => useExpressions(filters), { wrapper: Wrapper });
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);

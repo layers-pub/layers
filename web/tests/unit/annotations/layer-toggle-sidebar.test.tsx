@@ -92,9 +92,7 @@ describe('LayerToggleSidebar', () => {
   });
 
   it('displays layer label', () => {
-    const layers = [
-      makeLayer('token-tag', 'at://test/layer1', { label: 'POS Tags' }),
-    ];
+    const layers = [makeLayer('token-tag', 'at://test/layer1', { label: 'POS Tags' })];
     const visibleLayers = new Set(['at://test/layer1']);
 
     renderWithProviders(
@@ -121,9 +119,7 @@ describe('LayerToggleSidebar', () => {
   });
 
   it('shows subkind text when present', () => {
-    const layers = [
-      makeLayer('token-tag', 'at://test/layer1', { subkind: 'pos' }),
-    ];
+    const layers = [makeLayer('token-tag', 'at://test/layer1', { subkind: 'pos' })];
     const visibleLayers = new Set(['at://test/layer1']);
 
     renderWithProviders(

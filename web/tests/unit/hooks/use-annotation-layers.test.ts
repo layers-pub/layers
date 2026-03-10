@@ -51,20 +51,18 @@ describe('useAnnotationLayer', () => {
     } as never);
 
     const { Wrapper } = createWrapper();
-    const { result } = renderHook(
-      () => useAnnotationLayer(FIXTURE_ANNOTATION_LAYER.uri),
-      { wrapper: Wrapper },
-    );
+    const { result } = renderHook(() => useAnnotationLayer(FIXTURE_ANNOTATION_LAYER.uri), {
+      wrapper: Wrapper,
+    });
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
 
     expect(result.current.data).toEqual(FIXTURE_ANNOTATION_LAYER);
-    expect(mockApi.GET).toHaveBeenCalledWith(
-      '/xrpc/pub.layers.annotation.getAnnotationLayer',
-      { params: { query: { uri: FIXTURE_ANNOTATION_LAYER.uri } } },
-    );
+    expect(mockApi.GET).toHaveBeenCalledWith('/xrpc/pub.layers.annotation.getAnnotationLayer', {
+      params: { query: { uri: FIXTURE_ANNOTATION_LAYER.uri } },
+    });
   });
 
   it('handles API errors', async () => {
@@ -76,7 +74,8 @@ describe('useAnnotationLayer', () => {
 
     const { Wrapper } = createWrapper();
     const { result } = renderHook(
-      () => useAnnotationLayer('at://did:plc:testuser1/pub.layers.annotation.annotationLayer/missing'),
+      () =>
+        useAnnotationLayer('at://did:plc:testuser1/pub.layers.annotation.annotationLayer/missing'),
       { wrapper: Wrapper },
     );
 
@@ -102,19 +101,17 @@ describe('useAnnotationLayersByExpression', () => {
 
     const expressionUri = 'at://did:plc:testuser1/pub.layers.expression.expression/abc123';
     const { Wrapper } = createWrapper();
-    const { result } = renderHook(
-      () => useAnnotationLayersByExpression(expressionUri),
-      { wrapper: Wrapper },
-    );
+    const { result } = renderHook(() => useAnnotationLayersByExpression(expressionUri), {
+      wrapper: Wrapper,
+    });
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
 
     expect(result.current.data).toEqual(FIXTURE_ANNOTATION_LAYER_LIST);
-    expect(mockApi.GET).toHaveBeenCalledWith(
-      '/xrpc/pub.layers.annotation.listAnnotationLayers',
-      { params: { query: { expression: expressionUri } } },
-    );
+    expect(mockApi.GET).toHaveBeenCalledWith('/xrpc/pub.layers.annotation.listAnnotationLayers', {
+      params: { query: { expression: expressionUri } },
+    });
   });
 });

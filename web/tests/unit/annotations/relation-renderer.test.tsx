@@ -15,7 +15,13 @@ vi.mock('@/components/ui/tooltip', async () => {
   const R = await import('react');
   return {
     Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-    TooltipTrigger: ({ children, render }: { children: React.ReactNode; render?: React.ReactElement }) => {
+    TooltipTrigger: ({
+      children,
+      render,
+    }: {
+      children: React.ReactNode;
+      render?: React.ReactElement;
+    }) => {
       if (render && R.isValidElement(render)) {
         return R.cloneElement(render, {}, children);
       }
@@ -64,9 +70,7 @@ describe('RelationRenderer', () => {
     ];
     const layer = makeLayer(items);
 
-    renderWithProviders(
-      <RelationRenderer layer={layer} tokens={tokens} color={color} />,
-    );
+    renderWithProviders(<RelationRenderer layer={layer} tokens={tokens} color={color} />);
 
     // Predicate label should appear as card title
     expect(screen.getByText('sit-on')).toBeInTheDocument();
@@ -91,9 +95,7 @@ describe('RelationRenderer', () => {
     ];
     const layer = makeLayer(items);
 
-    renderWithProviders(
-      <RelationRenderer layer={layer} tokens={tokens} color={color} />,
-    );
+    renderWithProviders(<RelationRenderer layer={layer} tokens={tokens} color={color} />);
 
     expect(screen.getByText('Cause')).toBeInTheDocument();
     expect(screen.getByText('Effect')).toBeInTheDocument();
@@ -104,13 +106,9 @@ describe('RelationRenderer', () => {
   it('handles empty items', () => {
     const layer = makeLayer([]);
 
-    renderWithProviders(
-      <RelationRenderer layer={layer} tokens={tokens} color={color} />,
-    );
+    renderWithProviders(<RelationRenderer layer={layer} tokens={tokens} color={color} />);
 
-    expect(
-      screen.getByText('No relation annotations in this layer.'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('No relation annotations in this layer.')).toBeInTheDocument();
   });
 
   it('handles items without arguments', () => {
@@ -120,14 +118,10 @@ describe('RelationRenderer', () => {
     ];
     const layer = makeLayer(items);
 
-    renderWithProviders(
-      <RelationRenderer layer={layer} tokens={tokens} color={color} />,
-    );
+    renderWithProviders(<RelationRenderer layer={layer} tokens={tokens} color={color} />);
 
     // Items with no arguments are filtered out, so empty state shows
-    expect(
-      screen.getByText('No relation annotations in this layer.'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('No relation annotations in this layer.')).toBeInTheDocument();
   });
 
   it('resolves targetLabel from itemMap when targetLabel is not provided', () => {
@@ -141,9 +135,7 @@ describe('RelationRenderer', () => {
     ];
     const layer = makeLayer(items);
 
-    renderWithProviders(
-      <RelationRenderer layer={layer} tokens={tokens} color={color} />,
-    );
+    renderWithProviders(<RelationRenderer layer={layer} tokens={tokens} color={color} />);
 
     // Should resolve to the value ("feline") of the target item
     expect(screen.getByText('feline')).toBeInTheDocument();
@@ -159,9 +151,7 @@ describe('RelationRenderer', () => {
     ];
     const layer = makeLayer(items);
 
-    renderWithProviders(
-      <RelationRenderer layer={layer} tokens={tokens} color={color} />,
-    );
+    renderWithProviders(<RelationRenderer layer={layer} tokens={tokens} color={color} />);
 
     expect(screen.getByText('missing-item')).toBeInTheDocument();
   });

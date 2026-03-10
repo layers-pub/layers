@@ -8,11 +8,11 @@
  * to lib/api/openapi.json.
  */
 
-import { readFileSync, readdirSync, writeFileSync, statSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { readFileSync, readdirSync, writeFileSync, statSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 
-const LEXICONS_DIR = resolve(import.meta.dirname, "../../lexicons/pub/layers");
-const OUTPUT_FILE = resolve(import.meta.dirname, "../lib/api/openapi.json");
+const LEXICONS_DIR = resolve(import.meta.dirname, '../../lexicons/pub/layers');
+const OUTPUT_FILE = resolve(import.meta.dirname, '../lib/api/openapi.json');
 
 // ---------------------------------------------------------------------------
 // 1. Load all lexicon files
@@ -28,7 +28,7 @@ function collectJsonFiles(dir) {
     const fullPath = join(dir, entry.name);
     if (entry.isDirectory()) {
       files.push(...collectJsonFiles(fullPath));
-    } else if (entry.name.endsWith(".json")) {
+    } else if (entry.name.endsWith('.json')) {
       files.push(fullPath);
     }
   }
@@ -37,7 +37,7 @@ function collectJsonFiles(dir) {
 
 const jsonFiles = collectJsonFiles(LEXICONS_DIR);
 for (const filePath of jsonFiles) {
-  const content = JSON.parse(readFileSync(filePath, "utf-8"));
+  const content = JSON.parse(readFileSync(filePath, 'utf-8'));
   if (content.id) {
     lexiconMap.set(content.id, content);
   }
@@ -62,21 +62,21 @@ function refToSchemaName(ref) {
   let fileId;
   let defName;
 
-  if (ref.includes("#")) {
-    const [fid, dn] = ref.split("#");
+  if (ref.includes('#')) {
+    const [fid, dn] = ref.split('#');
     fileId = fid;
     defName = dn;
   } else {
     fileId = ref;
-    defName = "main";
+    defName = 'main';
   }
 
   // Strip "pub.layers." prefix
-  const stripped = fileId.replace(/^pub\.layers\./, "");
+  const stripped = fileId.replace(/^pub\.layers\./, '');
   // Split on dots, combine with defName
-  const parts = [...stripped.split("."), defName];
+  const parts = [...stripped.split('.'), defName];
   // PascalCase each part
-  return parts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join("");
+  return parts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join('');
 }
 
 /**
@@ -84,9 +84,9 @@ function refToSchemaName(ref) {
  * "pub.layers.expression.getExpression" -> "ExpressionGetExpressionOutput"
  */
 function queryOutputSchemaName(lexiconId) {
-  const stripped = lexiconId.replace(/^pub\.layers\./, "");
-  const parts = stripped.split(".");
-  return parts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join("") + "Output";
+  const stripped = lexiconId.replace(/^pub\.layers\./, '');
+  const parts = stripped.split('.');
+  return parts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join('') + 'Output';
 }
 
 /**
@@ -94,9 +94,9 @@ function queryOutputSchemaName(lexiconId) {
  * ("pub.layers.expression.listExpressions", "recordView") -> "ExpressionListExpressionsRecordView"
  */
 function queryDefSchemaName(lexiconId, defName) {
-  const stripped = lexiconId.replace(/^pub\.layers\./, "");
-  const parts = [...stripped.split("."), defName];
-  return parts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join("");
+  const stripped = lexiconId.replace(/^pub\.layers\./, '');
+  const parts = [...stripped.split('.'), defName];
+  return parts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join('');
 }
 
 /**
@@ -104,9 +104,9 @@ function queryDefSchemaName(lexiconId, defName) {
  * "pub.layers.expression.expression" -> "ExpressionExpressionRecord"
  */
 function recordSchemaName(lexiconId) {
-  const stripped = lexiconId.replace(/^pub\.layers\./, "");
-  const parts = stripped.split(".");
-  return parts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join("") + "Record";
+  const stripped = lexiconId.replace(/^pub\.layers\./, '');
+  const parts = stripped.split('.');
+  return parts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join('') + 'Record';
 }
 
 // ---------------------------------------------------------------------------
@@ -121,18 +121,18 @@ const schemas = {};
  */
 function convertFormat(format) {
   switch (format) {
-    case "at-uri":
-      return "uri";
-    case "did":
+    case 'at-uri':
+      return 'uri';
+    case 'did':
       return undefined; // just use type: string
-    case "cid":
+    case 'cid':
       return undefined; // just use type: string
-    case "datetime":
-      return "date-time";
-    case "at-identifier":
+    case 'datetime':
+      return 'date-time';
+    case 'at-identifier':
       return undefined; // just use type: string
-    case "uri":
-      return "uri";
+    case 'uri':
+      return 'uri';
     default:
       return format;
   }
@@ -148,16 +148,16 @@ function resolveRef(ref, currentFileId) {
   let fileId;
   let defName;
 
-  if (ref.startsWith("#")) {
+  if (ref.startsWith('#')) {
     fileId = currentFileId;
     defName = ref.slice(1);
-  } else if (ref.includes("#")) {
-    const [fid, dn] = ref.split("#");
+  } else if (ref.includes('#')) {
+    const [fid, dn] = ref.split('#');
     fileId = fid;
     defName = dn;
   } else {
     fileId = ref;
-    defName = "main";
+    defName = 'main';
   }
 
   const lexicon = lexiconMap.get(fileId);
@@ -183,8 +183,8 @@ function convertType(prop, currentFileId) {
   }
 
   switch (prop.type) {
-    case "string": {
-      schema.type = "string";
+    case 'string': {
+      schema.type = 'string';
       if (prop.format) {
         const fmt = convertFormat(prop.format);
         if (fmt) schema.format = fmt;
@@ -197,21 +197,21 @@ function convertType(prop, currentFileId) {
       break;
     }
 
-    case "integer": {
-      schema.type = "integer";
+    case 'integer': {
+      schema.type = 'integer';
       if (prop.minimum !== undefined) schema.minimum = prop.minimum;
       if (prop.maximum !== undefined) schema.maximum = prop.maximum;
       if (prop.default !== undefined) schema.default = prop.default;
       break;
     }
 
-    case "boolean": {
-      schema.type = "boolean";
+    case 'boolean': {
+      schema.type = 'boolean';
       break;
     }
 
-    case "array": {
-      schema.type = "array";
+    case 'array': {
+      schema.type = 'array';
       if (prop.items) {
         schema.items = convertType(prop.items, currentFileId);
       }
@@ -219,8 +219,8 @@ function convertType(prop, currentFileId) {
       break;
     }
 
-    case "object": {
-      schema.type = "object";
+    case 'object': {
+      schema.type = 'object';
       if (prop.properties) {
         schema.properties = {};
         for (const [key, val] of Object.entries(prop.properties)) {
@@ -233,17 +233,20 @@ function convertType(prop, currentFileId) {
       break;
     }
 
-    case "ref": {
+    case 'ref': {
       if (prop.ref) {
         // Ensure the referenced schema gets generated
         ensureSchema(prop.ref, currentFileId);
         const schemaName = resolveSchemaName(prop.ref, currentFileId);
-        return { $ref: `#/components/schemas/${schemaName}`, ...(prop.description ? { description: prop.description } : {}) };
+        return {
+          $ref: `#/components/schemas/${schemaName}`,
+          ...(prop.description ? { description: prop.description } : {}),
+        };
       }
       break;
     }
 
-    case "union": {
+    case 'union': {
       if (prop.refs && prop.refs.length > 0) {
         schema.oneOf = prop.refs.map((r) => {
           ensureSchema(r, currentFileId);
@@ -254,31 +257,31 @@ function convertType(prop, currentFileId) {
       break;
     }
 
-    case "blob": {
-      schema.type = "object";
-      schema.description = prop.description || "Blob reference.";
+    case 'blob': {
+      schema.type = 'object';
+      schema.description = prop.description || 'Blob reference.';
       schema.properties = {
-        $type: { type: "string" },
+        $type: { type: 'string' },
         ref: {
-          type: "object",
+          type: 'object',
           properties: {
-            $link: { type: "string" },
+            $link: { type: 'string' },
           },
         },
-        mimeType: { type: "string" },
-        size: { type: "integer" },
+        mimeType: { type: 'string' },
+        size: { type: 'integer' },
       };
       break;
     }
 
-    case "unknown": {
+    case 'unknown': {
       // No constraints
       break;
     }
 
-    case "params": {
+    case 'params': {
       // params is a container for query parameters; treat like object
-      schema.type = "object";
+      schema.type = 'object';
       if (prop.properties) {
         schema.properties = {};
         for (const [key, val] of Object.entries(prop.properties)) {
@@ -303,7 +306,7 @@ function convertType(prop, currentFileId) {
  * Resolve a ref to its OpenAPI schema name, normalizing local refs.
  */
 function resolveSchemaName(ref, currentFileId) {
-  if (ref.startsWith("#")) {
+  if (ref.startsWith('#')) {
     // Local ref: expand to full form
     return refToSchemaName(`${currentFileId}#${ref.slice(1)}`);
   }
@@ -322,7 +325,7 @@ const generatedSchemas = new Set();
 function ensureSchema(ref, currentFileId) {
   // Normalize the ref
   let fullRef;
-  if (ref.startsWith("#")) {
+  if (ref.startsWith('#')) {
     fullRef = `${currentFileId}#${ref.slice(1)}`;
   } else {
     fullRef = ref;
@@ -335,14 +338,14 @@ function ensureSchema(ref, currentFileId) {
   const resolved = resolveRef(ref, currentFileId);
   if (!resolved) {
     console.warn(`  Warning: Could not resolve ref "${ref}" from "${currentFileId}"`);
-    schemas[schemaName] = { type: "object", description: `Unresolved ref: ${fullRef}` };
+    schemas[schemaName] = { type: 'object', description: `Unresolved ref: ${fullRef}` };
     return;
   }
 
   const { fileId, defName, def } = resolved;
 
   // If the def is a record type, convert its .record
-  if (def.type === "record" && def.record) {
+  if (def.type === 'record' && def.record) {
     schemas[schemaName] = convertType(def.record, fileId);
     if (def.description && !schemas[schemaName].description) {
       schemas[schemaName].description = def.description;
@@ -362,8 +365,8 @@ for (const [id, lexicon] of lexiconMap) {
   if (!lexicon.defs) continue;
 
   for (const [defName, def] of Object.entries(lexicon.defs)) {
-    if (defName === "main" && def.type === "query") continue; // handled as paths
-    if (defName === "main" && def.type === "record") {
+    if (defName === 'main' && def.type === 'query') continue; // handled as paths
+    if (defName === 'main' && def.type === 'record') {
       // Generate a Record schema
       const schemaName = recordSchemaName(id);
       if (!generatedSchemas.has(schemaName)) {
@@ -403,13 +406,13 @@ const paths = {};
 
 for (const [id, lexicon] of lexiconMap) {
   const mainDef = lexicon.defs?.main;
-  if (!mainDef || mainDef.type !== "query") continue;
+  if (!mainDef || mainDef.type !== 'query') continue;
 
   const path = `/xrpc/${id}`;
   const operation = {
     operationId: id,
     summary: mainDef.description || `Query: ${id}`,
-    tags: [id.split(".").slice(2, -1).join(".")],
+    tags: [id.split('.').slice(2, -1).join('.')],
     parameters: [],
     responses: {},
   };
@@ -423,7 +426,7 @@ for (const [id, lexicon] of lexiconMap) {
       const paramDef = mainDef.parameters.properties[paramName];
       const param = {
         name: paramName,
-        in: "query",
+        in: 'query',
         required: requiredParams.has(paramName),
         schema: convertType(paramDef, id),
       };
@@ -442,10 +445,10 @@ for (const [id, lexicon] of lexiconMap) {
       schemas[outputSchemaName] = convertType(mainDef.output.schema, id);
     }
 
-    operation.responses["200"] = {
-      description: "Success",
+    operation.responses['200'] = {
+      description: 'Success',
       content: {
-        "application/json": {
+        'application/json': {
           schema: { $ref: `#/components/schemas/${outputSchemaName}` },
         },
       },
@@ -454,11 +457,11 @@ for (const [id, lexicon] of lexiconMap) {
 
   // Errors
   if (mainDef.errors && mainDef.errors.length > 0) {
-    operation.responses["400"] = {
-      description: "Bad request",
+    operation.responses['400'] = {
+      description: 'Bad request',
       content: {
-        "application/json": {
-          schema: { $ref: "#/components/schemas/XRPCError" },
+        'application/json': {
+          schema: { $ref: '#/components/schemas/XRPCError' },
         },
       },
     };
@@ -472,126 +475,126 @@ for (const [id, lexicon] of lexiconMap) {
 // ---------------------------------------------------------------------------
 
 // REST schema definitions
-schemas["DLQEntry"] = {
-  type: "object",
-  required: ["id", "uri", "error", "failureCount", "firstFailedAt", "lastFailedAt"],
+schemas['DLQEntry'] = {
+  type: 'object',
+  required: ['id', 'uri', 'error', 'failureCount', 'firstFailedAt', 'lastFailedAt'],
   properties: {
-    id: { type: "string" },
-    uri: { type: "string" },
-    error: { type: "string" },
-    failureCount: { type: "integer" },
-    firstFailedAt: { type: "string", format: "date-time" },
-    lastFailedAt: { type: "string", format: "date-time" },
+    id: { type: 'string' },
+    uri: { type: 'string' },
+    error: { type: 'string' },
+    failureCount: { type: 'integer' },
+    firstFailedAt: { type: 'string', format: 'date-time' },
+    lastFailedAt: { type: 'string', format: 'date-time' },
   },
 };
 
-schemas["ReconciliationStatus"] = {
-  type: "object",
-  required: ["table", "pgCount", "esCount", "neo4jCount", "mismatches"],
+schemas['ReconciliationStatus'] = {
+  type: 'object',
+  required: ['table', 'pgCount', 'esCount', 'neo4jCount', 'mismatches'],
   properties: {
-    table: { type: "string" },
-    pgCount: { type: "integer" },
-    esCount: { type: "integer" },
-    neo4jCount: { type: "integer" },
-    mismatches: { type: "integer" },
+    table: { type: 'string' },
+    pgCount: { type: 'integer' },
+    esCount: { type: 'integer' },
+    neo4jCount: { type: 'integer' },
+    mismatches: { type: 'integer' },
   },
 };
 
-schemas["SystemHealth"] = {
-  type: "object",
-  required: ["apiUptime", "indexerLag", "pgPoolActive", "pgPoolIdle", "memoryUsageMb"],
+schemas['SystemHealth'] = {
+  type: 'object',
+  required: ['apiUptime', 'indexerLag', 'pgPoolActive', 'pgPoolIdle', 'memoryUsageMb'],
   properties: {
-    apiUptime: { type: "number" },
-    indexerLag: { type: "number" },
-    pgPoolActive: { type: "integer" },
-    pgPoolIdle: { type: "integer" },
-    memoryUsageMb: { type: "number" },
+    apiUptime: { type: 'number' },
+    indexerLag: { type: 'number' },
+    pgPoolActive: { type: 'integer' },
+    pgPoolIdle: { type: 'integer' },
+    memoryUsageMb: { type: 'number' },
   },
 };
 
-schemas["QueueDepth"] = {
-  type: "object",
-  required: ["name", "waiting", "active", "completed", "failed"],
+schemas['QueueDepth'] = {
+  type: 'object',
+  required: ['name', 'waiting', 'active', 'completed', 'failed'],
   properties: {
-    name: { type: "string" },
-    waiting: { type: "integer" },
-    active: { type: "integer" },
-    completed: { type: "integer" },
-    failed: { type: "integer" },
+    name: { type: 'string' },
+    waiting: { type: 'integer' },
+    active: { type: 'integer' },
+    completed: { type: 'integer' },
+    failed: { type: 'integer' },
   },
 };
 
-schemas["CrossReference"] = {
-  type: "object",
-  required: ["uri", "sourceUri", "targetUri", "refType", "createdAt"],
+schemas['CrossReference'] = {
+  type: 'object',
+  required: ['uri', 'sourceUri', 'targetUri', 'refType', 'createdAt'],
   properties: {
-    uri: { type: "string" },
-    sourceUri: { type: "string" },
-    targetUri: { type: "string" },
-    refType: { type: "string" },
-    createdAt: { type: "string", format: "date-time" },
+    uri: { type: 'string' },
+    sourceUri: { type: 'string' },
+    targetUri: { type: 'string' },
+    refType: { type: 'string' },
+    createdAt: { type: 'string', format: 'date-time' },
   },
 };
 
-schemas["SearchResult"] = {
-  type: "object",
-  required: ["uri", "collection", "did", "score", "highlights", "record"],
+schemas['SearchResult'] = {
+  type: 'object',
+  required: ['uri', 'collection', 'did', 'score', 'highlights', 'record'],
   properties: {
-    uri: { type: "string" },
-    collection: { type: "string" },
-    did: { type: "string" },
-    score: { type: "number" },
+    uri: { type: 'string' },
+    collection: { type: 'string' },
+    did: { type: 'string' },
+    score: { type: 'number' },
     highlights: {
-      type: "object",
+      type: 'object',
       additionalProperties: {
-        type: "array",
-        items: { type: "string" },
+        type: 'array',
+        items: { type: 'string' },
       },
     },
-    record: { type: "object" },
+    record: { type: 'object' },
   },
 };
 
-schemas["XRPCError"] = {
-  type: "object",
-  required: ["error", "message"],
+schemas['XRPCError'] = {
+  type: 'object',
+  required: ['error', 'message'],
   properties: {
-    error: { type: "string" },
-    message: { type: "string" },
+    error: { type: 'string' },
+    message: { type: 'string' },
   },
 };
 
-schemas["SuccessResponse"] = {
-  type: "object",
-  required: ["success"],
+schemas['SuccessResponse'] = {
+  type: 'object',
+  required: ['success'],
   properties: {
-    success: { type: "boolean" },
+    success: { type: 'boolean' },
   },
 };
 
 // DLQ list
-paths["/api/v1/admin/dlq"] = {
+paths['/api/v1/admin/dlq'] = {
   get: {
-    operationId: "adminListDLQ",
-    summary: "List DLQ entries.",
-    tags: ["admin"],
+    operationId: 'adminListDLQ',
+    summary: 'List DLQ entries.',
+    tags: ['admin'],
     parameters: [
-      { name: "cursor", in: "query", required: false, schema: { type: "string" } },
-      { name: "limit", in: "query", required: false, schema: { type: "integer" } },
-      { name: "collection", in: "query", required: false, schema: { type: "string" } },
+      { name: 'cursor', in: 'query', required: false, schema: { type: 'string' } },
+      { name: 'limit', in: 'query', required: false, schema: { type: 'integer' } },
+      { name: 'collection', in: 'query', required: false, schema: { type: 'string' } },
     ],
     responses: {
-      "200": {
-        description: "Success",
+      200: {
+        description: 'Success',
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              type: "object",
-              required: ["entries", "total"],
+              type: 'object',
+              required: ['entries', 'total'],
               properties: {
-                entries: { type: "array", items: { $ref: "#/components/schemas/DLQEntry" } },
-                total: { type: "integer" },
-                cursor: { type: "string" },
+                entries: { type: 'array', items: { $ref: '#/components/schemas/DLQEntry' } },
+                total: { type: 'integer' },
+                cursor: { type: 'string' },
               },
             },
           },
@@ -602,18 +605,18 @@ paths["/api/v1/admin/dlq"] = {
 };
 
 // DLQ replay
-paths["/api/v1/admin/dlq/{id}/replay"] = {
+paths['/api/v1/admin/dlq/{id}/replay'] = {
   post: {
-    operationId: "adminReplayDLQ",
-    summary: "Retry a DLQ entry.",
-    tags: ["admin"],
-    parameters: [{ name: "id", in: "path", required: true, schema: { type: "string" } }],
+    operationId: 'adminReplayDLQ',
+    summary: 'Retry a DLQ entry.',
+    tags: ['admin'],
+    parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
     responses: {
-      "200": {
-        description: "Success",
+      200: {
+        description: 'Success',
         content: {
-          "application/json": {
-            schema: { $ref: "#/components/schemas/SuccessResponse" },
+          'application/json': {
+            schema: { $ref: '#/components/schemas/SuccessResponse' },
           },
         },
       },
@@ -622,18 +625,18 @@ paths["/api/v1/admin/dlq/{id}/replay"] = {
 };
 
 // DLQ dismiss
-paths["/api/v1/admin/dlq/{id}"] = {
+paths['/api/v1/admin/dlq/{id}'] = {
   delete: {
-    operationId: "adminDismissDLQ",
-    summary: "Dismiss a DLQ entry.",
-    tags: ["admin"],
-    parameters: [{ name: "id", in: "path", required: true, schema: { type: "string" } }],
+    operationId: 'adminDismissDLQ',
+    summary: 'Dismiss a DLQ entry.',
+    tags: ['admin'],
+    parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
     responses: {
-      "200": {
-        description: "Success",
+      200: {
+        description: 'Success',
         content: {
-          "application/json": {
-            schema: { $ref: "#/components/schemas/SuccessResponse" },
+          'application/json': {
+            schema: { $ref: '#/components/schemas/SuccessResponse' },
           },
         },
       },
@@ -642,19 +645,19 @@ paths["/api/v1/admin/dlq/{id}"] = {
 };
 
 // Reconciliation status
-paths["/api/v1/admin/reconciliation"] = {
+paths['/api/v1/admin/reconciliation'] = {
   get: {
-    operationId: "adminGetReconciliationStatus",
-    summary: "Get reconciliation status.",
-    tags: ["admin"],
+    operationId: 'adminGetReconciliationStatus',
+    summary: 'Get reconciliation status.',
+    tags: ['admin'],
     responses: {
-      "200": {
-        description: "Success",
+      200: {
+        description: 'Success',
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              type: "array",
-              items: { $ref: "#/components/schemas/ReconciliationStatus" },
+              type: 'array',
+              items: { $ref: '#/components/schemas/ReconciliationStatus' },
             },
           },
         },
@@ -664,17 +667,17 @@ paths["/api/v1/admin/reconciliation"] = {
 };
 
 // Reconciliation run
-paths["/api/v1/admin/reconciliation/run"] = {
+paths['/api/v1/admin/reconciliation/run'] = {
   post: {
-    operationId: "adminRunReconciliation",
-    summary: "Trigger reconciliation.",
-    tags: ["admin"],
+    operationId: 'adminRunReconciliation',
+    summary: 'Trigger reconciliation.',
+    tags: ['admin'],
     responses: {
-      "200": {
-        description: "Success",
+      200: {
+        description: 'Success',
         content: {
-          "application/json": {
-            schema: { $ref: "#/components/schemas/SuccessResponse" },
+          'application/json': {
+            schema: { $ref: '#/components/schemas/SuccessResponse' },
           },
         },
       },
@@ -683,17 +686,17 @@ paths["/api/v1/admin/reconciliation/run"] = {
 };
 
 // System health
-paths["/api/v1/admin/health"] = {
+paths['/api/v1/admin/health'] = {
   get: {
-    operationId: "adminGetHealth",
-    summary: "Get system health.",
-    tags: ["admin"],
+    operationId: 'adminGetHealth',
+    summary: 'Get system health.',
+    tags: ['admin'],
     responses: {
-      "200": {
-        description: "Success",
+      200: {
+        description: 'Success',
         content: {
-          "application/json": {
-            schema: { $ref: "#/components/schemas/SystemHealth" },
+          'application/json': {
+            schema: { $ref: '#/components/schemas/SystemHealth' },
           },
         },
       },
@@ -702,19 +705,19 @@ paths["/api/v1/admin/health"] = {
 };
 
 // Queue depths
-paths["/api/v1/admin/queues"] = {
+paths['/api/v1/admin/queues'] = {
   get: {
-    operationId: "adminGetQueues",
-    summary: "Get queue depths.",
-    tags: ["admin"],
+    operationId: 'adminGetQueues',
+    summary: 'Get queue depths.',
+    tags: ['admin'],
     responses: {
-      "200": {
-        description: "Success",
+      200: {
+        description: 'Success',
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              type: "array",
-              items: { $ref: "#/components/schemas/QueueDepth" },
+              type: 'array',
+              items: { $ref: '#/components/schemas/QueueDepth' },
             },
           },
         },
@@ -724,25 +727,26 @@ paths["/api/v1/admin/queues"] = {
 };
 
 // Cross-references
-paths["/api/v1/references"] = {
+paths['/api/v1/references'] = {
   get: {
-    operationId: "getReferences",
-    summary: "Get cross-references.",
-    tags: ["references"],
-    parameters: [
-      { name: "target", in: "query", required: true, schema: { type: "string" } },
-    ],
+    operationId: 'getReferences',
+    summary: 'Get cross-references.',
+    tags: ['references'],
+    parameters: [{ name: 'target', in: 'query', required: true, schema: { type: 'string' } }],
     responses: {
-      "200": {
-        description: "Success",
+      200: {
+        description: 'Success',
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              type: "object",
-              required: ["references"],
+              type: 'object',
+              required: ['references'],
               properties: {
-                references: { type: "array", items: { $ref: "#/components/schemas/CrossReference" } },
-                cursor: { type: "string" },
+                references: {
+                  type: 'array',
+                  items: { $ref: '#/components/schemas/CrossReference' },
+                },
+                cursor: { type: 'string' },
               },
             },
           },
@@ -753,37 +757,37 @@ paths["/api/v1/references"] = {
 };
 
 // Import
-paths["/api/v1/import"] = {
+paths['/api/v1/import'] = {
   post: {
-    operationId: "importFile",
-    summary: "Import a file.",
-    tags: ["import"],
+    operationId: 'importFile',
+    summary: 'Import a file.',
+    tags: ['import'],
     requestBody: {
       required: true,
       content: {
-        "multipart/form-data": {
+        'multipart/form-data': {
           schema: {
-            type: "object",
-            required: ["file", "format"],
+            type: 'object',
+            required: ['file', 'format'],
             properties: {
-              file: { type: "string", format: "binary" },
-              format: { type: "string" },
-              mappings: { type: "string" },
+              file: { type: 'string', format: 'binary' },
+              format: { type: 'string' },
+              mappings: { type: 'string' },
             },
           },
         },
       },
     },
     responses: {
-      "200": {
-        description: "Success",
+      200: {
+        description: 'Success',
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              type: "object",
-              required: ["jobId"],
+              type: 'object',
+              required: ['jobId'],
               properties: {
-                jobId: { type: "string" },
+                jobId: { type: 'string' },
               },
             },
           },
@@ -794,29 +798,29 @@ paths["/api/v1/import"] = {
 };
 
 // Search
-paths["/api/v1/search"] = {
+paths['/api/v1/search'] = {
   get: {
-    operationId: "search",
-    summary: "Full-text search.",
-    tags: ["search"],
+    operationId: 'search',
+    summary: 'Full-text search.',
+    tags: ['search'],
     parameters: [
-      { name: "q", in: "query", required: true, schema: { type: "string" } },
-      { name: "type", in: "query", required: false, schema: { type: "string" } },
-      { name: "limit", in: "query", required: false, schema: { type: "integer" } },
-      { name: "cursor", in: "query", required: false, schema: { type: "string" } },
+      { name: 'q', in: 'query', required: true, schema: { type: 'string' } },
+      { name: 'type', in: 'query', required: false, schema: { type: 'string' } },
+      { name: 'limit', in: 'query', required: false, schema: { type: 'integer' } },
+      { name: 'cursor', in: 'query', required: false, schema: { type: 'string' } },
     ],
     responses: {
-      "200": {
-        description: "Success",
+      200: {
+        description: 'Success',
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              type: "object",
-              required: ["results", "total"],
+              type: 'object',
+              required: ['results', 'total'],
               properties: {
-                results: { type: "array", items: { $ref: "#/components/schemas/SearchResult" } },
-                total: { type: "integer" },
-                cursor: { type: "string" },
+                results: { type: 'array', items: { $ref: '#/components/schemas/SearchResult' } },
+                total: { type: 'integer' },
+                cursor: { type: 'string' },
               },
             },
           },
@@ -843,26 +847,26 @@ for (const key of Object.keys(paths).sort()) {
 }
 
 const spec = {
-  openapi: "3.1.0",
+  openapi: '3.1.0',
   info: {
-    title: "Layers AppView API",
+    title: 'Layers AppView API',
     description:
-      "Decentralized linguistic annotation service built on AT Protocol. " +
-      "Provides XRPC query endpoints for 26 pub.layers.* record types and " +
-      "REST endpoints for search, cross-references, composite views, and administration.",
-    version: "0.1.0",
+      'Decentralized linguistic annotation service built on AT Protocol. ' +
+      'Provides XRPC query endpoints for 26 pub.layers.* record types and ' +
+      'REST endpoints for search, cross-references, composite views, and administration.',
+    version: '0.1.0',
     license: {
-      name: "MIT",
+      name: 'MIT',
     },
   },
   servers: [
     {
-      url: "http://127.0.0.1:3001",
-      description: "Local development",
+      url: 'http://127.0.0.1:3001',
+      description: 'Local development',
     },
     {
-      url: "https://appview.layers.pub",
-      description: "Production",
+      url: 'https://appview.layers.pub',
+      description: 'Production',
     },
   ],
   paths: sortedPaths,
@@ -871,7 +875,7 @@ const spec = {
   },
 };
 
-writeFileSync(OUTPUT_FILE, JSON.stringify(spec, null, 2) + "\n", "utf-8");
+writeFileSync(OUTPUT_FILE, JSON.stringify(spec, null, 2) + '\n', 'utf-8');
 
 const pathCount = Object.keys(sortedPaths).length;
 const schemaCount = Object.keys(sortedSchemas).length;
