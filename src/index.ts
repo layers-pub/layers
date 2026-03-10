@@ -142,6 +142,7 @@ import { BratImporter } from './plugins/importers/brat-importer.js';
 import { ElanImporter } from './plugins/importers/elan-importer.js';
 import { TeiImporter } from './plugins/importers/tei-importer.js';
 import { PraatImporter } from './plugins/importers/praat-importer.js';
+import { MarginIndexer } from './services/interop/margin-indexer.js';
 import { createRedisClient } from './storage/redis/client.js';
 
 const sdk = initTelemetry({ serviceName: 'layers-api' });
@@ -570,6 +571,9 @@ pluginRegistry.register(new TeiImporter());
 pluginRegistry.register(new PraatImporter());
 container.register('PluginRegistry', { useValue: pluginRegistry });
 
+// Build margin.at interop indexer for external annotations
+const marginIndexer = new MarginIndexer({ pool: pgPool, redis });
+
 // Build XRPC method map
 const xrpcMethods = {
   ...expressionMethods(),
@@ -613,6 +617,7 @@ const app = createApp({
   oauthClient,
   xrpcMethods,
   pluginRegistry,
+  marginIndexer,
 });
 
 const server = serve({

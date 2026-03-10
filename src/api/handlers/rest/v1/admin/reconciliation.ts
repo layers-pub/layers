@@ -169,11 +169,43 @@ function reconciliationAdminRoutes(app: Hono, deps: ReconciliationDependencies):
     }
   });
 
-  app.post('/admin/v1/reconciliation/run', (c) => {
-    // Stub: in production this would enqueue a BullMQ reconciliation job.
-    // For now, return 202 Accepted with a placeholder job ID.
+  app.post('/admin/v1/reconciliation/run', async (c) => {
     const jobId = `recon-${Date.now()}`;
-    return c.json({ jobId, status: 'queued', message: 'Reconciliation job queued (stub)' }, 202);
+
+    try {
+      const rows: ReconciliationRow[] = await Promise.all(
+        RECORD_TYPES.map(async (rt) => {
+          const [pg, es, neo4j] = await Promise.all([
+            pgCount(deps.pgPool, rt.pgTable),
+            rt.esIndex ? esCount(deps.esClient, rt.esIndex) : Promise.resolve(-1),
+            rt.neo4jLabel ? neo4jCount(deps.neo4jDriver, rt.neo4jLabel) : Promise.resolve(-1),
+          ]);
+
+          return {
+            table: rt.table,
+            pgCount: pg,
+            esCount: es,
+            neo4jCount: neo4j,
+            mismatches: computeMismatch(pg, es, neo4j),
+          };
+        }),
+      );
+
+      const totalMismatches = rows.reduce((sum, row) => sum + row.mismatches, 0);
+
+      return c.json(
+        {
+          jobId,
+          status: 'completed',
+          totalMismatches,
+          rows,
+        },
+        200,
+      );
+    } catch (err) {
+      const dbErr = new DatabaseError('Failed to run reconciliation', err as Error);
+      return c.json({ jobId, status: 'failed', error: dbErr.code, message: dbErr.message }, 500);
+    }
   });
 }
 
