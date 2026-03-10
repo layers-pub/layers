@@ -6,7 +6,10 @@
  * @module
  */
 
+import { useMemo } from 'react';
+
 import { useAdminSearchAnalytics } from '@/lib/hooks/use-admin';
+import { BarChart } from '@/components/admin/bar-chart';
 import { PageHeader } from '@/components/layout/page-header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -38,6 +41,11 @@ function SearchAnalyticsPage(): React.JSX.Element {
       </div>
     );
   }
+
+  const volumeData = useMemo(
+    () => data.topQueries.map((row) => ({ label: row.query, value: row.count })),
+    [data.topQueries],
+  );
 
   return (
     <div className="space-y-6">
@@ -100,15 +108,13 @@ function SearchAnalyticsPage(): React.JSX.Element {
         </CardContent>
       </Card>
 
-      {/* Search Volume Placeholder */}
+      {/* Search Volume by Query */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Search Volume Over Time</CardTitle>
+          <CardTitle className="text-sm font-medium">Search Volume by Query</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex h-48 items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
-            Chart placeholder (integrate a charting library to visualize search volume)
-          </div>
+          <BarChart data={volumeData} height={192} ariaLabel="Search volume by top query" />
         </CardContent>
       </Card>
 
