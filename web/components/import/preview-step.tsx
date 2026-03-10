@@ -29,6 +29,8 @@ interface PreviewStepProps {
   file: File;
   /** The detected format name. */
   format: string;
+  /** Optional callback fired when preview data is successfully parsed. Receives the first rows. */
+  onPreviewReady?: (rows: string[][]) => void;
 }
 
 /**
@@ -46,7 +48,7 @@ function formatFileSize(bytes: number): string {
  * Reads the uploaded file, parses it client-side based on the detected format,
  * and displays the first 10 rows along with estimated record counts.
  */
-function PreviewStep({ file, format }: PreviewStepProps): React.JSX.Element {
+function PreviewStep({ file, format, onPreviewReady }: PreviewStepProps): React.JSX.Element {
   const [preview, setPreview] = useState<ParsedPreview | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -66,6 +68,7 @@ function PreviewStep({ file, format }: PreviewStepProps): React.JSX.Element {
         if (cancelled) return;
 
         setPreview(parsed);
+        onPreviewReady?.(parsed.rows);
       } catch (err) {
         if (cancelled) return;
         setError(err instanceof Error ? err.message : 'Failed to parse file');

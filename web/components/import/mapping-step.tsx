@@ -6,8 +6,8 @@
  * @module
  */
 
-import { useCallback, useEffect, useState } from 'react';
-import { ArrowRight, Plus, Trash2 } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ArrowRight, HelpCircle, Plus, Trash2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,6 +19,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { validateTransform, applyTransform } from '@/lib/transform-utils';
 
 /**
  * A mapping from a source field to a target Layers record field.
@@ -34,6 +36,8 @@ interface MappingStepProps {
   format: string;
   /** Callback fired when mappings change. */
   onMappingsChange: (mappings: FieldMapping[]) => void;
+  /** Optional first few rows of parsed data for transform preview. */
+  previewData?: string[][];
 }
 
 /** Available Layers target fields for mapping. */
@@ -112,13 +116,67 @@ const DEFAULT_MAPPINGS: Record<string, FieldMapping[]> = {
   ],
 };
 
+/** Help text for the transforms tooltip. */
+const TRANSFORM_HELP_LINES = [
+  'lowercase - convert to lowercase',
+  'uppercase - convert to uppercase',
+  'trim - trim whitespace',
+  'ms-to-sec - milliseconds to seconds',
+  'sec-to-ms - seconds to milliseconds',
+  'prefix:VALUE - prepend a string',
+  'suffix:VALUE - append a string',
+  'replace:OLD:NEW - string replacement',
+  'default:VALUE - fallback for empty fields',
+  '',
+  'Chain with | (pipe): trim|lowercase',
+];
+
+/**
+ * Computes a transform preview string for a given mapping row.
+ *
+ * Uses the first preview data row to show a before/after example.
+ * Returns null if no preview is available or the transform is invalid.
+ */
+function computeTransformPreview(
+  transform: string,
+  mappingIndex: number,
+  previewData: string[][] | undefined,
+): string | null {
+  if (!transform.trim()) return null;
+  if (validateTransform(transform) !== null) return null;
+  if (!previewData || previewData.length === 0) return null;
+
+  const firstRow = previewData[0];
+  if (!firstRow) return null;
+
+  // Use the column matching the mapping index, or fall back to the first column
+  const sampleValue = firstRow[mappingIndex] ?? firstRow[0] ?? '';
+  if (sampleValue === '') return null;
+
+  const result = applyTransform(sampleValue, transform);
+  if (result === sampleValue) return null;
+
+  // Truncate long values for display
+  const maxLen = 20;
+  const displayBefore =
+    sampleValue.length > maxLen ? sampleValue.slice(0, maxLen) + '...' : sampleValue;
+  const displayAfter = result.length > maxLen ? result.slice(0, maxLen) + '...' : result;
+
+  return `e.g., '${displayBefore}' -> '${displayAfter}'`;
+}
+
 /**
  * Configures field mappings between source format fields and Layers record fields.
  */
-function MappingStep({ format, onMappingsChange }: MappingStepProps): React.JSX.Element {
+function MappingStep({
+  format,
+  onMappingsChange,
+  previewData,
+}: MappingStepProps): React.JSX.Element {
   const [mappings, setMappings] = useState<FieldMapping[]>(() => {
     return DEFAULT_MAPPINGS[format] ?? [];
   });
+  const [transformErrors, setTransformErrors] = useState<Map<number, string>>(new Map());
 
   useEffect(() => {
     onMappingsChange(mappings);
@@ -134,13 +192,38 @@ function MappingStep({ format, onMappingsChange }: MappingStepProps): React.JSX.
     });
   }, []);
 
+  const handleTransformBlur = useCallback((index: number, value: string) => {
+    setTransformErrors((prev) => {
+      const next = new Map(prev);
+      const error = validateTransform(value);
+      if (error !== null) {
+        next.set(index, error);
+      } else {
+        next.delete(index);
+      }
+      return next;
+    });
+  }, []);
+
   const addMapping = useCallback(() => {
     setMappings((prev) => [...prev, { sourceField: '', targetField: '' }]);
   }, []);
 
   const removeMapping = useCallback((index: number) => {
     setMappings((prev) => prev.filter((_, i) => i !== index));
+    setTransformErrors((prev) => {
+      const next = new Map(prev);
+      next.delete(index);
+      return next;
+    });
   }, []);
+
+  // Memoize transform previews
+  const transformPreviews = useMemo(() => {
+    return mappings.map((mapping, index) =>
+      computeTransformPreview(mapping.transform ?? '', index, previewData),
+    );
+  }, [mappings, previewData]);
 
   return (
     <Card>
@@ -152,48 +235,107 @@ function MappingStep({ format, onMappingsChange }: MappingStepProps): React.JSX.
         </p>
       </CardHeader>
       <CardContent className="space-y-3">
-        {mappings.map((mapping, index) => (
-          <div key={index} className="flex items-center gap-2">
-            <Input
-              value={mapping.sourceField}
-              onChange={(e) => updateMapping(index, 'sourceField', e.target.value)}
-              placeholder="Source field"
-              className="flex-1 text-sm"
-              readOnly={Boolean(DEFAULT_MAPPINGS[format]?.[index])}
-            />
-            <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground" />
-            <Select
-              value={mapping.targetField}
-              onValueChange={(value) => updateMapping(index, 'targetField', value ?? '')}
-            >
-              <SelectTrigger className="flex-1">
-                <SelectValue placeholder="Target field" />
-              </SelectTrigger>
-              <SelectContent>
-                {TARGET_FIELDS.map((field) => (
-                  <SelectItem key={field} value={field}>
-                    {field}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Input
-              value={mapping.transform ?? ''}
-              onChange={(e) => updateMapping(index, 'transform', e.target.value)}
-              placeholder="Transform (optional)"
-              className="w-36 text-sm"
-            />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 shrink-0"
-              onClick={() => removeMapping(index)}
-            >
-              <Trash2 className="h-4 w-4" />
-              <span className="sr-only">Remove mapping</span>
-            </Button>
-          </div>
-        ))}
+        {/* Column headers */}
+        <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+          <span className="flex-1">Source Field</span>
+          <span className="w-4" />
+          <span className="flex-1">Target Field</span>
+          <span className="flex w-36 items-center gap-1">
+            Transform
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-3.5 w-3.5 cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent side="top" className="max-w-xs whitespace-pre-line text-left">
+                  {TRANSFORM_HELP_LINES.join('\n')}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </span>
+          <span className="w-8" />
+        </div>
+
+        {mappings.map((mapping, index) => {
+          const transformError = transformErrors.get(index);
+          const preview = transformPreviews[index];
+
+          return (
+            <div key={index} className="space-y-0.5">
+              <div className="flex items-center gap-2">
+                <Input
+                  value={mapping.sourceField}
+                  onChange={(e) => updateMapping(index, 'sourceField', e.target.value)}
+                  placeholder="Source field"
+                  className="flex-1 text-sm"
+                  readOnly={Boolean(DEFAULT_MAPPINGS[format]?.[index])}
+                />
+                <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <Select
+                  value={mapping.targetField}
+                  onValueChange={(value) => updateMapping(index, 'targetField', value ?? '')}
+                >
+                  <SelectTrigger className="flex-1">
+                    <SelectValue placeholder="Target field" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {TARGET_FIELDS.map((field) => (
+                      <SelectItem key={field} value={field}>
+                        {field}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <div className="w-36">
+                  {transformError ? (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Input
+                            value={mapping.transform ?? ''}
+                            onChange={(e) => {
+                              updateMapping(index, 'transform', e.target.value);
+                              // Clear error on change so user can re-type
+                              setTransformErrors((prev) => {
+                                const next = new Map(prev);
+                                next.delete(index);
+                                return next;
+                              });
+                            }}
+                            onBlur={(e) => handleTransformBlur(index, e.target.value)}
+                            placeholder="Transform (optional)"
+                            className="w-full border-destructive text-sm focus-visible:ring-destructive"
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="max-w-xs text-left text-destructive">
+                          {transformError}
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  ) : (
+                    <Input
+                      value={mapping.transform ?? ''}
+                      onChange={(e) => updateMapping(index, 'transform', e.target.value)}
+                      onBlur={(e) => handleTransformBlur(index, e.target.value)}
+                      placeholder="Transform (optional)"
+                      className="w-full text-sm"
+                    />
+                  )}
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 shrink-0"
+                  onClick={() => removeMapping(index)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                  <span className="sr-only">Remove mapping</span>
+                </Button>
+              </div>
+              {preview && <div className="pl-0 text-xs text-muted-foreground">{preview}</div>}
+            </div>
+          );
+        })}
 
         <Button variant="outline" size="sm" onClick={addMapping} className="mt-2">
           <Plus className="mr-1 h-4 w-4" />
