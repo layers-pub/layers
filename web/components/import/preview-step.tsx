@@ -22,6 +22,8 @@ import {
 import type { ParsedPreview } from '@/lib/import-parsers';
 import { readFileAsText, parseFileContent } from '@/lib/import-parsers';
 
+import { FormatDetailsCard } from './format-details-card';
+
 interface PreviewStepProps {
   /** The uploaded file. */
   file: File;
@@ -209,6 +211,10 @@ function PreviewStep({ file, format }: PreviewStepProps): React.JSX.Element {
           )}
         </CardContent>
       </Card>
+
+      {preview.metadata != null && Object.keys(preview.metadata).length > 0 && (
+        <FormatDetailsCard metadata={preview.metadata} format={format} />
+      )}
     </div>
   );
 }

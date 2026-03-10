@@ -55,6 +55,9 @@ const TARGET_FIELDS = [
   'tierStart',
   'tierEnd',
   'tierValue',
+  'tierLinguisticType',
+  'tierParent',
+  'tierType',
   'attributeKey',
   'attributeValue',
 ] as const;
@@ -92,6 +95,8 @@ const DEFAULT_MAPPINGS: Record<string, FieldMapping[]> = {
     { sourceField: 'Annotation start (ms)', targetField: 'tierStart' },
     { sourceField: 'Annotation end (ms)', targetField: 'tierEnd' },
     { sourceField: 'Annotation value', targetField: 'tierValue' },
+    { sourceField: 'Linguistic type', targetField: 'tierLinguisticType' },
+    { sourceField: 'Parent tier', targetField: 'tierParent' },
   ],
   'TEI XML': [
     { sourceField: '<w> content', targetField: 'text' },
@@ -100,6 +105,7 @@ const DEFAULT_MAPPINGS: Record<string, FieldMapping[]> = {
   ],
   'Praat TextGrid': [
     { sourceField: 'Tier name', targetField: 'tierName' },
+    { sourceField: 'Tier type', targetField: 'tierType' },
     { sourceField: 'Interval xmin', targetField: 'tierStart' },
     { sourceField: 'Interval xmax', targetField: 'tierEnd' },
     { sourceField: 'Interval text', targetField: 'tierValue' },
