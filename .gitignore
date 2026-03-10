@@ -1,5 +1,49 @@
+# Dependencies
 node_modules/
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Docs
 docs/node_modules/
 docs/.docusaurus/
 docs/build/
+
+# Backend
+coverage/
+
+# Web: Next.js
+web/.next/
+web/out/
+
+# Web: Generated types (from lexicons and OpenAPI)
+web/lib/api/generated/
+web/lib/api/schema.generated.ts
+web/lib/api/openapi.json
+
+# Web: Testing
+web/coverage/
+web/playwright-report/
+web/test-results/
+
+# Web: Storybook
+web/storybook-static/
+
+# Web: Downloaded ATProto base lexicons
+web/layers/lexicons/com/
+
+# IDE
+.idea/
+*.swp
+*.swo
+.vscode/
