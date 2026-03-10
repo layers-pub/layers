@@ -1,0 +1,34 @@
+'use client';
+
+/**
+ * Error boundary for the expression detail page.
+ *
+ * @packageDocumentation
+ */
+
+import Link from 'next/link';
+
+import { Button } from '@/components/ui/button';
+
+export default function ExpressionDetailError({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
+  return (
+    <div className="container mx-auto flex flex-col items-center justify-center px-4 py-24 text-center">
+      <h2 className="text-2xl font-bold tracking-tight">Something went wrong</h2>
+      <p className="mt-2 text-muted-foreground">
+        {error.message || 'Failed to load this expression.'}
+      </p>
+      <div className="mt-6 flex gap-3">
+        <Button variant="outline" render={<Link href="/expressions" />}>
+          Go back
+        </Button>
+        <Button onClick={reset}>Retry</Button>
+      </div>
+    </div>
+  );
+}
