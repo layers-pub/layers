@@ -136,6 +136,12 @@ import { SegmentationsRepository } from './storage/postgresql/segmentations-repo
 import { TemplateCompositionsRepository } from './storage/postgresql/template-compositions-repository.js';
 import { TemplatesRepository } from './storage/postgresql/templates-repository.js';
 import { TypeDefsRepository } from './storage/postgresql/type-defs-repository.js';
+import { PluginRegistry } from './plugins/plugin-registry.js';
+import { ConllImporter } from './plugins/importers/conll-importer.js';
+import { BratImporter } from './plugins/importers/brat-importer.js';
+import { ElanImporter } from './plugins/importers/elan-importer.js';
+import { TeiImporter } from './plugins/importers/tei-importer.js';
+import { PraatImporter } from './plugins/importers/praat-importer.js';
 import { createRedisClient } from './storage/redis/client.js';
 
 const sdk = initTelemetry({ serviceName: 'layers-api' });
@@ -555,6 +561,15 @@ jobScheduler.register(
   }),
 );
 
+// Build plugin registry and register format importers
+const pluginRegistry = new PluginRegistry();
+pluginRegistry.register(new ConllImporter());
+pluginRegistry.register(new BratImporter());
+pluginRegistry.register(new ElanImporter());
+pluginRegistry.register(new TeiImporter());
+pluginRegistry.register(new PraatImporter());
+container.register('PluginRegistry', { useValue: pluginRegistry });
+
 // Build XRPC method map
 const xrpcMethods = {
   ...expressionMethods(),
@@ -597,6 +612,7 @@ const app = createApp({
   sessionManager,
   oauthClient,
   xrpcMethods,
+  pluginRegistry,
 });
 
 const server = serve({
