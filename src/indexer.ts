@@ -49,11 +49,13 @@ import { CommitHandler } from './services/indexing/commit-handler.js';
 import { CursorManager } from './services/indexing/cursor-manager.js';
 import { DLQHandler } from './services/indexing/dlq-handler.js';
 import { ErrorClassifier } from './services/indexing/error-classifier.js';
-import { EventFilter, LAYERS_NSIDS } from './services/indexing/event-filter.js';
+import { EventFilter, ALL_INDEXED_NSIDS } from './services/indexing/event-filter.js';
 import { EventProcessor } from './services/indexing/event-processor.js';
 import { EventQueue } from './services/indexing/event-queue.js';
 import { FirehoseConsumer } from './services/indexing/firehose-consumer.js';
 import { BaseRecordHandler } from './services/indexing/handlers/base-record-handler.js';
+import { MarginRecordHandler } from './services/indexing/handlers/margin-record-handler.js';
+import { MarginIndexer, MARGIN_NSIDS } from './services/interop/margin-indexer.js';
 import { CrossReferencesRepository } from './storage/postgresql/cross-references-repository.js';
 import { EnrichmentWorker } from './workers/enrichment-worker.js';
 import { ElasticsearchAdapter } from './storage/elasticsearch/adapter.js';
@@ -155,7 +157,7 @@ const errorClassifier = new ErrorClassifier();
 const dlqHandler = new DLQHandler(pgPool, logger);
 const eventProcessor = new EventProcessor({ dlqHandler, errorClassifier, logger });
 const eventQueue = new EventQueue(redis, { maxDepth: 10_000 });
-const eventFilter = new EventFilter(LAYERS_NSIDS);
+const eventFilter = new EventFilter(ALL_INDEXED_NSIDS);
 const commitHandler = new CommitHandler();
 
 // Build storage adapters and expression service
@@ -610,6 +612,13 @@ const agreementReportHandler = new BaseRecordHandler(
   'pub.layers.judgment.agreementReport',
 );
 eventProcessor.registerHandler('pub.layers.judgment.agreementReport', agreementReportHandler);
+
+// Build margin.at interop indexer and register handlers for at.margin.* collections
+const marginIndexer = new MarginIndexer({ pool: pgPool, redis, logger });
+const marginRecordHandler = new MarginRecordHandler(marginIndexer);
+for (const nsid of MARGIN_NSIDS) {
+  eventProcessor.registerHandler(nsid, marginRecordHandler);
+}
 
 // Build cross-references repository (used by cross-reference extraction in future step)
 const crossReferencesRepository = new CrossReferencesRepository(pgPool);

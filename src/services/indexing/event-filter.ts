@@ -1,8 +1,10 @@
 /**
- * Firehose event filter for pub.layers.* collection NSIDs.
+ * Firehose event filter for pub.layers.* and interop collection NSIDs.
  *
  * @module
  */
+
+import { MARGIN_NSIDS } from '../interop/margin-indexer.js';
 
 /**
  * All 26 pub.layers.* collection NSIDs that the appview indexes.
@@ -37,6 +39,12 @@ const LAYERS_NSIDS: ReadonlySet<string> = new Set([
 ]);
 
 /**
+ * Combined set of all collection NSIDs the appview indexes,
+ * including interop namespaces (margin.at).
+ */
+const ALL_INDEXED_NSIDS: ReadonlySet<string> = new Set([...LAYERS_NSIDS, ...MARGIN_NSIDS]);
+
+/**
  * Filters firehose events by collection NSID.
  *
  * Uses a Set lookup for zero-allocation filtering of non-matching events.
@@ -56,4 +64,4 @@ class EventFilter {
   }
 }
 
-export { EventFilter, LAYERS_NSIDS };
+export { EventFilter, LAYERS_NSIDS, ALL_INDEXED_NSIDS };

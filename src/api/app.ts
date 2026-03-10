@@ -18,6 +18,7 @@ import type { NodeOAuthClient } from '@atproto/oauth-client-node';
 
 import { dlqAdminRoutes } from './handlers/rest/v1/admin/dlq.js';
 import { oauthRoutes } from './handlers/rest/v1/auth/oauth.js';
+import { externalAnnotationsRoutes } from './handlers/rest/v1/external-annotations.js';
 import { healthRoutes } from './handlers/rest/v1/health.js';
 import { importRoutes } from './handlers/rest/v1/import.js';
 import {
@@ -31,6 +32,7 @@ import {
 } from './middleware/index.js';
 import type { SessionManager } from '../auth/session-manager.js';
 import type { PluginRegistry } from '../plugins/plugin-registry.js';
+import type { IMarginIndexer } from '../services/interop/margin-indexer.js';
 import { errorHandler } from './xrpc/error-handler.js';
 import { registerXRPCRoutes } from './xrpc/router.js';
 import type { XRPCMethodMap } from './xrpc/types.js';
@@ -49,6 +51,7 @@ interface AppDependencies {
   readonly oauthClient?: NodeOAuthClient | undefined;
   readonly xrpcMethods?: XRPCMethodMap;
   readonly pluginRegistry?: PluginRegistry | undefined;
+  readonly marginIndexer?: IMarginIndexer | undefined;
 }
 
 /**
@@ -99,6 +102,11 @@ function createApp(deps: AppDependencies): Hono {
   // Import endpoints (parse annotation files via format importer plugins)
   if (deps.pluginRegistry) {
     importRoutes(app, deps.pluginRegistry);
+  }
+
+  // External annotations endpoints (margin.at interop, public read)
+  if (deps.marginIndexer) {
+    externalAnnotationsRoutes(app, { marginIndexer: deps.marginIndexer });
   }
 
   // XRPC routes
