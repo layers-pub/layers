@@ -87,7 +87,9 @@ function ExpressionDetailContent({ uri }: ExpressionDetailContentProps) {
         <div className="flex items-start justify-between gap-4">
           <h1 className="text-2xl font-bold tracking-tight">Expression</h1>
           <div className="flex items-center gap-2">
-            {expression.value.language ? <Badge variant="secondary">{expression.value.language}</Badge> : null}
+            {expression.value.language ? (
+              <Badge variant="secondary">{expression.value.language}</Badge>
+            ) : null}
             <Button
               variant="outline"
               size="sm"

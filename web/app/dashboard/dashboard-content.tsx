@@ -104,7 +104,10 @@ function QuickActions(): React.JSX.Element {
 // =============================================================================
 
 function ActivityFeed({ userDid }: { readonly userDid: string }): React.JSX.Element {
-  const { data, isLoading, error } = useChangelog({ collection: 'pub.layers.expression.expression', limit: 10 });
+  const { data, isLoading, error } = useChangelog({
+    collection: 'pub.layers.expression.expression',
+    limit: 10,
+  });
 
   if (isLoading) {
     return (

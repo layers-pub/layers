@@ -11,8 +11,8 @@ import { Suspense } from 'react';
 import { AuthGuard } from '@/components/auth/auth-guard';
 import { Skeleton } from '@/components/ui/skeleton';
 
-const ImportWizardContent = dynamic(
-  () => import('./import-wizard-content').then((m) => m.ImportWizardContent),
+const ImportWizardContent = dynamic(() =>
+  import('./import-wizard-content').then((m) => m.ImportWizardContent),
 );
 
 export const metadata: Metadata = {

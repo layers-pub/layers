@@ -71,10 +71,14 @@ function CorporaContent() {
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <CardTitle>{corpus.value.name}</CardTitle>
-                  {corpus.value.language && <Badge variant="secondary">{corpus.value.language}</Badge>}
+                  {corpus.value.language && (
+                    <Badge variant="secondary">{corpus.value.language}</Badge>
+                  )}
                 </div>
                 {corpus.value.description && (
-                  <CardDescription className="line-clamp-2">{corpus.value.description}</CardDescription>
+                  <CardDescription className="line-clamp-2">
+                    {corpus.value.description}
+                  </CardDescription>
                 )}
               </CardHeader>
               <CardContent>

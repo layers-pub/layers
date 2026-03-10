@@ -71,10 +71,14 @@ function OntologiesContent() {
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <CardTitle>{ontology.value.name}</CardTitle>
-                  {ontology.value.version && <Badge variant="outline">v{ontology.value.version}</Badge>}
+                  {ontology.value.version && (
+                    <Badge variant="outline">v{ontology.value.version}</Badge>
+                  )}
                 </div>
                 {ontology.value.description && (
-                  <CardDescription className="line-clamp-2">{ontology.value.description}</CardDescription>
+                  <CardDescription className="line-clamp-2">
+                    {ontology.value.description}
+                  </CardDescription>
                 )}
               </CardHeader>
               <CardContent>

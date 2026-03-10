@@ -29,7 +29,8 @@ type ExperimentDesign = components['schemas']['JudgmentDefsExperimentDesign'];
  */
 function DesignSettings({ design }: { design: ExperimentDesign }): React.JSX.Element {
   const entries: [string, string][] = [];
-  if (design.distributionStrategy) entries.push(['Distribution Strategy', design.distributionStrategy]);
+  if (design.distributionStrategy)
+    entries.push(['Distribution Strategy', design.distributionStrategy]);
   if (design.itemOrder) entries.push(['Item Order', design.itemOrder]);
   if (design.timingMs != null) entries.push(['Timing (ms)', String(design.timingMs)]);
   if (design.listConstraints?.length) {
@@ -89,8 +90,12 @@ function ExperimentDetailContent({ uri }: ExperimentDetailContentProps): React.J
       <div>
         <h1 className="text-2xl font-bold tracking-tight">{experiment.value.name}</h1>
         <div className="mt-2 flex flex-wrap items-center gap-2">
-          {experiment.value.measureType && <Badge variant="secondary">{experiment.value.measureType}</Badge>}
-          {experiment.value.taskType && <Badge variant="outline">{experiment.value.taskType}</Badge>}
+          {experiment.value.measureType && (
+            <Badge variant="secondary">{experiment.value.measureType}</Badge>
+          )}
+          {experiment.value.taskType && (
+            <Badge variant="outline">{experiment.value.taskType}</Badge>
+          )}
           <span className="text-sm text-muted-foreground">
             Created {formatRelativeTime(experiment.value.createdAt)}
           </span>

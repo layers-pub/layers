@@ -55,7 +55,9 @@ function CorpusDetailContent({ uri }: CorpusDetailContentProps) {
           <h1 className="text-3xl font-bold tracking-tight">{corpus.value.name}</h1>
           {corpus.value.language && <Badge variant="secondary">{corpus.value.language}</Badge>}
         </div>
-        {corpus.value.description && <p className="mt-2 text-muted-foreground">{corpus.value.description}</p>}
+        {corpus.value.description && (
+          <p className="mt-2 text-muted-foreground">{corpus.value.description}</p>
+        )}
       </div>
 
       <Separator />

@@ -90,7 +90,9 @@ function OntologyDetailContent({ uri }: OntologyDetailContentProps) {
               )}
               <div>
                 <dt className="font-medium text-muted-foreground">Created</dt>
-                <dd className="mt-0.5">{new Date(ontology.value.createdAt).toLocaleDateString()}</dd>
+                <dd className="mt-0.5">
+                  {new Date(ontology.value.createdAt).toLocaleDateString()}
+                </dd>
               </div>
             </dl>
           </CardContent>

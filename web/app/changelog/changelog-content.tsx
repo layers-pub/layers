@@ -129,7 +129,8 @@ function ChangelogContent(): React.JSX.Element {
     [router, searchParams],
   );
 
-  const selectedCollection = collection && collection !== 'all' ? collection : 'pub.layers.expression.expression';
+  const selectedCollection =
+    collection && collection !== 'all' ? collection : 'pub.layers.expression.expression';
 
   const { data, isLoading, error } = useChangelog({ collection: selectedCollection });
 
