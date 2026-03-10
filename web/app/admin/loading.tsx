@@ -8,14 +8,24 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AdminLoading() {
   return (
-    <div className="container mx-auto space-y-8 px-4 py-8">
-      <Skeleton className="h-8 w-32" />
-      <Skeleton className="h-4 w-56" />
+    <div className="space-y-6">
+      <Skeleton className="h-8 w-48" />
+      <Skeleton className="h-4 w-64" />
 
-      <div className="space-y-4">
-        <Skeleton className="h-9 w-96" />
-        <Skeleton className="h-96 rounded-xl" />
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        {Array.from({ length: 6 }, (_, i) => (
+          <Skeleton key={i} className="h-28 rounded-xl" />
+        ))}
       </div>
+
+      <Skeleton className="h-20 rounded-xl" />
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <Skeleton className="h-36 rounded-xl" />
+        <Skeleton className="h-36 rounded-xl" />
+      </div>
+
+      <Skeleton className="h-24 rounded-xl" />
     </div>
   );
 }
