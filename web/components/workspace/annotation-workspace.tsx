@@ -27,9 +27,8 @@ import { useSegmentationsByExpression } from '@/lib/hooks/use-segmentations';
 import { mapAnnotations } from '../annotations/map-annotation';
 import type { AnnotationLayerData, Token } from '../annotations/types';
 
-// Created by annotation tooling agents
-// import { AnnotationCreationProvider } from './annotation-creation-context';
-// import { AnnotationToolbar } from './annotation-toolbar';
+import { AnnotationCreationProvider } from './annotation-creation-context';
+import { AnnotationToolbar } from './annotation-toolbar';
 
 import { AnnotationPanel } from './annotation-panel';
 import { ExpressionPanel } from './expression-panel';
@@ -229,35 +228,9 @@ function AnnotationWorkspace({
 
   const workspaceContent = (
     <div className="flex h-full flex-col">
-      {/* Toolbar placeholder: AnnotationToolbar will be rendered here when available */}
       {canEdit && isEditMode ? (
-        <div className="flex-shrink-0 border-b bg-muted/30 px-4 py-2">
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span className="font-medium text-foreground">Edit Mode</span>
-            <span>|</span>
-            <span>Selection: {selectionMode === 'view' ? 'none' : selectionMode}</span>
-            {selectedTokens.size > 0 ? (
-              <>
-                <span>|</span>
-                <span>{selectedTokens.size} token(s) selected</span>
-              </>
-            ) : null}
-            {pendingCount > 0 ? (
-              <>
-                <span>|</span>
-                <span className="text-amber-600">{pendingCount} unsaved</span>
-              </>
-            ) : null}
-            <div className="flex-1" />
-            <kbd className="rounded border bg-background px-1.5 py-0.5 text-[10px] font-mono">
-              E
-            </kbd>
-            <span>toggle edit</span>
-            <kbd className="rounded border bg-background px-1.5 py-0.5 text-[10px] font-mono">
-              Esc
-            </kbd>
-            <span>cancel</span>
-          </div>
+        <div className="flex-shrink-0">
+          <AnnotationToolbar />
         </div>
       ) : null}
 
@@ -306,7 +279,14 @@ function AnnotationWorkspace({
     </div>
   );
 
-  // TODO: Wrap in <AnnotationCreationProvider> when available (created by annotation tooling agents)
+  if (canEdit) {
+    return (
+      <AnnotationCreationProvider expressionUri={expressionUri}>
+        {workspaceContent}
+      </AnnotationCreationProvider>
+    );
+  }
+
   return workspaceContent;
 }
 
