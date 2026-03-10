@@ -39,10 +39,10 @@ An `expression` record sets `sourceRef` to the AT-URI of a WhiteWind blog entry.
 
 ## Layers Types Involved
 
-| Type | Role |
-|---|---|
-| `pub.layers.expression.expression` | `sourceRef` points to `com.whtwnd.*` AT-URI |
-| `pub.layers.segmentation.segmentation` | Tokenization of the blog entry text |
+| Type                                    | Role                                        |
+| --------------------------------------- | ------------------------------------------- |
+| `pub.layers.expression.expression`      | `sourceRef` points to `com.whtwnd.*` AT-URI |
+| `pub.layers.segmentation.segmentation`  | Tokenization of the blog entry text         |
 | `pub.layers.annotation.annotationLayer` | Linguistic annotation layers over the entry |
 
 ## Discovery

@@ -1,5 +1,5 @@
 ---
-sidebar_label: "Design Principles"
+sidebar_label: 'Design Principles'
 sidebar_position: 2
 ---
 

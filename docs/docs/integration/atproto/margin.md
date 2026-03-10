@@ -39,13 +39,13 @@ An at.margin annotation targeting the same URL can be correlated by the appview 
 
 ## Layers Types Involved
 
-| Type | Role |
-|---|---|
-| `pub.layers.expression.expression` | `sourceUrl` matches the at.margin target URL |
-| `pub.layers.defs#externalTarget` | References the same external resource |
-| `pub.layers.defs#textQuoteSelector` | W3C-compatible text selection |
-| `pub.layers.defs#textPositionSelector` | W3C-compatible offset selection |
-| `pub.layers.defs#fragmentSelector` | W3C-compatible fragment selection |
+| Type                                   | Role                                         |
+| -------------------------------------- | -------------------------------------------- |
+| `pub.layers.expression.expression`     | `sourceUrl` matches the at.margin target URL |
+| `pub.layers.defs#externalTarget`       | References the same external resource        |
+| `pub.layers.defs#textQuoteSelector`    | W3C-compatible text selection                |
+| `pub.layers.defs#textPositionSelector` | W3C-compatible offset selection              |
+| `pub.layers.defs#fragmentSelector`     | W3C-compatible fragment selection            |
 
 ## Discovery
 

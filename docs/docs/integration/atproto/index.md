@@ -9,17 +9,17 @@ Layers is a native participant in the AT Protocol ecosystem. ATProto records are
 
 ## Applications
 
-| Application | Namespace | Integration Page |
-|---|---|---|
-| Semble | `network.cosmik.*` | [Semble](./semble) |
-| at.margin | `at.margin.*` | [at.margin](./margin) |
-| Chive | `pub.chive.*` | [Chive](./chive) |
-| Bluesky | `app.bsky.*` | [Bluesky](./bluesky) |
-| Leaflet (standard.site) | `site.standard.*` | [Leaflet](./leaflet) |
-| WhiteWind | `com.whtwnd.*` | [WhiteWind](./whitewind) |
-| ATFile | `blue.zio.atfile.*` | [ATFile](./atfile) |
-| Bluesky Labels | `com.atproto.label.*` | [Labels](./labels) |
-| Seams | `community.lexicon.annotation.*` | [Seams](./seams) |
+| Application             | Namespace                        | Integration Page         |
+| ----------------------- | -------------------------------- | ------------------------ |
+| Semble                  | `network.cosmik.*`               | [Semble](./semble)       |
+| at.margin               | `at.margin.*`                    | [at.margin](./margin)    |
+| Chive                   | `pub.chive.*`                    | [Chive](./chive)         |
+| Bluesky                 | `app.bsky.*`                     | [Bluesky](./bluesky)     |
+| Leaflet (standard.site) | `site.standard.*`                | [Leaflet](./leaflet)     |
+| WhiteWind               | `com.whtwnd.*`                   | [WhiteWind](./whitewind) |
+| ATFile                  | `blue.zio.atfile.*`              | [ATFile](./atfile)       |
+| Bluesky Labels          | `com.atproto.label.*`            | [Labels](./labels)       |
+| Seams                   | `community.lexicon.annotation.*` | [Seams](./seams)         |
 
 ## How Integration Works
 

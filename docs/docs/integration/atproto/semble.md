@@ -39,9 +39,9 @@ Semble records live in user PDSes under the `network.cosmik.*` namespace. Layers
 
 ## Layers Types Involved
 
-| Type | Role |
-|---|---|
-| `pub.layers.expression.expression` | `sourceRef` points to a Semble record |
+| Type                                    | Role                                                 |
+| --------------------------------------- | ---------------------------------------------------- |
+| `pub.layers.expression.expression`      | `sourceRef` points to a Semble record                |
 | `pub.layers.annotation.annotationLayer` | Linguistic annotation layers over referenced content |
 
 ## Discovery

@@ -41,11 +41,11 @@ Annotation layers (POS tagging, NER, sentiment, discourse analysis, etc.) refere
 
 ## Layers Types Involved
 
-| Type | Role |
-|---|---|
-| `pub.layers.expression.expression` | `sourceRef` points to `app.bsky.feed.post` AT-URI |
-| `pub.layers.segmentation.segmentation` | Tokenization of the post text |
-| `pub.layers.annotation.annotationLayer` | Linguistic annotation layers over the post |
+| Type                                    | Role                                              |
+| --------------------------------------- | ------------------------------------------------- |
+| `pub.layers.expression.expression`      | `sourceRef` points to `app.bsky.feed.post` AT-URI |
+| `pub.layers.segmentation.segmentation`  | Tokenization of the post text                     |
+| `pub.layers.annotation.annotationLayer` | Linguistic annotation layers over the post        |
 
 ## Discovery
 
