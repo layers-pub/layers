@@ -9,12 +9,41 @@
  */
 
 /**
+ * Information about a single tier in a time-aligned annotation file.
+ */
+interface TierInfo {
+  name: string;
+  type: 'interval' | 'point' | 'alignable' | 'ref';
+  linguisticType?: string;
+  parentTier?: string;
+  controlledVocabulary?: string;
+  annotationCount: number;
+}
+
+/**
+ * Format-specific metadata extracted during parsing.
+ */
+interface PreviewMetadata {
+  /** Total duration in seconds. */
+  duration?: number;
+  /** Number of tiers in the file. */
+  tierCount?: number;
+  /** Referenced media file URL (ELAN). */
+  mediaUrl?: string;
+  /** MIME type of referenced media (ELAN). */
+  mediaMimeType?: string;
+  /** Tier structure with parent refs and annotation counts. */
+  tierHierarchy?: TierInfo[];
+}
+
+/**
  * Parsed preview data from an annotation file.
  */
 interface ParsedPreview {
   columns: string[];
   rows: string[][];
   counts: { expressions: number; segmentations: number; layers: number };
+  metadata?: PreviewMetadata;
 }
 
 /**
@@ -147,7 +176,10 @@ function parseBrat(content: string): ParsedPreview {
 /**
  * Parses ELAN (.eaf) XML format using the browser DOMParser.
  *
- * Extracts tiers and their annotation children.
+ * Extracts tiers with their annotation children, tier hierarchy via
+ * PARENT_REF attributes, linguistic types with constraint info, controlled
+ * vocabularies, separate alignable/ref annotation counts, and media
+ * descriptors.
  */
 function parseElan(content: string): ParsedPreview {
   const parser = new DOMParser();
@@ -158,24 +190,103 @@ function parseElan(content: string): ParsedPreview {
     throw new Error('Invalid ELAN XML: ' + (parseError.textContent ?? 'parse error'));
   }
 
-  const columns = ['Tier', 'Start (ms)', 'End (ms)', 'Value'];
+  const columns = ['Tier', 'Ann. Type', 'Start (ms)', 'End (ms)', 'Value'];
   const rows: string[][] = [];
   const tiers = doc.querySelectorAll('TIER');
 
   // Build a map of time slot IDs to time values
   const timeSlots = new Map<string, string>();
   const timeSlotElements = doc.querySelectorAll('TIME_SLOT');
+  let maxTimeValue = 0;
   for (const slot of timeSlotElements) {
     const id = slot.getAttribute('TIME_SLOT_ID') ?? '';
     const value = slot.getAttribute('TIME_VALUE') ?? '';
     timeSlots.set(id, value);
+    const numValue = Number(value);
+    if (!Number.isNaN(numValue) && numValue > maxTimeValue) {
+      maxTimeValue = numValue;
+    }
   }
+
+  // Build linguistic type lookup: type ID -> { constraint, cvRef }
+  const linguisticTypes = new Map<string, { constraint?: string; cvRef?: string }>();
+  const ltElements = doc.querySelectorAll('LINGUISTIC_TYPE');
+  for (const lt of ltElements) {
+    const ltId = lt.getAttribute('LINGUISTIC_TYPE_ID') ?? '';
+    const constraint = lt.getAttribute('CONSTRAINTS') ?? undefined;
+    const cvRef = lt.getAttribute('CONTROLLED_VOCABULARY_REF') ?? undefined;
+    linguisticTypes.set(ltId, { constraint, cvRef });
+  }
+
+  // Collect known controlled vocabulary IDs
+  const controlledVocabs = new Set<string>();
+  const cvElements = doc.querySelectorAll('CONTROLLED_VOCABULARY');
+  for (const cv of cvElements) {
+    const cvId = cv.getAttribute('CV_ID') ?? '';
+    if (cvId) controlledVocabs.add(cvId);
+  }
+
+  // Extract the first media descriptor for URL and MIME type
+  let mediaUrl: string | undefined;
+  let mediaMimeType: string | undefined;
+  const mediaDescriptors = doc.querySelectorAll('MEDIA_DESCRIPTOR');
+  if (mediaDescriptors.length > 0) {
+    const firstMedia = mediaDescriptors[0];
+    if (firstMedia) {
+      mediaUrl =
+        firstMedia.getAttribute('MEDIA_URL') ??
+        firstMedia.getAttribute('RELATIVE_MEDIA_URL') ??
+        undefined;
+      mediaMimeType = firstMedia.getAttribute('MIME_TYPE') ?? undefined;
+    }
+  }
+
+  // Parse tiers and build hierarchy info
+  const tierInfoList: TierInfo[] = [];
 
   for (const tier of tiers) {
     const tierId = tier.getAttribute('TIER_ID') ?? '(unnamed)';
-    const annotations = tier.querySelectorAll('ALIGNABLE_ANNOTATION');
+    const parentRef = tier.getAttribute('PARENT_REF') ?? undefined;
+    const ltRef = tier.getAttribute('LINGUISTIC_TYPE_REF') ?? '';
+    const ltInfo = linguisticTypes.get(ltRef);
 
-    for (const ann of annotations) {
+    const alignableAnnotations = tier.querySelectorAll('ALIGNABLE_ANNOTATION');
+    const refAnnotations = tier.querySelectorAll('REF_ANNOTATION');
+    const alignableCount = alignableAnnotations.length;
+    const refCount = refAnnotations.length;
+
+    // Determine tier type from annotations present, or from linguistic type constraint
+    let tierType: TierInfo['type'];
+    if (alignableCount > 0 && refCount === 0) {
+      tierType = 'alignable';
+    } else if (refCount > 0 && alignableCount === 0) {
+      tierType = 'ref';
+    } else if (alignableCount > 0) {
+      tierType = 'alignable';
+    } else {
+      const constraint = ltInfo?.constraint;
+      tierType =
+        constraint === 'SYMBOLIC_SUBDIVISION' || constraint === 'SYMBOLIC_ASSOCIATION'
+          ? 'ref'
+          : 'alignable';
+    }
+
+    // Resolve controlled vocabulary: use the CV from the linguistic type
+    // only if it actually exists in the file's CV definitions
+    const cvRef = ltInfo?.cvRef;
+    const resolvedCv = cvRef && controlledVocabs.has(cvRef) ? cvRef : undefined;
+
+    tierInfoList.push({
+      name: tierId,
+      type: tierType,
+      linguisticType: ltRef || undefined,
+      parentTier: parentRef,
+      controlledVocabulary: resolvedCv,
+      annotationCount: alignableCount + refCount,
+    });
+
+    // Build preview rows from alignable annotations
+    for (const ann of alignableAnnotations) {
       const ts1 = ann.getAttribute('TIME_SLOT_REF1') ?? '';
       const ts2 = ann.getAttribute('TIME_SLOT_REF2') ?? '';
       const start = timeSlots.get(ts1) ?? ts1;
@@ -183,19 +294,20 @@ function parseElan(content: string): ParsedPreview {
       const value = ann.querySelector('ANNOTATION_VALUE')?.textContent ?? '';
 
       if (rows.length < 10) {
-        rows.push([tierId, start, end, value]);
+        rows.push([tierId, 'alignable', start, end, value]);
       }
     }
 
-    // Also check for REF_ANNOTATION (reference annotations without time alignment)
-    const refAnnotations = tier.querySelectorAll('REF_ANNOTATION');
+    // Build preview rows from reference annotations
     for (const ann of refAnnotations) {
       const value = ann.querySelector('ANNOTATION_VALUE')?.textContent ?? '';
       if (rows.length < 10) {
-        rows.push([tierId, '-', '-', value]);
+        rows.push([tierId, 'ref', '-', '-', value]);
       }
     }
   }
+
+  const duration = maxTimeValue > 0 ? maxTimeValue / 1000 : undefined;
 
   return {
     columns,
@@ -204,6 +316,13 @@ function parseElan(content: string): ParsedPreview {
       expressions: 1,
       segmentations: tiers.length,
       layers: tiers.length,
+    },
+    metadata: {
+      duration,
+      tierCount: tiers.length,
+      mediaUrl,
+      mediaMimeType,
+      tierHierarchy: tierInfoList.length > 0 ? tierInfoList : undefined,
     },
   };
 }
@@ -268,69 +387,180 @@ function parseTei(content: string): ParsedPreview {
   };
 }
 
+// ---------------------------------------------------------------------------
+// Praat TextGrid parsing
+// ---------------------------------------------------------------------------
+
 /**
- * Parses Praat TextGrid format.
+ * Detects whether a TextGrid string uses the "short" positional format.
  *
- * Looks for "intervals" and "points" sections and counts items per tier.
+ * The short format has no "key = value" assignments after the header lines.
+ * Detection works by checking whether non-header lines contain "=" signs.
  */
-function parsePraat(content: string): ParsedPreview {
+function isShortTextGrid(content: string): boolean {
+  const lines = content.split('\n');
+  let nonHeaderAssignments = 0;
+  let nonHeaderPlain = 0;
+  // Skip header lines (File type, Object class, possible blank)
+  for (let i = 3; i < Math.min(lines.length, 20); i++) {
+    const line = (lines[i] ?? '').trim();
+    if (line === '') continue;
+    if (line.includes('=')) {
+      nonHeaderAssignments++;
+    } else {
+      nonHeaderPlain++;
+    }
+  }
+  return nonHeaderAssignments === 0 && nonHeaderPlain > 0;
+}
+
+/**
+ * Extracts a quoted string from a TextGrid value, handling multi-line text.
+ *
+ * Praat text values are delimited by double quotes and may span multiple
+ * lines. The closing quote is always the last `"` on the final line of
+ * the value.
+ *
+ * @param lines - all lines of the file
+ * @param startIdx - the index of the line containing the opening quote
+ * @returns a tuple of [extracted text, index of the last line consumed]
+ */
+function extractQuotedText(lines: string[], startIdx: number): [string, number] {
+  const firstLine = lines[startIdx] ?? '';
+  const quoteStart = firstLine.indexOf('"');
+  if (quoteStart === -1) {
+    return ['', startIdx];
+  }
+
+  const afterOpen = firstLine.substring(quoteStart + 1);
+  // Check if the closing quote is on the same line
+  const closeIdx = afterOpen.lastIndexOf('"');
+  if (closeIdx !== -1) {
+    return [afterOpen.substring(0, closeIdx), startIdx];
+  }
+
+  // Multi-line: accumulate until we find a line containing a closing quote
+  const parts: string[] = [afterOpen];
+  let idx = startIdx + 1;
+  while (idx < lines.length) {
+    const line = lines[idx] ?? '';
+    const lineCloseIdx = line.lastIndexOf('"');
+    if (lineCloseIdx !== -1) {
+      parts.push(line.substring(0, lineCloseIdx));
+      return [parts.join('\n'), idx];
+    }
+    parts.push(line);
+    idx++;
+  }
+  // Unterminated string; return what we collected
+  return [parts.join('\n'), idx - 1];
+}
+
+/**
+ * Parses a Praat TextGrid in the "short" positional format.
+ *
+ * The short format encodes values one per line without key names:
+ *   File type = "ooTextFile"
+ *   Object class = "TextGrid"
+ *   (blank)
+ *   xmin
+ *   xmax
+ *   <exists>
+ *   tierCount
+ *   Then for each tier:
+ *     "IntervalTier" or "TextTier"
+ *     "tierName"
+ *     tierXmin
+ *     tierXmax
+ *     itemCount
+ *     Then per item: interval has xmin, xmax, "text"; point has number, "text"
+ */
+function parsePraatShort(content: string): ParsedPreview {
   const lines = content.split('\n');
   const columns = ['Tier', 'Type', 'Start', 'End', 'Text'];
   const rows: string[][] = [];
+  const tierInfoList: TierInfo[] = [];
 
-  let currentTierName = '';
-  let currentTierType = '';
-  let tierCount = 0;
+  // Skip header lines that contain "="
+  let idx = 0;
+  while (idx < lines.length && (lines[idx] ?? '').includes('=')) {
+    idx++;
+  }
+  // Skip blank lines after header
+  while (idx < lines.length && (lines[idx] ?? '').trim() === '') {
+    idx++;
+  }
 
-  // Temporary state for interval/point parsing
-  let xmin = '';
-  let xmax = '';
+  // Root xmin and xmax
+  const rootXmin = parseFloat((lines[idx] ?? '').trim());
+  idx++;
+  const rootXmax = parseFloat((lines[idx] ?? '').trim());
+  idx++;
+  const duration = !isNaN(rootXmax) && !isNaN(rootXmin) ? rootXmax - rootXmin : undefined;
 
-  for (let i = 0; i < lines.length; i++) {
-    const line = (lines[i] ?? '').trim();
+  // <exists> flag
+  idx++;
 
-    // Detect tier name
-    const nameMatch = line.match(/name\s*=\s*"(.+)"/);
-    if (nameMatch) {
-      currentTierName = nameMatch[1] ?? '';
-      tierCount++;
-    }
+  // Tier count
+  const tierCount = parseInt((lines[idx] ?? '').trim(), 10);
+  idx++;
 
-    // Detect tier type (IntervalTier or TextTier)
-    const classMatch = line.match(/class\s*=\s*"(.+)"/);
-    if (classMatch) {
-      currentTierType = (classMatch[1] ?? '').includes('Text') ? 'point' : 'interval';
-    }
+  for (let t = 0; t < tierCount && idx < lines.length; t++) {
+    // Tier type (quoted): "IntervalTier" or "TextTier"
+    const tierTypeLine = (lines[idx] ?? '').trim().replace(/"/g, '');
+    const isInterval = tierTypeLine === 'IntervalTier';
+    idx++;
 
-    // Parse interval or point xmin/xmax/text
-    const xminMatch = line.match(/xmin\s*=\s*(.+)/);
-    if (xminMatch) {
-      xmin = (xminMatch[1] ?? '').trim();
-    }
+    // Tier name (quoted)
+    const tierName = (lines[idx] ?? '').trim().replace(/"/g, '');
+    idx++;
 
-    const xmaxMatch = line.match(/xmax\s*=\s*(.+)/);
-    if (xmaxMatch) {
-      xmax = (xmaxMatch[1] ?? '').trim();
-    }
+    // Tier xmin, xmax (skip)
+    idx++;
+    idx++;
 
-    // "number" for point tiers
-    const numberMatch = line.match(/number\s*=\s*(.+)/);
-    if (numberMatch) {
-      xmin = (numberMatch[1] ?? '').trim();
-      xmax = '-';
-    }
+    // Item count
+    const itemCount = parseInt((lines[idx] ?? '').trim(), 10);
+    idx++;
 
-    // Extract text/mark values
-    const textMatch = line.match(/(?:text|mark|value)\s*=\s*"(.*)"/);
-    if (textMatch) {
-      const text = textMatch[1] ?? '';
-      // Only count non-empty items as actual data
-      if (text.trim()) {
-        if (rows.length < 10) {
-          rows.push([currentTierName, currentTierType, xmin, xmax, text]);
+    let nonEmptyCount = 0;
+
+    for (let n = 0; n < itemCount && idx < lines.length; n++) {
+      if (isInterval) {
+        const iXmin = (lines[idx] ?? '').trim();
+        idx++;
+        const iXmax = (lines[idx] ?? '').trim();
+        idx++;
+        const [text, lastIdx] = extractQuotedText(lines, idx);
+        idx = lastIdx + 1;
+
+        if (text.trim()) {
+          nonEmptyCount++;
+          if (rows.length < 10) {
+            rows.push([tierName, 'interval', iXmin, iXmax, text]);
+          }
+        }
+      } else {
+        // TextTier: number, "text"
+        const pointTime = (lines[idx] ?? '').trim();
+        idx++;
+        const [text, lastIdx] = extractQuotedText(lines, idx);
+        idx = lastIdx + 1;
+
+        if (text.trim()) {
+          nonEmptyCount++;
+          if (rows.length < 10) {
+            rows.push([tierName, 'point', pointTime, '-', text]);
+          }
         }
       }
     }
+
+    tierInfoList.push({
+      name: tierName,
+      type: isInterval ? 'interval' : 'point',
+      annotationCount: nonEmptyCount,
+    });
   }
 
   return {
@@ -341,7 +571,164 @@ function parsePraat(content: string): ParsedPreview {
       segmentations: tierCount,
       layers: tierCount,
     },
+    metadata: {
+      duration,
+      tierCount,
+      tierHierarchy: tierInfoList.length > 0 ? tierInfoList : undefined,
+    },
   };
+}
+
+/**
+ * Parses Praat TextGrid in the "normal" (verbose) key=value format.
+ *
+ * Handles multi-line text values and extracts tier metadata including
+ * tier count, total duration, tier types, and non-empty annotation counts
+ * per tier.
+ */
+function parsePraatNormal(content: string): ParsedPreview {
+  const lines = content.split('\n');
+  const columns = ['Tier', 'Type', 'Start', 'End', 'Text'];
+  const rows: string[][] = [];
+  const tierInfoList: TierInfo[] = [];
+
+  let currentTierName = '';
+  let currentTierType: 'interval' | 'point' = 'interval';
+  let currentTierNonEmpty = 0;
+
+  // Track root-level duration (xmin/xmax before any tier)
+  let rootXmin: number | undefined;
+  let rootXmax: number | undefined;
+  let seenTier = false;
+  let inItem = false;
+
+  // Temporary state for the current interval/point
+  let xmin = '';
+  let xmax = '';
+
+  let i = 0;
+  while (i < lines.length) {
+    const line = (lines[i] ?? '').trim();
+
+    // Capture root-level xmin/xmax (before any tier class is encountered)
+    if (!seenTier) {
+      const rootXminMatch = line.match(/^xmin\s*=\s*(.+)/);
+      if (rootXminMatch) {
+        rootXmin = parseFloat((rootXminMatch[1] ?? '').trim());
+      }
+      const rootXmaxMatch = line.match(/^xmax\s*=\s*(.+)/);
+      if (rootXmaxMatch) {
+        rootXmax = parseFloat((rootXmaxMatch[1] ?? '').trim());
+      }
+    }
+
+    // Detect tier class (IntervalTier or TextTier). This line appears
+    // before the tier name, so we save the previous tier here.
+    const classMatch = line.match(/class\s*=\s*"(.+)"/);
+    if (classMatch) {
+      if (seenTier) {
+        tierInfoList.push({
+          name: currentTierName,
+          type: currentTierType,
+          annotationCount: currentTierNonEmpty,
+        });
+      }
+      seenTier = true;
+      const classValue = classMatch[1] ?? '';
+      currentTierType = classValue.includes('Text') ? 'point' : 'interval';
+      currentTierNonEmpty = 0;
+      currentTierName = '';
+      inItem = false;
+    }
+
+    // Detect tier name
+    const nameMatch = line.match(/name\s*=\s*"(.+)"/);
+    if (nameMatch) {
+      currentTierName = nameMatch[1] ?? '';
+    }
+
+    // Parse interval/point boundaries (only within tier items)
+    if (seenTier) {
+      const xminMatch = line.match(/xmin\s*=\s*(.+)/);
+      if (xminMatch) {
+        xmin = (xminMatch[1] ?? '').trim();
+        inItem = true;
+      }
+
+      const xmaxMatch = line.match(/xmax\s*=\s*(.+)/);
+      if (xmaxMatch) {
+        xmax = (xmaxMatch[1] ?? '').trim();
+      }
+    }
+
+    // "number" for point tiers
+    const numberMatch = line.match(/number\s*=\s*(.+)/);
+    if (numberMatch) {
+      xmin = (numberMatch[1] ?? '').trim();
+      xmax = '-';
+      inItem = true;
+    }
+
+    // Extract text/mark values with multi-line support
+    const textKeyMatch = line.match(/(?:text|mark|value)\s*=\s*/);
+    if (textKeyMatch && inItem) {
+      const [text, lastIdx] = extractQuotedText(lines, i);
+      i = lastIdx;
+
+      if (text.trim()) {
+        currentTierNonEmpty++;
+        if (rows.length < 10) {
+          rows.push([currentTierName, currentTierType, xmin, xmax, text]);
+        }
+      }
+      inItem = false;
+    }
+
+    i++;
+  }
+
+  // Save the last tier
+  if (seenTier) {
+    tierInfoList.push({
+      name: currentTierName,
+      type: currentTierType,
+      annotationCount: currentTierNonEmpty,
+    });
+  }
+
+  const tierCount = tierInfoList.length;
+  const duration =
+    rootXmax !== undefined && rootXmin !== undefined ? rootXmax - rootXmin : undefined;
+
+  return {
+    columns,
+    rows,
+    counts: {
+      expressions: 1,
+      segmentations: tierCount,
+      layers: tierCount,
+    },
+    metadata: {
+      duration,
+      tierCount,
+      tierHierarchy: tierInfoList.length > 0 ? tierInfoList : undefined,
+    },
+  };
+}
+
+/**
+ * Parses Praat TextGrid format (both normal and short variants).
+ *
+ * Detects the format variant automatically and delegates to the
+ * appropriate parser. Extracts tier metadata including tier count,
+ * total duration, tier types (IntervalTier vs TextTier), and counts
+ * of non-empty intervals per tier.
+ */
+function parsePraat(content: string): ParsedPreview {
+  if (isShortTextGrid(content)) {
+    return parsePraatShort(content);
+  }
+  return parsePraatNormal(content);
 }
 
 /**
@@ -370,5 +757,5 @@ function parseFileContent(content: string, format: string): ParsedPreview {
   }
 }
 
-export type { ParsedPreview };
+export type { ParsedPreview, PreviewMetadata, TierInfo };
 export { readFileAsText, parseFileContent };
