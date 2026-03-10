@@ -1,0 +1,165 @@
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: oklch(0.205 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+    --destructive: oklch(0.58 0.22 27);
+    --destructive-foreground: 210 40% 98%;
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.708 0 0);
+    --radius: 0.625rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
+    --chart-1: oklch(0.809 0.105 251.813);
+    --chart-2: oklch(0.623 0.214 259.815);
+    --chart-3: oklch(0.546 0.245 262.881);
+    --chart-4: oklch(0.488 0.243 264.376);
+    --chart-5: oklch(0.424 0.199 265.638);
+    --sidebar: oklch(0.985 0 0);
+  }
+
+  .dark {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.205 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.87 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.371 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.704 0.191 22.216);
+    --destructive-foreground: 210 40% 98%;
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.556 0 0);
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+    --chart-1: oklch(0.809 0.105 251.813);
+    --chart-2: oklch(0.623 0.214 259.815);
+    --chart-3: oklch(0.546 0.245 262.881);
+    --chart-4: oklch(0.488 0.243 264.376);
+    --chart-5: oklch(0.424 0.199 265.638);
+    --sidebar: oklch(0.205 0 0);
+  }
+  .theme {
+    --font-sans: var(--font-sans);
+  }
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* Annotation display utilities */
+@layer components {
+  /* Inline token-tag display: a token with its annotation label beneath it. */
+  .annotation-tag {
+    @apply inline-flex flex-col items-center gap-0.5 mx-0.5;
+  }
+
+  .annotation-tag .tag-token {
+    @apply text-sm font-medium;
+  }
+
+  .annotation-tag .tag-label {
+    @apply text-xs text-muted-foreground font-mono;
+  }
+
+  /* Highlighted text span for span-based annotations (NER, constituents). */
+  .annotation-span {
+    @apply relative inline rounded-sm px-0.5;
+    background-color: color-mix(in oklch, var(--accent) 30%, transparent);
+    border-bottom: 2px solid color-mix(in oklch, var(--primary) 50%, transparent);
+  }
+
+  .annotation-span[data-selected='true'] {
+    background-color: color-mix(in oklch, var(--primary) 15%, transparent);
+    border-bottom-color: var(--primary);
+  }
+
+  /* SVG arc path for dependency parse arcs. */
+  .annotation-arc {
+    fill: none;
+    stroke: color-mix(in oklch, var(--foreground) 60%, transparent);
+    stroke-width: 1.5;
+  }
+
+  .annotation-arc:hover {
+    stroke: var(--primary);
+    stroke-width: 2;
+  }
+
+  .annotation-arc[data-selected='true'] {
+    stroke: var(--primary);
+    stroke-width: 2.5;
+  }
+
+  /* ELAN-style tier timeline row for time-aligned annotations. */
+  .tier-row {
+    @apply flex items-stretch border-b border-border min-h-[2rem];
+  }
+
+  .tier-row .tier-label {
+    @apply flex-shrink-0 w-32 px-2 py-1 text-xs font-medium text-muted-foreground
+           bg-muted/50 border-r border-border truncate;
+  }
+
+  .tier-row .tier-content {
+    @apply relative flex-1 overflow-hidden;
+  }
+
+  /* Scroll-to highlight flash animation */
+  @keyframes highlight-flash {
+    0% {
+      background-color: color-mix(in oklch, var(--primary) 20%, transparent);
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
+
+  .highlight-flash {
+    animation: highlight-flash 1.5s ease-out;
+  }
+}

@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Build
+dist/
+
+# Generated types (from lexicons and OpenAPI)
+lib/api/generated/
+lib/api/schema.generated.ts
+lib/api/openapi.json
+
+# Testing
+coverage/
+playwright-report/
+test-results/
+
+# Storybook
+storybook-static/
+
+# Environment
+.env*.local
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

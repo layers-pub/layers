@@ -1,0 +1,10 @@
+{
+  "projectId": "layers-web",
+  "buildScriptName": "build-storybook",
+  "storybookBuildDir": "storybook-static",
+  "exitZeroOnChanges": true,
+  "exitOnceUploaded": true,
+  "externals": ["public/**"],
+  "onlyChanged": true,
+  "skip": "dependabot/**"
+}
