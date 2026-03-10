@@ -181,6 +181,8 @@ export type PluginOperation =
   | 'stop'
   | 'dispose'
   | 'import'
+  | 'export'
+  | 'enrich'
   | 'resolve'
   | 'search'
   | 'validate';
