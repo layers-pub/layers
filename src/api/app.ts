@@ -17,6 +17,13 @@ import type { DependencyContainer } from 'tsyringe';
 import type { NodeOAuthClient } from '@atproto/oauth-client-node';
 
 import { dlqAdminRoutes } from './handlers/rest/v1/admin/dlq.js';
+import { firehoseAdminRoutes } from './handlers/rest/v1/admin/firehose.js';
+import { healthAdminRoutes } from './handlers/rest/v1/admin/health.js';
+import { importsAdminRoutes } from './handlers/rest/v1/admin/imports.js';
+import { pluginsAdminRoutes } from './handlers/rest/v1/admin/plugins.js';
+import { queuesAdminRoutes } from './handlers/rest/v1/admin/queues.js';
+import { reconciliationAdminRoutes } from './handlers/rest/v1/admin/reconciliation.js';
+import { usersAdminRoutes } from './handlers/rest/v1/admin/users.js';
 import { oauthRoutes } from './handlers/rest/v1/auth/oauth.js';
 import { externalAnnotationsRoutes } from './handlers/rest/v1/external-annotations.js';
 import { healthRoutes } from './handlers/rest/v1/health.js';
@@ -95,9 +102,31 @@ function createApp(deps: AppDependencies): Hono {
     });
   }
 
-  // DLQ admin endpoints (require admin role)
+  // Admin endpoints (require admin role)
   app.use('/admin/*', requireRole('admin'));
   dlqAdminRoutes(app, deps.pgPool);
+
+  const dbDeps = {
+    pgPool: deps.pgPool,
+    esClient: deps.esClient,
+    neo4jDriver: deps.neo4jDriver,
+    redis: deps.redis,
+  };
+
+  healthAdminRoutes(app, dbDeps);
+  reconciliationAdminRoutes(app, {
+    pgPool: deps.pgPool,
+    esClient: deps.esClient,
+    neo4jDriver: deps.neo4jDriver,
+  });
+  queuesAdminRoutes(app, { redis: deps.redis });
+  firehoseAdminRoutes(app, { redis: deps.redis, pgPool: deps.pgPool });
+  importsAdminRoutes(app, { pgPool: deps.pgPool });
+  usersAdminRoutes(app, { pgPool: deps.pgPool });
+
+  if (deps.pluginRegistry) {
+    pluginsAdminRoutes(app, { pluginRegistry: deps.pluginRegistry });
+  }
 
   // Import endpoints (parse annotation files via format importer plugins)
   if (deps.pluginRegistry) {
