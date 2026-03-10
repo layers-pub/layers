@@ -9,12 +9,12 @@ The Layers appview indexes all 26 `pub.layers.*` record types across four storag
 
 ## Database Roles
 
-| Database | Role | Data Lifetime | Rebuildable From |
-|----------|------|---------------|------------------|
-| **PostgreSQL 16+** | Source of truth. Stores every indexed record as structured columns plus full JSONB. Handles relational queries, cross-reference lookups, and transactional writes. | Persistent | ATProto firehose (cursor 0) |
-| **Elasticsearch 8+** | Full-text search, faceted filtering, and aggregation. Powers the search API for expressions, annotations, ontologies, graph nodes, and other searchable record types. | Persistent (derived) | PostgreSQL |
-| **Neo4j 5+** | Knowledge graph and cross-reference traversal. Models the dense reference network between expressions, annotations, graph nodes, ontologies, and alignments as a native graph for efficient path queries. | Persistent (derived) | PostgreSQL |
-| **Redis 7+** | Cache, session management, rate limiting, and job queue backing store (BullMQ). All data is ephemeral and can be lost without affecting correctness. | Ephemeral | N/A (regenerated on demand) |
+| Database             | Role                                                                                                                                                                                                      | Data Lifetime        | Rebuildable From            |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | --------------------------- |
+| **PostgreSQL 16+**   | Source of truth. Stores every indexed record as structured columns plus full JSONB. Handles relational queries, cross-reference lookups, and transactional writes.                                        | Persistent           | ATProto firehose (cursor 0) |
+| **Elasticsearch 8+** | Full-text search, faceted filtering, and aggregation. Powers the search API for expressions, annotations, ontologies, graph nodes, and other searchable record types.                                     | Persistent (derived) | PostgreSQL                  |
+| **Neo4j 5+**         | Knowledge graph and cross-reference traversal. Models the dense reference network between expressions, annotations, graph nodes, ontologies, and alignments as a native graph for efficient path queries. | Persistent (derived) | PostgreSQL                  |
+| **Redis 7+**         | Cache, session management, rate limiting, and job queue backing store (BullMQ). All data is ephemeral and can be lost without affecting correctness.                                                      | Ephemeral            | N/A (regenerated on demand) |
 
 **Why four databases?** Layers' record types are densely cross-referenced and support diverse query patterns that no single database handles well:
 
@@ -35,9 +35,15 @@ Each database is accessed through an adapter implementing the `IStorageBackend` 
 class PostgreSQLAdapter implements IStorageBackend {
   constructor(@inject('PgPool') private pool: Pool) {}
 
-  async storeRecord(table: string, data: PgRowData): Promise<Result<void>> { /* ... */ }
-  async getByUri(table: string, uri: string): Promise<Result<Record | null>> { /* ... */ }
-  async deleteByUri(table: string, uri: string): Promise<Result<void>> { /* ... */ }
+  async storeRecord(table: string, data: PgRowData): Promise<Result<void>> {
+    /* ... */
+  }
+  async getByUri(table: string, uri: string): Promise<Result<Record | null>> {
+    /* ... */
+  }
+  async deleteByUri(table: string, uri: string): Promise<Result<void>> {
+    /* ... */
+  }
 }
 
 // src/storage/elasticsearch/adapter.ts
@@ -45,8 +51,12 @@ class PostgreSQLAdapter implements IStorageBackend {
 class ElasticsearchAdapter implements ISearchBackend {
   constructor(@inject('EsClient') private client: Client) {}
 
-  async indexDocument(index: string, doc: EsDocument): Promise<Result<void>> { /* ... */ }
-  async search(request: SearchRequest): Promise<Result<SearchResponse>> { /* ... */ }
+  async indexDocument(index: string, doc: EsDocument): Promise<Result<void>> {
+    /* ... */
+  }
+  async search(request: SearchRequest): Promise<Result<SearchResponse>> {
+    /* ... */
+  }
 }
 
 // src/storage/neo4j/adapter.ts
@@ -54,25 +64,29 @@ class ElasticsearchAdapter implements ISearchBackend {
 class Neo4jAdapter implements IGraphBackend {
   constructor(@inject('Neo4jDriver') private driver: Driver) {}
 
-  async mergeNode(label: string, props: NodeProperties): Promise<Result<void>> { /* ... */ }
-  async mergeEdge(from: string, to: string, type: string): Promise<Result<void>> { /* ... */ }
+  async mergeNode(label: string, props: NodeProperties): Promise<Result<void>> {
+    /* ... */
+  }
+  async mergeEdge(from: string, to: string, type: string): Promise<Result<void>> {
+    /* ... */
+  }
 }
 ```
 
 Supporting utilities in each adapter directory:
 
-| File | Purpose |
-|------|---------|
-| `src/storage/postgresql/query-builder.ts` | Composable parameterized SQL builder |
-| `src/storage/postgresql/batch-operations.ts` | Bulk insert/upsert for firehose catchup |
-| `src/storage/postgresql/migrations/` | node-pg-migrate migration files |
-| `src/storage/elasticsearch/document-mapper.ts` | PG row → ES document transformation |
-| `src/storage/elasticsearch/templates/` | Index template JSON files |
-| `src/storage/elasticsearch/ilm/` | Index Lifecycle Management policies |
-| `src/storage/elasticsearch/index-manager.ts` | Index creation, mapping updates, ILM application |
-| `src/storage/neo4j/schema/` | `constraints.cypher`, `indexes.cypher` schema files |
-| `src/storage/neo4j/setup-manager.ts` | Schema initialization on startup |
-| `src/storage/redis/structures.ts` | Type-safe Redis key patterns |
+| File                                           | Purpose                                             |
+| ---------------------------------------------- | --------------------------------------------------- |
+| `src/storage/postgresql/query-builder.ts`      | Composable parameterized SQL builder                |
+| `src/storage/postgresql/batch-operations.ts`   | Bulk insert/upsert for firehose catchup             |
+| `src/storage/postgresql/migrations/`           | node-pg-migrate migration files                     |
+| `src/storage/elasticsearch/document-mapper.ts` | PG row → ES document transformation                 |
+| `src/storage/elasticsearch/templates/`         | Index template JSON files                           |
+| `src/storage/elasticsearch/ilm/`               | Index Lifecycle Management policies                 |
+| `src/storage/elasticsearch/index-manager.ts`   | Index creation, mapping updates, ILM application    |
+| `src/storage/neo4j/schema/`                    | `constraints.cypher`, `indexes.cypher` schema files |
+| `src/storage/neo4j/setup-manager.ts`           | Schema initialization on startup                    |
+| `src/storage/redis/structures.ts`              | Type-safe Redis key patterns                        |
 
 Connection pooling follows Chive's `createPool`/`closePool` pattern for clean lifecycle management. All adapter methods are wrapped in cockatiel resilience policies (circuit breaker + retry).
 
@@ -160,7 +174,7 @@ CREATE TABLE annotation_layers (
     did               TEXT NOT NULL,
     rkey              TEXT NOT NULL,
     expression_ref    TEXT NOT NULL,   -- AT-URI of annotated expression
-    tokenization_id   TEXT,            -- UUID of bound tokenization (token-aligned layers)
+    segmentation_ref  TEXT,            -- AT-URI of segmentation used
     kind              TEXT NOT NULL,
     subkind           TEXT,
     formalism         TEXT,
@@ -198,7 +212,7 @@ CREATE TABLE annotations (
     start_offset  INTEGER,
     end_offset    INTEGER,
     token_index   INTEGER,
-    confidence    INTEGER,       -- scaled 0-1000 (1000 = maximum confidence)
+    confidence    REAL,
     record        JSONB NOT NULL,
 
     PRIMARY KEY (layer_uri, index)
@@ -238,35 +252,35 @@ CREATE INDEX idx_cluster_sets_record ON cluster_sets USING GIN (record);
 
 These tables store records from the parallel support lexicons. They follow the same column conventions (uri, did, rkey, indexed_at, record) with type-specific extracted columns.
 
-| Table | Record Type | Key Extracted Columns |
-|-------|------------|----------------------|
-| `ontologies` | `ontology.ontology` | `name`, `domain`, `version` |
-| `type_defs` | `ontology.typeDef` | `ontology_ref`, `label`, `relation_type` |
-| `corpora` | `corpus.corpus` | `name`, `language`, `license` |
-| `corpus_memberships` | `corpus.membership` | `corpus_ref`, `expression_ref` |
-| `resource_entries` | `resource.entry` | `lemma`, `form`, `language`, `collection_ref` |
-| `resource_collections` | `resource.collection` | `name`, `collection_type` |
-| `collection_memberships` | `resource.collectionMembership` | `collection_ref`, `entry_ref` |
-| `templates` | `resource.template` | `name`, `slot_count` |
-| `fillings` | `resource.filling` | `template_ref`, `expression_ref` |
-| `template_compositions` | `resource.templateComposition` | `name`, `template_refs` (JSONB) |
-| `experiment_defs` | `judgment.experimentDef` | `measure`, `task_type`, `design_type` |
-| `judgment_sets` | `judgment.judgmentSet` | `experiment_ref`, `annotator_did` |
-| `agreement_reports` | `judgment.agreementReport` | `experiment_ref`, `metric`, `score` |
-| `alignments` | `alignment.alignment` | `source_ref`, `target_ref`, `alignment_type` |
+| Table                    | Record Type                     | Key Extracted Columns                         |
+| ------------------------ | ------------------------------- | --------------------------------------------- |
+| `ontologies`             | `ontology.ontology`             | `name`, `domain`, `version`                   |
+| `type_defs`              | `ontology.typeDef`              | `ontology_ref`, `label`, `relation_type`      |
+| `corpora`                | `corpus.corpus`                 | `name`, `language`, `license`                 |
+| `corpus_memberships`     | `corpus.membership`             | `corpus_ref`, `expression_ref`                |
+| `resource_entries`       | `resource.entry`                | `lemma`, `form`, `language`, `collection_ref` |
+| `resource_collections`   | `resource.collection`           | `name`, `collection_type`                     |
+| `collection_memberships` | `resource.collectionMembership` | `collection_ref`, `entry_ref`                 |
+| `templates`              | `resource.template`             | `name`, `slot_count`                          |
+| `fillings`               | `resource.filling`              | `template_ref`, `expression_ref`              |
+| `template_compositions`  | `resource.templateComposition`  | `name`, `template_refs` (JSONB)               |
+| `experiment_defs`        | `judgment.experimentDef`        | `measure`, `task_type`, `design_type`         |
+| `judgment_sets`          | `judgment.judgmentSet`          | `experiment_ref`, `annotator_did`             |
+| `agreement_reports`      | `judgment.agreementReport`      | `experiment_ref`, `metric`, `score`           |
+| `alignments`             | `alignment.alignment`           | `source_ref`, `target_ref`, `alignment_type`  |
 
 ### Integration Tables
 
-| Table | Record Type | Key Extracted Columns |
-|-------|------------|----------------------|
-| `graph_nodes` | `graph.graphNode` | `kind`, `name`, `description`, `ontology_ref` |
-| `graph_edges` | `graph.graphEdge` | `source_ref`, `target_ref`, `edge_type`, `edge_set_ref` |
-| `graph_edge_sets` | `graph.graphEdgeSet` | `name`, `edge_type`, `edge_count` |
-| `personas` | `persona.persona` | `name`, `domain`, `kind` |
-| `media_records` | `media.media` | `modality`, `mime_type`, `duration`, `expression_ref` |
-| `eprints` | `eprint.eprint` | `identifier`, `title`, `platform`, `doi` |
-| `data_links` | `eprint.dataLink` | `eprint_ref`, `corpus_ref`, `link_type` |
-| `changelogs` | `changelog.entry` | `subject_uri`, `subject_collection`, `version`, `summary`, `sections` (JSONB) |
+| Table             | Record Type          | Key Extracted Columns                                                         |
+| ----------------- | -------------------- | ----------------------------------------------------------------------------- |
+| `graph_nodes`     | `graph.graphNode`    | `kind`, `name`, `description`, `ontology_ref`                                 |
+| `graph_edges`     | `graph.graphEdge`    | `source_ref`, `target_ref`, `edge_type`, `edge_set_ref`                       |
+| `graph_edge_sets` | `graph.graphEdgeSet` | `name`, `edge_type`, `edge_count`                                             |
+| `personas`        | `persona.persona`    | `name`, `domain`, `kind`                                                      |
+| `media_records`   | `media.media`        | `modality`, `mime_type`, `duration`, `expression_ref`                         |
+| `eprints`         | `eprint.eprint`      | `identifier`, `title`, `platform`, `doi`                                      |
+| `data_links`      | `eprint.dataLink`    | `eprint_ref`, `corpus_ref`, `link_type`                                       |
+| `changelogs`      | `changelog.entry`    | `subject_uri`, `subject_collection`, `version`, `summary`, `sections` (JSONB) |
 
 ### Cross-Reference Table
 
@@ -327,12 +341,7 @@ Layers configures custom analyzers for linguistic data:
         "layers_linguistic": {
           "type": "custom",
           "tokenizer": "icu_tokenizer",
-          "filter": [
-            "icu_normalizer",
-            "icu_folding",
-            "lowercase",
-            "english_stemmer"
-          ]
+          "filter": ["icu_normalizer", "icu_folding", "lowercase", "english_stemmer"]
         }
       },
       "filter": {
@@ -354,17 +363,20 @@ The `layers_text` analyzer provides Unicode-normalized, case-folded tokenization
 {
   "mappings": {
     "properties": {
-      "uri":         { "type": "keyword" },
-      "did":         { "type": "keyword" },
-      "text":        { "type": "text", "analyzer": "layers_text",
-                       "fields": { "raw": { "type": "keyword", "ignore_above": 32766 } } },
-      "kind":        { "type": "keyword" },
-      "language":    { "type": "keyword" },
-      "source_url":  { "type": "keyword" },
-      "source_ref":  { "type": "keyword" },
-      "eprint_ref":  { "type": "keyword" },
-      "parent_ref":  { "type": "keyword" },
-      "indexed_at":  { "type": "date" }
+      "uri": { "type": "keyword" },
+      "did": { "type": "keyword" },
+      "text": {
+        "type": "text",
+        "analyzer": "layers_text",
+        "fields": { "raw": { "type": "keyword", "ignore_above": 32766 } }
+      },
+      "kind": { "type": "keyword" },
+      "language": { "type": "keyword" },
+      "source_url": { "type": "keyword" },
+      "source_ref": { "type": "keyword" },
+      "eprint_ref": { "type": "keyword" },
+      "parent_ref": { "type": "keyword" },
+      "indexed_at": { "type": "date" }
     }
   }
 }
@@ -378,31 +390,31 @@ Supports queries like: full-text search over expression text, faceted filtering 
 {
   "mappings": {
     "properties": {
-      "uri":              { "type": "keyword" },
-      "did":              { "type": "keyword" },
-      "expression_ref":   { "type": "keyword" },
-      "kind":             { "type": "keyword" },
-      "subkind":          { "type": "keyword" },
-      "formalism":        { "type": "keyword" },
-      "ontology_ref":     { "type": "keyword" },
-      "persona_ref":      { "type": "keyword" },
+      "uri": { "type": "keyword" },
+      "did": { "type": "keyword" },
+      "expression_ref": { "type": "keyword" },
+      "kind": { "type": "keyword" },
+      "subkind": { "type": "keyword" },
+      "formalism": { "type": "keyword" },
+      "ontology_ref": { "type": "keyword" },
+      "persona_ref": { "type": "keyword" },
       "annotation_count": { "type": "integer" },
       "annotations": {
         "type": "nested",
         "properties": {
-          "label":        { "type": "keyword" },
-          "value":        { "type": "text", "analyzer": "layers_text" },
-          "anchor_type":  { "type": "keyword" },
-          "confidence":   { "type": "integer" }
+          "label": { "type": "keyword" },
+          "value": { "type": "text", "analyzer": "layers_text" },
+          "anchor_type": { "type": "keyword" },
+          "confidence": { "type": "float" }
         }
       },
-      "indexed_at":       { "type": "date" }
+      "indexed_at": { "type": "date" }
     }
   }
 }
 ```
 
-The `annotations` field uses Elasticsearch's `nested` type so that queries can filter on label-value pairs without cross-matching (e.g., find layers where at least one annotation has label "NNP" and confidence > 900, without accidentally matching label "NNP" from one annotation against confidence 900 from another). Confidence is stored on the 0-1000 integer scale used by the records (1000 = maximum confidence).
+The `annotations` field uses Elasticsearch's `nested` type so that queries can filter on label-value pairs without cross-matching (e.g., find layers where at least one annotation has label "NNP" and confidence > 0.9, without accidentally matching label "NNP" from one annotation against confidence 0.9 from another).
 
 ### Index: `ontologies`
 
@@ -410,12 +422,15 @@ The `annotations` field uses Elasticsearch's `nested` type so that queries can f
 {
   "mappings": {
     "properties": {
-      "uri":       { "type": "keyword" },
-      "did":       { "type": "keyword" },
-      "name":      { "type": "text", "analyzer": "layers_linguistic",
-                     "fields": { "keyword": { "type": "keyword" } } },
-      "domain":    { "type": "keyword" },
-      "version":   { "type": "keyword" },
+      "uri": { "type": "keyword" },
+      "did": { "type": "keyword" },
+      "name": {
+        "type": "text",
+        "analyzer": "layers_linguistic",
+        "fields": { "keyword": { "type": "keyword" } }
+      },
+      "domain": { "type": "keyword" },
+      "version": { "type": "keyword" },
       "indexed_at": { "type": "date" }
     }
   }
@@ -428,14 +443,17 @@ The `annotations` field uses Elasticsearch's `nested` type so that queries can f
 {
   "mappings": {
     "properties": {
-      "uri":          { "type": "keyword" },
-      "did":          { "type": "keyword" },
-      "kind":         { "type": "keyword" },
-      "name":         { "type": "text", "analyzer": "layers_linguistic",
-                        "fields": { "keyword": { "type": "keyword" } } },
-      "description":  { "type": "text", "analyzer": "layers_linguistic" },
+      "uri": { "type": "keyword" },
+      "did": { "type": "keyword" },
+      "kind": { "type": "keyword" },
+      "name": {
+        "type": "text",
+        "analyzer": "layers_linguistic",
+        "fields": { "keyword": { "type": "keyword" } }
+      },
+      "description": { "type": "text", "analyzer": "layers_linguistic" },
       "ontology_ref": { "type": "keyword" },
-      "indexed_at":   { "type": "date" }
+      "indexed_at": { "type": "date" }
     }
   }
 }
@@ -445,16 +463,16 @@ The `annotations` field uses Elasticsearch's `nested` type so that queries can f
 
 The following indexes use simpler mappings with the same conventions (keyword for identifiers and enum fields, text with `layers_text` or `layers_linguistic` for human-readable fields):
 
-| Index | Key Text Fields | Key Keyword Fields |
-|-------|----------------|-------------------|
-| `type_defs` | `label`, `description` | `ontology_ref`, `relation_type` |
-| `corpora` | `name`, `description` | `language`, `license` |
-| `resource_entries` | `lemma`, `form` | `language`, `collection_ref` |
-| `resource_collections` | `name` | `collection_type` |
-| `experiment_defs` | `name`, `description` | `measure`, `task_type`, `design_type` |
-| `personas` | `name`, `description` | `domain`, `kind` |
-| `media_records` | `description` | `modality`, `mime_type` |
-| `eprints` | `title`, `abstract` | `identifier`, `platform`, `doi` |
+| Index                  | Key Text Fields        | Key Keyword Fields                    |
+| ---------------------- | ---------------------- | ------------------------------------- |
+| `type_defs`            | `label`, `description` | `ontology_ref`, `relation_type`       |
+| `corpora`              | `name`, `description`  | `language`, `license`                 |
+| `resource_entries`     | `lemma`, `form`        | `language`, `collection_ref`          |
+| `resource_collections` | `name`                 | `collection_type`                     |
+| `experiment_defs`      | `name`, `description`  | `measure`, `task_type`, `design_type` |
+| `personas`             | `name`, `description`  | `domain`, `kind`                      |
+| `media_records`        | `description`          | `modality`, `mime_type`               |
+| `eprints`              | `title`, `abstract`    | `identifier`, `platform`, `doi`       |
 
 ## Neo4j Graph Model
 
@@ -464,36 +482,36 @@ Neo4j stores the cross-reference graph derived from PostgreSQL. Every record tha
 
 Each indexed record type maps to a Neo4j node label. All nodes carry at minimum the `uri` and `did` properties.
 
-| Node Label | Source Table | Key Properties |
-|------------|-------------|----------------|
-| `Expression` | `expressions` | `uri`, `did`, `kind`, `language`, `text` (truncated) |
-| `AnnotationLayer` | `annotation_layers` | `uri`, `did`, `kind`, `subkind`, `formalism` |
-| `Annotation` | `annotations` | `layer_uri`, `index`, `label`, `value`, `confidence` |
-| `ClusterSet` | `cluster_sets` | `uri`, `did`, `kind` |
-| `Ontology` | `ontologies` | `uri`, `did`, `name`, `domain` |
-| `TypeDef` | `type_defs` | `uri`, `did`, `label`, `relation_type` |
-| `Corpus` | `corpora` | `uri`, `did`, `name`, `language` |
-| `GraphNode` | `graph_nodes` | `uri`, `did`, `kind`, `name` |
-| `GraphEdge` | `graph_edges` | `uri`, `did`, `edge_type` |
-| `Persona` | `personas` | `uri`, `did`, `name`, `kind` |
-| `Media` | `media_records` | `uri`, `did`, `modality` |
-| `Eprint` | `eprints` | `uri`, `did`, `identifier`, `title` |
-| `Alignment` | `alignments` | `uri`, `did`, `alignment_type` |
+| Node Label        | Source Table        | Key Properties                                       |
+| ----------------- | ------------------- | ---------------------------------------------------- |
+| `Expression`      | `expressions`       | `uri`, `did`, `kind`, `language`, `text` (truncated) |
+| `AnnotationLayer` | `annotation_layers` | `uri`, `did`, `kind`, `subkind`, `formalism`         |
+| `Annotation`      | `annotations`       | `layer_uri`, `index`, `label`, `value`, `confidence` |
+| `ClusterSet`      | `cluster_sets`      | `uri`, `did`, `kind`                                 |
+| `Ontology`        | `ontologies`        | `uri`, `did`, `name`, `domain`                       |
+| `TypeDef`         | `type_defs`         | `uri`, `did`, `label`, `relation_type`               |
+| `Corpus`          | `corpora`           | `uri`, `did`, `name`, `language`                     |
+| `GraphNode`       | `graph_nodes`       | `uri`, `did`, `kind`, `name`                         |
+| `GraphEdge`       | `graph_edges`       | `uri`, `did`, `edge_type`                            |
+| `Persona`         | `personas`          | `uri`, `did`, `name`, `kind`                         |
+| `Media`           | `media_records`     | `uri`, `did`, `modality`                             |
+| `Eprint`          | `eprints`           | `uri`, `did`, `identifier`, `title`                  |
+| `Alignment`       | `alignments`        | `uri`, `did`, `alignment_type`                       |
 
 ### Relationship Types
 
-| Relationship | Source Node | Target Node | Derived From |
-|-------------|------------|-------------|-------------|
-| `PARENT_OF` | `Expression` | `Expression` | `expressions.parent_ref` |
-| `SEGMENTED_BY` | `Expression` | `Segmentation` | `segmentations.expression_ref` |
-| `ANNOTATES` | `AnnotationLayer` | `Expression` | `annotation_layers.expression_ref` |
-| `USES_ONTOLOGY` | `AnnotationLayer` | `Ontology` | `annotation_layers.ontology_ref` |
-| `MEMBER_OF` | `Expression` | `Corpus` | `corpus_memberships` |
-| `REFERENCES` | any node | any node | `cross_references` table (generic) |
-| `GRAPH_EDGE` | `GraphNode` | `GraphNode` | `graph_edges` (typed via `edge_type` property) |
-| `KNOWLEDGE_REF` | `Annotation` | `GraphNode` | `knowledgeRefs` in annotation JSONB |
-| `ALIGNS` | `Alignment` | `Expression` / `AnnotationLayer` | `alignments.source_ref`, `alignments.target_ref` |
-| `LINKS_EPRINT` | `DataLink` | `Eprint` / `Corpus` | `data_links.eprint_ref`, `data_links.corpus_ref` |
+| Relationship    | Source Node       | Target Node                      | Derived From                                     |
+| --------------- | ----------------- | -------------------------------- | ------------------------------------------------ |
+| `PARENT_OF`     | `Expression`      | `Expression`                     | `expressions.parent_ref`                         |
+| `SEGMENTED_BY`  | `Expression`      | `Segmentation`                   | `segmentations.expression_ref`                   |
+| `ANNOTATES`     | `AnnotationLayer` | `Expression`                     | `annotation_layers.expression_ref`               |
+| `USES_ONTOLOGY` | `AnnotationLayer` | `Ontology`                       | `annotation_layers.ontology_ref`                 |
+| `MEMBER_OF`     | `Expression`      | `Corpus`                         | `corpus_memberships`                             |
+| `REFERENCES`    | any node          | any node                         | `cross_references` table (generic)               |
+| `GRAPH_EDGE`    | `GraphNode`       | `GraphNode`                      | `graph_edges` (typed via `edge_type` property)   |
+| `KNOWLEDGE_REF` | `Annotation`      | `GraphNode`                      | `knowledgeRefs` in annotation JSONB              |
+| `ALIGNS`        | `Alignment`       | `Expression` / `AnnotationLayer` | `alignments.source_ref`, `alignments.target_ref` |
+| `LINKS_EPRINT`  | `DataLink`        | `Eprint` / `Corpus`              | `data_links.eprint_ref`, `data_links.corpus_ref` |
 
 ### Cypher Examples
 
@@ -566,26 +584,26 @@ Redis stores ephemeral data only. Nothing in Redis is required for correctness; 
 
 ### Key Patterns
 
-| Pattern | Type | TTL | Purpose |
-|---------|------|-----|---------|
-| `session:{did}:{token}` | Hash | 24h | User session data (DID, scope, issued-at) |
-| `record:{uri}` | String (JSON) | 5m | Cached record fetched from PG |
-| `ratelimit:{did}:{endpoint}` | Sorted set | 60s | Sliding-window rate limiter (timestamps as scores) |
-| `resolve:{did}` | String | 1h | Cached DID-to-PDS resolution |
-| `cursor:firehose` | String | none | Last processed firehose cursor for resumption |
+| Pattern                      | Type          | TTL  | Purpose                                            |
+| ---------------------------- | ------------- | ---- | -------------------------------------------------- |
+| `session:{did}:{token}`      | Hash          | 24h  | User session data (DID, scope, issued-at)          |
+| `record:{uri}`               | String (JSON) | 5m   | Cached record fetched from PG                      |
+| `ratelimit:{did}:{endpoint}` | Sorted set    | 60s  | Sliding-window rate limiter (timestamps as scores) |
+| `resolve:{did}`              | String        | 1h   | Cached DID-to-PDS resolution                       |
+| `cursor:firehose`            | String        | none | Last processed firehose cursor for resumption      |
 
 ### BullMQ Queue Keys
 
 Job queues are managed by [BullMQ](https://docs.bullmq.io/) and use Redis as the backing store. BullMQ manages its own key namespace:
 
-| Pattern | Purpose |
-|---------|---------|
-| `bull:{queueName}:wait` | Jobs waiting to be processed |
-| `bull:{queueName}:active` | Jobs currently being processed |
-| `bull:{queueName}:completed` | Completed jobs (with configurable retention) |
-| `bull:{queueName}:failed` | Failed jobs awaiting retry or manual intervention |
-| `bull:{queueName}:delayed` | Jobs scheduled for future processing |
-| `bull:{queueName}:stalled` | Jobs detected as stalled by the stall checker |
+| Pattern                      | Purpose                                           |
+| ---------------------------- | ------------------------------------------------- |
+| `bull:{queueName}:wait`      | Jobs waiting to be processed                      |
+| `bull:{queueName}:active`    | Jobs currently being processed                    |
+| `bull:{queueName}:completed` | Completed jobs (with configurable retention)      |
+| `bull:{queueName}:failed`    | Failed jobs awaiting retry or manual intervention |
+| `bull:{queueName}:delayed`   | Jobs scheduled for future processing              |
+| `bull:{queueName}:stalled`   | Jobs detected as stalled by the stall checker     |
 
 Queue names include `firehose-ingest`, `es-sync`, `neo4j-sync`, `enrichment`, and `format-import`.
 
@@ -622,11 +640,11 @@ Elasticsearch and Neo4j may lag behind PostgreSQL by seconds under normal load, 
 
 Background maintenance jobs periodically verify that ES and Neo4j are consistent with PostgreSQL:
 
-| Job | Frequency | Behavior |
-|-----|-----------|----------|
-| `es-reconcile` | Hourly | Samples records from PG, checks presence and freshness in ES, re-syncs any stale or missing records |
-| `neo4j-reconcile` | Hourly | Samples nodes and edges from PG, checks presence in Neo4j, re-syncs any stale or missing data |
-| `full-reindex` | On-demand | Walks the entire PG database and rebuilds ES or Neo4j from scratch |
+| Job               | Frequency | Behavior                                                                                            |
+| ----------------- | --------- | --------------------------------------------------------------------------------------------------- |
+| `es-reconcile`    | Hourly    | Samples records from PG, checks presence and freshness in ES, re-syncs any stale or missing records |
+| `neo4j-reconcile` | Hourly    | Samples nodes and edges from PG, checks presence in Neo4j, re-syncs any stale or missing data       |
+| `full-reindex`    | On-demand | Walks the entire PG database and rebuilds ES or Neo4j from scratch                                  |
 
 ### Cursor-Based Rebuild
 
@@ -651,47 +669,47 @@ Database migrations are managed with [node-pg-migrate](https://github.com/salsit
 
 ### Commands
 
-| Command | Description |
-|---------|-------------|
-| `pnpm db:migrate:up` | Run all pending migrations |
-| `pnpm db:migrate:down` | Revert the most recent migration |
+| Command                         | Description                                       |
+| ------------------------------- | ------------------------------------------------- |
+| `pnpm db:migrate:up`            | Run all pending migrations                        |
+| `pnpm db:migrate:down`          | Revert the most recent migration                  |
 | `pnpm db:migrate:create <name>` | Create a new migration file with timestamp prefix |
 
 ### Example Migration
 
 ```typescript
-import type { MigrationBuilder } from "node-pg-migrate";
+import type { MigrationBuilder } from 'node-pg-migrate';
 
 export async function up(pgm: MigrationBuilder): Promise<void> {
-  pgm.createTable("expressions", {
-    uri:        { type: "text", primaryKey: true },
-    did:        { type: "text", notNull: true },
-    rkey:       { type: "text", notNull: true },
-    text:       { type: "text" },
-    kind:       { type: "text" },
-    language:   { type: "text" },
-    source_url: { type: "text" },
-    source_ref: { type: "text" },
-    eprint_ref: { type: "text" },
-    parent_ref: { type: "text" },
-    indexed_at: { type: "timestamptz", notNull: true, default: pgm.func("now()") },
-    record:     { type: "jsonb", notNull: true },
+  pgm.createTable('expressions', {
+    uri: { type: 'text', primaryKey: true },
+    did: { type: 'text', notNull: true },
+    rkey: { type: 'text', notNull: true },
+    text: { type: 'text' },
+    kind: { type: 'text' },
+    language: { type: 'text' },
+    source_url: { type: 'text' },
+    source_ref: { type: 'text' },
+    eprint_ref: { type: 'text' },
+    parent_ref: { type: 'text' },
+    indexed_at: { type: 'timestamptz', notNull: true, default: pgm.func('now()') },
+    record: { type: 'jsonb', notNull: true },
   });
 
-  pgm.addConstraint("expressions", "expressions_did_rkey_unique", {
-    unique: ["did", "rkey"],
+  pgm.addConstraint('expressions', 'expressions_did_rkey_unique', {
+    unique: ['did', 'rkey'],
   });
 
-  pgm.createIndex("expressions", "did");
-  pgm.createIndex("expressions", ["kind", "language"]);
-  pgm.createIndex("expressions", "source_url", { where: "source_url IS NOT NULL" });
-  pgm.createIndex("expressions", "parent_ref", { where: "parent_ref IS NOT NULL" });
-  pgm.createIndex("expressions", "record", { method: "gin" });
-  pgm.createIndex("expressions", "indexed_at");
+  pgm.createIndex('expressions', 'did');
+  pgm.createIndex('expressions', ['kind', 'language']);
+  pgm.createIndex('expressions', 'source_url', { where: 'source_url IS NOT NULL' });
+  pgm.createIndex('expressions', 'parent_ref', { where: 'parent_ref IS NOT NULL' });
+  pgm.createIndex('expressions', 'record', { method: 'gin' });
+  pgm.createIndex('expressions', 'indexed_at');
 }
 
 export async function down(pgm: MigrationBuilder): Promise<void> {
-  pgm.dropTable("expressions");
+  pgm.dropTable('expressions');
 }
 ```
 

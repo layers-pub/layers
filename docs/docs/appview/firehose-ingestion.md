@@ -26,42 +26,42 @@ Commit events are the primary interest of the Layers appview. Each commit contai
 
 The indexer process decomposes into 8 components in `src/services/indexing/`, matching Chive's granular pipeline:
 
-| Component | File | Responsibility |
-|-----------|------|----------------|
-| `FirehoseConsumer` | `firehose-consumer.ts` | WebSocket subscription, AsyncIterable event stream |
-| `EventFilter` | `event-filter.ts` | NSID filtering via `Set<string>` lookup |
-| `CommitHandler` | `commit-handler.ts` | CAR file parsing, DAG-CBOR record extraction |
-| `EventProcessor` | `event-processor.ts` | Routes validated events to storage backends |
-| `CursorManager` | `cursor-manager.ts` | Batch cursor persistence (every N events or T seconds) |
-| `EventQueue` | `event-queue.ts` | BullMQ queue dispatch with backpressure control |
-| `DLQHandler` | `dlq-handler.ts` | Dead letter queue with AlertService integration |
-| `ErrorClassifier` | `error-classifier.ts` | Classifies errors as retryable (transient) vs permanent |
+| Component          | File                   | Responsibility                                          |
+| ------------------ | ---------------------- | ------------------------------------------------------- |
+| `FirehoseConsumer` | `firehose-consumer.ts` | WebSocket subscription, AsyncIterable event stream      |
+| `EventFilter`      | `event-filter.ts`      | NSID filtering via `Set<string>` lookup                 |
+| `CommitHandler`    | `commit-handler.ts`    | CAR file parsing, DAG-CBOR record extraction            |
+| `EventProcessor`   | `event-processor.ts`   | Routes validated events to storage backends             |
+| `CursorManager`    | `cursor-manager.ts`    | Batch cursor persistence (every N events or T seconds)  |
+| `EventQueue`       | `event-queue.ts`       | BullMQ queue dispatch with backpressure control         |
+| `DLQHandler`       | `dlq-handler.ts`       | Dead letter queue with AlertService integration         |
+| `ErrorClassifier`  | `error-classifier.ts`  | Classifies errors as retryable (transient) vs permanent |
 
 The initialization flow in `src/indexer.ts`:
 
 ```typescript
 // src/indexer.ts — separate process from the API server
-const pg = await createPool(config.database)
-const redis = new Redis(config.redis)
-const es = new Client(config.elasticsearch)
-const neo4j = neo4jDriver(config.neo4j)
+const pg = await createPool(config.database);
+const redis = new Redis(config.redis);
+const es = new Client(config.elasticsearch);
+const neo4j = neo4jDriver(config.neo4j);
 
-const cursorManager = new CursorManager(pg, { batchSize: 1000, flushIntervalMs: 5000 })
-const errorClassifier = new ErrorClassifier()
-const dlqHandler = new DLQHandler(pg, alertService)
-const eventProcessor = new EventProcessor({ pg, es, neo4j, dlqHandler, errorClassifier })
-const eventQueue = new EventQueue(redis, { maxDepth: 10_000 })
-const eventFilter = new EventFilter(LAYERS_NSIDS)
-const commitHandler = new CommitHandler()
+const cursorManager = new CursorManager(pg, { batchSize: 1000, flushIntervalMs: 5000 });
+const errorClassifier = new ErrorClassifier();
+const dlqHandler = new DLQHandler(pg, alertService);
+const eventProcessor = new EventProcessor({ pg, es, neo4j, dlqHandler, errorClassifier });
+const eventQueue = new EventQueue(redis, { maxDepth: 10_000 });
+const eventFilter = new EventFilter(LAYERS_NSIDS);
+const commitHandler = new CommitHandler();
 
 const consumer = new FirehoseConsumer(config.relayUrl, cursorManager, {
   eventFilter,
   commitHandler,
   eventProcessor,
   eventQueue,
-})
+});
 
-await consumer.start()
+await consumer.start();
 ```
 
 ## Subscription Management
@@ -93,13 +93,13 @@ CREATE TABLE firehose_cursor (
 
 Connection drops are expected and handled automatically. The consumer uses a [cockatiel](https://github.com/connor-peet/cockatiel) circuit breaker with the following parameters:
 
-| Parameter | Value | Rationale |
-|---|---|---|
-| Initial delay | 500ms | Fast retry for transient network blips |
-| Max delay | 30s | Cap to avoid long outages |
-| Backoff multiplier | 2x | Exponential growth |
-| Jitter | +/-25% | Prevent thundering herd across replicas |
-| Half-open after | 60s | Probe relay availability |
+| Parameter          | Value  | Rationale                               |
+| ------------------ | ------ | --------------------------------------- |
+| Initial delay      | 500ms  | Fast retry for transient network blips  |
+| Max delay          | 30s    | Cap to avoid long outages               |
+| Backoff multiplier | 2x     | Exponential growth                      |
+| Jitter             | +/-25% | Prevent thundering herd across replicas |
+| Half-open after    | 60s    | Probe relay availability                |
 
 ### Backpressure
 
@@ -109,34 +109,34 @@ If the BullMQ job queue depth exceeds a configurable threshold (default: 10,000 
 
 The vast majority of firehose events are irrelevant to the Layers appview (Bluesky posts, likes, follows, etc.). The filter stage inspects each commit's operations and extracts only those touching one of the 26 `pub.layers.*` collection NSIDs:
 
-| # | Collection NSID |
-|---|---|
-| 1 | `pub.layers.expression.expression` |
-| 2 | `pub.layers.segmentation.segmentation` |
-| 3 | `pub.layers.annotation.annotationLayer` |
-| 4 | `pub.layers.annotation.clusterSet` |
-| 5 | `pub.layers.ontology.ontology` |
-| 6 | `pub.layers.ontology.typeDef` |
-| 7 | `pub.layers.corpus.corpus` |
-| 8 | `pub.layers.corpus.membership` |
-| 9 | `pub.layers.resource.entry` |
-| 10 | `pub.layers.resource.collection` |
-| 11 | `pub.layers.resource.collectionMembership` |
-| 12 | `pub.layers.resource.template` |
-| 13 | `pub.layers.resource.filling` |
-| 14 | `pub.layers.resource.templateComposition` |
-| 15 | `pub.layers.judgment.experimentDef` |
-| 16 | `pub.layers.judgment.judgmentSet` |
-| 17 | `pub.layers.judgment.agreementReport` |
-| 18 | `pub.layers.alignment.alignment` |
-| 19 | `pub.layers.graph.graphNode` |
-| 20 | `pub.layers.graph.graphEdge` |
-| 21 | `pub.layers.graph.graphEdgeSet` |
-| 22 | `pub.layers.persona.persona` |
-| 23 | `pub.layers.media.media` |
-| 24 | `pub.layers.eprint.eprint` |
-| 25 | `pub.layers.eprint.dataLink` |
-| 26 | `pub.layers.changelog.entry` |
+| #   | Collection NSID                            |
+| --- | ------------------------------------------ |
+| 1   | `pub.layers.expression.expression`         |
+| 2   | `pub.layers.segmentation.segmentation`     |
+| 3   | `pub.layers.annotation.annotationLayer`    |
+| 4   | `pub.layers.annotation.clusterSet`         |
+| 5   | `pub.layers.ontology.ontology`             |
+| 6   | `pub.layers.ontology.typeDef`              |
+| 7   | `pub.layers.corpus.corpus`                 |
+| 8   | `pub.layers.corpus.membership`             |
+| 9   | `pub.layers.resource.entry`                |
+| 10  | `pub.layers.resource.collection`           |
+| 11  | `pub.layers.resource.collectionMembership` |
+| 12  | `pub.layers.resource.template`             |
+| 13  | `pub.layers.resource.filling`              |
+| 14  | `pub.layers.resource.templateComposition`  |
+| 15  | `pub.layers.judgment.experimentDef`        |
+| 16  | `pub.layers.judgment.judgmentSet`          |
+| 17  | `pub.layers.judgment.agreementReport`      |
+| 18  | `pub.layers.alignment.alignment`           |
+| 19  | `pub.layers.graph.graphNode`               |
+| 20  | `pub.layers.graph.graphEdge`               |
+| 21  | `pub.layers.graph.graphEdgeSet`            |
+| 22  | `pub.layers.persona.persona`               |
+| 23  | `pub.layers.media.media`                   |
+| 24  | `pub.layers.eprint.eprint`                 |
+| 25  | `pub.layers.eprint.dataLink`               |
+| 26  | `pub.layers.changelog.entry`               |
 
 The filter is implemented as a `Set<string>` lookup on the operation's collection field. Non-matching operations are discarded with zero allocation overhead. Matching operations are decoded from DAG-CBOR and passed to the validation stage.
 
@@ -171,11 +171,11 @@ interface DLQEntry {
   error: {
     stage: 'lexicon' | 'zod';
     message: string;
-    path?: string[];        // JSON path to the failing field
+    path?: string[]; // JSON path to the failing field
     expected?: string;
     received?: string;
   };
-  rawRecord: unknown;       // Original record for debugging
+  rawRecord: unknown; // Original record for debugging
   firehoseCursor: number;
   timestamp: Date;
 }
@@ -187,11 +187,11 @@ DLQ entries are stored in PostgreSQL and exposed through an admin API for inspec
 
 The `ErrorClassifier` categorizes errors to determine retry behavior:
 
-| Category | Examples | Action |
-|----------|----------|--------|
-| **Retryable** | Network timeout, DB connection refused, ES bulk rejection | Re-queue with exponential backoff |
-| **Permanent** | Validation failure, malformed record, unknown collection NSID | Route to DLQ immediately |
-| **Dependency** | Missing referenced expression, missing ontology | Re-queue with dependency delay |
+| Category       | Examples                                                      | Action                            |
+| -------------- | ------------------------------------------------------------- | --------------------------------- |
+| **Retryable**  | Network timeout, DB connection refused, ES bulk rejection     | Re-queue with exponential backoff |
+| **Permanent**  | Validation failure, malformed record, unknown collection NSID | Route to DLQ immediately          |
+| **Dependency** | Missing referenced expression, missing ontology               | Re-queue with dependency delay    |
 
 See [Background Jobs](./background-jobs) for DLQ monitoring and reprocessing.
 
@@ -201,18 +201,18 @@ Validated records are dispatched to BullMQ queues organized by namespace. Each q
 
 ### Queue Topology
 
-| Queue | Records | Priority | Notes |
-|---|---|---|---|
-| `layers:expression` | `expression` | HIGH | Must process before annotation/segmentation |
-| `layers:segmentation` | `segmentation` | HIGH | Must process before annotation |
-| `layers:annotation` | `annotationLayer`, `clusterSet` | HIGH | Core pipeline; depends on expression + segmentation |
-| `layers:ontology` | `ontology`, `typeDef` | MEDIUM | Independent |
-| `layers:corpus` | `corpus`, `membership` | MEDIUM | Independent |
-| `layers:resource` | `entry`, `collection`, `collectionMembership`, `template`, `filling`, `templateComposition` | MEDIUM | Independent |
-| `layers:judgment` | `experimentDef`, `judgmentSet`, `agreementReport` | MEDIUM | Independent |
-| `layers:alignment` | `alignment` | MEDIUM | Independent |
-| `layers:graph` | `graphNode`, `graphEdge`, `graphEdgeSet` | MEDIUM | Independent |
-| `layers:integration` | `persona`, `media`, `eprint`, `dataLink` | LOW | Supporting records |
+| Queue                 | Records                                                                                     | Priority | Notes                                               |
+| --------------------- | ------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------- |
+| `layers:expression`   | `expression`                                                                                | HIGH     | Must process before annotation/segmentation         |
+| `layers:segmentation` | `segmentation`                                                                              | HIGH     | Must process before annotation                      |
+| `layers:annotation`   | `annotationLayer`, `clusterSet`                                                             | HIGH     | Core pipeline; depends on expression + segmentation |
+| `layers:ontology`     | `ontology`, `typeDef`                                                                       | MEDIUM   | Independent                                         |
+| `layers:corpus`       | `corpus`, `membership`                                                                      | MEDIUM   | Independent                                         |
+| `layers:resource`     | `entry`, `collection`, `collectionMembership`, `template`, `filling`, `templateComposition` | MEDIUM   | Independent                                         |
+| `layers:judgment`     | `experimentDef`, `judgmentSet`, `agreementReport`                                           | MEDIUM   | Independent                                         |
+| `layers:alignment`    | `alignment`                                                                                 | MEDIUM   | Independent                                         |
+| `layers:graph`        | `graphNode`, `graphEdge`, `graphEdgeSet`                                                    | MEDIUM   | Independent                                         |
+| `layers:integration`  | `persona`, `media`, `eprint`, `dataLink`                                                    | LOW      | Supporting records                                  |
 
 ### Dependency-Aware Processing
 
@@ -422,22 +422,22 @@ Firehose lag (the delay between when an event is produced by the relay and when 
 
 ### Metrics
 
-| Metric | Type | Labels | Description |
-|---|---|---|---|
-| `layers_firehose_cursor_lag_seconds` | Gauge | | Wall-clock time minus the timestamp of the last processed event |
-| `layers_firehose_events_processed_total` | Counter | `collection` | Total events processed, broken down by collection NSID |
-| `layers_firehose_events_filtered_total` | Counter | | Total events discarded by the filter stage |
-| `layers_firehose_validation_failures_total` | Counter | `stage`, `collection` | Validation failures by stage (lexicon/zod) and collection |
-| `layers_firehose_queue_depth` | Gauge | `queue` | Current pending job count per BullMQ queue |
+| Metric                                      | Type    | Labels                | Description                                                     |
+| ------------------------------------------- | ------- | --------------------- | --------------------------------------------------------------- |
+| `layers_firehose_cursor_lag_seconds`        | Gauge   |                       | Wall-clock time minus the timestamp of the last processed event |
+| `layers_firehose_events_processed_total`    | Counter | `collection`          | Total events processed, broken down by collection NSID          |
+| `layers_firehose_events_filtered_total`     | Counter |                       | Total events discarded by the filter stage                      |
+| `layers_firehose_validation_failures_total` | Counter | `stage`, `collection` | Validation failures by stage (lexicon/zod) and collection       |
+| `layers_firehose_queue_depth`               | Gauge   | `queue`               | Current pending job count per BullMQ queue                      |
 
 ### Alert Thresholds
 
-| Condition | Severity | Action |
-|---|---|---|
-| `cursor_lag_seconds > 60` | Warning | Page on-call; check queue depth and worker health |
-| `cursor_lag_seconds > 300` | Critical | Immediate investigation; likely downstream outage or backpressure |
-| `queue_depth > 10000` (any queue) | Warning | Scale workers or investigate slow handler |
-| `validation_failures_total` spike | Warning | Check for Lexicon version mismatch or malformed PDS |
+| Condition                         | Severity | Action                                                            |
+| --------------------------------- | -------- | ----------------------------------------------------------------- |
+| `cursor_lag_seconds > 60`         | Warning  | Page on-call; check queue depth and worker health                 |
+| `cursor_lag_seconds > 300`        | Critical | Immediate investigation; likely downstream outage or backpressure |
+| `queue_depth > 10000` (any queue) | Warning  | Scale workers or investigate slow handler                         |
+| `validation_failures_total` spike | Warning  | Check for Lexicon version mismatch or malformed PDS               |
 
 ### Dashboard
 

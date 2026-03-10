@@ -62,13 +62,13 @@ Access tokens from the PDS are short-lived. The appview uses `@atproto/oauth-cli
 
 After OAuth authentication, the appview issues its own JWT session token (via the `jose` library) that is sent as an HTTP-only cookie or `Authorization: Bearer` header.
 
-| Field | Value |
-|---|---|
-| `sub` | User's DID (`did:plc:...`) |
-| `handle` | User's ATProto handle |
-| `iat` | Issued-at timestamp |
-| `exp` | Expiration (default: 24 hours) |
-| `iss` | AppView service DID |
+| Field    | Value                          |
+| -------- | ------------------------------ |
+| `sub`    | User's DID (`did:plc:...`)     |
+| `handle` | User's ATProto handle          |
+| `iat`    | Issued-at timestamp            |
+| `exp`    | Expiration (default: 24 hours) |
+| `iss`    | AppView service DID            |
 
 Tokens are signed with `JWT_SECRET` (HS256). The `SessionManager` and `RefreshTokenManager` are separate classes in `src/auth/session/`, matching Chive's pattern. Session refresh extends the expiration without re-authenticating against the PDS.
 
@@ -92,16 +92,16 @@ For machine-to-machine communication (e.g., indexer↔API), the `ServiceAuthVeri
 
 Scopes control fine-grained API access, defined in `src/auth/scopes/`:
 
-| Scope | Description |
-|-------|-------------|
-| `read:records` | Read all public records |
-| `write:expression` | Create/update expressions |
-| `write:annotation` | Create/update annotation layers |
-| `write:corpus` | Create/manage corpora and memberships |
-| `write:ontology` | Create/manage ontologies and type definitions |
-| `write:experiment` | Create/manage experiment definitions |
-| `admin:dlq` | View and replay dead letter queue entries |
-| `admin:users` | Manage user roles and permissions |
+| Scope              | Description                                   |
+| ------------------ | --------------------------------------------- |
+| `read:records`     | Read all public records                       |
+| `write:expression` | Create/update expressions                     |
+| `write:annotation` | Create/update annotation layers               |
+| `write:corpus`     | Create/manage corpora and memberships         |
+| `write:ontology`   | Create/manage ontologies and type definitions |
+| `write:experiment` | Create/manage experiment definitions          |
+| `admin:dlq`        | View and replay dead letter queue entries     |
+| `admin:users`      | Manage user roles and permissions             |
 
 ## Authorization Model
 
@@ -130,13 +130,13 @@ m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 
 ### Role Definitions
 
-| Role | Description | Permissions |
-|---|---|---|
-| `reader` | Default for all authenticated users | Read all public records, search, browse |
-| `annotator` | Can create annotation data | Reader + create expressions, segmentations, annotation layers, alignments |
-| `corpus_manager` | Can organize corpora | Annotator + create/manage corpora, memberships, ontologies |
-| `experimenter` | Can run judgment experiments | Annotator + create experiment definitions, templates, fillings |
-| `administrator` | Full access | All operations including user management and system configuration |
+| Role             | Description                         | Permissions                                                               |
+| ---------------- | ----------------------------------- | ------------------------------------------------------------------------- |
+| `reader`         | Default for all authenticated users | Read all public records, search, browse                                   |
+| `annotator`      | Can create annotation data          | Reader + create expressions, segmentations, annotation layers, alignments |
+| `corpus_manager` | Can organize corpora                | Annotator + create/manage corpora, memberships, ontologies                |
+| `experimenter`   | Can run judgment experiments        | Annotator + create experiment definitions, templates, fillings            |
+| `administrator`  | Full access                         | All operations including user management and system configuration         |
 
 ### Policy Rules
 
@@ -208,12 +208,12 @@ The appview allows cross-origin requests only from configured origins. The defau
 
 ### Secrets Management
 
-| Secret | Storage |
-|---|---|
-| `JWT_SECRET` | Environment variable (dev), External Secrets Operator (production) |
-| `SESSION_SECRET` | Environment variable (dev), External Secrets Operator (production) |
+| Secret                | Storage                                                            |
+| --------------------- | ------------------------------------------------------------------ |
+| `JWT_SECRET`          | Environment variable (dev), External Secrets Operator (production) |
+| `SESSION_SECRET`      | Environment variable (dev), External Secrets Operator (production) |
 | `OAUTH_CLIENT_SECRET` | Environment variable (dev), External Secrets Operator (production) |
-| Database credentials | Environment variable (dev), External Secrets Operator (production) |
+| Database credentials  | Environment variable (dev), External Secrets Operator (production) |
 
 No secrets are stored in code or version control. Production deployments use the [External Secrets Operator](https://external-secrets.io/) to inject secrets from a vault (e.g., HashiCorp Vault, AWS Secrets Manager) into Kubernetes pods. Secrets are refreshed on a 1-hour interval.
 

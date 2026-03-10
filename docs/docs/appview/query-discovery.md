@@ -11,32 +11,32 @@ The appview answers two categories of questions: **retrieval** (get a specific r
 
 Query logic is encapsulated in service classes in `src/services/`, matching Chive's pattern:
 
-| Service | File | Responsibility |
-|---------|------|----------------|
-| `SearchService` | `src/services/search/search-service.ts` | Full-text search, faceted filtering via Elasticsearch |
-| `RankingService` | `src/services/search/ranking-service.ts` | Result scoring by confidence, recency, persona reputation |
-| `AutocompleteService` | `src/services/search/autocomplete-service.ts` | Expression text, ontology names, label value completion |
-| `QueryCache` | `src/services/search/query-cache.ts` | Redis-backed TTL cache for ES query results |
-| `DiscoveryService` | `src/services/discovery/discovery-service.ts` | Recommendations: "similar annotations", "related corpora" |
+| Service               | File                                          | Responsibility                                            |
+| --------------------- | --------------------------------------------- | --------------------------------------------------------- |
+| `SearchService`       | `src/services/search/search-service.ts`       | Full-text search, faceted filtering via Elasticsearch     |
+| `RankingService`      | `src/services/search/ranking-service.ts`      | Result scoring by confidence, recency, persona reputation |
+| `AutocompleteService` | `src/services/search/autocomplete-service.ts` | Expression text, ontology names, label value completion   |
+| `QueryCache`          | `src/services/search/query-cache.ts`          | Redis-backed TTL cache for ES query results               |
+| `DiscoveryService`    | `src/services/discovery/discovery-service.ts` | Recommendations: "similar annotations", "related corpora" |
 
 All service methods return `Result<T, LayersError>` and are injected via tsyringe.
 
 ## Discovery Use Cases
 
-| Use Case | Primary Backend | Query Shape |
-|---|---|---|
-| Find all annotations on a given expression | PG | `WHERE expression_ref = $1` on `annotation_layers` |
-| Find all expressions in a given corpus | PG + Neo4j | `corpus_memberships` join or Neo4j `MEMBER_OF` traversal |
-| Find all annotation layers using a given ontology | PG | `WHERE ontology_ref = $1` on `annotation_layers` |
-| Find all entities grounded to a Wikidata QID | Neo4j | `KNOWLEDGE_REF` edge traversal from a knowledge node |
-| Find all annotations in Universal Dependencies formalism | ES | Faceted filter on `formalism = "universal-dependencies"` |
-| Find all experiments measuring acceptability | ES | Faceted filter on `measureType = "acceptability"` |
-| Find all corpora in a given language | ES | Keyword filter on `language` |
-| Find all data linked to a given eprint | PG + Neo4j | `cross_references WHERE target_uri = $eprint` or `LINKS_EPRINT` traversal |
-| Find all annotations by a specific persona | PG | `WHERE persona_ref = $1` on `annotation_layers` |
-| Find the graph neighborhood of a node | Neo4j | Cypher variable-length path query |
-| Find all changes to a given record | PG + ES | `changelogs WHERE subject_uri = $1` or ES filter on `subject` |
-| Find recent changes across a collection type | ES | Faceted filter on `subjectCollection`, sorted by `createdAt` |
+| Use Case                                                 | Primary Backend | Query Shape                                                               |
+| -------------------------------------------------------- | --------------- | ------------------------------------------------------------------------- |
+| Find all annotations on a given expression               | PG              | `WHERE expression_ref = $1` on `annotation_layers`                        |
+| Find all expressions in a given corpus                   | PG + Neo4j      | `corpus_memberships` join or Neo4j `MEMBER_OF` traversal                  |
+| Find all annotation layers using a given ontology        | PG              | `WHERE ontology_ref = $1` on `annotation_layers`                          |
+| Find all entities grounded to a Wikidata QID             | Neo4j           | `KNOWLEDGE_REF` edge traversal from a knowledge node                      |
+| Find all annotations in Universal Dependencies formalism | ES              | Faceted filter on `formalism = "universal-dependencies"`                  |
+| Find all experiments measuring acceptability             | ES              | Faceted filter on `measureType = "acceptability"`                         |
+| Find all corpora in a given language                     | ES              | Keyword filter on `language`                                              |
+| Find all data linked to a given eprint                   | PG + Neo4j      | `cross_references WHERE target_uri = $eprint` or `LINKS_EPRINT` traversal |
+| Find all annotations by a specific persona               | PG              | `WHERE persona_ref = $1` on `annotation_layers`                           |
+| Find the graph neighborhood of a node                    | Neo4j           | Cypher variable-length path query                                         |
+| Find all changes to a given record                       | PG + ES         | `changelogs WHERE subject_uri = $1` or ES filter on `subject`             |
+| Find recent changes across a collection type             | ES              | Faceted filter on `subjectCollection`, sorted by `createdAt`              |
 
 ## Query Implementation Patterns
 
@@ -72,14 +72,14 @@ Elasticsearch powers the `/api/v1/search` endpoint:
   "query": {
     "bool": {
       "must": [
-        { "multi_match": {
+        {
+          "multi_match": {
             "query": "syntactic ambiguity",
             "fields": ["text^3", "text.stemmed"]
-        }}
+          }
+        }
       ],
-      "filter": [
-        { "term": { "lang": "en" } }
-      ]
+      "filter": [{ "term": { "lang": "en" } }]
     }
   }
 }
@@ -98,7 +98,7 @@ The three-dimensional annotation search (kind, subkind, formalism) uses ES term 
       "filter": [
         { "term": { "kind": "span" } },
         { "term": { "subkind": "ner" } },
-        { "term": { "labelSet": "ontonotes-ner" } }
+        { "term": { "formalism": "ontonotes" } }
       ]
     }
   },
@@ -162,12 +162,12 @@ This is faster than PostgreSQL recursive CTEs for deep hierarchies (documents wi
 
 All three fields are keyword-indexed in Elasticsearch, enabling combinatorial filtering:
 
-| Query | ES Filter |
-|---|---|
-| All POS layers | `kind = "token-tag"` AND `subkind = "pos"` |
-| All NER layers in OntoNotes | `subkind = "ner"` AND `labelSet = "ontonotes-ner"` |
-| All dependency parses | `kind = "relation"` AND `subkind = "dependency"` |
-| All UD layers | `formalism = "universal-dependencies"` |
+| Query                       | ES Filter                                        |
+| --------------------------- | ------------------------------------------------ |
+| All POS layers              | `kind = "token-tag"` AND `subkind = "pos"`       |
+| All NER layers in OntoNotes | `subkind = "ner"` AND `formalism = "ontonotes"`  |
+| All dependency parses       | `kind = "relation"` AND `subkind = "dependency"` |
+| All UD layers               | `formalism = "universal-dependencies"`           |
 
 ### By Label/Value
 
@@ -277,12 +277,12 @@ ORDER BY layer_count DESC;
 
 Redis caches frequently accessed data to reduce database load:
 
-| Cache Key Pattern | TTL | Content |
-|---|---|---|
-| `record:{uri}` | 5 min | Full record JSONB |
-| `refs:{uri}` | 5 min | Cross-reference list for a record |
-| `search:{hash}` | 1 min | ES search result page |
-| `corpus_stats:{uri}` | 15 min | Materialized corpus statistics |
+| Cache Key Pattern    | TTL    | Content                           |
+| -------------------- | ------ | --------------------------------- |
+| `record:{uri}`       | 5 min  | Full record JSONB                 |
+| `refs:{uri}`         | 5 min  | Cross-reference list for a record |
+| `search:{hash}`      | 1 min  | ES search result page             |
+| `corpus_stats:{uri}` | 15 min | Materialized corpus statistics    |
 
 Cache invalidation: when a record is updated or deleted via the firehose, its cache key and related cache keys are evicted immediately.
 

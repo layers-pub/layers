@@ -32,12 +32,12 @@ graph TD
 
 Following Chive's pattern, four separate Vitest configs target different test tiers:
 
-| Config | Scope | Database Required |
-|--------|-------|-------------------|
-| `vitest.unit.config.ts` | Unit tests with mocks | No |
-| `vitest.config.ts` | Integration tests with Testcontainers | Yes (PG, ES, Neo4j, Redis) |
-| `vitest.compliance.config.ts` | Lexicon schema compliance | Yes |
-| `vitest.pre-deployment.config.ts` | Staging health checks | Staging environment |
+| Config                            | Scope                                 | Database Required          |
+| --------------------------------- | ------------------------------------- | -------------------------- |
+| `vitest.unit.config.ts`           | Unit tests with mocks                 | No                         |
+| `vitest.config.ts`                | Integration tests with Testcontainers | Yes (PG, ES, Neo4j, Redis) |
+| `vitest.compliance.config.ts`     | Lexicon schema compliance             | Yes                        |
+| `vitest.pre-deployment.config.ts` | Staging health checks                 | Staging environment        |
 
 A top-level `__mocks__/` directory provides manual mocks (e.g., `__mocks__/isolated-vm.js`) shared across all test tiers. Storage adapter tests are co-located in `src/storage/*/__tests__/`.
 
@@ -51,14 +51,14 @@ Unit tests cover individual functions and classes in isolation, with all externa
 
 ### What to Unit Test
 
-| Component | Tests |
-|---|---|
-| Record handlers | Field extraction, ES document construction, Neo4j operation generation |
-| Validation schemas | Zod schema acceptance and rejection for each record type |
-| Cross-reference extraction | Correct ref types and URIs extracted from each record type |
-| Query builders | SQL, ES JSON, and Cypher query construction from API parameters |
-| Cache key generation | Correct key patterns and TTL values |
-| Error formatting | Structured error response generation |
+| Component                  | Tests                                                                  |
+| -------------------------- | ---------------------------------------------------------------------- |
+| Record handlers            | Field extraction, ES document construction, Neo4j operation generation |
+| Validation schemas         | Zod schema acceptance and rejection for each record type               |
+| Cross-reference extraction | Correct ref types and URIs extracted from each record type             |
+| Query builders             | SQL, ES JSON, and Cypher query construction from API parameters        |
+| Cache key generation       | Correct key patterns and TTL values                                    |
+| Error formatting           | Structured error response generation                                   |
 
 ### Mocking Strategy
 
@@ -69,12 +69,12 @@ Unit tests cover individual functions and classes in isolation, with all externa
 
 ### Coverage Requirements
 
-| Metric | Threshold |
-|---|---|
-| Lines | 80% |
-| Functions | 80% |
-| Statements | 80% |
-| Branches | 75% |
+| Metric     | Threshold |
+| ---------- | --------- |
+| Lines      | 80%       |
+| Functions  | 80%       |
+| Statements | 80%       |
+| Branches   | 75%       |
 
 ## Integration Tests
 
@@ -110,14 +110,14 @@ beforeAll(async () => {
 
 ### What to Integration Test
 
-| Component | Tests |
-|---|---|
-| Firehose handlers | End-to-end record ingestion: handler → PG + ES + Neo4j writes |
-| API endpoints | Full request cycle: HTTP request → middleware → service → database → response |
-| Cross-reference resolution | Forward and back-reference handling across record types |
-| Search | ES queries return correct results for faceted annotation search |
-| Graph traversal | Neo4j Cypher queries return correct paths and neighborhoods |
-| Cache | Redis cache population, hit/miss behavior, and invalidation |
+| Component                  | Tests                                                                         |
+| -------------------------- | ----------------------------------------------------------------------------- |
+| Firehose handlers          | End-to-end record ingestion: handler → PG + ES + Neo4j writes                 |
+| API endpoints              | Full request cycle: HTTP request → middleware → service → database → response |
+| Cross-reference resolution | Forward and back-reference handling across record types                       |
+| Search                     | ES queries return correct results for faceted annotation search               |
+| Graph traversal            | Neo4j Cypher queries return correct paths and neighborhoods                   |
+| Cache                      | Redis cache population, hit/miss behavior, and invalidation                   |
 
 ### Fixture Library
 
@@ -154,6 +154,7 @@ Compliance tests verify that the appview correctly handles all 26 record types a
 ### Schema Compliance
 
 For each of the 26 record types:
+
 1. Generate a valid record from the fixture library
 2. Validate it against the Lexicon JSON schema using `@atproto/lexicon`
 3. Index it through the handler
@@ -162,7 +163,8 @@ For each of the 26 record types:
 
 ### XRPC Protocol Compliance
 
-For each of the 53+ XRPC query endpoints:
+For each of the 38+ XRPC query endpoints:
+
 1. Verify correct parameter validation (required fields, type checking)
 2. Verify correct error codes (404 for missing records, 400 for invalid params)
 3. Verify cursor-based pagination produces complete, non-overlapping result sets
@@ -185,11 +187,11 @@ For each supported import format (CoNLL-U, BRAT, ELAN, Praat, TEI):
 
 Test fixtures include reference files from the [data model integration documentation](../integration/data-models/):
 
-| Format | Reference File | Records Expected |
-|---|---|---|
-| CoNLL-U | `test/fixtures/en_ewt-sample.conllu` | 1 expression, 1 segmentation, 3 annotation layers (POS, lemma, deps) |
-| BRAT | `test/fixtures/sample.ann` + `sample.txt` | 1 expression, 1 segmentation, 2 annotation layers (entities, relations) |
-| ELAN | `test/fixtures/sample.eaf` | 1 expression, 1 media, 2 segmentations, 4 annotation layers (per tier) |
+| Format  | Reference File                            | Records Expected                                                        |
+| ------- | ----------------------------------------- | ----------------------------------------------------------------------- |
+| CoNLL-U | `test/fixtures/en_ewt-sample.conllu`      | 1 expression, 1 segmentation, 3 annotation layers (POS, lemma, deps)    |
+| BRAT    | `test/fixtures/sample.ann` + `sample.txt` | 1 expression, 1 segmentation, 2 annotation layers (entities, relations) |
+| ELAN    | `test/fixtures/sample.eaf`                | 1 expression, 1 media, 2 segmentations, 4 annotation layers (per tier)  |
 
 ## Performance Tests
 
@@ -198,12 +200,12 @@ Test fixtures include reference files from the [data model integration documenta
 
 ### Load Scenarios
 
-| Scenario | Description | Target |
-|---|---|---|
-| Record ingestion | Simulate firehose burst of 10,000 records/sec | < 100ms p99 handler latency |
-| Search queries | 100 concurrent faceted annotation searches | < 200ms p95 response time |
-| Graph traversal | 50 concurrent 3-hop neighborhood queries | < 500ms p95 response time |
-| Mixed workload | Realistic mix of reads (80%) and ingestion (20%) | No degradation from single-workload baselines |
+| Scenario         | Description                                      | Target                                        |
+| ---------------- | ------------------------------------------------ | --------------------------------------------- |
+| Record ingestion | Simulate firehose burst of 10,000 records/sec    | < 100ms p99 handler latency                   |
+| Search queries   | 100 concurrent faceted annotation searches       | < 200ms p95 response time                     |
+| Graph traversal  | 50 concurrent 3-hop neighborhood queries         | < 500ms p95 response time                     |
+| Mixed workload   | Realistic mix of reads (80%) and ingestion (20%) | No degradation from single-workload baselines |
 
 ### Baseline Establishment
 

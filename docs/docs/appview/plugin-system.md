@@ -46,12 +46,12 @@ src/plugins/
 
 ### Plugin Type Hierarchy
 
-| Base Class | Purpose | Example |
-|------------|---------|---------|
-| `ImporterPlugin` | File-based format import (parse local files) | CoNLL, BRAT, ELAN importers |
-| `ImportingPlugin` | Network-based API harvesting (fetch from remote APIs) | Wikidata, WordNet harvesters |
-| `BacklinkPlugin` | Cross-reference to external systems | Wikidata linker, FrameNet linker |
-| `RecordSearchPlugin` | Contribute search results from external sources | (future) |
+| Base Class           | Purpose                                               | Example                          |
+| -------------------- | ----------------------------------------------------- | -------------------------------- |
+| `ImporterPlugin`     | File-based format import (parse local files)          | CoNLL, BRAT, ELAN importers      |
+| `ImportingPlugin`    | Network-based API harvesting (fetch from remote APIs) | Wikidata, WordNet harvesters     |
+| `BacklinkPlugin`     | Cross-reference to external systems                   | Wikidata linker, FrameNet linker |
+| `RecordSearchPlugin` | Contribute search results from external sources       | (future)                         |
 
 ## Architecture
 
@@ -90,15 +90,15 @@ flowchart TB
 
 ### Component Responsibilities
 
-| Component | Role |
-|---|---|
-| **PluginManager** | Lifecycle orchestration (load, initialize, reload, shutdown), dependency resolution via topological sort |
-| **PluginLoader** | Discovers plugins in the `plugins/` directory, validates manifests against JSON Schema using AJV |
-| **ContextFactory** | Creates per-plugin scoped contexts with namespaced logger, cache, metrics, and filtered event bus |
-| **PluginEventBus** | EventEmitter2-based async event system with wildcard pattern support |
-| **PermissionEnforcer** | Runtime validation of network access (domain allowlist), hook subscriptions, and storage quotas |
-| **ResourceGovernor** | Tracks per-plugin memory usage, CPU time (rolling 60-second window), and storage consumption |
-| **IsolatedVmSandbox** | Creates separate V8 isolates per plugin with enforced memory and CPU limits |
+| Component              | Role                                                                                                     |
+| ---------------------- | -------------------------------------------------------------------------------------------------------- |
+| **PluginManager**      | Lifecycle orchestration (load, initialize, reload, shutdown), dependency resolution via topological sort |
+| **PluginLoader**       | Discovers plugins in the `plugins/` directory, validates manifests against JSON Schema using AJV         |
+| **ContextFactory**     | Creates per-plugin scoped contexts with namespaced logger, cache, metrics, and filtered event bus        |
+| **PluginEventBus**     | EventEmitter2-based async event system with wildcard pattern support                                     |
+| **PermissionEnforcer** | Runtime validation of network access (domain allowlist), hook subscriptions, and storage quotas          |
+| **ResourceGovernor**   | Tracks per-plugin memory usage, CPU time (rolling 60-second window), and storage consumption             |
+| **IsolatedVmSandbox**  | Creates separate V8 isolates per plugin with enforced memory and CPU limits                              |
 
 ## Plugin Manifest
 
@@ -128,19 +128,19 @@ Every plugin requires a `manifest.json` that declares its identity, permissions,
 
 ### Manifest Fields
 
-| Field | Required | Description |
-|---|---|---|
-| `id` | Yes | Unique reverse-domain identifier (e.g., `pub.layers.plugin.conll-importer`) |
-| `name` | Yes | Human-readable name |
-| `version` | Yes | Semantic version (major.minor.patch) |
-| `description` | Yes | Brief description of what the plugin does |
-| `author` | Yes | Author name or organization |
-| `license` | Yes | SPDX license identifier |
-| `permissions.hooks` | Yes | Array of event hook patterns the plugin may subscribe to (supports `*` wildcard) |
-| `permissions.network.allowedDomains` | Yes | Domains the plugin may contact (supports `*.example.com` wildcards) |
-| `permissions.storage.maxSize` | Yes | Maximum cache storage in bytes |
-| `entrypoint` | Yes | Path to the compiled plugin entry point relative to the plugin directory |
-| `dependencies` | No | Array of plugin IDs that must be loaded first |
+| Field                                | Required | Description                                                                      |
+| ------------------------------------ | -------- | -------------------------------------------------------------------------------- |
+| `id`                                 | Yes      | Unique reverse-domain identifier (e.g., `pub.layers.plugin.conll-importer`)      |
+| `name`                               | Yes      | Human-readable name                                                              |
+| `version`                            | Yes      | Semantic version (major.minor.patch)                                             |
+| `description`                        | Yes      | Brief description of what the plugin does                                        |
+| `author`                             | Yes      | Author name or organization                                                      |
+| `license`                            | Yes      | SPDX license identifier                                                          |
+| `permissions.hooks`                  | Yes      | Array of event hook patterns the plugin may subscribe to (supports `*` wildcard) |
+| `permissions.network.allowedDomains` | Yes      | Domains the plugin may contact (supports `*.example.com` wildcards)              |
+| `permissions.storage.maxSize`        | Yes      | Maximum cache storage in bytes                                                   |
+| `entrypoint`                         | Yes      | Path to the compiled plugin entry point relative to the plugin directory         |
+| `dependencies`                       | No       | Array of plugin IDs that must be loaded first                                    |
 
 ## Sandbox Isolation
 
@@ -174,12 +174,12 @@ Network requests are proxied through the `PermissionEnforcer`, which checks each
 
 ### Resource Limits
 
-| Resource | Default Limit | Description |
-|---|---|---|
-| Memory | 128 MB | V8 heap size per isolate |
-| CPU | 5,000 ms | Per-operation execution timeout |
-| Storage | 1 MB (configurable) | Cache quota per plugin |
-| Network | Allowlist only | Only domains declared in the manifest |
+| Resource | Default Limit       | Description                           |
+| -------- | ------------------- | ------------------------------------- |
+| Memory   | 128 MB              | V8 heap size per isolate              |
+| CPU      | 5,000 ms            | Per-operation execution timeout       |
+| Storage  | 1 MB (configurable) | Cache quota per plugin                |
+| Network  | Allowlist only      | Only domains declared in the manifest |
 
 The `ResourceGovernor` monitors memory and CPU consumption over a rolling 60-second window. If a plugin exceeds its allocation, the isolate is terminated and the plugin transitions to the `ERROR` state.
 
@@ -216,7 +216,9 @@ import type { IPluginContext, IPluginManifest } from '../types/plugin.interface.
 
 export class MyPlugin extends BasePlugin {
   readonly id = 'pub.layers.plugin.my-plugin';
-  readonly manifest: IPluginManifest = { /* ... */ };
+  readonly manifest: IPluginManifest = {
+    /* ... */
+  };
 
   protected async onInitialize(): Promise<void> {
     this.context.eventBus.on('expression.indexed', this.handleExpression.bind(this));
@@ -231,7 +233,11 @@ export class MyPlugin extends BasePlugin {
     const timer = this.startTimer('expression_processing');
     try {
       // Process the event
-      await this.context.cache.set(`processed:${event.uri}`, { at: new Date().toISOString() }, 3600);
+      await this.context.cache.set(
+        `processed:${event.uri}`,
+        { at: new Date().toISOString() },
+        3600,
+      );
       this.recordCounter('expressions_processed', { status: 'success' });
     } finally {
       timer.end();
@@ -271,25 +277,25 @@ The `ContextFactory` constructs these scoped wrappers at load time. For example,
 
 Layers extends Chive's event hooks with annotation-specific lifecycle events:
 
-| Hook | Payload | Description |
-|---|---|---|
-| `expression.indexed` | `{ uri, did, text, language }` | Expression record indexed |
-| `expression.updated` | `{ uri, previousCid, currentCid }` | Expression record updated |
-| `expression.deleted` | `{ uri }` | Expression record deleted |
-| `segmentation.indexed` | `{ uri, expressionUri }` | Segmentation record indexed |
-| `annotation.indexed` | `{ uri, expressionUri, kind, subkind, formalism }` | Annotation layer indexed |
-| `annotation.deleted` | `{ uri }` | Annotation layer deleted |
-| `corpus.indexed` | `{ uri, name }` | Corpus record indexed |
-| `ontology.indexed` | `{ uri, domain }` | Ontology record indexed |
-| `graph.indexed` | `{ uri, nodeOrEdge }` | Graph node or edge indexed |
-| `import.requested` | `{ jobId, format, userId }` | Format import job started |
-| `import.completed` | `{ jobId, recordCount }` | Format import job finished |
-| `import.failed` | `{ jobId, error }` | Format import job failed |
-| `enrichment.completed` | `{ uri, enrichmentType }` | Enrichment job finished for a record |
-| `system.startup` | `{}` | Appview starting |
-| `system.shutdown` | `{}` | Appview shutting down |
-| `plugin.loaded` | `{ pluginId }` | Another plugin loaded |
-| `plugin.unloaded` | `{ pluginId }` | Another plugin unloaded |
+| Hook                   | Payload                                            | Description                          |
+| ---------------------- | -------------------------------------------------- | ------------------------------------ |
+| `expression.indexed`   | `{ uri, did, text, language }`                     | Expression record indexed            |
+| `expression.updated`   | `{ uri, previousCid, currentCid }`                 | Expression record updated            |
+| `expression.deleted`   | `{ uri }`                                          | Expression record deleted            |
+| `segmentation.indexed` | `{ uri, expressionUri }`                           | Segmentation record indexed          |
+| `annotation.indexed`   | `{ uri, expressionUri, kind, subkind, formalism }` | Annotation layer indexed             |
+| `annotation.deleted`   | `{ uri }`                                          | Annotation layer deleted             |
+| `corpus.indexed`       | `{ uri, name }`                                    | Corpus record indexed                |
+| `ontology.indexed`     | `{ uri, domain }`                                  | Ontology record indexed              |
+| `graph.indexed`        | `{ uri, nodeOrEdge }`                              | Graph node or edge indexed           |
+| `import.requested`     | `{ jobId, format, userId }`                        | Format import job started            |
+| `import.completed`     | `{ jobId, recordCount }`                           | Format import job finished           |
+| `import.failed`        | `{ jobId, error }`                                 | Format import job failed             |
+| `enrichment.completed` | `{ uri, enrichmentType }`                          | Enrichment job finished for a record |
+| `system.startup`       | `{}`                                               | Appview starting                     |
+| `system.shutdown`      | `{}`                                               | Appview shutting down                |
+| `plugin.loaded`        | `{ pluginId }`                                     | Another plugin loaded                |
+| `plugin.unloaded`      | `{ pluginId }`                                     | Another plugin unloaded              |
 
 Plugins can only subscribe to hooks declared in their manifest. The `ScopedEventBus` silently drops subscription attempts for undeclared hooks and logs a warning.
 
@@ -370,13 +376,13 @@ The plugin itself never writes to the PDS. The appview pipeline handles writing 
 
 ### Builtin Importers
 
-| Plugin ID | Format | Extensions | Records Produced | Reference Docs |
-|---|---|---|---|---|
-| `pub.layers.plugin.conll-importer` | CoNLL-U, CoNLL-2003 | `.conllu`, `.conll` | expression + segmentation + annotationLayer (POS, lemma, deps, NER) | [CoNLL Integration](../integration/data-models/conll) |
-| `pub.layers.plugin.brat-importer` | BRAT standoff | `.ann` + `.txt` | expression + segmentation + annotationLayer (entities, relations, events) | [brat Integration](../integration/data-models/brat) |
-| `pub.layers.plugin.elan-importer` | ELAN | `.eaf` | expression + media + segmentation + annotationLayer (per tier) | [ELAN/Praat Integration](../integration/data-models/elan-praat) |
-| `pub.layers.plugin.praat-importer` | Praat TextGrid | `.TextGrid` | expression + media + segmentation + annotationLayer (intervals, points) | [ELAN/Praat Integration](../integration/data-models/elan-praat) |
-| `pub.layers.plugin.tei-importer` | TEI XML | `.xml` | expression + corpus + annotationLayer (inline annotations) | [TEI Integration](../integration/data-models/tei) |
+| Plugin ID                          | Format              | Extensions          | Records Produced                                                          | Reference Docs                                                  |
+| ---------------------------------- | ------------------- | ------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| `pub.layers.plugin.conll-importer` | CoNLL-U, CoNLL-2003 | `.conllu`, `.conll` | expression + segmentation + annotationLayer (POS, lemma, deps, NER)       | [CoNLL Integration](../integration/data-models/conll)           |
+| `pub.layers.plugin.brat-importer`  | BRAT standoff       | `.ann` + `.txt`     | expression + segmentation + annotationLayer (entities, relations, events) | [brat Integration](../integration/data-models/brat)             |
+| `pub.layers.plugin.elan-importer`  | ELAN                | `.eaf`              | expression + media + segmentation + annotationLayer (per tier)            | [ELAN/Praat Integration](../integration/data-models/elan-praat) |
+| `pub.layers.plugin.praat-importer` | Praat TextGrid      | `.TextGrid`         | expression + media + segmentation + annotationLayer (intervals, points)   | [ELAN/Praat Integration](../integration/data-models/elan-praat) |
+| `pub.layers.plugin.tei-importer`   | TEI XML             | `.xml`              | expression + corpus + annotationLayer (inline annotations)                | [TEI Integration](../integration/data-models/tei)               |
 
 Each importer follows the mappings documented in the corresponding [Data Model Integration](../integration/data-models/) page. For example, the CoNLL importer maps CoNLL-U columns to Layers record fields as described in the [CoNLL integration guide](../integration/data-models/conll).
 
@@ -436,11 +442,11 @@ export interface FetchOptions {
 
 These harvesters are planned for future development:
 
-| Plugin ID | Source | Purpose |
-|---|---|---|
-| `pub.layers.plugin.wikidata-harvester` | Wikidata SPARQL | Enrich `knowledgeRefs` pointing to Wikidata entities with labels, descriptions, and type hierarchies |
-| `pub.layers.plugin.wordnet-harvester` | Open Multilingual Wordnet | Resolve WordNet synset references in annotation layers |
-| `pub.layers.plugin.ud-harvester` | Universal Dependencies | Import UD treebanks as reference corpora with POS, lemma, and dependency annotations |
+| Plugin ID                              | Source                    | Purpose                                                                                              |
+| -------------------------------------- | ------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `pub.layers.plugin.wikidata-harvester` | Wikidata SPARQL           | Enrich `knowledgeRefs` pointing to Wikidata entities with labels, descriptions, and type hierarchies |
+| `pub.layers.plugin.wordnet-harvester`  | Open Multilingual Wordnet | Resolve WordNet synset references in annotation layers                                               |
+| `pub.layers.plugin.ud-harvester`       | Universal Dependencies    | Import UD treebanks as reference corpora with POS, lemma, and dependency annotations                 |
 
 Harvesters cache their results in Redis (via the plugin's scoped cache) with configurable TTLs. All cached data is ephemeral and rebuildable from the external source.
 
@@ -499,24 +505,26 @@ The `PluginLoader` validates each manifest against a JSON Schema (using AJV) bef
 
 All plugin operations pass through the `PermissionEnforcer` at runtime:
 
-| Check | Mechanism | On Violation |
-|---|---|---|
-| Hook subscription | Manifest `hooks` array checked before event registration | `PluginPermissionError`, subscription silently dropped |
-| Network access | Outbound domain matched against `allowedDomains` (supports wildcards) | `SandboxViolationError`, request blocked |
-| Storage quota | Byte count tracked per plugin, checked before cache writes | `SandboxViolationError`, write rejected |
-| Resource limits | Memory and CPU monitored by `ResourceGovernor` | Isolate terminated, plugin set to `ERROR` state |
+| Check             | Mechanism                                                             | On Violation                                           |
+| ----------------- | --------------------------------------------------------------------- | ------------------------------------------------------ |
+| Hook subscription | Manifest `hooks` array checked before event registration              | `PluginPermissionError`, subscription silently dropped |
+| Network access    | Outbound domain matched against `allowedDomains` (supports wildcards) | `SandboxViolationError`, request blocked               |
+| Storage quota     | Byte count tracked per plugin, checked before cache writes            | `SandboxViolationError`, write rejected                |
+| Resource limits   | Memory and CPU monitored by `ResourceGovernor`                        | Isolate terminated, plugin set to `ERROR` state        |
 
 ### ATProto Compliance
 
 Plugins must follow ATProto's data sovereignty model:
 
 **Plugins CAN:**
+
 - Subscribe to firehose events via the event bus
 - Cache computed results with TTLs (all cached data must be rebuildable)
 - Call external APIs for enrichment (within their declared domain allowlist)
 - Read from user PDSes via repository interfaces
 
 **Plugins CANNOT:**
+
 - Write directly to user PDSes (format importers write through the pipeline's OAuth session)
 - Store blob data (only `BlobRef` references)
 - Create persistent state that cannot be rebuilt from the firehose or external sources
@@ -526,11 +534,11 @@ Plugins must follow ATProto's data sovereignty model:
 
 Plugin errors are categorized into three types:
 
-| Error Type | Cause | Recovery |
-|---|---|---|
-| `PluginError` | General plugin failure (initialization crash, unhandled exception) | Plugin set to `ERROR`, can be reloaded |
-| `PluginPermissionError` | Attempted operation not declared in manifest | Operation rejected, plugin continues running |
-| `SandboxViolationError` | Memory/CPU exceeded, unauthorized network access | Isolate terminated, plugin set to `ERROR` |
+| Error Type              | Cause                                                              | Recovery                                     |
+| ----------------------- | ------------------------------------------------------------------ | -------------------------------------------- |
+| `PluginError`           | General plugin failure (initialization crash, unhandled exception) | Plugin set to `ERROR`, can be reloaded       |
+| `PluginPermissionError` | Attempted operation not declared in manifest                       | Operation rejected, plugin continues running |
+| `SandboxViolationError` | Memory/CPU exceeded, unauthorized network access                   | Isolate terminated, plugin set to `ERROR`    |
 
 All plugin errors are logged with the plugin ID and do not propagate to the main appview process. A crashing plugin cannot take down the indexer or API server.
 
@@ -559,7 +567,9 @@ describe('ConllImporterPlugin', () => {
   });
 
   it('should parse a CoNLL-U file into Layers records', async () => {
-    const conlluContent = Buffer.from('# text = Hello world\n1\tHello\thello\tINTJ\tUH\t_\t0\troot\t_\t_\n2\tworld\tworld\tNOUN\tNN\t_\t1\tflat\t_\t_\n');
+    const conlluContent = Buffer.from(
+      '# text = Hello world\n1\tHello\thello\tINTJ\tUH\t_\t0\troot\t_\t_\n2\tworld\tworld\tNOUN\tNN\t_\t1\tflat\t_\t_\n',
+    );
 
     const result = await plugin.parse({
       fileContent: conlluContent,
@@ -583,24 +593,40 @@ Integration tests verify that the sandbox correctly isolates untrusted code:
 ```typescript
 describe('IsolatedVmSandbox', () => {
   it('should prevent access to Node.js APIs', async () => {
-    const result = await sandbox.executeInSandbox(isolate, `
+    const result = await sandbox.executeInSandbox(
+      isolate,
+      `
       try { require('fs'); return 'escaped'; }
       catch { return 'blocked'; }
-    `, {});
+    `,
+      {},
+    );
     expect(result).toBe('blocked');
   });
 
   it('should enforce memory limits', async () => {
-    await expect(sandbox.executeInSandbox(isolate, `
+    await expect(
+      sandbox.executeInSandbox(
+        isolate,
+        `
       const arr = [];
       while (true) arr.push(new Array(1000000));
-    `, {})).rejects.toThrow();
+    `,
+        {},
+      ),
+    ).rejects.toThrow();
   });
 
   it('should enforce CPU timeout', async () => {
-    await expect(sandbox.executeInSandbox(isolate, `
+    await expect(
+      sandbox.executeInSandbox(
+        isolate,
+        `
       while (true) {}
-    `, {})).rejects.toThrow();
+    `,
+        {},
+      ),
+    ).rejects.toThrow();
   });
 });
 ```

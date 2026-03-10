@@ -9,11 +9,11 @@ This page documents every technology in the Layers appview stack, including vers
 
 ## Runtime and Language
 
-| Technology | Version | Role |
-|---|---|---|
-| Node.js | 22+ (LTS) | Application runtime |
-| TypeScript | 5.9+ | Primary language |
-| pnpm | 10+ | Package manager and monorepo workspace management |
+| Technology | Version   | Role                                              |
+| ---------- | --------- | ------------------------------------------------- |
+| Node.js    | 22+ (LTS) | Application runtime                               |
+| TypeScript | 5.9+      | Primary language                                  |
+| pnpm       | 10+       | Package manager and monorepo workspace management |
 
 **Node.js 22+** is the current LTS line. It provides native ESM support without transpilation flags, a stable `fetch` implementation, and performance improvements in the V8 engine (Maglev compiler, resizable ArrayBuffers) that benefit high-throughput firehose processing.
 
@@ -34,23 +34,23 @@ export class ExpressionIndexer {
 
 ## API Framework
 
-| Technology | Version | Role |
-|---|---|---|
-| Hono | 4+ | HTTP framework |
-| Zod | 4+ | Runtime validation and TypeScript type inference |
-| @hono/zod-openapi | latest | OpenAPI 3.1 generation from Zod schemas |
+| Technology        | Version | Role                                             |
+| ----------------- | ------- | ------------------------------------------------ |
+| Hono              | 4+      | HTTP framework                                   |
+| Zod               | 4+      | Runtime validation and TypeScript type inference |
+| @hono/zod-openapi | latest  | OpenAPI 3.1 generation from Zod schemas          |
 
 **Hono 4+** serves as the HTTP framework for both XRPC and REST endpoints. It was selected for its benchmark performance (consistently fastest in Node.js HTTP framework comparisons), minimal footprint, and native middleware composition. The middleware stack follows Chive's 7-layer ordering:
 
 ```typescript
 const app = new Hono()
-  .use('*', secureHeaders())       // 1. Security headers (HSTS, X-Frame, CSP)
-  .use('*', cors(corsConfig))      // 2. CORS handling
-  .use('*', serviceInjection())    // 3. Inject services into context (tsyringe)
-  .use('*', requestContext())      // 4. Request ID, timing, child logger
-  .use('*', authenticate())        // 5. OAuth token / service auth JWT verification
-  .use('*', rateLimiter())         // 6. Tiered rate limiting (Redis sorted sets)
-  .onError(errorHandler)           // 7. Structured error responses
+  .use('*', secureHeaders()) // 1. Security headers (HSTS, X-Frame, CSP)
+  .use('*', cors(corsConfig)) // 2. CORS handling
+  .use('*', serviceInjection()) // 3. Inject services into context (tsyringe)
+  .use('*', requestContext()) // 4. Request ID, timing, child logger
+  .use('*', authenticate()) // 5. OAuth token / service auth JWT verification
+  .use('*', rateLimiter()) // 6. Tiered rate limiting (Redis sorted sets)
+  .onError(errorHandler); // 7. Structured error responses
 ```
 
 The appview exposes a **dual XRPC + REST API surface**:
@@ -66,22 +66,22 @@ const SearchParams = z.object({
   kind: z.enum(['token', 'span', 'relation', 'sentence']).optional(),
   limit: z.number().int().min(1).max(100).default(25),
   cursor: z.string().optional(),
-})
+});
 
-type SearchParams = z.infer<typeof SearchParams>
+type SearchParams = z.infer<typeof SearchParams>;
 ```
 
 **@hono/zod-openapi** generates an OpenAPI 3.1 specification directly from Zod schemas registered on Hono routes. The generated spec powers interactive API documentation and client SDK generation without maintaining a separate schema file.
 
 ## ATProto Integration
 
-| Technology | Version | Role |
-|---|---|---|
-| @atproto/api | latest | Protocol SDK for ATProto operations |
-| @atproto/identity | latest | DID resolution (did:plc, did:web) |
-| @atproto/lexicon | latest | Schema parsing and validation for `pub.layers.*` lexicons |
-| @atproto/xrpc-server | latest | XRPC server implementation |
-| @atproto/oauth-client-node | latest | OAuth 2.0 + PKCE authentication flow |
+| Technology                 | Version | Role                                                      |
+| -------------------------- | ------- | --------------------------------------------------------- |
+| @atproto/api               | latest  | Protocol SDK for ATProto operations                       |
+| @atproto/identity          | latest  | DID resolution (did:plc, did:web)                         |
+| @atproto/lexicon           | latest  | Schema parsing and validation for `pub.layers.*` lexicons |
+| @atproto/xrpc-server       | latest  | XRPC server implementation                                |
+| @atproto/oauth-client-node | latest  | OAuth 2.0 + PKCE authentication flow                      |
 
 These packages are maintained by Bluesky PBC and provide the canonical implementation of ATProto primitives. The appview uses them as follows:
 
@@ -93,46 +93,48 @@ These packages are maintained by Bluesky PBC and provide the canonical implement
 
 ## Error Handling
 
-| Technology | Version | Role |
-|---|---|---|
-| Custom `Result<T, E>` | — | Typed error handling monad |
-| Custom `LayersError` hierarchy | — | Structured error classification |
+| Technology                     | Version | Role                            |
+| ------------------------------ | ------- | ------------------------------- |
+| Custom `Result<T, E>`          | —       | Typed error handling monad      |
+| Custom `LayersError` hierarchy | —       | Structured error classification |
 
 Following Chive's `src/types/result.ts` pattern, all fallible operations return a `Result<T, E>` monad instead of throwing exceptions. This provides explicit, type-safe error handling at every call site:
 
 ```typescript
 // src/types/result.ts
-type Result<T, E = LayersError> =
-  | { ok: true; value: T }
-  | { ok: false; error: E }
+type Result<T, E = LayersError> = { ok: true; value: T } | { ok: false; error: E };
 
-function Ok<T>(value: T): Result<T, never> { return { ok: true, value } }
-function Err<E>(error: E): Result<never, E> { return { ok: false, error } }
+function Ok<T>(value: T): Result<T, never> {
+  return { ok: true, value };
+}
+function Err<E>(error: E): Result<never, E> {
+  return { ok: false, error };
+}
 
 // Combinators: isOk(), isErr(), unwrap(), unwrapOr(), map(), mapErr(), andThen()
 ```
 
 The `LayersError` hierarchy (in `src/types/errors.ts`) mirrors Chive's `ChiveError`:
 
-| Error Class | HTTP Status | Use Case |
-|---|---|---|
-| `ComplianceError` | — | ATProto violations (write to PDS, blob storage, non-rebuildable state) |
-| `NotFoundError` | 404 | Record not found |
-| `ValidationError` | 400 | Invalid input (Zod failures, business rules) |
-| `AuthenticationError` | 401 | Missing or invalid credentials |
-| `AuthorizationError` | 403 | Insufficient permissions |
-| `RateLimitError` | 429 | Rate limit exceeded (includes `retryAfter`) |
-| `DatabaseError` | 500 | Storage backend failures |
-| `ServiceUnavailableError` | 503 | Downstream service unreachable |
-| `PluginError` | 500 | Plugin execution failure |
-| `SandboxViolationError` | 500 | Plugin exceeded resource limits or attempted forbidden operation |
+| Error Class               | HTTP Status | Use Case                                                               |
+| ------------------------- | ----------- | ---------------------------------------------------------------------- |
+| `ComplianceError`         | —           | ATProto violations (write to PDS, blob storage, non-rebuildable state) |
+| `NotFoundError`           | 404         | Record not found                                                       |
+| `ValidationError`         | 400         | Invalid input (Zod failures, business rules)                           |
+| `AuthenticationError`     | 401         | Missing or invalid credentials                                         |
+| `AuthorizationError`      | 403         | Insufficient permissions                                               |
+| `RateLimitError`          | 429         | Rate limit exceeded (includes `retryAfter`)                            |
+| `DatabaseError`           | 500         | Storage backend failures                                               |
+| `ServiceUnavailableError` | 503         | Downstream service unreachable                                         |
+| `PluginError`             | 500         | Plugin execution failure                                               |
+| `SandboxViolationError`   | 500         | Plugin exceeded resource limits or attempted forbidden operation       |
 
 ```typescript
 // Usage in handlers — no throws, explicit error paths
 async function getExpression(uri: string): Promise<Result<Expression>> {
-  const record = await pgPolicy.execute(() => pg.query(sql, [uri]))
-  if (!record.rows[0]) return Err(new NotFoundError(`Expression not found: ${uri}`))
-  return Ok(record.rows[0])
+  const record = await pgPolicy.execute(() => pg.query(sql, [uri]));
+  if (!record.rows[0]) return Err(new NotFoundError(`Expression not found: ${uri}`));
+  return Ok(record.rows[0]);
 }
 ```
 
@@ -142,9 +144,9 @@ The appview uses four databases, each serving a distinct query pattern. PostgreS
 
 ### PostgreSQL 16+
 
-| Attribute | Detail |
-|---|---|
-| Role | Source of truth for all 26 record types |
+| Attribute    | Detail                                                                       |
+| ------------ | ---------------------------------------------------------------------------- |
+| Role         | Source of truth for all 26 record types                                      |
 | Key features | AT-URI foreign keys, JSONB for flexible fields, GIN indexes, partial indexes |
 
 PostgreSQL stores every `pub.layers.*` record as a normalized row with AT-URI foreign keys for cross-references. JSONB columns store flexible fields (annotation feature maps, experiment parameters, knowledge references) that vary by record type without requiring schema migrations. GIN indexes on JSONB columns enable efficient containment queries (`@>` operator) for filtering by nested properties.
@@ -172,9 +174,9 @@ CREATE INDEX idx_expression_metadata ON expression USING GIN (metadata);
 
 ### Elasticsearch 8+
 
-| Attribute | Detail |
-|---|---|
-| Role | Full-text search, faceted queries, completion suggesters |
+| Attribute    | Detail                                                            |
+| ------------ | ----------------------------------------------------------------- |
+| Role         | Full-text search, faceted queries, completion suggesters          |
 | Key features | Custom linguistic analyzers, nested objects, faceted aggregations |
 
 Elasticsearch indexes a subset of record types that require full-text search or faceted filtering (see the coverage matrix on the [Overview](./) page). Custom analyzers handle linguistic data: language-specific stemmers, ICU tokenization for CJK text, phonetic analysis for lexical resources, and n-gram tokenization for partial matching.
@@ -201,9 +203,9 @@ Annotation layers are indexed as nested objects in Elasticsearch, enabling facet
 
 ### Neo4j 5+
 
-| Attribute | Detail |
-|---|---|
-| Role | Knowledge graph, cross-reference traversal, path queries |
+| Attribute    | Detail                                                    |
+| ------------ | --------------------------------------------------------- |
+| Role         | Knowledge graph, cross-reference traversal, path queries  |
 | Key features | Native graph storage, Cypher query language, APOC library |
 
 Neo4j stores the knowledge graph built from `graph.graphNode` and `graph.graphEdge` records, corpus membership edges, type hierarchy edges, alignment links, and cross-reference relationships. It answers queries that require multi-hop traversal: "find all annotations that reference an entity grounded in this Wikidata entry" or "find all corpora that contain expressions linked to this eprint."
@@ -221,10 +223,10 @@ LIMIT 100
 
 ### Redis 7+
 
-| Attribute | Detail |
-|---|---|
-| Role | Session cache, rate limiting, BullMQ job queue backend, pub/sub |
-| Key features | In-memory performance, TTL-based expiry, Streams, pub/sub |
+| Attribute    | Detail                                                          |
+| ------------ | --------------------------------------------------------------- |
+| Role         | Session cache, rate limiting, BullMQ job queue backend, pub/sub |
+| Key features | In-memory performance, TTL-based expiry, Streams, pub/sub       |
 
 Redis is accessed via **ioredis**, matching Chive's client choice for its cluster support, pipelining, and Lua scripting. Redis serves four distinct functions:
 
@@ -236,9 +238,9 @@ Redis is accessed via **ioredis**, matching Chive's client choice for its cluste
 
 ## Job Queue
 
-| Technology | Version | Role |
-|---|---|---|
-| BullMQ | 5+ | Job queue framework on Redis |
+| Technology | Version | Role                         |
+| ---------- | ------- | ---------------------------- |
+| BullMQ     | 5+      | Job queue framework on Redis |
 
 **BullMQ 5+** manages all asynchronous processing: firehose event ingestion, Elasticsearch/Neo4j indexing, format import pipelines, enrichment workers, and maintenance tasks. It uses Redis Streams as the backing store.
 
@@ -246,13 +248,13 @@ The appview organizes queues in a **per-namespace topology**. Each `pub.layers.*
 
 ```typescript
 const queues = {
-  'expression':  new Queue('expression',  { connection: redis }),
-  'annotation':  new Queue('annotation',  { connection: redis }),
-  'corpus':      new Queue('corpus',      { connection: redis }),
-  'graph':       new Queue('graph',       { connection: redis }),
-  'enrichment':  new Queue('enrichment',  { connection: redis }),
-  'maintenance': new Queue('maintenance', { connection: redis }),
-}
+  expression: new Queue('expression', { connection: redis }),
+  annotation: new Queue('annotation', { connection: redis }),
+  corpus: new Queue('corpus', { connection: redis }),
+  graph: new Queue('graph', { connection: redis }),
+  enrichment: new Queue('enrichment', { connection: redis }),
+  maintenance: new Queue('maintenance', { connection: redis }),
+};
 ```
 
 Key features:
@@ -266,13 +268,13 @@ See [Background Jobs](./background-jobs) for the full worker architecture.
 
 ## Authentication and Authorization
 
-| Technology | Version | Role |
-|---|---|---|
-| @atproto/oauth-client-node | latest | ATProto OAuth 2.0 + PKCE flow |
-| jose | 6+ | JWT signing and verification |
-| Casbin | 5+ | RBAC policy engine |
-| @simplewebauthn/server | latest | WebAuthn/FIDO2 passkey support |
-| @otplib | latest | TOTP-based MFA |
+| Technology                 | Version | Role                           |
+| -------------------------- | ------- | ------------------------------ |
+| @atproto/oauth-client-node | latest  | ATProto OAuth 2.0 + PKCE flow  |
+| jose                       | 6+      | JWT signing and verification   |
+| Casbin                     | 5+      | RBAC policy engine             |
+| @simplewebauthn/server     | latest  | WebAuthn/FIDO2 passkey support |
+| @otplib                    | latest  | TOTP-based MFA                 |
 
 **ATProto OAuth 2.0 + PKCE** is the primary authentication mechanism. Users authenticate with their ATProto identity (DID) through the standard OAuth flow. The `@atproto/oauth-client-node` package handles authorization URL generation, callback verification, token exchange, and token refresh.
 
@@ -301,13 +303,13 @@ m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 
 ## Observability
 
-| Technology | Version | Role |
-|---|---|---|
-| Pino | 10+ | Structured JSON logging with PII redaction |
-| OpenTelemetry | 1.x | Distributed tracing, metrics, and logs (stable SDK) |
-| prom-client | 15+ | Prometheus metrics |
-| Grafana | latest | Dashboards and alerting |
-| Grafana Alloy | latest | Next-gen telemetry collector (replaces Grafana Agent) |
+| Technology    | Version | Role                                                  |
+| ------------- | ------- | ----------------------------------------------------- |
+| Pino          | 10+     | Structured JSON logging with PII redaction            |
+| OpenTelemetry | 1.x     | Distributed tracing, metrics, and logs (stable SDK)   |
+| prom-client   | 15+     | Prometheus metrics                                    |
+| Grafana       | latest  | Dashboards and alerting                               |
+| Grafana Alloy | latest  | Next-gen telemetry collector (replaces Grafana Agent) |
 
 **Pino 10+** produces structured JSON logs with automatic redaction of sensitive fields. It is the fastest Node.js logging library by benchmark, which matters for high-throughput firehose processing where logging overhead is measurable. Following Chive's pattern, the logger automatically injects OpenTelemetry trace context (`traceId`, `spanId`) into every log entry via a Pino `mixin()` function, and redacts a comprehensive set of sensitive fields:
 
@@ -315,20 +317,27 @@ m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 const logger = pino({
   level: 'info',
   redact: [
-    'req.headers.authorization', 'req.headers.cookie',
-    '*.password', '*.token', '*.apiKey', '*.secret',
-    '*.credential', '*.accessToken', '*.refreshToken', '*.privateKey',
+    'req.headers.authorization',
+    'req.headers.cookie',
+    '*.password',
+    '*.token',
+    '*.apiKey',
+    '*.secret',
+    '*.credential',
+    '*.accessToken',
+    '*.refreshToken',
+    '*.privateKey',
   ],
   mixin() {
-    const span = trace.getActiveSpan()
-    const ctx = span?.spanContext()
-    return ctx ? { traceId: ctx.traceId, spanId: ctx.spanId } : {}
+    const span = trace.getActiveSpan();
+    const ctx = span?.spanContext();
+    return ctx ? { traceId: ctx.traceId, spanId: ctx.spanId } : {};
   },
   transport: {
     target: 'pino-pretty',
     options: { colorize: process.env.NODE_ENV !== 'production' },
   },
-})
+});
 ```
 
 **OpenTelemetry 1.x** (stable SDK) provides distributed tracing across the appview's async processing pipeline. The SDK has graduated from 0.x to stable 1.x, providing API guarantees. Traces follow a firehose event from ingestion through queue processing, database writes, and index updates. The OTLP exporter sends traces to a collector (Grafana Tempo in production, Jaeger in development). The OTel Logs bridge can also route Pino logs through the OTel Collector for unified observability.
@@ -344,15 +353,15 @@ const logger = pino({
 
 ## Infrastructure
 
-| Technology | Version | Role |
-|---|---|---|
-| Docker | latest | Container builds (multi-stage, distroless runtime) |
-| Kubernetes | 1.28+ | Container orchestration |
-| Kustomize | latest | Environment-specific configuration overlays |
-| ArgoCD / Flux | latest | GitOps continuous delivery |
-| External Secrets Operator | latest | Production secrets management |
-| cert-manager | latest | TLS certificate automation |
-| Sigstore cosign | latest | Container image signing and verification |
+| Technology                | Version | Role                                               |
+| ------------------------- | ------- | -------------------------------------------------- |
+| Docker                    | latest  | Container builds (multi-stage, distroless runtime) |
+| Kubernetes                | 1.28+   | Container orchestration                            |
+| Kustomize                 | latest  | Environment-specific configuration overlays        |
+| ArgoCD / Flux             | latest  | GitOps continuous delivery                         |
+| External Secrets Operator | latest  | Production secrets management                      |
+| cert-manager              | latest  | TLS certificate automation                         |
+| Sigstore cosign           | latest  | Container image signing and verification           |
 
 **Docker** builds use multi-stage Dockerfiles with **distroless runtime images** for minimal attack surface. The build stage compiles TypeScript with `tsc` on Alpine, then copies only production artifacts to a distroless image that contains no shell, package manager, or unnecessary binaries. Separate compose files match Chive's pattern: `docker-compose.yml` (dev), `docker-compose.prod.yml`, `docker-compose.ci.yml`, `docker-compose.observability.yml`:
 
@@ -392,12 +401,12 @@ See [Deployment](./deployment) for the full deployment architecture, CI/CD pipel
 
 ## Testing
 
-| Technology | Version | Role |
-|---|---|---|
-| Vitest | 4+ | Unit, integration, compliance, and pre-deployment tests |
-| Testcontainers | latest | Ephemeral database containers for integration tests |
-| Playwright | 1.57+ | End-to-end browser tests |
-| k6 | latest | Load and performance testing |
+| Technology     | Version | Role                                                    |
+| -------------- | ------- | ------------------------------------------------------- |
+| Vitest         | 4+      | Unit, integration, compliance, and pre-deployment tests |
+| Testcontainers | latest  | Ephemeral database containers for integration tests     |
+| Playwright     | 1.57+   | End-to-end browser tests                                |
+| k6             | latest  | Load and performance testing                            |
 
 **Vitest 4+** is the test runner for all non-E2E tests. It provides native ESM support, TypeScript execution without a separate compilation step, and a Jest-compatible API. Tests are organized into four tiers:
 
@@ -409,10 +418,10 @@ See [Deployment](./deployment) for the full deployment architecture, CI/CD pipel
 **Testcontainers** spins up ephemeral PostgreSQL, Elasticsearch, Neo4j, and Redis containers for integration tests. Each test suite gets a fresh set of containers, ensuring test isolation:
 
 ```typescript
-const pg = await new PostgreSqlContainer('postgres:16-alpine').start()
-const es = await new ElasticsearchContainer('elasticsearch:8.17.0').start()
-const neo4j = await new Neo4jContainer('neo4j:5-community').start()
-const redis = await new GenericContainer('redis:7-alpine').withExposedPorts(6379).start()
+const pg = await new PostgreSqlContainer('postgres:16-alpine').start();
+const es = await new ElasticsearchContainer('elasticsearch:8.17.0').start();
+const neo4j = await new Neo4jContainer('neo4j:5-community').start();
+const redis = await new GenericContainer('redis:7-alpine').withExposedPorts(6379).start();
 ```
 
 **Playwright 1.57+** tests the Bull Board dashboard, OpenAPI documentation UI, and any web-facing admin interfaces end-to-end.
@@ -423,11 +432,11 @@ See [Testing Strategy](./testing-strategy) for the full testing architecture.
 
 ## Plugins and Extensibility
 
-| Technology | Version | Role |
-|---|---|---|
-| isolated-vm | 6+ | V8 isolate sandbox per plugin |
-| EventEmitter2 | latest | Async event bus for plugin hooks |
-| AJV | latest | JSON Schema validation for plugin manifests |
+| Technology    | Version | Role                                        |
+| ------------- | ------- | ------------------------------------------- |
+| isolated-vm   | 6+      | V8 isolate sandbox per plugin               |
+| EventEmitter2 | latest  | Async event bus for plugin hooks            |
+| AJV           | latest  | JSON Schema validation for plugin manifests |
 
 **isolated-vm 6+** provides a secure execution environment for third-party plugins. Each plugin runs in its own V8 isolate with no access to the host Node.js process, filesystem, or network. The appview injects a controlled API surface into each isolate.
 
@@ -460,14 +469,14 @@ See [Plugin System](./plugin-system) for the full plugin architecture.
 
 ## Build and Development
 
-| Technology | Version | Role |
-|---|---|---|
-| Turbo | 2+ | Monorepo build orchestration |
-| @atproto/lex-cli | latest | TypeScript codegen from lexicon JSON |
-| node-pg-migrate | latest | PostgreSQL schema migrations |
-| ESLint | 9+ | Linting (flat config) |
-| Prettier | 3+ | Code formatting |
-| Husky | 9+ | Git hook management |
+| Technology       | Version | Role                                 |
+| ---------------- | ------- | ------------------------------------ |
+| Turbo            | 2+      | Monorepo build orchestration         |
+| @atproto/lex-cli | latest  | TypeScript codegen from lexicon JSON |
+| node-pg-migrate  | latest  | PostgreSQL schema migrations         |
+| ESLint           | 9+      | Linting (flat config)                |
+| Prettier         | 3+      | Code formatting                      |
+| Husky            | 9+      | Git hook management                  |
 
 **Turbo 2+** orchestrates builds across the monorepo. It understands package dependency graphs and caches build outputs, so incremental builds after a change to a single package only rebuild affected downstream packages. CI pipelines use `turbo run build test lint` with remote caching for fast feedback.
 
@@ -483,9 +492,9 @@ lex-cli gen-ts ./lexicons --out ./packages/shared/src/lexicon-types
 
 ## Resilience
 
-| Technology | Version | Role |
-|---|---|---|
-| cockatiel | 3+ | Circuit breaker, retry, bulkhead, timeout |
+| Technology | Version | Role                                      |
+| ---------- | ------- | ----------------------------------------- |
+| cockatiel  | 3+      | Circuit breaker, retry, bulkhead, timeout |
 
 **cockatiel 3+** is the sole resilience library, following Chive's pattern of consolidating all resilience patterns into a single composable policy chain. Every external service call (database queries, DID resolution, PDS requests, Elasticsearch queries, Neo4j operations) is wrapped in a cockatiel policy:
 
@@ -495,24 +504,23 @@ lex-cli gen-ts ./lexicons --out ./packages/shared/src/lexicon-types
 - **Timeout**: Enforces per-request timeouts for database queries and HTTP calls.
 
 ```typescript
-import { Policy, Duration } from 'cockatiel'
+import { Policy, Duration } from 'cockatiel';
 
 function createResiliencePolicy(name: string, logger: ILogger) {
   return Policy.wrap(
-    Policy.handleAll()
-      .retry().attempts(3).exponential({ initialDelay: 1000, maxDelay: 10000 }),
+    Policy.handleAll().retry().attempts(3).exponential({ initialDelay: 1000, maxDelay: 10000 }),
     Policy.timeout(5000),
     Policy.circuitBreaker(5, Duration.ofSeconds(30)),
     Policy.bulkhead(20),
-  )
+  );
 }
 
 // Applied to all storage adapters
-const pgPolicy = createResiliencePolicy('postgresql', logger)
-const esPolicy = createResiliencePolicy('elasticsearch', logger)
-const neo4jPolicy = createResiliencePolicy('neo4j', logger)
+const pgPolicy = createResiliencePolicy('postgresql', logger);
+const esPolicy = createResiliencePolicy('elasticsearch', logger);
+const neo4jPolicy = createResiliencePolicy('neo4j', logger);
 
-const result = await pgPolicy.execute(() => pg.query(sql))
+const result = await pgPolicy.execute(() => pg.query(sql));
 ```
 
 Policies are created per-service and shared across all callers, matching Chive's `src/services/common/resilience.ts` pattern.
@@ -521,24 +529,24 @@ Policies are created per-service and shared across all callers, matching Chive's
 
 Key architectural decisions, recorded in ADR (Architecture Decision Record) style:
 
-| Decision | Choice | Rationale | Alternatives Considered |
-|---|---|---|---|
-| API framework | Hono | Fastest benchmarks, native middleware composition, Zod integration | Fastify (heavier), Express (legacy API) |
-| Primary database | PostgreSQL | AT-URI foreign keys, JSONB flexibility, mature ecosystem | CockroachDB (overkill for single-region) |
-| Search engine | Elasticsearch | Faceted search, custom analyzers for linguistic data, nested objects | Meilisearch (lacks nested), Typesense (lacks custom analyzers) |
-| Graph database | Neo4j | Native graph storage, Cypher query language, APOC library | PostgreSQL recursive CTEs (poor performance at depth), Dgraph (less mature) |
-| Job queue | BullMQ | Redis-backed, per-queue concurrency, priority, DLQ, dashboard | Temporal (complex setup), pg-boss (single-database bottleneck) |
-| Plugin sandbox | isolated-vm | V8 isolate per plugin, memory/CPU limits, no host access | vm2 (deprecated, security issues), Deno subprocesses (heavier), WASI (not yet mature for Node.js plugins) |
-| Validation | Zod | TypeScript type inference, composable, OpenAPI generation | Joi (no type inference), AJV (JSON Schema only) |
-| Logging | Pino | Fastest Node.js logger, structured JSON, redaction | Winston (slower), Bunyan (unmaintained) |
-| DI framework | tsyringe | Decorator-based, lightweight, TypeScript-native | InversifyJS (heavier), manual DI (tedious at scale) |
-| Error handling | Custom `Result<T, E>` | Zero deps, Chive compatibility, explicit error paths | Effect-TS (heavy, steep learning curve), neverthrow (less composable), thrown exceptions (implicit, untyped) |
-| DB migrations | node-pg-migrate | TypeScript migration files, Chive precedent, fine-grained control | Drizzle ORM (AT-URI schemas don't map well to ORMs), Kysely (good but unnecessary abstraction layer) |
-| Resilience | cockatiel only | Single composable policy chain, Chive precedent | p-queue + p-retry (multiple libraries for same concern), Polly.js (less maintained) |
-| Container runtime | Distroless | No shell, no package manager, minimal CVE surface | Alpine (has shell and apk, larger attack surface), scratch (too minimal, missing libc) |
-| Deployment model | GitOps (ArgoCD/Flux) | Declarative, auditable, self-healing | Manual `kubectl apply` (error-prone, no drift detection), Helm-only (no GitOps reconciliation) |
-| Container signing | Sigstore cosign | Keyless signing, industry standard, K8s admission controller support | Notary v2 (less ecosystem support), GPG (manual key management) |
-| TS decorators | `experimentalDecorators` | Required by tsyringe; TC39 stage 3 decorators not yet supported | TC39 decorators (tsyringe incompatible), no decorators (manual DI wiring) |
+| Decision          | Choice                   | Rationale                                                            | Alternatives Considered                                                                                      |
+| ----------------- | ------------------------ | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| API framework     | Hono                     | Fastest benchmarks, native middleware composition, Zod integration   | Fastify (heavier), Express (legacy API)                                                                      |
+| Primary database  | PostgreSQL               | AT-URI foreign keys, JSONB flexibility, mature ecosystem             | CockroachDB (overkill for single-region)                                                                     |
+| Search engine     | Elasticsearch            | Faceted search, custom analyzers for linguistic data, nested objects | Meilisearch (lacks nested), Typesense (lacks custom analyzers)                                               |
+| Graph database    | Neo4j                    | Native graph storage, Cypher query language, APOC library            | PostgreSQL recursive CTEs (poor performance at depth), Dgraph (less mature)                                  |
+| Job queue         | BullMQ                   | Redis-backed, per-queue concurrency, priority, DLQ, dashboard        | Temporal (complex setup), pg-boss (single-database bottleneck)                                               |
+| Plugin sandbox    | isolated-vm              | V8 isolate per plugin, memory/CPU limits, no host access             | vm2 (deprecated, security issues), Deno subprocesses (heavier), WASI (not yet mature for Node.js plugins)    |
+| Validation        | Zod                      | TypeScript type inference, composable, OpenAPI generation            | Joi (no type inference), AJV (JSON Schema only)                                                              |
+| Logging           | Pino                     | Fastest Node.js logger, structured JSON, redaction                   | Winston (slower), Bunyan (unmaintained)                                                                      |
+| DI framework      | tsyringe                 | Decorator-based, lightweight, TypeScript-native                      | InversifyJS (heavier), manual DI (tedious at scale)                                                          |
+| Error handling    | Custom `Result<T, E>`    | Zero deps, Chive compatibility, explicit error paths                 | Effect-TS (heavy, steep learning curve), neverthrow (less composable), thrown exceptions (implicit, untyped) |
+| DB migrations     | node-pg-migrate          | TypeScript migration files, Chive precedent, fine-grained control    | Drizzle ORM (AT-URI schemas don't map well to ORMs), Kysely (good but unnecessary abstraction layer)         |
+| Resilience        | cockatiel only           | Single composable policy chain, Chive precedent                      | p-queue + p-retry (multiple libraries for same concern), Polly.js (less maintained)                          |
+| Container runtime | Distroless               | No shell, no package manager, minimal CVE surface                    | Alpine (has shell and apk, larger attack surface), scratch (too minimal, missing libc)                       |
+| Deployment model  | GitOps (ArgoCD/Flux)     | Declarative, auditable, self-healing                                 | Manual `kubectl apply` (error-prone, no drift detection), Helm-only (no GitOps reconciliation)               |
+| Container signing | Sigstore cosign          | Keyless signing, industry standard, K8s admission controller support | Notary v2 (less ecosystem support), GPG (manual key management)                                              |
+| TS decorators     | `experimentalDecorators` | Required by tsyringe; TC39 stage 3 decorators not yet supported      | TC39 decorators (tsyringe incompatible), no decorators (manual DI wiring)                                    |
 
 ## See Also
 

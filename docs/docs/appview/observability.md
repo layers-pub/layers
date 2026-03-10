@@ -9,15 +9,15 @@ sidebar_position: 10
 
 The observability module lives in `src/observability/`, matching Chive's layout:
 
-| File | Responsibility |
-|------|----------------|
-| `logger.ts` | PinoLogger class with structured JSON output and PII redaction |
-| `telemetry.ts` | OpenTelemetry SDK initialization (`initTelemetry`) |
-| `tracer.ts` | Trace context helpers (get active span, inject context) |
-| `metrics-exporter.ts` | Prometheus metric definitions and registration |
-| `prometheus-registry.ts` | Centralized metric registry |
-| `freshness-metrics.ts` | Dedicated staleness/freshness tracking metrics |
-| `index.ts` | Barrel exports |
+| File                     | Responsibility                                                 |
+| ------------------------ | -------------------------------------------------------------- |
+| `logger.ts`              | PinoLogger class with structured JSON output and PII redaction |
+| `telemetry.ts`           | OpenTelemetry SDK initialization (`initTelemetry`)             |
+| `tracer.ts`              | Trace context helpers (get active span, inject context)        |
+| `metrics-exporter.ts`    | Prometheus metric definitions and registration                 |
+| `prometheus-registry.ts` | Centralized metric registry                                    |
+| `freshness-metrics.ts`   | Dedicated staleness/freshness tracking metrics                 |
+| `index.ts`               | Barrel exports                                                 |
 
 ## Logging
 
@@ -32,10 +32,17 @@ const logger = pino({
     level: (label) => ({ level: label }),
   },
   redact: [
-    'req.headers.authorization', 'req.headers.cookie',
-    '*.password', '*.token', '*.apiKey', '*.apikey',
-    '*.secret', '*.credential', '*.accessToken',
-    '*.refreshToken', '*.privateKey',
+    'req.headers.authorization',
+    'req.headers.cookie',
+    '*.password',
+    '*.token',
+    '*.apiKey',
+    '*.apikey',
+    '*.secret',
+    '*.credential',
+    '*.accessToken',
+    '*.refreshToken',
+    '*.privateKey',
   ],
   mixin() {
     const span = trace.getActiveSpan();
@@ -50,13 +57,13 @@ const logger = pino({
 
 ### Log Levels
 
-| Level | Usage |
-|---|---|
-| `error` | Unrecoverable failures (database connection lost, DLQ entry created) |
-| `warn` | Recoverable issues (validation failure, retry triggered, cache miss on expected key) |
-| `info` | Operational events (server started, firehose connected, job completed) |
-| `debug` | Detailed tracing (record processing steps, query plans, cache operations) |
-| `trace` | Per-record field-level detail (only in development) |
+| Level   | Usage                                                                                |
+| ------- | ------------------------------------------------------------------------------------ |
+| `error` | Unrecoverable failures (database connection lost, DLQ entry created)                 |
+| `warn`  | Recoverable issues (validation failure, retry triggered, cache miss on expected key) |
+| `info`  | Operational events (server started, firehose connected, job completed)               |
+| `debug` | Detailed tracing (record processing steps, query plans, cache operations)            |
+| `trace` | Per-record field-level detail (only in development)                                  |
 
 ### Request Context
 
@@ -68,14 +75,14 @@ Every HTTP request gets a unique `requestId` (UUID v4) injected by the request c
 
 The appview uses **OpenTelemetry 1.x** (stable SDK) to instrument all I/O boundaries. The OTel Logs bridge can route Pino logs through the OTel Collector for unified observability. **Grafana Alloy** is the recommended next-gen collector, replacing the legacy Grafana Agent:
 
-| Instrumentation | Library | Traces |
-|---|---|---|
-| HTTP server | `@opentelemetry/instrumentation-http` | Incoming request spans |
-| PostgreSQL | `@opentelemetry/instrumentation-pg` | Query spans with SQL text |
-| Redis | `@opentelemetry/instrumentation-redis` | Command spans |
-| Elasticsearch | Custom instrumentation | Search/index spans |
-| Neo4j | Custom instrumentation | Cypher query spans |
-| BullMQ | Custom instrumentation | Job processing spans |
+| Instrumentation | Library                                | Traces                    |
+| --------------- | -------------------------------------- | ------------------------- |
+| HTTP server     | `@opentelemetry/instrumentation-http`  | Incoming request spans    |
+| PostgreSQL      | `@opentelemetry/instrumentation-pg`    | Query spans with SQL text |
+| Redis           | `@opentelemetry/instrumentation-redis` | Command spans             |
+| Elasticsearch   | Custom instrumentation                 | Search/index spans        |
+| Neo4j           | Custom instrumentation                 | Cypher query spans        |
+| BullMQ          | Custom instrumentation                 | Job processing spans      |
 
 Traces are exported via OTLP HTTP to a collector (Jaeger in development, Grafana Tempo in production). A dedicated `MetricsService` class in `src/services/metrics/` provides a clean API for recording business metrics (view counts, search clicks, annotation activity).
 
@@ -94,11 +101,11 @@ HTTP GET /api/v1/annotations?kind=span&subkind=ner
 
 ### Sampling Strategy
 
-| Environment | Sampling Rate | Rationale |
-|---|---|---|
-| Development | 100% | Full visibility during debugging |
-| Staging | 50% | High visibility with moderate overhead |
-| Production | 10% | Sufficient for debugging, minimal overhead |
+| Environment | Sampling Rate | Rationale                                  |
+| ----------- | ------------- | ------------------------------------------ |
+| Development | 100%          | Full visibility during debugging           |
+| Staging     | 50%           | High visibility with moderate overhead     |
+| Production  | 10%           | Sufficient for debugging, minimal overhead |
 
 Error traces are always captured regardless of sampling rate (tail-based sampling).
 
@@ -110,36 +117,36 @@ The appview exposes Prometheus metrics at `GET /metrics` using `prom-client`.
 
 ### Application Metrics
 
-| Metric | Type | Labels | Description |
-|---|---|---|---|
-| `layers_http_request_duration_seconds` | Histogram | `method`, `route`, `status` | Request latency distribution |
-| `layers_http_requests_total` | Counter | `method`, `route`, `status` | Total request count |
-| `layers_db_query_duration_seconds` | Histogram | `database`, `operation` | Database query latency |
-| `layers_db_connections_active` | Gauge | `database` | Active connection count per pool |
-| `layers_cache_hits_total` | Counter | `cache` | Redis cache hits |
-| `layers_cache_misses_total` | Counter | `cache` | Redis cache misses |
+| Metric                                 | Type      | Labels                      | Description                      |
+| -------------------------------------- | --------- | --------------------------- | -------------------------------- |
+| `layers_http_request_duration_seconds` | Histogram | `method`, `route`, `status` | Request latency distribution     |
+| `layers_http_requests_total`           | Counter   | `method`, `route`, `status` | Total request count              |
+| `layers_db_query_duration_seconds`     | Histogram | `database`, `operation`     | Database query latency           |
+| `layers_db_connections_active`         | Gauge     | `database`                  | Active connection count per pool |
+| `layers_cache_hits_total`              | Counter   | `cache`                     | Redis cache hits                 |
+| `layers_cache_misses_total`            | Counter   | `cache`                     | Redis cache misses               |
 
 ### Firehose Metrics
 
-| Metric | Type | Labels | Description |
-|---|---|---|---|
-| `layers_firehose_cursor_lag_seconds` | Gauge | | Time behind the relay |
+| Metric                                   | Type    | Labels       | Description                   |
+| ---------------------------------------- | ------- | ------------ | ----------------------------- |
+| `layers_firehose_cursor_lag_seconds`     | Gauge   |              | Time behind the relay         |
 | `layers_firehose_events_processed_total` | Counter | `collection` | Events indexed per collection |
-| `layers_firehose_queue_depth` | Gauge | `queue` | Pending jobs per queue |
-| `layers_firehose_dlq_entries` | Gauge | | Current DLQ size |
+| `layers_firehose_queue_depth`            | Gauge   | `queue`      | Pending jobs per queue        |
+| `layers_firehose_dlq_entries`            | Gauge   |              | Current DLQ size              |
 
 ### Business Metrics
 
 These metrics are specific to Layers' annotation platform and have no equivalent in Chive:
 
-| Metric | Type | Labels | Description |
-|---|---|---|---|
-| `layers_records_indexed_total` | Counter | `type` | Total records indexed per record type |
-| `layers_annotation_layers_per_expression` | Histogram | | Distribution of annotation layers per expression |
-| `layers_cross_references_total` | Counter | `ref_type` | Cross-references indexed per type |
-| `layers_knowledge_refs_total` | Counter | `source` | Knowledge base references per source (Wikidata, WordNet, etc.) |
-| `layers_corpora_total` | Gauge | | Number of indexed corpora |
-| `layers_active_personas_total` | Gauge | | Number of distinct annotator personas |
+| Metric                                    | Type      | Labels     | Description                                                    |
+| ----------------------------------------- | --------- | ---------- | -------------------------------------------------------------- |
+| `layers_records_indexed_total`            | Counter   | `type`     | Total records indexed per record type                          |
+| `layers_annotation_layers_per_expression` | Histogram |            | Distribution of annotation layers per expression               |
+| `layers_cross_references_total`           | Counter   | `ref_type` | Cross-references indexed per type                              |
+| `layers_knowledge_refs_total`             | Counter   | `source`   | Knowledge base references per source (Wikidata, WordNet, etc.) |
+| `layers_corpora_total`                    | Gauge     |            | Number of indexed corpora                                      |
+| `layers_active_personas_total`            | Gauge     |            | Number of distinct annotator personas                          |
 
 ## Dashboards
 
@@ -181,14 +188,14 @@ The appview ships with provisioned Grafana dashboards (JSON models stored in the
 
 ### Alert Rules
 
-| Alert | Condition | Severity | Action |
-|---|---|---|---|
-| Firehose lag high | `cursor_lag_seconds > 60` for 5 min | Warning | Check queue depth and worker health |
-| Firehose lag critical | `cursor_lag_seconds > 300` for 5 min | Critical | Immediate investigation |
-| DLQ growing | `dlq_entries > 100` | Warning | Review DLQ entries for systematic failures |
-| Error rate spike | `5xx rate > 1%` for 5 min | Warning | Check logs and traces |
-| Database connection exhaustion | `connections_active > 80%` of pool | Warning | Scale pool or investigate slow queries |
-| Disk usage high | `disk_usage > 80%` | Warning | Plan storage expansion |
+| Alert                          | Condition                            | Severity | Action                                     |
+| ------------------------------ | ------------------------------------ | -------- | ------------------------------------------ |
+| Firehose lag high              | `cursor_lag_seconds > 60` for 5 min  | Warning  | Check queue depth and worker health        |
+| Firehose lag critical          | `cursor_lag_seconds > 300` for 5 min | Critical | Immediate investigation                    |
+| DLQ growing                    | `dlq_entries > 100`                  | Warning  | Review DLQ entries for systematic failures |
+| Error rate spike               | `5xx rate > 1%` for 5 min            | Warning  | Check logs and traces                      |
+| Database connection exhaustion | `connections_active > 80%` of pool   | Warning  | Scale pool or investigate slow queries     |
+| Disk usage high                | `disk_usage > 80%`                   | Warning  | Plan storage expansion                     |
 
 ### Escalation
 

@@ -12,37 +12,42 @@ Following Chive's pattern, background work is split between two code locations:
 - **Jobs** (`src/jobs/`): Scheduled interval-based tasks that run within the API server process. Each job class implements `start()`, `stop()`, and `run()` methods with an `setInterval` timer.
 - **Workers** (`src/workers/`): BullMQ queue consumers that run within the indexer process. Each worker class processes jobs from a specific BullMQ queue.
 
-| Job | File | Schedule |
-|-----|------|----------|
-| `MaterializedViewRefreshJob` | `src/jobs/materialized-view-refresh-job.ts` | 15 min / 1 hour |
-| `StalenessDetectionJob` | `src/jobs/staleness-detection-job.ts` | Daily |
-| `ReconciliationJob` | `src/jobs/reconciliation-job.ts` | 6 hours (ES) / daily (Neo4j) |
-| `KnowledgeGraphLinkingJob` | `src/jobs/knowledge-graph-linking-job.ts` | On-demand |
-| `OntologySyncJob` | `src/jobs/ontology-sync-job.ts` | Hourly |
-| `ImportSchedulerJob` | `src/jobs/import-scheduler-job.ts` | On-demand |
+| Job                          | File                                        | Schedule                     |
+| ---------------------------- | ------------------------------------------- | ---------------------------- |
+| `MaterializedViewRefreshJob` | `src/jobs/materialized-view-refresh-job.ts` | 15 min / 1 hour              |
+| `StalenessDetectionJob`      | `src/jobs/staleness-detection-job.ts`       | Daily                        |
+| `ReconciliationJob`          | `src/jobs/reconciliation-job.ts`            | 6 hours (ES) / daily (Neo4j) |
+| `KnowledgeGraphLinkingJob`   | `src/jobs/knowledge-graph-linking-job.ts`   | On-demand                    |
+| `OntologySyncJob`            | `src/jobs/ontology-sync-job.ts`             | Hourly                       |
+| `ImportSchedulerJob`         | `src/jobs/import-scheduler-job.ts`          | On-demand                    |
 
-| Worker | File | Queue |
-|--------|------|-------|
-| `EnrichmentWorker` | `src/workers/enrichment-worker.ts` | `layers:enrichment` |
-| `FreshnessWorker` | `src/workers/freshness-worker.ts` | `layers:maintenance` |
-| `IndexRetryWorker` | `src/workers/index-retry-worker.ts` | DLQ replay |
+| Worker             | File                                | Queue                |
+| ------------------ | ----------------------------------- | -------------------- |
+| `EnrichmentWorker` | `src/workers/enrichment-worker.ts`  | `layers:enrichment`  |
+| `FreshnessWorker`  | `src/workers/freshness-worker.ts`   | `layers:maintenance` |
+| `IndexRetryWorker` | `src/workers/index-retry-worker.ts` | DLQ replay           |
 
 ```typescript
 // src/jobs/staleness-detection-job.ts — interval-based job pattern
 class StalenessDetectionJob {
-  private timer: NodeJS.Timeout | null = null
+  private timer: NodeJS.Timeout | null = null;
 
   async start(): Promise<void> {
     this.timer = setInterval(() => {
-      this.run().catch(err => this.logger.error('Staleness detection failed', err))
-    }, this.intervalMs)
+      this.run().catch((err) => this.logger.error('Staleness detection failed', err));
+    }, this.intervalMs);
   }
 
   async stop(): Promise<void> {
-    if (this.timer) { clearInterval(this.timer); this.timer = null }
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
   }
 
-  protected async run(): Promise<void> { /* compare indexed_at vs firehose cursor */ }
+  protected async run(): Promise<void> {
+    /* compare indexed_at vs firehose cursor */
+  }
 }
 ```
 
@@ -52,36 +57,32 @@ All queue-based background work runs through [BullMQ](https://docs.bullmq.io/) q
 
 ### Queue Topology
 
-| Queue | Purpose | Default Concurrency |
-|---|---|---|
-| `layers:expression` | Index expression records | 10 |
-| `layers:segmentation` | Index segmentation records | 10 |
-| `layers:annotation` | Index annotation layers and cluster sets | 10 |
-| `layers:ontology` | Index ontologies and type definitions | 5 |
-| `layers:corpus` | Index corpora and memberships | 5 |
-| `layers:resource` | Index resource entries, collections, templates, fillings | 5 |
-| `layers:judgment` | Index experiments, judgment sets, agreement reports | 5 |
-| `layers:alignment` | Index alignments | 5 |
-| `layers:graph` | Index graph nodes, edges, edge sets | 10 |
-| `layers:integration` | Index personas, media, eprints, data links, changelogs | 5 |
-| `layers:enrichment` | Post-indexing enrichment tasks | 3 |
-| `layers:import` | Format import jobs (CoNLL, BRAT, ELAN, TEI) | 2 |
-| `layers:maintenance` | Scheduled maintenance and reconciliation | 1 |
+| Queue                 | Purpose                                                  | Default Concurrency |
+| --------------------- | -------------------------------------------------------- | ------------------- |
+| `layers:expression`   | Index expression records                                 | 10                  |
+| `layers:segmentation` | Index segmentation records                               | 10                  |
+| `layers:annotation`   | Index annotation layers and cluster sets                 | 10                  |
+| `layers:ontology`     | Index ontologies and type definitions                    | 5                   |
+| `layers:corpus`       | Index corpora and memberships                            | 5                   |
+| `layers:resource`     | Index resource entries, collections, templates, fillings | 5                   |
+| `layers:judgment`     | Index experiments, judgment sets, agreement reports      | 5                   |
+| `layers:alignment`    | Index alignments                                         | 5                   |
+| `layers:graph`        | Index graph nodes, edges, edge sets                      | 10                  |
+| `layers:integration`  | Index personas, media, eprints, data links, changelogs   | 5                   |
+| `layers:enrichment`   | Post-indexing enrichment tasks                           | 3                   |
+| `layers:import`       | Format import jobs (CoNLL, BRAT, ELAN, TEI)              | 2                   |
+| `layers:maintenance`  | Scheduled maintenance and reconciliation                 | 1                   |
 
 ### Worker Pool Management
 
 Each queue spawns a BullMQ `Worker` instance with the configured concurrency. Workers are started as separate processes (via the indexer entry point) to isolate them from the API server. This allows independent scaling: API pods and worker pods can have different replica counts.
 
 ```typescript
-const expressionWorker = new Worker(
-  'layers:expression',
-  expressionProcessor,
-  {
-    connection: redisConnection,
-    concurrency: config.workers.expression.concurrency,
-    limiter: { max: 100, duration: 1000 }, // 100 jobs/sec rate limit
-  }
-);
+const expressionWorker = new Worker('layers:expression', expressionProcessor, {
+  connection: redisConnection,
+  concurrency: config.workers.expression.concurrency,
+  limiter: { max: 100, duration: 1000 }, // 100 jobs/sec rate limit
+});
 ```
 
 ## Firehose Ingestion Jobs
@@ -131,14 +132,14 @@ flowchart LR
 
 ### Supported Formats
 
-| Format | Importer | Records Produced |
-|---|---|---|
-| CoNLL-U | `conll-importer` | expression + segmentation + annotationLayer (POS, lemma, deps) |
-| CoNLL-2003 | `conll-importer` | expression + segmentation + annotationLayer (NER) |
-| BRAT (.ann) | `brat-importer` | expression + segmentation + annotationLayer (entities, relations, events) |
-| ELAN (.eaf) | `elan-importer` | expression + media + segmentation + annotationLayer (per tier) |
-| Praat (.TextGrid) | `praat-importer` | expression + media + segmentation + annotationLayer (intervals, points) |
-| TEI XML | `tei-importer` | expression + corpus + annotationLayer (inline annotations) |
+| Format            | Importer         | Records Produced                                                          |
+| ----------------- | ---------------- | ------------------------------------------------------------------------- |
+| CoNLL-U           | `conll-importer` | expression + segmentation + annotationLayer (POS, lemma, deps)            |
+| CoNLL-2003        | `conll-importer` | expression + segmentation + annotationLayer (NER)                         |
+| BRAT (.ann)       | `brat-importer`  | expression + segmentation + annotationLayer (entities, relations, events) |
+| ELAN (.eaf)       | `elan-importer`  | expression + media + segmentation + annotationLayer (per tier)            |
+| Praat (.TextGrid) | `praat-importer` | expression + media + segmentation + annotationLayer (intervals, points)   |
+| TEI XML           | `tei-importer`   | expression + corpus + annotationLayer (inline annotations)                |
 
 Each importer is documented in the corresponding [data model integration page](../integration/data-models/).
 
@@ -148,12 +149,12 @@ Each importer is documented in the corresponding [data model integration page](.
 
 Refreshes PostgreSQL materialized views (`corpus_statistics`, `annotation_coverage`, `label_distribution`, `knowledge_graph_density`) on a configurable schedule.
 
-| View | Default Schedule |
-|---|---|
-| `corpus_statistics` | Every 15 minutes |
-| `annotation_coverage` | Every 15 minutes |
-| `label_distribution` | Every hour |
-| `knowledge_graph_density` | Every hour |
+| View                      | Default Schedule |
+| ------------------------- | ---------------- |
+| `corpus_statistics`       | Every 15 minutes |
+| `annotation_coverage`     | Every 15 minutes |
+| `label_distribution`      | Every hour       |
+| `knowledge_graph_density` | Every hour       |
 
 ### Elasticsearch Reconciliation
 
@@ -179,12 +180,12 @@ Records that fail processing after exhausting retries (see [Firehose Ingestion](
 
 ### DLQ Admin API
 
-| Endpoint | Action |
-|---|---|
-| `GET /admin/dlq` | List DLQ entries with filtering by collection, error stage, time range |
-| `POST /admin/dlq/:id/replay` | Re-queue a specific DLQ entry for reprocessing |
-| `POST /admin/dlq/replay-all` | Re-queue all DLQ entries matching a filter |
-| `DELETE /admin/dlq/:id` | Discard a DLQ entry |
+| Endpoint                     | Action                                                                 |
+| ---------------------------- | ---------------------------------------------------------------------- |
+| `GET /admin/dlq`             | List DLQ entries with filtering by collection, error stage, time range |
+| `POST /admin/dlq/:id/replay` | Re-queue a specific DLQ entry for reprocessing                         |
+| `POST /admin/dlq/replay-all` | Re-queue all DLQ entries matching a filter                             |
+| `DELETE /admin/dlq/:id`      | Discard a DLQ entry                                                    |
 
 ### Monitoring
 

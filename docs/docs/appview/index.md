@@ -101,34 +101,34 @@ flowchart TD
 
 Every `pub.layers.*` record type is indexed into one or more storage backends. PostgreSQL is the source of truth for all types. Elasticsearch and Neo4j are populated selectively based on query requirements.
 
-| Record Type | PG | ES | Neo4j | Notes |
-|---|---|---|---|---|
-| `expression.expression` | yes | yes | yes | Full-text search on `text`, graph node for cross-refs |
-| `segmentation.segmentation` | yes | — | — | Token arrays stored in PG, queried via expression |
-| `annotation.annotationLayer` | yes | yes | yes | Annotations normalized to rows in PG, nested in ES for faceted search, per-annotation nodes in Neo4j |
-| `annotation.clusterSet` | yes | — | yes | Cluster membership edges in Neo4j |
-| `ontology.ontology` | yes | yes | — | Searchable by domain and name |
-| `ontology.typeDef` | yes | yes | yes | Type hierarchy edges in Neo4j |
-| `corpus.corpus` | yes | yes | — | Searchable by name, language, license |
-| `corpus.membership` | yes | — | yes | Corpus-expression edges in Neo4j |
-| `resource.entry` | yes | yes | — | Lexical search on lemma and form |
-| `resource.collection` | yes | yes | — | Searchable by name |
-| `resource.collectionMembership` | yes | — | — | Join table |
-| `resource.template` | yes | — | — | Template storage |
-| `resource.filling` | yes | — | — | Filling storage |
-| `resource.templateComposition` | yes | — | — | Composition storage |
-| `judgment.experimentDef` | yes | yes | — | Searchable by measure/task type |
-| `judgment.judgmentSet` | yes | — | — | Linked to experiment |
-| `judgment.agreementReport` | yes | — | — | Linked to experiment |
-| `alignment.alignment` | yes | — | yes | Source-target edges in Neo4j |
-| `graph.graphNode` | yes | yes | yes | Primary Neo4j content, ES for node search |
-| `graph.graphEdge` | yes | — | yes | Primary Neo4j content |
-| `graph.graphEdgeSet` | yes | — | yes | Expanded to individual edges in Neo4j |
-| `persona.persona` | yes | yes | — | Searchable by domain and kind |
-| `media.media` | yes | yes | — | Searchable by kind |
-| `eprint.eprint` | yes | yes | — | Searchable by eprintIdentifier, description/citation |
-| `eprint.dataLink` | yes | — | yes | Eprint-corpus edges in Neo4j |
-| `changelog.entry` | yes | yes | — | Searchable by subject, collection, version |
+| Record Type                     | PG  | ES  | Neo4j | Notes                                                                                                |
+| ------------------------------- | --- | --- | ----- | ---------------------------------------------------------------------------------------------------- |
+| `expression.expression`         | yes | yes | yes   | Full-text search on `text`, graph node for cross-refs                                                |
+| `segmentation.segmentation`     | yes | —   | —     | Token arrays stored in PG, queried via expression                                                    |
+| `annotation.annotationLayer`    | yes | yes | yes   | Annotations normalized to rows in PG, nested in ES for faceted search, per-annotation nodes in Neo4j |
+| `annotation.clusterSet`         | yes | —   | yes   | Cluster membership edges in Neo4j                                                                    |
+| `ontology.ontology`             | yes | yes | —     | Searchable by domain and name                                                                        |
+| `ontology.typeDef`              | yes | yes | yes   | Type hierarchy edges in Neo4j                                                                        |
+| `corpus.corpus`                 | yes | yes | —     | Searchable by name, language, license                                                                |
+| `corpus.membership`             | yes | —   | yes   | Corpus-expression edges in Neo4j                                                                     |
+| `resource.entry`                | yes | yes | —     | Lexical search on lemma and form                                                                     |
+| `resource.collection`           | yes | yes | —     | Searchable by name                                                                                   |
+| `resource.collectionMembership` | yes | —   | —     | Join table                                                                                           |
+| `resource.template`             | yes | —   | —     | Template storage                                                                                     |
+| `resource.filling`              | yes | —   | —     | Filling storage                                                                                      |
+| `resource.templateComposition`  | yes | —   | —     | Composition storage                                                                                  |
+| `judgment.experimentDef`        | yes | yes | —     | Searchable by measure/task type                                                                      |
+| `judgment.judgmentSet`          | yes | —   | —     | Linked to experiment                                                                                 |
+| `judgment.agreementReport`      | yes | —   | —     | Linked to experiment                                                                                 |
+| `alignment.alignment`           | yes | —   | yes   | Source-target edges in Neo4j                                                                         |
+| `graph.graphNode`               | yes | yes | yes   | Primary Neo4j content, ES for node search                                                            |
+| `graph.graphEdge`               | yes | —   | yes   | Primary Neo4j content                                                                                |
+| `graph.graphEdgeSet`            | yes | —   | yes   | Expanded to individual edges in Neo4j                                                                |
+| `persona.persona`               | yes | yes | —     | Searchable by domain and kind                                                                        |
+| `media.media`                   | yes | yes | —     | Searchable by modality                                                                               |
+| `eprint.eprint`                 | yes | yes | —     | Searchable by identifier, title                                                                      |
+| `eprint.dataLink`               | yes | —   | yes   | Eprint-corpus edges in Neo4j                                                                         |
+| `changelog.entry`               | yes | yes | —     | Searchable by subject, collection, version                                                           |
 
 ## Source Directory Layout
 
@@ -195,20 +195,20 @@ The appview targets 2026 best practices:
 
 ## Page Directory
 
-| Page | Content |
-|------|---------|
-| [Technology Stack](./technology-stack) | Runtime, frameworks, databases, and tooling with version pins and decision rationale |
-| [Database Design](./database-design) | PostgreSQL schema, Elasticsearch mappings, Neo4j graph model, Redis data model |
-| [Firehose Ingestion](./firehose-ingestion) | Subscription, filtering, queue topology, dependency ordering, dead letter queue |
-| [API Design](./api-design) | XRPC + REST endpoints, search, composite queries, OpenAPI |
-| [Indexing Strategy](./indexing-strategy) | Per-record-type indexing, annotation normalization, cross-reference extraction |
-| [Query and Discovery](./query-discovery) | Use cases, query patterns, graph traversal, caching |
-| [Authentication](./authentication) | OAuth 2.0, JWT sessions, RBAC, MFA |
-| [Background Jobs](./background-jobs) | Workers, enrichment, format import, maintenance |
-| [Observability](./observability) | Logging, tracing, metrics, dashboards, alerting |
-| [Deployment](./deployment) | Docker, Kubernetes, database deployment, CI/CD, backup |
-| [Testing Strategy](./testing-strategy) | Unit, integration, compliance, E2E, performance |
-| [Plugin System](./plugin-system) | Sandboxed plugins, format importers, harvesters |
+| Page                                       | Content                                                                              |
+| ------------------------------------------ | ------------------------------------------------------------------------------------ |
+| [Technology Stack](./technology-stack)     | Runtime, frameworks, databases, and tooling with version pins and decision rationale |
+| [Database Design](./database-design)       | PostgreSQL schema, Elasticsearch mappings, Neo4j graph model, Redis data model       |
+| [Firehose Ingestion](./firehose-ingestion) | Subscription, filtering, queue topology, dependency ordering, dead letter queue      |
+| [API Design](./api-design)                 | XRPC + REST endpoints, search, composite queries, OpenAPI                            |
+| [Indexing Strategy](./indexing-strategy)   | Per-record-type indexing, annotation normalization, cross-reference extraction       |
+| [Query and Discovery](./query-discovery)   | Use cases, query patterns, graph traversal, caching                                  |
+| [Authentication](./authentication)         | OAuth 2.0, JWT sessions, RBAC, MFA                                                   |
+| [Background Jobs](./background-jobs)       | Workers, enrichment, format import, maintenance                                      |
+| [Observability](./observability)           | Logging, tracing, metrics, dashboards, alerting                                      |
+| [Deployment](./deployment)                 | Docker, Kubernetes, database deployment, CI/CD, backup                               |
+| [Testing Strategy](./testing-strategy)     | Unit, integration, compliance, E2E, performance                                      |
+| [Plugin System](./plugin-system)           | Sandboxed plugins, format importers, harvesters                                      |
 
 ## See Also
 

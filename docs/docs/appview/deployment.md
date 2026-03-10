@@ -44,20 +44,20 @@ The final image runs as a non-root user (UID 1001) with no build tools, dev depe
 
 Multiple compose files match Chive's `docker/` directory pattern:
 
-| File | Purpose |
-|------|---------|
-| `docker/docker-compose.yml` | Development: PG, Redis, ES, Neo4j |
-| `docker/docker-compose.prod.yml` | Production: full stack with resource limits |
-| `docker/docker-compose.ci.yml` | CI testing: lightweight containers |
-| `docker/docker-compose.observability.yml` | Grafana, Tempo, Prometheus, OTEL Collector |
+| File                                      | Purpose                                     |
+| ----------------------------------------- | ------------------------------------------- |
+| `docker/docker-compose.yml`               | Development: PG, Redis, ES, Neo4j           |
+| `docker/docker-compose.prod.yml`          | Production: full stack with resource limits |
+| `docker/docker-compose.ci.yml`            | CI testing: lightweight containers          |
+| `docker/docker-compose.observability.yml` | Grafana, Tempo, Prometheus, OTEL Collector  |
 
 Supporting configs: `docker/otel-collector-config.yaml`, `docker/prometheus.yml`.
 
 ### Image Variants
 
-| Image | Entry Point | Purpose |
-|---|---|---|
-| `layers-appview:api` | `dist/index.js` | API server (XRPC + REST) |
+| Image                    | Entry Point       | Purpose                               |
+| ------------------------ | ----------------- | ------------------------------------- |
+| `layers-appview:api`     | `dist/index.js`   | API server (XRPC + REST)              |
 | `layers-appview:indexer` | `dist/indexer.js` | Firehose consumer + job queue workers |
 
 Both images share the same base build; only the `CMD` differs. This keeps the container registry simple while allowing independent scaling.
@@ -126,9 +126,9 @@ spec:
 ### Resource Requests and Limits
 
 | Deployment | CPU Request | CPU Limit | Memory Request | Memory Limit |
-|---|---|---|---|---|
-| API | 200m | 1000m | 256Mi | 1Gi |
-| Indexer | 500m | 2000m | 512Mi | 2Gi |
+| ---------- | ----------- | --------- | -------------- | ------------ |
+| API        | 200m        | 1000m     | 256Mi          | 1Gi          |
+| Indexer    | 500m        | 2000m     | 512Mi          | 2Gi          |
 
 The indexer has higher resource allocation because it handles firehose parsing, record validation, and multi-database writes concurrently.
 
@@ -214,12 +214,12 @@ spec:
 
 ## Database Deployment
 
-| Database | Recommended Approach | Notes |
-|---|---|---|
-| PostgreSQL 16+ | Managed service (e.g., AWS RDS, GCP Cloud SQL) or operator (CloudNativePG) | Enable WAL archiving for point-in-time recovery |
-| Elasticsearch 8+ | Managed service (Elastic Cloud) or operator (ECK) | Minimum 3-node cluster for production |
-| Neo4j 5+ | Managed service (Neo4j Aura) or Helm chart | Single instance sufficient for moderate workloads |
-| Redis 7+ | Managed service (ElastiCache, Memorystore) or Helm chart (Bitnami) | Sentinel or Cluster mode for HA |
+| Database         | Recommended Approach                                                       | Notes                                             |
+| ---------------- | -------------------------------------------------------------------------- | ------------------------------------------------- |
+| PostgreSQL 16+   | Managed service (e.g., AWS RDS, GCP Cloud SQL) or operator (CloudNativePG) | Enable WAL archiving for point-in-time recovery   |
+| Elasticsearch 8+ | Managed service (Elastic Cloud) or operator (ECK)                          | Minimum 3-node cluster for production             |
+| Neo4j 5+         | Managed service (Neo4j Aura) or Helm chart                                 | Single instance sufficient for moderate workloads |
+| Redis 7+         | Managed service (ElastiCache, Memorystore) or Helm chart (Bitnami)         | Sentinel or Cluster mode for HA                   |
 
 For development, all four databases run as containers via Docker Compose.
 
@@ -302,11 +302,11 @@ TLS termination is handled at the ingress controller (nginx-ingress) with certif
 
 Since all appview data is derived from the ATProto firehose, the ultimate disaster recovery strategy is a full re-index from cursor 0. This is slower than restoring from backups but guarantees complete data integrity.
 
-| Recovery Method | RTO | RPO |
-|---|---|---|
-| PG point-in-time recovery | Minutes | Seconds (WAL lag) |
-| Snapshot restore (ES, Neo4j) | 30 min | 24 hours (daily snapshots) |
-| Full re-index from firehose | Hours | Zero (complete rebuild) |
+| Recovery Method              | RTO     | RPO                        |
+| ---------------------------- | ------- | -------------------------- |
+| PG point-in-time recovery    | Minutes | Seconds (WAL lag)          |
+| Snapshot restore (ES, Neo4j) | 30 min  | 24 hours (daily snapshots) |
+| Full re-index from firehose  | Hours   | Zero (complete rebuild)    |
 
 ## See Also
 
