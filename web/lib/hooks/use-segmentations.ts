@@ -92,11 +92,7 @@ function useSegmentation(uri: string) {
  * @param filters - query parameters (e.g., repo, expressionUri, limit, cursor)
  * @returns query result containing the segmentation list
  */
-function useSegmentations(filters: {
-  expression: string;
-  limit?: number;
-  cursor?: string;
-}) {
+function useSegmentations(filters: { expression: string; limit?: number; cursor?: string }) {
   return useQuery({
     queryKey: segmentationKeys.list(filters),
     queryFn: () => fetchSegmentations(filters),

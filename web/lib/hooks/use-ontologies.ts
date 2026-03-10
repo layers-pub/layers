@@ -118,7 +118,12 @@ function useOntology(uri: string) {
  * }
  * ```
  */
-function useOntologies(filters: { repo?: string; limit?: number; cursor?: string; domain?: string }) {
+function useOntologies(filters: {
+  repo?: string;
+  limit?: number;
+  cursor?: string;
+  domain?: string;
+}) {
   return useQuery({
     queryKey: ontologyKeys.list(filters),
     queryFn: () => fetchOntologies(filters),

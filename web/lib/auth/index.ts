@@ -13,4 +13,10 @@ export {
   logout,
   getOAuthBaseUrl,
 } from './oauth-client';
-export { AuthProvider, useAuth, useIsAuthenticated, useCurrentUser, useAgent } from './auth-context';
+export {
+  AuthProvider,
+  useAuth,
+  useIsAuthenticated,
+  useCurrentUser,
+  useAgent,
+} from './auth-context';

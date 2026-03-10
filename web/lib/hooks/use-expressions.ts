@@ -122,7 +122,14 @@ function useExpression(uri: string) {
  * }
  * ```
  */
-function useExpressions(filters: { repo?: string; limit?: number; cursor?: string; kind?: string; language?: string; parentRef?: string }) {
+function useExpressions(filters: {
+  repo?: string;
+  limit?: number;
+  cursor?: string;
+  kind?: string;
+  language?: string;
+  parentRef?: string;
+}) {
   return useQuery({
     queryKey: expressionKeys.list(filters),
     queryFn: () => fetchExpressions(filters),

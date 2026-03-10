@@ -164,7 +164,13 @@ function useExperimentDef(uri: string) {
  * @param filters - query parameters for filtering (e.g., repo, limit)
  * @returns query result containing the experiment definition list
  */
-function useExperimentDefs(filters: { repo?: string; limit?: number; cursor?: string; measureType?: string; taskType?: string }) {
+function useExperimentDefs(filters: {
+  repo?: string;
+  limit?: number;
+  cursor?: string;
+  measureType?: string;
+  taskType?: string;
+}) {
   return useQuery({
     queryKey: experimentDefKeys.list(filters),
     queryFn: () => fetchExperimentDefs(filters),
@@ -178,11 +184,7 @@ function useExperimentDefs(filters: { repo?: string; limit?: number; cursor?: st
  * @param filters - query parameters for filtering (e.g., repo, experimentUri, limit)
  * @returns query result containing the judgment set list
  */
-function useJudgmentSets(filters: {
-  experimentRef: string;
-  limit?: number;
-  cursor?: string;
-}) {
+function useJudgmentSets(filters: { experimentRef: string; limit?: number; cursor?: string }) {
   return useQuery({
     queryKey: judgmentSetKeys.list(filters),
     queryFn: () => fetchJudgmentSets(filters),

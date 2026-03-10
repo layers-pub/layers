@@ -16,10 +16,11 @@ import { Agent } from '@atproto/api';
 import type { AuthActions, AuthState, LayersUser } from './types';
 import { login as oauthLogin, logout as oauthLogout, restoreSession } from './oauth-client';
 
-type AuthContextValue = AuthState & AuthActions & {
-  /** ATProto Agent wrapping the current OAuth session. Null when not authenticated. */
-  agent: Agent | null;
-};
+type AuthContextValue = AuthState &
+  AuthActions & {
+    /** ATProto Agent wrapping the current OAuth session. Null when not authenticated. */
+    agent: Agent | null;
+  };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 

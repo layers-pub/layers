@@ -140,5 +140,10 @@ function useChangelogBySubject(subjectUri: string) {
   });
 }
 
-export type { ChangelogEntry, ChangelogListResponse, ChangelogByCollectionResponse, ChangelogFilters };
+export type {
+  ChangelogEntry,
+  ChangelogListResponse,
+  ChangelogByCollectionResponse,
+  ChangelogFilters,
+};
 export { useChangelog, useChangelogBySubject };

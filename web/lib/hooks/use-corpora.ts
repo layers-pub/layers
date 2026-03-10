@@ -116,7 +116,13 @@ function useCorpus(uri: string) {
  * }
  * ```
  */
-function useCorpora(filters: { repo?: string; limit?: number; cursor?: string; domain?: string; language?: string }) {
+function useCorpora(filters: {
+  repo?: string;
+  limit?: number;
+  cursor?: string;
+  domain?: string;
+  language?: string;
+}) {
   return useQuery({
     queryKey: corpusKeys.list(filters),
     queryFn: () => fetchCorpora(filters),
