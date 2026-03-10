@@ -40,18 +40,16 @@ const DEFAULT_FALLBACK = (
  * @param props.fallback - optional element to show when access is denied
  */
 function AdminGuard({ children, fallback }: AdminGuardProps): React.JSX.Element | null {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
 
   if (isLoading) {
     return null;
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !user?.isAdmin) {
     return <>{fallback ?? DEFAULT_FALLBACK}</>;
   }
 
-  // TODO: check actual role from auth context when RBAC is wired
-  // For now, any authenticated user can access admin pages.
   return <>{children}</>;
 }
 
