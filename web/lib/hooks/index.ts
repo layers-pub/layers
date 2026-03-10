@@ -33,6 +33,7 @@ export {
   changelogKeys,
   crossReferenceKeys,
   searchKeys,
+  externalAnnotationKeys,
 } from './keys';
 
 export type { Expression, ExpressionListResponse } from './use-expressions';
@@ -102,3 +103,6 @@ export {
 
 export type { TypeDef, TypeDefListResponse } from './use-type-defs';
 export { useTypeDef, useTypeDefs, useTypeDefsByOntology } from './use-type-defs';
+
+export type { ExternalAnnotationView, ExternalAnnotationSource } from './use-external-annotations';
+export { useExternalAnnotations } from './use-external-annotations';

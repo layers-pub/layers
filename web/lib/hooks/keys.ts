@@ -265,6 +265,16 @@ const searchKeys = {
   list: (filters: Record<string, unknown>) => [...searchKeys.lists(), filters] as const,
 };
 
+// =============================================================================
+// EXTERNAL ANNOTATIONS (margin.at interop)
+// =============================================================================
+
+const externalAnnotationKeys = {
+  all: ['externalAnnotations'] as const,
+  lists: () => [...externalAnnotationKeys.all, 'list'] as const,
+  list: (filters: Record<string, unknown>) => [...externalAnnotationKeys.lists(), filters] as const,
+};
+
 export {
   expressionKeys,
   segmentationKeys,
@@ -294,4 +304,5 @@ export {
   changelogKeys,
   crossReferenceKeys,
   searchKeys,
+  externalAnnotationKeys,
 };
