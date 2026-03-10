@@ -1,0 +1,34 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "analysis": {
+      "analyzer": {
+        "layers_text": {
+          "tokenizer": "icu_tokenizer",
+          "filter": ["icu_normalizer", "icu_folding", "lowercase"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "uri": { "type": "keyword" },
+      "did": { "type": "keyword" },
+      "name": {
+        "type": "text",
+        "analyzer": "layers_text",
+        "fields": {
+          "keyword": { "type": "keyword", "ignore_above": 512 }
+        }
+      },
+      "gloss": {
+        "type": "text",
+        "analyzer": "layers_text"
+      },
+      "ontology_ref": { "type": "keyword" },
+      "type_kind": { "type": "keyword" },
+      "indexed_at": { "type": "date" }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "properties": {
+      "uri": { "type": "keyword" },
+      "did": { "type": "keyword" },
+      "collection_ref": { "type": "keyword" },
+      "entry_ref": { "type": "keyword" },
+      "ordinal": { "type": "integer" },
+      "indexed_at": { "type": "date" }
+    }
+  }
+}
