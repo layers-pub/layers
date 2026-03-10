@@ -7,7 +7,7 @@ sidebar_position: 13
 
 ## Overview
 
-The Layers appview extends its capabilities through a plugin system based on [Chive's](https://chive.pub) production architecture. Plugins run in sandboxed V8 isolates (via `isolated-vm`), subscribe to lifecycle events through a permission-filtered event bus, and interact with appview services through a scoped context object. The system supports six plugin categories: **format importers** (converting annotation formats like CoNLL-U, BRAT, ELAN, Praat, and TEI into Layers records), **harvesters** (pulling metadata from external sources), **annotation tools** (providing interactive annotation assistance in the workspace), **exporters** (converting Layers records to external formats), **enrichment processors** (augmenting indexed records with derived data), and **visualizations** (custom rendering for annotation data).
+The Layers appview extends its capabilities through a plugin system based on [Chive's](https://chive.pub) production architecture. Plugins run in sandboxed V8 isolates (via `isolated-vm`), subscribe to lifecycle events through a permission-filtered event bus, and interact with appview services through a scoped context object. The system supports eight plugin categories: **format importers** (converting annotation formats like CoNLL-U, BRAT, ELAN, Praat, and TEI into Layers records), **harvesters** (pulling metadata from external sources), **backlink resolvers** (cross-referencing annotations against external knowledge bases like Wikidata, WordNet, and FrameNet), **search providers** (contributing search results from external sources), **annotation tools** (providing interactive annotation assistance in the workspace), **exporters** (converting Layers records to external formats), **enrichment processors** (augmenting indexed records with derived data), and **visualizations** (custom rendering for annotation data).
 
 All plugins follow ATProto compliance rules: they can read firehose events and cache computed results but never write directly to user PDSes. Format importers that create records do so through the user's authenticated OAuth session, so the user's PDS remains the authoritative source.
 
@@ -54,6 +54,7 @@ src/plugins/
 | `BacklinkPlugin`       | Cross-reference to external systems                   | Wikidata linker, FrameNet linker  |
 | `EnrichmentPlugin`     | Augment indexed records with derived data             | Language detector, entity linker  |
 | `AnnotationToolPlugin` | Interactive annotation assistance in the workspace    | Auto-suggest, pre-annotation tool |
+| `RecordSearchPlugin`   | Contribute search results from external sources       | External corpus search provider   |
 | `VisualizationPlugin`  | Custom rendering for annotation data                  | Tree visualizer, graph renderer   |
 
 ## Architecture
@@ -644,7 +645,7 @@ The plugin system supports community-contributed plugins. Users can author plugi
 
 ### Contribution Workflow
 
-1. **Author**: Implement a plugin class extending one of the base types (`ImporterPlugin`, `ExporterPlugin`, `EnrichmentPlugin`, `AnnotationToolPlugin`, `VisualizationPlugin`, or `ImportingPlugin`).
+1. **Author**: Implement a plugin class extending one of the eight base types (`ImporterPlugin`, `ExporterPlugin`, `ImportingPlugin`, `BacklinkPlugin`, `RecordSearchPlugin`, `EnrichmentPlugin`, `AnnotationToolPlugin`, or `VisualizationPlugin`).
 2. **Manifest**: Create a `manifest.json` declaring the plugin's identity, permissions, and resource limits.
 3. **Test**: Run the plugin against the test harness (see [Testing Plugins](#testing-plugins)) to verify correctness and sandbox compliance.
 4. **Package**: Bundle the compiled plugin and manifest into a directory.

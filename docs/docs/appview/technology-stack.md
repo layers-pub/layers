@@ -527,7 +527,7 @@ Policies are created per-service and shared across all callers, matching Chive's
 
 ## Frontend Stack
 
-The frontend lives in `web/` and uses the Next.js App Router with React 19.
+The frontend lives in `layers/web/` and uses the Next.js App Router with React 19.
 
 | Technology                     | Version | Role                                        |
 | ------------------------------ | ------- | ------------------------------------------- |
