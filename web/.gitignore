@@ -8,10 +8,8 @@ out/
 # Build
 dist/
 
-# Generated types (from lexicons and OpenAPI)
-lib/api/generated/
-lib/api/schema.generated.ts
-lib/api/openapi.json
+# Generated types are tracked so the repo builds without a codegen step.
+# Regenerate with: pnpm generate:types
 
 # Testing
 coverage/
