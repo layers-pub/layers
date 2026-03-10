@@ -30,3 +30,27 @@ export type { TierTimelineProps } from './tier-timeline';
 
 export { MediaExpressionView } from './media-expression-view';
 export type { MediaExpressionViewProps } from './media-expression-view';
+
+export { AnnotationCreationProvider, useAnnotationCreation } from './annotation-creation-context';
+export type {
+  WorkspaceMode,
+  AnnotationCreationState,
+  AnnotationCreationAction,
+  AnnotationCreationContextValue,
+  AnnotationCreationProviderProps,
+} from './annotation-creation-context';
+
+export { AnnotationToolbar } from './annotation-toolbar';
+export type { AnnotationToolbarProps } from './annotation-toolbar';
+
+export { TextSelectionHandler } from './text-selection-handler';
+export type { TextSelectionHandlerProps, SelectionMode, TextRange } from './text-selection-handler';
+
+export { DependencyArcEditor } from './dependency-arc-editor';
+export type { DependencyArcEditorProps } from './dependency-arc-editor';
+
+export { TemporalAnnotationEditor } from './temporal-annotation-editor';
+export type { TemporalAnnotationEditorProps, TemporalRegion } from './temporal-annotation-editor';
+
+export { BoundingBoxEditor } from './bounding-box-editor';
+export type { BoundingBoxEditorProps, BoundingBoxData } from './bounding-box-editor';
