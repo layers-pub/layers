@@ -126,6 +126,8 @@ export {
   useProjectCollections,
   useProjectCollection,
   useCollectionEntries,
+  useEntries,
+  useEntry,
   useCreateEntry,
   useDeleteEntry,
   useCreateTemplate,

@@ -3,37 +3,21 @@
 /**
  * Lexicon editor for a single resource collection.
  *
- * Two-panel layout: entry table (left) + editor/query panel (right).
+ * Re-exports the full lexicon editor from the lexicon/ subdirectory.
+ * The route page imports from this file path for backward compatibility.
  *
  * @module
  */
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { LexiconEditor as LexiconEditorImpl } from './lexicon/lexicon-editor';
 
 interface LexiconEditorProps {
   readonly projectUri: string;
   readonly collectionUri: string;
 }
 
-function LexiconEditor({ projectUri, collectionUri }: LexiconEditorProps): React.JSX.Element {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-sm font-medium">Lexicon Editor</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-2">
-        <p className="text-sm text-muted-foreground">
-          Entry table and editor will be implemented in Phase 2.
-        </p>
-        <div className="min-w-0 space-y-1">
-          <p className="truncate font-mono text-xs text-muted-foreground">Project: {projectUri}</p>
-          <p className="truncate font-mono text-xs text-muted-foreground">
-            Collection: {collectionUri}
-          </p>
-        </div>
-      </CardContent>
-    </Card>
-  );
+function LexiconEditor({ collectionUri }: LexiconEditorProps): React.JSX.Element {
+  return <LexiconEditorImpl collectionUri={collectionUri} />;
 }
 
 export { LexiconEditor };

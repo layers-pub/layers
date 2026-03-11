@@ -4,35 +4,285 @@
  * Template editor for a single template record.
  *
  * Three-panel layout: text+slots (left), constraints (center), preview (right).
+ * For new templates (no templateUri), shows a creation form. For existing
+ * templates, loads via the `useTemplate` hook.
  *
  * @module
  */
 
+import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Save, Trash2, Plus, Loader2 } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
+
+import type { SlotSchema, ConstraintSchema } from '@/lib/schemas/design';
+import { useTemplate, useCreateTemplate } from '@/lib/hooks/use-design';
+
+import { TemplateTextEditor, extractSlotNames } from './template/template-text-editor';
+import { SlotBuilder } from './template/slot-builder';
+import { ConstraintEditor } from './template/constraint-editor';
+import { TemplatePreview } from './template/template-preview';
+import { TemplateCompositionEditor } from './template/template-composition-editor';
 
 interface TemplateEditorProps {
   readonly projectUri: string;
-  readonly templateUri: string;
+  readonly templateUri?: string;
 }
 
 function TemplateEditor({ projectUri, templateUri }: TemplateEditorProps): React.JSX.Element {
+  const router = useRouter();
+  const isNew = !templateUri || templateUri === 'new';
+
+  // Load existing template data
+  const { data: templateData, isLoading, isError } = useTemplate(isNew ? '' : (templateUri ?? ''));
+
+  const createTemplate = useCreateTemplate();
+
+  // Form state
+  const [name, setName] = useState('');
+  const [text, setText] = useState('');
+  const [language, setLanguage] = useState('');
+  const [slots, setSlots] = useState<SlotSchema[]>([]);
+  const [constraints, setConstraints] = useState<ConstraintSchema[]>([]);
+  const [_isDirty, setIsDirty] = useState(false);
+
+  // Populate from existing template on load
+  useEffect(() => {
+    if (templateData?.value) {
+      const v = templateData.value;
+      setName(v.name ?? '');
+      setText(v.text);
+      setLanguage(v.language ?? '');
+      setSlots(
+        (v.slots ?? []).map((s) => ({
+          name: s.name,
+          description: s.description,
+          required: s.required ?? true,
+          defaultValue: s.defaultValue,
+          collectionRef: s.collectionRef,
+        })),
+      );
+      setConstraints(
+        (v.constraints ?? []).map((c) => ({
+          expression: c.expression,
+          expressionFormat: c.expressionFormat,
+          scope: c.scope,
+          description: c.description,
+        })),
+      );
+    }
+  }, [templateData]);
+
+  // Auto-sync detected slot names to slot definitions
+  const definedSlotNames = useMemo(() => new Set(slots.map((s) => s.name)), [slots]);
+
+  const handleTextChange = useCallback(
+    (newText: string) => {
+      setText(newText);
+      setIsDirty(true);
+
+      // Auto-add slots for newly detected names that are not yet defined
+      const detected = extractSlotNames(newText);
+      const currentNames = new Set(slots.map((s) => s.name));
+      const newSlots = detected
+        .filter((n) => !currentNames.has(n))
+        .map((n) => ({ name: n, required: true }) satisfies SlotSchema);
+
+      if (newSlots.length > 0) {
+        setSlots((prev) => [...prev, ...newSlots]);
+      }
+    },
+    [slots],
+  );
+
+  const handleSlotsChange = useCallback((newSlots: SlotSchema[]) => {
+    setSlots(newSlots);
+    setIsDirty(true);
+  }, []);
+
+  const handleConstraintsChange = useCallback((index: number, updated: ConstraintSchema) => {
+    setConstraints((prev) => prev.map((c, i) => (i === index ? updated : c)));
+    setIsDirty(true);
+  }, []);
+
+  const addConstraint = useCallback(() => {
+    setConstraints((prev) => [...prev, { expression: '', scope: 'template' }]);
+    setIsDirty(true);
+  }, []);
+
+  const removeConstraint = useCallback((index: number) => {
+    setConstraints((prev) => prev.filter((_, i) => i !== index));
+    setIsDirty(true);
+  }, []);
+
+  // Save handler (creates new template; update is a future enhancement)
+  const handleSave = useCallback(async () => {
+    // For now, this only supports creating new templates.
+    // Updating existing templates requires putRecord, which will be added later.
+    // TODO: Add update support using updateRecord
+  }, []);
+
+  // Loading state
+  if (!isNew && isLoading) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-8 w-48" />
+        <div className="grid grid-cols-[1fr_1fr_1fr] gap-4">
+          <Skeleton className="h-96" />
+          <Skeleton className="h-96" />
+          <Skeleton className="h-96" />
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (!isNew && isError) {
+    return (
+      <Card>
+        <CardContent className="py-8 text-center">
+          <p className="text-sm text-destructive">Failed to load template.</p>
+          <Button variant="outline" size="sm" className="mt-3" onClick={() => router.back()}>
+            Go Back
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-sm font-medium">Template Editor</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-2">
-        <p className="text-sm text-muted-foreground">
-          Template text, slot builder, and constraint editor will be implemented in Phase 3.
-        </p>
-        <div className="min-w-0 space-y-1">
-          <p className="truncate font-mono text-xs text-muted-foreground">Project: {projectUri}</p>
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <div className="flex-1">
+          <Input
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+              setIsDirty(true);
+            }}
+            placeholder="Template name"
+            className="h-9 text-lg font-semibold"
+          />
+        </div>
+
+        <div className="w-32">
+          <Input
+            value={language}
+            onChange={(e) => {
+              setLanguage(e.target.value);
+              setIsDirty(true);
+            }}
+            placeholder="Language"
+            className="h-9 text-sm"
+          />
+        </div>
+
+        <Button size="sm" disabled={!text || createTemplate.isPending} onClick={handleSave}>
+          {createTemplate.isPending ? (
+            <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+          ) : (
+            <Save className="mr-1.5 h-3.5 w-3.5" />
+          )}
+          Save
+        </Button>
+
+        {!isNew && (
+          <Button variant="destructive" size="sm">
+            <Trash2 className="mr-1.5 h-3.5 w-3.5" />
+            Delete
+          </Button>
+        )}
+      </div>
+
+      {/* Three-panel layout */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[35%_30%_35%]">
+        {/* Left panel: Template text + slots */}
+        <div className="min-w-0 space-y-4">
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">Template Text</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <TemplateTextEditor
+                value={text}
+                definedSlotNames={definedSlotNames}
+                onChange={handleTextChange}
+              />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">Slots</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <SlotBuilder slots={slots} onChange={handleSlotsChange} />
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Center panel: Constraints */}
+        <div className="min-w-0 space-y-4">
+          <Card>
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-sm font-medium">
+                  Constraints ({constraints.length})
+                </CardTitle>
+                <Button variant="outline" size="sm" onClick={addConstraint} className="text-xs">
+                  <Plus className="mr-1 h-3 w-3" />
+                  Add
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              {constraints.length === 0 ? (
+                <p className="py-6 text-center text-sm text-muted-foreground">
+                  No constraints defined. Constraints restrict which fillers are valid for each
+                  slot.
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {constraints.map((constraint, index) => (
+                    <ConstraintEditor
+                      key={index}
+                      constraint={constraint}
+                      onChange={(updated) => handleConstraintsChange(index, updated)}
+                      onRemove={() => removeConstraint(index)}
+                      slots={slots}
+                      index={index}
+                    />
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Composition editor (secondary panel) */}
+          <TemplateCompositionEditor projectTemplates={[]} />
+        </div>
+
+        {/* Right panel: Preview */}
+        <div className="min-w-0">
+          <TemplatePreview templateText={text} slots={slots} />
+        </div>
+      </div>
+
+      {/* Project URI footer */}
+      <div className="min-w-0">
+        <p className="truncate font-mono text-xs text-muted-foreground">Project: {projectUri}</p>
+        {!isNew && templateUri && (
           <p className="truncate font-mono text-xs text-muted-foreground">
             Template: {templateUri}
           </p>
-        </div>
-      </CardContent>
-    </Card>
+        )}
+      </div>
+    </div>
   );
 }
 

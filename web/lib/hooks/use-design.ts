@@ -61,6 +61,8 @@ type ResourceEntryListResponse = components['schemas']['ResourceListEntriesOutpu
 type CollectionMembershipListResponse =
   components['schemas']['ResourceListCollectionMembershipsOutput'];
 type Template = components['schemas']['ResourceGetTemplateOutput'];
+type TemplateListResponse = components['schemas']['ResourceListTemplatesOutput'];
+type TemplateRecordView = components['schemas']['ResourceListTemplatesRecordView'];
 type Filling = components['schemas']['ResourceGetFillingOutput'];
 type ExperimentDef = components['schemas']['JudgmentGetExperimentDefOutput'];
 
@@ -133,6 +135,43 @@ async function fetchCollectionEntries(filters: {
   return data;
 }
 
+async function fetchEntries(filters: {
+  repo: string;
+  limit?: number;
+  cursor?: string;
+  language?: string;
+}): Promise<ResourceEntryListResponse> {
+  const { data, error } = await api.GET('/xrpc/pub.layers.resource.listEntries', {
+    params: { query: filters },
+  });
+
+  if (error || !data) {
+    throw new APIError(
+      'Failed to fetch entries',
+      undefined,
+      '/xrpc/pub.layers.resource.listEntries',
+    );
+  }
+
+  return data;
+}
+
+async function fetchEntry(uri: string): Promise<ResourceEntry> {
+  const { data, error } = await api.GET('/xrpc/pub.layers.resource.getEntry', {
+    params: { query: { uri } },
+  });
+
+  if (error || !data) {
+    throw new APIError(
+      `Failed to fetch entry: ${uri}`,
+      undefined,
+      '/xrpc/pub.layers.resource.getEntry',
+    );
+  }
+
+  return data;
+}
+
 // =============================================================================
 // QUERY HOOKS
 // =============================================================================
@@ -189,6 +228,116 @@ function useCollectionEntries(
     queryKey: collectionMembershipKeys.list(filters),
     queryFn: () => fetchCollectionEntries(filters),
     enabled: Boolean(collectionRef),
+    staleTime: ENTRY_STALE_TIME,
+  });
+}
+
+/**
+ * Fetches resource entries for a given repo.
+ *
+ * @param filters - query parameters (repo, limit, cursor, language)
+ * @returns query result containing the entry list
+ */
+function useEntries(filters: { repo: string; limit?: number; cursor?: string; language?: string }) {
+  return useQuery({
+    queryKey: resourceEntryKeys.list(filters),
+    queryFn: () => fetchEntries(filters),
+    enabled: Boolean(filters.repo),
+    staleTime: ENTRY_STALE_TIME,
+  });
+}
+
+/**
+ * Fetches a single resource entry by AT-URI.
+ *
+ * @param uri - AT-URI of the entry record
+ * @returns query result containing the entry
+ */
+function useEntry(uri: string) {
+  return useQuery({
+    queryKey: resourceEntryKeys.detail(uri),
+    queryFn: () => fetchEntry(uri),
+    enabled: Boolean(uri),
+    staleTime: ENTRY_STALE_TIME,
+  });
+}
+
+// =============================================================================
+// TEMPLATE FETCH FUNCTIONS
+// =============================================================================
+
+async function fetchProjectTemplates(filters: {
+  repo: string;
+  language?: string;
+  limit?: number;
+  cursor?: string;
+}): Promise<TemplateListResponse> {
+  const { data, error } = await api.GET('/xrpc/pub.layers.resource.listTemplates', {
+    params: { query: filters },
+  });
+
+  if (error || !data) {
+    throw new APIError(
+      'Failed to fetch templates',
+      undefined,
+      '/xrpc/pub.layers.resource.listTemplates',
+    );
+  }
+
+  return data;
+}
+
+async function fetchTemplate(uri: string): Promise<Template> {
+  const { data, error } = await api.GET('/xrpc/pub.layers.resource.getTemplate', {
+    params: { query: { uri } },
+  });
+
+  if (error || !data) {
+    throw new APIError(
+      `Failed to fetch template: ${uri}`,
+      undefined,
+      '/xrpc/pub.layers.resource.getTemplate',
+    );
+  }
+
+  return data;
+}
+
+// =============================================================================
+// TEMPLATE QUERY HOOKS
+// =============================================================================
+
+/**
+ * Fetches templates for a given repository (user DID).
+ *
+ * @param repo - DID of the repository owner
+ * @param options - optional language, limit, cursor for pagination
+ * @returns query result containing the template list
+ */
+function useProjectTemplates(
+  repo: string,
+  options?: { language?: string; limit?: number; cursor?: string },
+) {
+  const filters = { repo, ...options };
+  return useQuery({
+    queryKey: templateKeys.list(filters),
+    queryFn: () => fetchProjectTemplates(filters),
+    enabled: Boolean(repo),
+    staleTime: ENTRY_STALE_TIME,
+  });
+}
+
+/**
+ * Fetches a single template record by AT-URI.
+ *
+ * @param uri - AT-URI of the template record
+ * @returns query result containing the template
+ */
+function useTemplate(uri: string) {
+  return useQuery({
+    queryKey: templateKeys.detail(uri),
+    queryFn: () => fetchTemplate(uri),
+    enabled: Boolean(uri),
     staleTime: ENTRY_STALE_TIME,
   });
 }
@@ -466,6 +615,8 @@ export type {
   ResourceEntryListResponse,
   CollectionMembershipListResponse,
   Template,
+  TemplateListResponse,
+  TemplateRecordView,
   Filling,
   ExperimentDef,
   CreateEntryParams,
@@ -478,6 +629,10 @@ export {
   useProjectCollections,
   useProjectCollection,
   useCollectionEntries,
+  useEntries,
+  useEntry,
+  useProjectTemplates,
+  useTemplate,
   useCreateEntry,
   useDeleteEntry,
   useCreateTemplate,
