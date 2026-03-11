@@ -91,7 +91,11 @@ function QuickActions(): React.JSX.Element {
         <Plus className="h-5 w-5" />
         <span>Create Corpus</span>
       </Button>
-      <Button variant="outline" className="h-auto flex-col gap-2 py-4" disabled>
+      <Button
+        variant="outline"
+        className="h-auto flex-col gap-2 py-4"
+        render={<Link href="/import" />}
+      >
         <Upload className="h-5 w-5" />
         <span>Import Data</span>
       </Button>

@@ -12,6 +12,8 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import { Save, Trash2, Plus, Loader2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -21,6 +23,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 import type { SlotSchema, ConstraintSchema } from '@/lib/schemas/design';
 import { useTemplate, useCreateTemplate } from '@/lib/hooks/use-design';
+import { useAgent, useAuth } from '@/lib/auth';
+import { updateRecord, syncRecordWithAppview } from '@/lib/atproto/record-creator';
+import { templateKeys } from '@/lib/hooks/keys';
 
 import { useDesignShortcuts } from '@/lib/hooks/use-design-shortcuts';
 
@@ -37,12 +42,16 @@ interface TemplateEditorProps {
 
 function TemplateEditor({ projectUri, templateUri }: TemplateEditorProps): React.JSX.Element {
   const router = useRouter();
+  const { session } = useAuth();
+  const agent = useAgent();
+  const queryClient = useQueryClient();
   const isNew = !templateUri || templateUri === 'new';
 
   // Load existing template data
   const { data: templateData, isLoading, isError } = useTemplate(isNew ? '' : (templateUri ?? ''));
 
   const createTemplate = useCreateTemplate();
+  const [isSaving, setIsSaving] = useState(false);
 
   // Form state
   const [name, setName] = useState('');
@@ -121,12 +130,92 @@ function TemplateEditor({ projectUri, templateUri }: TemplateEditorProps): React
     setIsDirty(true);
   }, []);
 
-  // Save handler (creates new template; update is a future enhancement)
   const handleSave = useCallback(async () => {
-    // For now, this only supports creating new templates.
-    // Updating existing templates requires putRecord, which will be added later.
-    // TODO: Add update support using updateRecord
-  }, []);
+    if (!agent || !session?.accessJwt) {
+      toast.error('You must be signed in.');
+      return;
+    }
+    if (!text.trim()) {
+      toast.error('Template text is required.');
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const templateRecord = {
+        $type: 'pub.layers.resource.template' as const,
+        text,
+        name: name || undefined,
+        language: language || undefined,
+        slots: slots.map((s) => ({
+          name: s.name,
+          description: s.description,
+          required: s.required ?? true,
+          defaultValue: s.defaultValue,
+          collectionRef: s.collectionRef,
+        })),
+        constraints:
+          constraints.length > 0
+            ? constraints.map((c) => ({
+                expression: c.expression,
+                expressionFormat: c.expressionFormat,
+                scope: c.scope,
+                description: c.description,
+              }))
+            : undefined,
+      };
+
+      if (isNew) {
+        const result = await createTemplate.mutateAsync({
+          agent,
+          authToken: session.accessJwt,
+          text,
+          name: name || undefined,
+          language: language || undefined,
+          slots: slots.map((s) => ({
+            name: s.name,
+            description: s.description,
+            required: s.required,
+            defaultValue: s.defaultValue,
+            collectionRef: s.collectionRef,
+          })),
+          constraints: constraints.map((c) => ({
+            expression: c.expression,
+            expressionFormat: c.expressionFormat,
+            scope: c.scope,
+            description: c.description,
+          })),
+        });
+        toast.success('Template created.');
+        const encodedUri = encodeURIComponent(result.uri);
+        router.push(`/design/${encodeURIComponent(projectUri)}/templates/${encodedUri}`);
+      } else {
+        await updateRecord(agent, templateUri!, templateRecord);
+        await syncRecordWithAppview(templateUri!, session.accessJwt);
+        await queryClient.invalidateQueries({ queryKey: templateKeys.all });
+        toast.success('Template updated.');
+      }
+      setIsDirty(false);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to save template.');
+    } finally {
+      setIsSaving(false);
+    }
+  }, [
+    agent,
+    session,
+    text,
+    name,
+    language,
+    slots,
+    constraints,
+    isNew,
+    templateUri,
+    projectUri,
+    createTemplate,
+    queryClient,
+    router,
+  ]);
 
   // Keyboard shortcuts
   useDesignShortcuts({
@@ -189,13 +278,13 @@ function TemplateEditor({ projectUri, templateUri }: TemplateEditorProps): React
           />
         </div>
 
-        <Button size="sm" disabled={!text || createTemplate.isPending} onClick={handleSave}>
-          {createTemplate.isPending ? (
+        <Button size="sm" disabled={!text || isSaving} onClick={handleSave}>
+          {isSaving ? (
             <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
           ) : (
             <Save className="mr-1.5 h-3.5 w-3.5" />
           )}
-          Save
+          {isNew ? 'Create' : 'Save'}
         </Button>
 
         {!isNew && (
