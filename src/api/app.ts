@@ -16,10 +16,12 @@ import type { DependencyContainer } from 'tsyringe';
 
 import type { NodeOAuthClient } from '@atproto/oauth-client-node';
 
+import { analyticsAdminRoutes } from './handlers/rest/v1/admin/analytics.js';
 import { dlqAdminRoutes } from './handlers/rest/v1/admin/dlq.js';
 import { firehoseAdminRoutes } from './handlers/rest/v1/admin/firehose.js';
 import { healthAdminRoutes } from './handlers/rest/v1/admin/health.js';
 import { importsAdminRoutes } from './handlers/rest/v1/admin/imports.js';
+import { overviewAdminRoutes } from './handlers/rest/v1/admin/overview.js';
 import { pluginsAdminRoutes } from './handlers/rest/v1/admin/plugins.js';
 import { queuesAdminRoutes } from './handlers/rest/v1/admin/queues.js';
 import { reconciliationAdminRoutes } from './handlers/rest/v1/admin/reconciliation.js';
@@ -28,6 +30,7 @@ import { oauthRoutes } from './handlers/rest/v1/auth/oauth.js';
 import { externalAnnotationsRoutes } from './handlers/rest/v1/external-annotations.js';
 import { healthRoutes } from './handlers/rest/v1/health.js';
 import { importRoutes } from './handlers/rest/v1/import.js';
+import { searchRoutes } from './handlers/rest/v1/search.js';
 import {
   authenticate,
   corsMiddleware,
@@ -127,6 +130,21 @@ function createApp(deps: AppDependencies): Hono {
   if (deps.pluginRegistry) {
     pluginsAdminRoutes(app, { pluginRegistry: deps.pluginRegistry });
   }
+
+  overviewAdminRoutes(app, {
+    pgPool: deps.pgPool,
+    esClient: deps.esClient,
+    neo4jDriver: deps.neo4jDriver,
+    redis: deps.redis,
+  });
+
+  analyticsAdminRoutes(app, {
+    esClient: deps.esClient,
+    neo4jDriver: deps.neo4jDriver,
+  });
+
+  // Cross-type search endpoint (public read)
+  searchRoutes(app, { esClient: deps.esClient });
 
   // Import endpoints (parse annotation files via format importer plugins)
   if (deps.pluginRegistry) {
