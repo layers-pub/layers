@@ -1,4 +1,6 @@
-"""FastAPI application for the Layers design sidecar."""
+"""
+FastAPI application for the Layers design sidecar.
+"""
 
 from contextlib import asynccontextmanager
 from collections.abc import AsyncGenerator
@@ -12,7 +14,19 @@ from sidecar.routers import filling, preview, resources
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
-    """Initialize adapters on startup and clean up on shutdown."""
+    """
+    Initialize adapters on startup and clean up on shutdown.
+
+    Parameters
+    ----------
+    app : FastAPI
+        The FastAPI application instance.
+
+    Yields
+    ------
+    None
+        Control is yielded to the application after adapter initialization.
+    """
     from sidecar.adapters.wordnet import WordNetAdapter
     from sidecar.adapters.verbnet import VerbNetAdapter
     from sidecar.adapters.propbank import PropBankAdapter
@@ -59,5 +73,12 @@ app.include_router(preview.router)
 
 @app.get("/health")
 async def health() -> dict[str, str]:
-    """Liveness probe."""
+    """
+    Liveness probe.
+
+    Returns
+    -------
+    dict[str, str]
+        A dictionary with key ``"status"`` set to ``"ok"``.
+    """
     return {"status": "ok"}

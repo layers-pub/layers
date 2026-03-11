@@ -1,6 +1,7 @@
-"""Masked language model filling service.
+"""
+Masked language model filling service.
 
-By default, returns random placeholder fillings. If the optional [ml]
+By default, returns random placeholder fillings. If the optional ``[ml]``
 dependencies (transformers, torch) are installed, uses a real masked
 language model to generate predictions.
 """
@@ -29,7 +30,23 @@ except ImportError:
 
 
 def _render_text(template_text: str, slots: list[dict[str, object]], assignment: dict[str, str]) -> str:
-    """Replace slot placeholders in the template text with assigned values."""
+    """
+    Replace slot placeholders in the template text with assigned values.
+
+    Parameters
+    ----------
+    template_text : str
+        Original template text containing slot placeholders.
+    slots : list[dict[str, object]]
+        Slot definitions with ``"name"``, ``"start"``, and ``"end"`` keys.
+    assignment : dict[str, str]
+        Mapping from slot name to assigned value.
+
+    Returns
+    -------
+    str
+        Template text with all slot placeholders replaced.
+    """
     result = template_text
     sorted_slots = sorted(slots, key=lambda s: int(s["start"]), reverse=True)  # type: ignore[arg-type]
     for slot in sorted_slots:
@@ -42,10 +59,21 @@ def _render_text(template_text: str, slots: list[dict[str, object]], assignment:
 
 
 async def fill_mlm(request: MLMFillRequest) -> MLMFillResponse:
-    """Generate fillings using a masked language model.
+    """
+    Generate fillings using a masked language model.
 
     If transformers is not installed, returns random placeholder fillings
     with a note indicating stub mode.
+
+    Parameters
+    ----------
+    request : MLMFillRequest
+        Template, masked slot positions, model name, and candidate count.
+
+    Returns
+    -------
+    MLMFillResponse
+        Generated fillings with confidence scores and model metadata.
     """
     model_name = request.model or settings.mlm_model_name
     slot_dicts = [{"name": s.name, "start": s.start, "end": s.end} for s in request.template.slots]
@@ -63,7 +91,25 @@ def _generate_stub_fillings(
     slot_dicts: list[dict[str, object]],
     masked_slots: list[str],
 ) -> MLMFillResponse:
-    """Generate random placeholder fillings when transformers is not installed."""
+    """
+    Generate random placeholder fillings when transformers is not installed.
+
+    Parameters
+    ----------
+    request : MLMFillRequest
+        Request containing num_candidates and template.
+    model_name : str
+        Name of the model (included in response metadata).
+    slot_dicts : list[dict[str, object]]
+        Slot definitions with position information.
+    masked_slots : list[str]
+        Slot names to fill with placeholders.
+
+    Returns
+    -------
+    MLMFillResponse
+        Fillings with random words and synthetic confidence scores.
+    """
     # Common placeholder words for stub mode
     placeholders = [
         "the", "a", "one", "some", "many", "few", "big", "small",
@@ -116,7 +162,29 @@ async def _generate_real_fillings(
     slot_dicts: list[dict[str, object]],
     masked_slots: list[str],
 ) -> MLMFillResponse:
-    """Generate fillings using a real HuggingFace masked language model."""
+    """
+    Generate fillings using a real HuggingFace masked language model.
+
+    For single-mask templates, returns top-k predictions directly.
+    For multi-mask templates, fills iteratively in left-to-right order
+    using greedy decoding.
+
+    Parameters
+    ----------
+    request : MLMFillRequest
+        Request containing template and masked positions.
+    model_name : str
+        HuggingFace model identifier to load.
+    slot_dicts : list[dict[str, object]]
+        Slot definitions with position information.
+    masked_slots : list[str]
+        Slot names to fill via MLM prediction.
+
+    Returns
+    -------
+    MLMFillResponse
+        Model-generated fillings with confidence scores.
+    """
     try:
         fill_mask = hf_pipeline("fill-mask", model=model_name)
     except Exception:

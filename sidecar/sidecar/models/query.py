@@ -1,10 +1,29 @@
-"""Request/response models for resource queries."""
+"""
+Request/response models for resource queries.
+"""
 
 from pydantic import BaseModel, Field
 
 
 class QueryFilters(BaseModel):
-    """Filters for querying a linguistic resource adapter."""
+    """
+    Filters for querying a linguistic resource adapter.
+
+    Attributes
+    ----------
+    pos : str or None
+        Part-of-speech filter (e.g., ``"NOUN"``, ``"VERB"``).
+    class_ : str or None
+        Resource class filter (e.g., VerbNet class ID).
+    language : str or None
+        ISO 639 language code.
+    search : str or None
+        Free-text search query.
+    limit : int
+        Maximum entries to return, by default 50.
+    offset : int
+        Pagination offset, by default 0.
+    """
 
     pos: str | None = Field(default=None, description="Part-of-speech filter (e.g., 'NOUN', 'VERB')")
     class_: str | None = Field(
@@ -21,7 +40,24 @@ class QueryFilters(BaseModel):
 
 
 class ResourceEntry(BaseModel):
-    """A single entry returned from a linguistic resource query."""
+    """
+    A single entry returned from a linguistic resource query.
+
+    Attributes
+    ----------
+    form : str
+        Surface form of the entry.
+    lemma : str
+        Lemma (base form).
+    pos : str or None
+        Part of speech.
+    features : dict[str, str | list[str]]
+        Resource-specific features (definition, roles, frame, etc.).
+    knowledge_ref : str or None
+        External knowledge base reference (e.g., WordNet synset ID).
+    source : str
+        Resource source identifier.
+    """
 
     form: str = Field(description="Surface form of the entry")
     lemma: str = Field(description="Lemma (base form)")
@@ -38,7 +74,18 @@ class ResourceEntry(BaseModel):
 
 
 class QueryResult(BaseModel):
-    """Paginated response from a resource query."""
+    """
+    Paginated response from a resource query.
+
+    Attributes
+    ----------
+    entries : list[ResourceEntry]
+        Resource entries for the current page.
+    total : int
+        Total entries matching the query.
+    has_more : bool
+        Whether more entries exist beyond this page.
+    """
 
     entries: list[ResourceEntry] = Field(default_factory=list)
     total: int = Field(default=0, description="Total entries matching the query")

@@ -1,4 +1,5 @@
-"""Constraint satisfaction solver for template filling.
+"""
+Constraint satisfaction solver for template filling.
 
 Uses the python-constraint library for constraint propagation and
 backtracking search. Slot domains come from the request's collections,
@@ -22,9 +23,24 @@ logger = logging.getLogger(__name__)
 
 
 def _render_text(template_text: str, slots: list[dict[str, Any]], assignment: dict[str, str]) -> str:
-    """Replace slot placeholders in the template text with assigned values.
+    """
+    Replace slot placeholders in the template text with assigned values.
 
     Slots are replaced from right to left to preserve character offsets.
+
+    Parameters
+    ----------
+    template_text : str
+        Original template text containing slot placeholders.
+    slots : list[dict[str, Any]]
+        Slot definitions with ``"name"``, ``"start"``, and ``"end"`` keys.
+    assignment : dict[str, str]
+        Mapping from slot name to assigned value.
+
+    Returns
+    -------
+    str
+        Template text with all slot placeholders replaced.
     """
     result = template_text
     # Sort by start position descending so replacements don't shift offsets
@@ -39,12 +55,24 @@ def _render_text(template_text: str, slots: list[dict[str, Any]], assignment: di
 def _build_constraint_fn(
     expression: str, slot_names: list[str]
 ) -> Any:
-    """Build a constraint function from a Python expression string.
+    """
+    Build a constraint function from a Python expression string.
 
     The expression can reference slot names as variables. Each variable
     receives the form string of the assigned entry for that slot.
 
-    Returns a function compatible with python-constraint's addConstraint.
+    Parameters
+    ----------
+    expression : str
+        Python expression string using slot names as variables.
+    slot_names : list[str]
+        Ordered list of slot names referenced by the expression.
+
+    Returns
+    -------
+    Callable[..., bool]
+        Function compatible with python-constraint's ``addConstraint``.
+        Returns False if the expression raises an exception.
     """
     # Validate: only allow safe Python expressions
     # (basic comparisons, logical operators, string methods, in/not in)
@@ -60,13 +88,24 @@ def _build_constraint_fn(
 
 
 def solve_csp(request: CSPFillRequest) -> CSPFillResponse:
-    """Solve the constraint satisfaction problem defined by the request.
+    """
+    Solve the constraint satisfaction problem defined by the request.
 
     1. Build variable domains from slot collections (each slot's domain
        is the list of entry forms in its collection).
     2. Add constraints as Python expressions evaluated over slot values.
     3. Run backtracking search with constraint propagation.
     4. Collect solutions up to the requested limit.
+
+    Parameters
+    ----------
+    request : CSPFillRequest
+        Template, collections (slot domains), constraints, and limit.
+
+    Returns
+    -------
+    CSPFillResponse
+        Valid fillings with rendered text, total count, and solve time.
     """
     start_time = time.monotonic()
 

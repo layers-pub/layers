@@ -1,4 +1,6 @@
-"""PropBank adapter using NLTK's PropBank corpus reader."""
+"""
+PropBank adapter using NLTK's PropBank corpus reader.
+"""
 
 import logging
 
@@ -9,17 +11,36 @@ logger = logging.getLogger(__name__)
 
 
 class PropBankAdapter(BaseAdapter):
-    """Queries PropBank predicates and rolesets via NLTK."""
+    """
+    Queries PropBank predicates and rolesets via NLTK.
+
+    Attributes
+    ----------
+    _initialized : bool
+        Whether the adapter has completed initialization.
+    _available : bool
+        Whether the PropBank corpus was successfully loaded.
+    """
 
     _initialized: bool = False
     _available: bool = False
 
     @property
     def source_name(self) -> str:
+        """
+        Return the source name for this adapter.
+
+        Returns
+        -------
+        str
+            Always ``"propbank"``.
+        """
         return "propbank"
 
     async def initialize(self) -> None:
-        """Check if NLTK PropBank corpus is available."""
+        """
+        Check if NLTK PropBank corpus is available and download if missing.
+        """
         try:
             import nltk
 
@@ -39,7 +60,20 @@ class PropBankAdapter(BaseAdapter):
         self._initialized = True
 
     async def query(self, filters: QueryFilters) -> QueryResult:
-        """Search PropBank rolesets by lemma."""
+        """
+        Search PropBank rolesets by lemma.
+
+        Parameters
+        ----------
+        filters : QueryFilters
+            Query parameters including ``search`` (verb lemma to look up),
+            ``limit``, and ``offset``.
+
+        Returns
+        -------
+        QueryResult
+            Paginated entries with roleset IDs and argument roles.
+        """
         if not self._initialized or not self._available:
             return QueryResult(entries=[], total=0, has_more=False)
 

@@ -1,4 +1,6 @@
-"""FrameNet adapter using NLTK's FrameNet corpus reader."""
+"""
+FrameNet adapter using NLTK's FrameNet corpus reader.
+"""
 
 import logging
 
@@ -9,17 +11,36 @@ logger = logging.getLogger(__name__)
 
 
 class FrameNetAdapter(BaseAdapter):
-    """Queries FrameNet frames and lexical units via NLTK."""
+    """
+    Queries FrameNet frames and lexical units via NLTK.
+
+    Attributes
+    ----------
+    _initialized : bool
+        Whether the adapter has completed initialization.
+    _available : bool
+        Whether the FrameNet corpus was successfully loaded.
+    """
 
     _initialized: bool = False
     _available: bool = False
 
     @property
     def source_name(self) -> str:
+        """
+        Return the source name for this adapter.
+
+        Returns
+        -------
+        str
+            Always ``"framenet"``.
+        """
         return "framenet"
 
     async def initialize(self) -> None:
-        """Check if NLTK FrameNet corpus is available."""
+        """
+        Check if NLTK FrameNet corpus is available and download if missing.
+        """
         try:
             import nltk
 
@@ -39,7 +60,20 @@ class FrameNetAdapter(BaseAdapter):
         self._initialized = True
 
     async def query(self, filters: QueryFilters) -> QueryResult:
-        """Search FrameNet frames by name or lexical unit."""
+        """
+        Search FrameNet frames by name or lexical unit.
+
+        Parameters
+        ----------
+        filters : QueryFilters
+            Query parameters including ``search`` (frame name or LU
+            substring), ``limit``, and ``offset``.
+
+        Returns
+        -------
+        QueryResult
+            Paginated entries combining frame matches and lexical unit matches.
+        """
         if not self._initialized or not self._available:
             return QueryResult(entries=[], total=0, has_more=False)
 

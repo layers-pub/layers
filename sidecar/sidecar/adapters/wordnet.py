@@ -1,4 +1,6 @@
-"""WordNet adapter using NLTK's WordNet interface."""
+"""
+WordNet adapter using NLTK's WordNet interface.
+"""
 
 import logging
 
@@ -22,16 +24,33 @@ _POS_MAP: dict[str, str] = {
 
 
 class WordNetAdapter(BaseAdapter):
-    """Queries WordNet synsets via NLTK, with Open Multilingual Wordnet support."""
+    """
+    Queries WordNet synsets via NLTK, with Open Multilingual Wordnet support.
+
+    Attributes
+    ----------
+    _initialized : bool
+        Whether the adapter has completed initialization.
+    """
 
     _initialized: bool = False
 
     @property
     def source_name(self) -> str:
+        """
+        Return the source name for this adapter.
+
+        Returns
+        -------
+        str
+            Always ``"wordnet"``.
+        """
         return "wordnet"
 
     async def initialize(self) -> None:
-        """Download wordnet and omw-1.4 corpora if not already present."""
+        """
+        Download wordnet and omw-1.4 corpora if not already present.
+        """
         import nltk
 
         for corpus in ("wordnet", "omw-1.4"):
@@ -44,7 +63,21 @@ class WordNetAdapter(BaseAdapter):
         self._initialized = True
 
     async def query(self, filters: QueryFilters) -> QueryResult:
-        """Search WordNet synsets by lemma, optionally filtered by POS and language."""
+        """
+        Search WordNet synsets by lemma, optionally filtered by POS and language.
+
+        Parameters
+        ----------
+        filters : QueryFilters
+            Query parameters including ``search`` (lemma to look up),
+            ``pos`` (Universal POS tag), ``language`` (ISO 639-3 code,
+            defaults to ``"eng"``), ``limit``, and ``offset``.
+
+        Returns
+        -------
+        QueryResult
+            Paginated, deduplicated synset entries with definitions.
+        """
         if not self._initialized:
             return QueryResult(entries=[], total=0, has_more=False)
 

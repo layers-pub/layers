@@ -1,4 +1,6 @@
-"""Linguistic resource adapters for external data sources."""
+"""
+Linguistic resource adapters for external data sources.
+"""
 
 from sidecar.adapters.base import BaseAdapter
 

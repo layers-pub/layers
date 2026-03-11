@@ -1,4 +1,6 @@
-"""VerbNet adapter using NLTK's VerbNet corpus reader."""
+"""
+VerbNet adapter using NLTK's VerbNet corpus reader.
+"""
 
 import logging
 
@@ -9,17 +11,36 @@ logger = logging.getLogger(__name__)
 
 
 class VerbNetAdapter(BaseAdapter):
-    """Queries VerbNet verb classes via NLTK."""
+    """
+    Queries VerbNet verb classes via NLTK.
+
+    Attributes
+    ----------
+    _initialized : bool
+        Whether the adapter has completed initialization.
+    _available : bool
+        Whether the VerbNet corpus was successfully loaded.
+    """
 
     _initialized: bool = False
     _available: bool = False
 
     @property
     def source_name(self) -> str:
+        """
+        Return the source name for this adapter.
+
+        Returns
+        -------
+        str
+            Always ``"verbnet"``.
+        """
         return "verbnet"
 
     async def initialize(self) -> None:
-        """Check if NLTK VerbNet corpus is available."""
+        """
+        Check if NLTK VerbNet corpus is available and download if missing.
+        """
         try:
             import nltk
 
@@ -39,7 +60,20 @@ class VerbNetAdapter(BaseAdapter):
         self._initialized = True
 
     async def query(self, filters: QueryFilters) -> QueryResult:
-        """Search VerbNet classes by lemma or class ID."""
+        """
+        Search VerbNet classes by lemma or class ID.
+
+        Parameters
+        ----------
+        filters : QueryFilters
+            Query parameters including ``search`` (lemma to look up),
+            ``class_`` (VerbNet class ID filter), ``limit``, and ``offset``.
+
+        Returns
+        -------
+        QueryResult
+            Paginated entries with verb class membership and thematic roles.
+        """
         if not self._initialized or not self._available:
             return QueryResult(entries=[], total=0, has_more=False)
 

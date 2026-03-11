@@ -1,1 +1,3 @@
-"""FastAPI routers for sidecar endpoints."""
+"""
+FastAPI routers for sidecar endpoints.
+"""

@@ -1,4 +1,6 @@
-"""Request/response models for the jsPsych preview endpoint."""
+"""
+Request/response models for the jsPsych preview endpoint.
+"""
 
 from typing import Any
 
@@ -6,7 +8,33 @@ from pydantic import BaseModel, Field
 
 
 class ExperimentSpec(BaseModel):
-    """Experiment definition for jsPsych preview generation."""
+    """
+    Experiment definition for jsPsych preview generation.
+
+    Attributes
+    ----------
+    title : str
+        Experiment title, by default ``"Experiment Preview"``.
+    task_type : str
+        Task type (e.g., ``"forced-choice"``, ``"ordinal-scale"``,
+        ``"magnitude"``, ``"binary"``, ``"free-text"``, ``"cloze"``),
+        by default ``"forced-choice"``.
+    labels : list[str]
+        Response labels (for forced-choice or ordinal-scale tasks).
+    scale_min : int or None
+        Scale minimum for ordinal-scale tasks.
+    scale_max : int or None
+        Scale maximum for ordinal-scale tasks.
+    instructions : str
+        Participant instructions.
+    presentation_method : str
+        Stimulus presentation method (e.g., ``"whole-sentence"``,
+        ``"self-paced"``, ``"rsvp"``), by default ``"whole-sentence"``.
+    timing_ms : int or None
+        Timing per chunk in milliseconds (rsvp, masked-priming).
+    isi_ms : int or None
+        Inter-stimulus interval in milliseconds (rsvp).
+    """
 
     title: str = Field(default="Experiment Preview", description="Experiment title")
     task_type: str = Field(
@@ -32,7 +60,20 @@ class ExperimentSpec(BaseModel):
 
 
 class SampleFilling(BaseModel):
-    """A sample stimulus filling for the preview."""
+    """
+    A sample stimulus filling for the preview.
+
+    Attributes
+    ----------
+    rendered_text : str
+        The filled stimulus text.
+    condition : str or None
+        Experimental condition label.
+    item_id : str or None
+        Item identifier.
+    metadata : dict[str, Any]
+        Additional trial metadata.
+    """
 
     rendered_text: str = Field(description="The filled stimulus text")
     condition: str | None = Field(default=None, description="Experimental condition label")
@@ -41,7 +82,18 @@ class SampleFilling(BaseModel):
 
 
 class PreviewRequest(BaseModel):
-    """Request body for the jsPsych preview endpoint."""
+    """
+    Request body for the jsPsych preview endpoint.
+
+    Attributes
+    ----------
+    experiment : ExperimentSpec
+        Experiment configuration.
+    sample_fillings : list[SampleFilling]
+        Stimuli to include in the preview.
+    count : int
+        Number of trials to generate, by default 5.
+    """
 
     experiment: ExperimentSpec
     sample_fillings: list[SampleFilling] = Field(
@@ -52,7 +104,16 @@ class PreviewRequest(BaseModel):
 
 
 class PreviewResponse(BaseModel):
-    """Response from the jsPsych preview endpoint."""
+    """
+    Response from the jsPsych preview endpoint.
 
-    html: str = Field(description="Self-contained jsPsych 7.x HTML document")
+    Attributes
+    ----------
+    html : str
+        Self-contained jsPsych 8.x HTML document.
+    trial_count : int
+        Number of trials in the generated experiment.
+    """
+
+    html: str = Field(description="Self-contained jsPsych 8.x HTML document")
     trial_count: int = Field(description="Number of trials in the generated experiment")

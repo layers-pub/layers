@@ -1,1 +1,3 @@
-"""Pydantic request/response models for all sidecar endpoints."""
+"""
+Pydantic request/response models for all sidecar endpoints.
+"""

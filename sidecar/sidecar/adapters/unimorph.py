@@ -1,4 +1,6 @@
-"""UniMorph adapter that downloads and queries TSV paradigm files."""
+"""
+UniMorph adapter that downloads and queries TSV paradigm files.
+"""
 
 import logging
 from pathlib import Path
@@ -35,10 +37,21 @@ _UNIMORPH_BASE_URL = "https://raw.githubusercontent.com/unimorph"
 
 
 class UniMorphAdapter(BaseAdapter):
-    """Queries UniMorph morphological paradigms from downloaded TSV files.
+    """
+    Queries UniMorph morphological paradigms from downloaded TSV files.
 
     UniMorph files are three-column TSV: lemma, form, features.
     Features use UniMorph schema tags separated by semicolons.
+
+    Attributes
+    ----------
+    _initialized : bool
+        Whether the adapter has completed initialization.
+    _cache_dir : Path
+        Directory for caching downloaded TSV files.
+    _data : dict[str, list[tuple[str, str, str]]]
+        In-memory index mapping language code to parsed rows
+        (lemma, form, features_str).
     """
 
     _initialized: bool = False
@@ -51,17 +64,41 @@ class UniMorphAdapter(BaseAdapter):
 
     @property
     def source_name(self) -> str:
+        """
+        Return the source name for this adapter.
+
+        Returns
+        -------
+        str
+            Always ``"unimorph"``.
+        """
         return "unimorph"
 
     async def initialize(self) -> None:
-        """Create cache directory. Data is loaded lazily per language on first query."""
+        """
+        Create the cache directory.
+
+        Data is loaded lazily per language on first query.
+        """
         self._cache_dir.mkdir(parents=True, exist_ok=True)
         self._initialized = True
 
     def _load_language(self, lang: str) -> list[tuple[str, str, str]]:
-        """Load a language's TSV file from the cache, or return empty if unavailable.
+        """
+        Load a language's TSV file from the cache.
 
         Downloads on demand from UniMorph GitHub if not cached.
+
+        Parameters
+        ----------
+        lang : str
+            ISO 639-3 language code (e.g., ``"eng"``).
+
+        Returns
+        -------
+        list[tuple[str, str, str]]
+            Parsed rows as (lemma, form, features_str) tuples.
+            Returns an empty list if the data is unavailable.
         """
         if lang in self._data:
             return self._data[lang]
@@ -102,7 +139,21 @@ class UniMorphAdapter(BaseAdapter):
         return rows
 
     async def query(self, filters: QueryFilters) -> QueryResult:
-        """Search UniMorph paradigms by lemma, form, or features."""
+        """
+        Search UniMorph paradigms by lemma, form, or features.
+
+        Parameters
+        ----------
+        filters : QueryFilters
+            Query parameters including ``search`` (matches lemma or form),
+            ``language`` (ISO 639-3 code, defaults to ``"eng"``),
+            ``pos`` (UniMorph POS tag filter), ``limit``, and ``offset``.
+
+        Returns
+        -------
+        QueryResult
+            Paginated morphological paradigm entries.
+        """
         if not self._initialized:
             return QueryResult(entries=[], total=0, has_more=False)
 

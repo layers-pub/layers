@@ -1,1 +1,3 @@
-"""Layers design sidecar: resource queries, CSP solving, MLM filling, jsPsych preview."""
+"""
+Layers design sidecar: resource queries, CSP solving, MLM filling, jsPsych preview.
+"""

@@ -10,6 +10,7 @@ dependencies = [
     "pydantic-settings>=2.7",
     "nltk>=3.9",
     "python-constraint>=1.4",
+    "conllu>=5.0",
 ]
 
 [project.optional-dependencies]
