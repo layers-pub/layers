@@ -57,6 +57,8 @@ import {
   type ListConstraintFormValues,
 } from '@/lib/schemas/design';
 
+import { useDesignShortcuts } from '@/lib/hooks/use-design-shortcuts';
+
 import { TaskTypeConfigurator } from './experiment/task-type-configurator';
 import { ListConstraintEditor } from './experiment/list-constraint-editor';
 import { ExperimentPreviewPanel } from './experiment/experiment-preview-panel';
@@ -303,6 +305,11 @@ function ExperimentEditor({ projectUri, experimentUri }: ExperimentEditorProps):
     projectUri,
     router,
   ]);
+
+  // Keyboard shortcuts
+  useDesignShortcuts({
+    onSave: handleSave,
+  });
 
   return (
     <div className="space-y-4">

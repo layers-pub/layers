@@ -12,6 +12,7 @@
 import { use } from 'react';
 
 import { AuthGuard } from '@/components/auth/auth-guard';
+import { DesignErrorBoundary } from '@/components/design/design-error-boundary';
 import { ProjectWorkspaceLayout } from '@/components/design/project-workspace-layout';
 
 interface ProjectLayoutProps {
@@ -26,7 +27,9 @@ function ProjectLayout({ params, children }: ProjectLayoutProps): React.JSX.Elem
   return (
     <AuthGuard>
       <div className="container mx-auto px-4 py-8">
-        <ProjectWorkspaceLayout projectUri={decodedUri}>{children}</ProjectWorkspaceLayout>
+        <DesignErrorBoundary name="ProjectWorkspace">
+          <ProjectWorkspaceLayout projectUri={decodedUri}>{children}</ProjectWorkspaceLayout>
+        </DesignErrorBoundary>
       </div>
     </AuthGuard>
   );

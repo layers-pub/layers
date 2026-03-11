@@ -8,6 +8,7 @@
 
 import { use } from 'react';
 
+import { DesignErrorBoundary } from '@/components/design/design-error-boundary';
 import { TemplateEditor } from '@/components/design/template-editor';
 
 interface TemplateEditorPageProps {
@@ -18,9 +19,11 @@ export default function TemplateEditorPage({ params }: TemplateEditorPageProps) 
   const { projectUri, templateUri } = use(params);
 
   return (
-    <TemplateEditor
-      projectUri={decodeURIComponent(projectUri)}
-      templateUri={decodeURIComponent(templateUri)}
-    />
+    <DesignErrorBoundary name="TemplateEditor">
+      <TemplateEditor
+        projectUri={decodeURIComponent(projectUri)}
+        templateUri={decodeURIComponent(templateUri)}
+      />
+    </DesignErrorBoundary>
   );
 }

@@ -22,6 +22,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import type { SlotSchema, ConstraintSchema } from '@/lib/schemas/design';
 import { useTemplate, useCreateTemplate } from '@/lib/hooks/use-design';
 
+import { useDesignShortcuts } from '@/lib/hooks/use-design-shortcuts';
+
 import { TemplateTextEditor, extractSlotNames } from './template/template-text-editor';
 import { SlotBuilder } from './template/slot-builder';
 import { ConstraintEditor } from './template/constraint-editor';
@@ -125,6 +127,11 @@ function TemplateEditor({ projectUri, templateUri }: TemplateEditorProps): React
     // Updating existing templates requires putRecord, which will be added later.
     // TODO: Add update support using updateRecord
   }, []);
+
+  // Keyboard shortcuts
+  useDesignShortcuts({
+    onSave: handleSave,
+  });
 
   // Loading state
   if (!isNew && isLoading) {

@@ -8,6 +8,7 @@ import type { Metadata } from 'next';
 
 import { AuthGuard } from '@/components/auth/auth-guard';
 import { DesignDashboard } from '@/components/design/design-dashboard';
+import { DesignErrorBoundary } from '@/components/design/design-error-boundary';
 
 export const metadata: Metadata = {
   title: 'Design Studio',
@@ -18,7 +19,9 @@ export default function DesignPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <AuthGuard>
-        <DesignDashboard />
+        <DesignErrorBoundary name="Dashboard">
+          <DesignDashboard />
+        </DesignErrorBoundary>
       </AuthGuard>
     </div>
   );

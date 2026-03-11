@@ -8,6 +8,7 @@
 
 import { use } from 'react';
 
+import { DesignErrorBoundary } from '@/components/design/design-error-boundary';
 import { SimulatePanel } from '@/components/design/simulate-panel';
 
 interface SimulatePageProps {
@@ -17,5 +18,9 @@ interface SimulatePageProps {
 export default function SimulatePage({ params }: SimulatePageProps) {
   const { projectUri } = use(params);
 
-  return <SimulatePanel projectUri={decodeURIComponent(projectUri)} />;
+  return (
+    <DesignErrorBoundary name="SimulatePanel">
+      <SimulatePanel projectUri={decodeURIComponent(projectUri)} />
+    </DesignErrorBoundary>
+  );
 }

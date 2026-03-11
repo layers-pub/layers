@@ -225,6 +225,79 @@ const events = {
     });
   },
 
+  // ---- Design section events ----
+
+  /**
+   * Tracks a design section action (project, entry, template, experiment CRUD).
+   */
+  designAction(attrs: {
+    readonly action:
+      | 'project-create'
+      | 'entry-create'
+      | 'entry-delete'
+      | 'template-create'
+      | 'template-save'
+      | 'experiment-create'
+      | 'experiment-save';
+    readonly projectUri?: string;
+    readonly result?: 'success' | 'failure';
+  }): void {
+    pushEvent('design:action', {
+      action: attrs.action,
+      projectUri: attrs.projectUri,
+      result: attrs.result,
+    });
+  },
+
+  /**
+   * Tracks a filling generation event in the simulate panel.
+   */
+  designFilling(attrs: {
+    readonly strategy: string;
+    readonly count: number;
+    readonly durationMs: number;
+  }): void {
+    pushEvent('design:filling', {
+      strategy: attrs.strategy,
+      count: attrs.count,
+      durationMs: attrs.durationMs,
+    });
+  },
+
+  /**
+   * Tracks a bead import in the I/O panel.
+   */
+  designImport(attrs: { readonly format: string; readonly itemCount: number }): void {
+    pushEvent('design:import', {
+      format: attrs.format,
+      itemCount: attrs.itemCount,
+    });
+  },
+
+  /**
+   * Tracks a bead export from the I/O panel.
+   */
+  designExport(attrs: { readonly itemCount: number }): void {
+    pushEvent('design:export', {
+      itemCount: attrs.itemCount,
+    });
+  },
+
+  /**
+   * Tracks a sidecar query (CSP, MLM, or experiment preview).
+   */
+  designSidecar(attrs: {
+    readonly source: 'csp' | 'mlm' | 'experiment-preview';
+    readonly durationMs: number;
+    readonly resultCount: number;
+  }): void {
+    pushEvent('design:sidecar', {
+      source: attrs.source,
+      durationMs: attrs.durationMs,
+      resultCount: attrs.resultCount,
+    });
+  },
+
   /**
    * Pushes a generic custom event with arbitrary attributes.
    *

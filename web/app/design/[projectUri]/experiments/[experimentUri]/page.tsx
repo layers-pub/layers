@@ -8,6 +8,7 @@
 
 import { use } from 'react';
 
+import { DesignErrorBoundary } from '@/components/design/design-error-boundary';
 import { ExperimentEditor } from '@/components/design/experiment-editor';
 
 interface ExperimentEditorPageProps {
@@ -18,9 +19,11 @@ export default function ExperimentEditorPage({ params }: ExperimentEditorPagePro
   const { projectUri, experimentUri } = use(params);
 
   return (
-    <ExperimentEditor
-      projectUri={decodeURIComponent(projectUri)}
-      experimentUri={decodeURIComponent(experimentUri)}
-    />
+    <DesignErrorBoundary name="ExperimentEditor">
+      <ExperimentEditor
+        projectUri={decodeURIComponent(projectUri)}
+        experimentUri={decodeURIComponent(experimentUri)}
+      />
+    </DesignErrorBoundary>
   );
 }

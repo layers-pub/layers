@@ -31,6 +31,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { collectionMembershipKeys, resourceEntryKeys } from '@/lib/hooks/keys';
 import type { EntryFormValues } from '@/lib/schemas/design';
 
+import { useDesignShortcuts } from '@/lib/hooks/use-design-shortcuts';
+
 import { EntryForm } from './entry-form';
 import { EntryTable, type EntryView } from './entry-table';
 import { ResourceQueryPanel } from './resource-query-panel';
@@ -186,6 +188,20 @@ function LexiconEditor({ collectionUri }: LexiconEditorProps): React.JSX.Element
   function handleSelect(uri: string): void {
     setSelectedEntryUri(uri);
   }
+
+  // Keyboard shortcuts
+  useDesignShortcuts({
+    onNew: () => {
+      setEditorMode('create');
+      setSelectedEntryUri(undefined);
+    },
+    onCancel: () => {
+      if (editorMode === 'edit') {
+        setEditorMode('create');
+        setSelectedEntryUri(undefined);
+      }
+    },
+  });
 
   const isLoading = isLoadingCollection || isLoadingMemberships || isLoadingEntries;
 
