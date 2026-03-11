@@ -67,6 +67,18 @@ services:
     networks:
       - layers_network
 
+  sidecar:
+    build:
+      context: ..
+      dockerfile: sidecar/Dockerfile
+    ports:
+      - '8000:8000'
+    environment:
+      SIDECAR_LAYERS_API_URL: http://host.docker.internal:3001
+      SIDECAR_CORS_ORIGINS: http://localhost:3000
+    networks:
+      - layers_network
+
 volumes:
   layers_pg_data:
   layers_es_data:

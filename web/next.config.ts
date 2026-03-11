@@ -24,10 +24,15 @@ const nextConfig: NextConfig = {
 
   async rewrites() {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    const sidecarUrl = process.env.SIDECAR_URL || 'http://localhost:8000';
     return [
       {
         source: '/xrpc/:path*',
         destination: `${apiUrl}/xrpc/:path*`,
+      },
+      {
+        source: '/api/v1/design/:path*',
+        destination: `${sidecarUrl}/:path*`,
       },
       {
         source: '/api/v1/:path*',

@@ -10,7 +10,7 @@ import type { LayersError } from '../errors.js';
 /**
  * Supported annotation format types for import.
  */
-type ImportFormat = 'conll' | 'brat' | 'elan' | 'tei' | 'praat';
+type ImportFormat = 'conll' | 'brat' | 'elan' | 'tei' | 'praat' | 'bead-jsonlines';
 
 /**
  * A parsed import result containing records to create.

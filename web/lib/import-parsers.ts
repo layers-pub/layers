@@ -732,6 +732,86 @@ function parsePraat(content: string): ParsedPreview {
 }
 
 /**
+ * Parses bead JSONLines format (.jsonl files with typed records).
+ *
+ * Each line is a JSON object with a `type` field: "entry", "template",
+ * "filling", or "experiment". Preview rows show the type and key fields
+ * from the first 10 records.
+ */
+function parseBeadJsonlines(content: string): ParsedPreview {
+  const lines = content.split('\n').filter((line) => line.trim().length > 0);
+  const columns = ['Type', 'Name/Form', 'Detail'];
+  const rows: string[][] = [];
+
+  let entryCount = 0;
+  let templateCount = 0;
+  let fillingCount = 0;
+  let experimentCount = 0;
+
+  for (const line of lines) {
+    let parsed: Record<string, unknown>;
+    try {
+      parsed = JSON.parse(line) as Record<string, unknown>;
+    } catch {
+      continue;
+    }
+
+    const recordType = String(parsed['type'] ?? 'unknown');
+
+    switch (recordType) {
+      case 'entry': {
+        entryCount++;
+        const form = String(parsed['form'] ?? '');
+        const lemma = parsed['lemma'] ? `lemma: ${String(parsed['lemma'])}` : '';
+        if (rows.length < 10) {
+          rows.push(['entry', form, lemma]);
+        }
+        break;
+      }
+      case 'template': {
+        templateCount++;
+        const name = String(parsed['name'] ?? '');
+        const text = String(parsed['text'] ?? '').slice(0, 60);
+        if (rows.length < 10) {
+          rows.push(['template', name, text]);
+        }
+        break;
+      }
+      case 'filling': {
+        fillingCount++;
+        const templateRef = String(parsed['templateRef'] ?? '');
+        const strategy = parsed['strategy'] ? `strategy: ${String(parsed['strategy'])}` : '';
+        if (rows.length < 10) {
+          rows.push(['filling', templateRef.slice(0, 40), strategy]);
+        }
+        break;
+      }
+      case 'experiment': {
+        experimentCount++;
+        const expName = String(parsed['name'] ?? '');
+        const measureType = parsed['measureType'] ? String(parsed['measureType']) : '';
+        if (rows.length < 10) {
+          rows.push(['experiment', expName, measureType]);
+        }
+        break;
+      }
+      default:
+        break;
+    }
+  }
+
+  return {
+    columns,
+    rows,
+    counts: {
+      expressions: entryCount,
+      segmentations: 0,
+      layers: templateCount + fillingCount + experimentCount,
+    },
+  };
+}
+
+/**
  * Parses an annotation file based on the detected format.
  *
  * @param content - the file content as a string
@@ -752,10 +832,12 @@ function parseFileContent(content: string, format: string): ParsedPreview {
       return parseTei(content);
     case 'Praat TextGrid':
       return parsePraat(content);
+    case 'Bead JSONLines':
+      return parseBeadJsonlines(content);
     default:
       throw new Error(`Unsupported format: ${format}`);
   }
 }
 
 export type { ParsedPreview, PreviewMetadata, TierInfo };
-export { readFileAsText, parseFileContent };
+export { readFileAsText, parseFileContent, parseBeadJsonlines };

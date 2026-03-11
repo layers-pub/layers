@@ -142,6 +142,7 @@ import { BratImporter } from './plugins/importers/brat-importer.js';
 import { ElanImporter } from './plugins/importers/elan-importer.js';
 import { TeiImporter } from './plugins/importers/tei-importer.js';
 import { PraatImporter } from './plugins/importers/praat-importer.js';
+import { BeadJsonlinesImporter } from './plugins/importers/bead-jsonlines-importer.js';
 import { MarginIndexer } from './services/interop/margin-indexer.js';
 import { createRedisClient } from './storage/redis/client.js';
 
@@ -569,6 +570,7 @@ pluginRegistry.register(new BratImporter());
 pluginRegistry.register(new ElanImporter());
 pluginRegistry.register(new TeiImporter());
 pluginRegistry.register(new PraatImporter());
+pluginRegistry.register(new BeadJsonlinesImporter());
 container.register('PluginRegistry', { useValue: pluginRegistry });
 
 // Build margin.at interop indexer for external annotations
