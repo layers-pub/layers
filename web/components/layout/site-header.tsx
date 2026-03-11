@@ -27,6 +27,7 @@ const NAV_LINKS = [
   { href: '/corpora', label: 'Corpora' },
   { href: '/ontologies', label: 'Ontologies' },
   { href: '/experiments', label: 'Experiments' },
+  { href: '/design', label: 'Design' },
   { href: '/search', label: 'Search' },
 ] as const;
 

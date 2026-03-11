@@ -19,8 +19,17 @@ import type * as ClusterSetRecord from '@/lib/api/generated/types/pub/layers/ann
 import type * as SegmentationRecord from '@/lib/api/generated/types/pub/layers/segmentation/segmentation';
 import type * as AlignmentRecord from '@/lib/api/generated/types/pub/layers/alignment/alignment';
 import type * as MediaRecord from '@/lib/api/generated/types/pub/layers/media/media';
+import type * as ResourceEntryRecord from '@/lib/api/generated/types/pub/layers/resource/entry';
+import type * as ResourceCollectionRecord from '@/lib/api/generated/types/pub/layers/resource/collection';
+import type * as CollectionMembershipRecord from '@/lib/api/generated/types/pub/layers/resource/collectionMembership';
+import type * as TemplateRecord from '@/lib/api/generated/types/pub/layers/resource/template';
+import type * as FillingRecord from '@/lib/api/generated/types/pub/layers/resource/filling';
+import type * as TemplateCompositionRecord from '@/lib/api/generated/types/pub/layers/resource/templateComposition';
+import type * as ExperimentDefRecord from '@/lib/api/generated/types/pub/layers/judgment/experimentDef';
 import type * as AnnotationDefs from '@/lib/api/generated/types/pub/layers/annotation/defs';
 import type * as SegmentationDefs from '@/lib/api/generated/types/pub/layers/segmentation/defs';
+import type * as ResourceDefs from '@/lib/api/generated/types/pub/layers/resource/defs';
+import type * as JudgmentDefs from '@/lib/api/generated/types/pub/layers/judgment/defs';
 import type * as LayersDefs from '@/lib/api/generated/types/pub/layers/defs';
 import { getBaseUrl } from '@/lib/api/client';
 
@@ -453,6 +462,367 @@ async function createMediaRecord(
   return { uri: response.data.uri, cid: response.data.cid };
 }
 
+// =============================================================================
+// Resource and design record creators
+// =============================================================================
+
+/**
+ * Creates a resource entry record in the user's PDS (or a corpus PDS
+ * when targetAgent is provided).
+ *
+ * Resource entries represent lexical items, frame elements, paradigm
+ * cells, or other structured linguistic data that populate resource
+ * collections.
+ */
+async function createResourceEntryRecord(
+  agent: Agent,
+  data: {
+    form: string;
+    lemma?: string;
+    language?: string;
+    ontologyTypeRef?: string;
+    knowledgeRefs?: LayersDefs.KnowledgeRef[];
+    features?: LayersDefs.FeatureMap;
+    components?: ResourceDefs.MweComponent[];
+    mweKindUri?: string;
+    mweKind?: ResourceEntryRecord.Main['mweKind'];
+    sourceRef?: string;
+    metadata?: LayersDefs.AnnotationMetadata;
+  },
+  targetAgent?: Agent,
+): Promise<CreateRecordResult> {
+  const writeAgent = targetAgent ?? agent;
+  const did = getAuthenticatedDid(writeAgent);
+
+  const record: ResourceEntryRecord.Main = {
+    $type: COLLECTIONS.entry,
+    form: data.form,
+    lemma: data.lemma,
+    language: data.language,
+    ontologyTypeRef: data.ontologyTypeRef,
+    knowledgeRefs: data.knowledgeRefs,
+    features: data.features,
+    components: data.components,
+    mweKindUri: data.mweKindUri,
+    mweKind: data.mweKind,
+    sourceRef: data.sourceRef,
+    metadata: data.metadata,
+    createdAt: new Date().toISOString(),
+  };
+
+  const response = await writeAgent.com.atproto.repo.createRecord({
+    repo: did,
+    collection: COLLECTIONS.entry,
+    record,
+  });
+
+  return { uri: response.data.uri, cid: response.data.cid };
+}
+
+/**
+ * Creates a resource collection record in the user's PDS (or a corpus
+ * PDS when targetAgent is provided).
+ *
+ * Resource collections group entries into named sets such as lexicons,
+ * frame inventories, gazetteers, or stimulus pools. In the /design
+ * section, collections with kind='project' serve as project containers.
+ */
+async function createResourceCollectionRecord(
+  agent: Agent,
+  data: {
+    name: string;
+    description?: string;
+    kindUri?: string;
+    kind?: ResourceCollectionRecord.Main['kind'];
+    language?: string;
+    version?: string;
+    ontologyRef?: string;
+    knowledgeRefs?: LayersDefs.KnowledgeRef[];
+    metadata?: LayersDefs.AnnotationMetadata;
+    features?: LayersDefs.FeatureMap;
+  },
+  targetAgent?: Agent,
+): Promise<CreateRecordResult> {
+  const writeAgent = targetAgent ?? agent;
+  const did = getAuthenticatedDid(writeAgent);
+
+  const record: ResourceCollectionRecord.Main = {
+    $type: COLLECTIONS.collection,
+    name: data.name,
+    description: data.description,
+    kindUri: data.kindUri,
+    kind: data.kind,
+    language: data.language,
+    version: data.version,
+    ontologyRef: data.ontologyRef,
+    knowledgeRefs: data.knowledgeRefs,
+    metadata: data.metadata,
+    features: data.features,
+    createdAt: new Date().toISOString(),
+  };
+
+  const response = await writeAgent.com.atproto.repo.createRecord({
+    repo: did,
+    collection: COLLECTIONS.collection,
+    record,
+  });
+
+  return { uri: response.data.uri, cid: response.data.cid };
+}
+
+/**
+ * Creates a collection membership record in the user's PDS (or a corpus
+ * PDS when targetAgent is provided).
+ *
+ * Collection memberships link resource entries to collections, with an
+ * optional ordinal for ordering within the collection.
+ */
+async function createCollectionMembershipRecord(
+  agent: Agent,
+  data: {
+    collectionRef: string;
+    entryRef: string;
+    ordinal?: number;
+    metadata?: LayersDefs.AnnotationMetadata;
+    features?: LayersDefs.FeatureMap;
+  },
+  targetAgent?: Agent,
+): Promise<CreateRecordResult> {
+  const writeAgent = targetAgent ?? agent;
+  const did = getAuthenticatedDid(writeAgent);
+
+  const record: CollectionMembershipRecord.Main = {
+    $type: COLLECTIONS.collectionMembership,
+    collectionRef: data.collectionRef,
+    entryRef: data.entryRef,
+    ordinal: data.ordinal,
+    metadata: data.metadata,
+    features: data.features,
+    createdAt: new Date().toISOString(),
+  };
+
+  const response = await writeAgent.com.atproto.repo.createRecord({
+    repo: did,
+    collection: COLLECTIONS.collectionMembership,
+    record,
+  });
+
+  return { uri: response.data.uri, cid: response.data.cid };
+}
+
+/**
+ * Creates a template record in the user's PDS (or a corpus PDS when
+ * targetAgent is provided).
+ *
+ * Templates define parameterized linguistic stimuli with named slot
+ * placeholders (e.g., "{subject} {verb} the {object}") and optional
+ * cross-slot constraints.
+ */
+async function createTemplateRecord(
+  agent: Agent,
+  data: {
+    text: string;
+    slots: ResourceDefs.Slot[];
+    name?: string;
+    language?: string;
+    constraints?: LayersDefs.Constraint[];
+    ontologyRef?: string;
+    experimentRef?: string;
+    knowledgeRefs?: LayersDefs.KnowledgeRef[];
+    metadata?: LayersDefs.AnnotationMetadata;
+    features?: LayersDefs.FeatureMap;
+  },
+  targetAgent?: Agent,
+): Promise<CreateRecordResult> {
+  const writeAgent = targetAgent ?? agent;
+  const did = getAuthenticatedDid(writeAgent);
+
+  const record: TemplateRecord.Main = {
+    $type: COLLECTIONS.template,
+    text: data.text,
+    slots: data.slots,
+    name: data.name,
+    language: data.language,
+    constraints: data.constraints,
+    ontologyRef: data.ontologyRef,
+    experimentRef: data.experimentRef,
+    knowledgeRefs: data.knowledgeRefs,
+    metadata: data.metadata,
+    features: data.features,
+    createdAt: new Date().toISOString(),
+  };
+
+  const response = await writeAgent.com.atproto.repo.createRecord({
+    repo: did,
+    collection: COLLECTIONS.template,
+    record,
+  });
+
+  return { uri: response.data.uri, cid: response.data.cid };
+}
+
+/**
+ * Creates a filling record in the user's PDS (or a corpus PDS when
+ * targetAgent is provided).
+ *
+ * Fillings instantiate templates by mapping slot names to filler values
+ * (entry references or literal strings), producing rendered text.
+ */
+async function createFillingRecord(
+  agent: Agent,
+  data: {
+    templateRef: string;
+    slotFillings: ResourceDefs.SlotFilling[];
+    renderedText?: string;
+    expressionRef?: string;
+    strategyUri?: string;
+    strategy?: FillingRecord.Main['strategy'];
+    metadata?: LayersDefs.AnnotationMetadata;
+    knowledgeRefs?: LayersDefs.KnowledgeRef[];
+    features?: LayersDefs.FeatureMap;
+  },
+  targetAgent?: Agent,
+): Promise<CreateRecordResult> {
+  const writeAgent = targetAgent ?? agent;
+  const did = getAuthenticatedDid(writeAgent);
+
+  const record: FillingRecord.Main = {
+    $type: COLLECTIONS.filling,
+    templateRef: data.templateRef,
+    slotFillings: data.slotFillings,
+    renderedText: data.renderedText,
+    expressionRef: data.expressionRef,
+    strategyUri: data.strategyUri,
+    strategy: data.strategy,
+    metadata: data.metadata,
+    knowledgeRefs: data.knowledgeRefs,
+    features: data.features,
+    createdAt: new Date().toISOString(),
+  };
+
+  const response = await writeAgent.com.atproto.repo.createRecord({
+    repo: did,
+    collection: COLLECTIONS.filling,
+    record,
+  });
+
+  return { uri: response.data.uri, cid: response.data.cid };
+}
+
+/**
+ * Creates a template composition record in the user's PDS (or a corpus
+ * PDS when targetAgent is provided).
+ *
+ * Template compositions combine multiple templates into sequences,
+ * trees, or parallel structures for complex stimulus construction.
+ */
+async function createTemplateCompositionRecord(
+  agent: Agent,
+  data: {
+    compositionType: TemplateCompositionRecord.Main['compositionType'];
+    members: ResourceDefs.TemplateMember[];
+    compositionTypeUri?: string;
+    experimentRef?: string;
+    metadata?: LayersDefs.AnnotationMetadata;
+    features?: LayersDefs.FeatureMap;
+  },
+  targetAgent?: Agent,
+): Promise<CreateRecordResult> {
+  const writeAgent = targetAgent ?? agent;
+  const did = getAuthenticatedDid(writeAgent);
+
+  const record: TemplateCompositionRecord.Main = {
+    $type: COLLECTIONS.templateComposition,
+    compositionType: data.compositionType,
+    members: data.members,
+    compositionTypeUri: data.compositionTypeUri,
+    experimentRef: data.experimentRef,
+    metadata: data.metadata,
+    features: data.features,
+    createdAt: new Date().toISOString(),
+  };
+
+  const response = await writeAgent.com.atproto.repo.createRecord({
+    repo: did,
+    collection: COLLECTIONS.templateComposition,
+    record,
+  });
+
+  return { uri: response.data.uri, cid: response.data.cid };
+}
+
+/**
+ * Creates an experiment definition record in the user's PDS (or a
+ * corpus PDS when targetAgent is provided).
+ *
+ * Experiment definitions specify how linguistic judgment data is
+ * collected: what is measured, how responses are gathered, which
+ * templates and collections provide stimuli, and how items are
+ * distributed to participants.
+ */
+async function createExperimentDefRecord(
+  agent: Agent,
+  data: {
+    name: string;
+    description?: string;
+    measureTypeUri?: string;
+    measureType?: ExperimentDefRecord.Main['measureType'];
+    taskTypeUri?: string;
+    taskType?: ExperimentDefRecord.Main['taskType'];
+    guidelines?: string;
+    ontologyRef?: string;
+    personaRef?: string;
+    corpusRef?: string;
+    templateRefs?: string[];
+    collectionRefs?: string[];
+    scaleMin?: number;
+    scaleMax?: number;
+    labels?: string[];
+    knowledgeRefs?: LayersDefs.KnowledgeRef[];
+    presentation?: JudgmentDefs.PresentationSpec;
+    recordingMethods?: JudgmentDefs.RecordingMethod[];
+    design?: JudgmentDefs.ExperimentDesign;
+    features?: LayersDefs.FeatureMap;
+  },
+  targetAgent?: Agent,
+): Promise<CreateRecordResult> {
+  const writeAgent = targetAgent ?? agent;
+  const did = getAuthenticatedDid(writeAgent);
+
+  const record: ExperimentDefRecord.Main = {
+    $type: COLLECTIONS.experimentDef,
+    name: data.name,
+    description: data.description,
+    measureTypeUri: data.measureTypeUri,
+    measureType: data.measureType,
+    taskTypeUri: data.taskTypeUri,
+    taskType: data.taskType,
+    guidelines: data.guidelines,
+    ontologyRef: data.ontologyRef,
+    personaRef: data.personaRef,
+    corpusRef: data.corpusRef,
+    templateRefs: data.templateRefs,
+    collectionRefs: data.collectionRefs,
+    scaleMin: data.scaleMin,
+    scaleMax: data.scaleMax,
+    labels: data.labels,
+    knowledgeRefs: data.knowledgeRefs,
+    presentation: data.presentation,
+    recordingMethods: data.recordingMethods,
+    design: data.design,
+    features: data.features,
+    createdAt: new Date().toISOString(),
+  };
+
+  const response = await writeAgent.com.atproto.repo.createRecord({
+    repo: did,
+    collection: COLLECTIONS.experimentDef,
+    record,
+  });
+
+  return { uri: response.data.uri, cid: response.data.cid };
+}
+
 /**
  * Updates an existing record in the user's PDS by writing a new version
  * at the same rkey.
@@ -598,6 +968,13 @@ export {
   createAlignmentRecord,
   createClusterSetRecord,
   createMediaRecord,
+  createResourceEntryRecord,
+  createResourceCollectionRecord,
+  createCollectionMembershipRecord,
+  createTemplateRecord,
+  createFillingRecord,
+  createTemplateCompositionRecord,
+  createExperimentDefRecord,
   updateRecord,
   deleteRecord,
   syncRecordWithAppview,

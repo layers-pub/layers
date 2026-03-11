@@ -275,6 +275,17 @@ const externalAnnotationKeys = {
   list: (filters: Record<string, unknown>) => [...externalAnnotationKeys.lists(), filters] as const,
 };
 
+// =============================================================================
+// SIDECAR (DESIGN COMPUTE)
+// =============================================================================
+
+const sidecarKeys = {
+  all: ['sidecar'] as const,
+  resources: () => [...sidecarKeys.all, 'resources'] as const,
+  resource: (source: string, filters: Record<string, unknown>) =>
+    [...sidecarKeys.resources(), source, filters] as const,
+};
+
 export {
   expressionKeys,
   segmentationKeys,
@@ -305,4 +316,5 @@ export {
   crossReferenceKeys,
   searchKeys,
   externalAnnotationKeys,
+  sidecarKeys,
 };

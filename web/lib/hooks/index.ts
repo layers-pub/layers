@@ -34,6 +34,7 @@ export {
   crossReferenceKeys,
   searchKeys,
   externalAnnotationKeys,
+  sidecarKeys,
 } from './keys';
 
 export type { Expression, ExpressionListResponse } from './use-expressions';
@@ -106,3 +107,45 @@ export { useTypeDef, useTypeDefs, useTypeDefsByOntology } from './use-type-defs'
 
 export type { ExternalAnnotationView, ExternalAnnotationSource } from './use-external-annotations';
 export { useExternalAnnotations } from './use-external-annotations';
+
+export type {
+  ResourceCollection,
+  ResourceCollectionListResponse,
+  ResourceEntry,
+  ResourceEntryListResponse,
+  CollectionMembershipListResponse,
+  Template,
+  Filling,
+  CreateEntryParams,
+  DeleteEntryParams,
+  CreateTemplateParams,
+  CreateFillingParams,
+  CreateExperimentDefParams,
+} from './use-design';
+export {
+  useProjectCollections,
+  useProjectCollection,
+  useCollectionEntries,
+  useCreateEntry,
+  useDeleteEntry,
+  useCreateTemplate,
+  useCreateFilling,
+  useCreateExperimentDef,
+} from './use-design';
+
+export type {
+  SidecarResource,
+  SidecarResourceResponse,
+  CSPFillParams,
+  CSPFillResult,
+  MLMFillParams,
+  MLMFillResult,
+  ExperimentPreviewParams,
+  ExperimentPreviewResult,
+} from './use-sidecar';
+export {
+  useSidecarResourceQuery,
+  useSidecarCSPFill,
+  useSidecarMLMFill,
+  useSidecarExperimentPreview,
+} from './use-sidecar';

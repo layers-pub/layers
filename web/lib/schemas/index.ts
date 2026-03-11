@@ -12,3 +12,24 @@ export { expressionCreateSchema } from './expression';
 
 export type { OntologyFormValues, TypeDefFormValues } from './ontology';
 export { ontologyCreateSchema, typeDefCreateSchema } from './ontology';
+
+export type {
+  ProjectFormValues,
+  EntryFormValues,
+  SlotSchema,
+  ConstraintSchema,
+  TemplateFormValues,
+  FillingFormValues,
+  ExperimentDefFormValues,
+} from './design';
+export {
+  projectCreateSchema,
+  entryCreateSchema,
+  entryFeatureSchema,
+  slotSchema,
+  constraintSchema,
+  templateCreateSchema,
+  slotFillingSchema,
+  fillingCreateSchema,
+  experimentDefCreateSchema,
+} from './design';
