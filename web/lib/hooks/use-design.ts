@@ -18,6 +18,7 @@ import { api } from '@/lib/api/client';
 import type { components } from '@/lib/api/schema.generated';
 import {
   createResourceEntryRecord,
+  createResourceCollectionRecord,
   createCollectionMembershipRecord,
   createTemplateRecord,
   createFillingRecord,
@@ -35,6 +36,7 @@ import {
   templateKeys,
   fillingKeys,
   experimentDefKeys,
+  searchKeys,
 } from './keys';
 
 // =============================================================================
@@ -608,6 +610,286 @@ function useCreateExperimentDef() {
   });
 }
 
+// =============================================================================
+// NETWORK COLLECTION BROWSING (SEARCH-BASED)
+// =============================================================================
+
+/** Normalized collection result from the search endpoint. */
+interface NetworkCollectionResult {
+  uri: string;
+  did: string;
+  name: string;
+  description?: string;
+  language?: string;
+  kind?: string;
+  entryCount?: number;
+}
+
+/** Response shape for useNetworkCollections. */
+interface NetworkCollectionSearchResponse {
+  collections: NetworkCollectionResult[];
+  cursor?: string;
+  total: number;
+}
+
+/** Parameters for searching published collections on the network. */
+interface NetworkCollectionFilters {
+  query: string;
+  language?: string;
+  kind?: string;
+  limit?: number;
+  cursor?: string;
+}
+
+/**
+ * Extracts a string field from an untyped search result record.
+ */
+function getStringField(record: Record<string, unknown>, field: string): string | undefined {
+  const val = record[field];
+  return typeof val === 'string' ? val : undefined;
+}
+
+async function fetchNetworkCollections(
+  filters: NetworkCollectionFilters,
+): Promise<NetworkCollectionSearchResponse> {
+  // Build the search query, appending type filter
+  const searchQuery = filters.query.trim();
+
+  // Use the full-text search endpoint filtered to collection records
+  const { data, error } = await api.GET('/api/v1/search', {
+    params: {
+      query: {
+        q: searchQuery,
+        type: 'pub.layers.resource.collection',
+        limit: filters.limit ?? 12,
+        cursor: filters.cursor,
+      },
+    },
+  });
+
+  if (error || !data) {
+    throw new APIError('Failed to search network collections', undefined, '/api/v1/search');
+  }
+
+  // Map search results to normalized collection objects
+  const collections: NetworkCollectionResult[] = data.results.map((result) => {
+    const record = result.record as Record<string, unknown>;
+    return {
+      uri: result.uri,
+      did: result.did,
+      name: getStringField(record, 'name') ?? 'Untitled',
+      description: getStringField(record, 'description'),
+      language: getStringField(record, 'language'),
+      kind: getStringField(record, 'kind'),
+      entryCount: typeof record['entryCount'] === 'number' ? record['entryCount'] : undefined,
+    };
+  });
+
+  // Apply client-side filters that the search endpoint may not support
+  const filtered = collections.filter((c) => {
+    if (filters.language && c.language !== filters.language) return false;
+    if (filters.kind && c.kind !== filters.kind) return false;
+    return true;
+  });
+
+  return {
+    collections: filtered,
+    cursor: data.cursor,
+    total: data.total,
+  };
+}
+
+/**
+ * Searches for published resource collections across the ATProto network.
+ *
+ * Uses the appview's full-text search endpoint filtered to collection
+ * records. The query must be at least 2 characters for the search to
+ * execute. Results are filtered client-side by language and kind when
+ * the search endpoint does not support those facets directly.
+ *
+ * @param filters - search query, language, kind, pagination
+ * @returns query result containing normalized collection results
+ */
+function useNetworkCollections(filters: NetworkCollectionFilters) {
+  const hasQuery = filters.query.trim().length >= 2;
+
+  return useQuery({
+    queryKey: searchKeys.list({
+      type: 'pub.layers.resource.collection',
+      q: filters.query,
+      language: filters.language,
+      kind: filters.kind,
+      cursor: filters.cursor,
+    }),
+    queryFn: () => fetchNetworkCollections(filters),
+    enabled: hasQuery,
+    staleTime: ENTRY_STALE_TIME,
+  });
+}
+
+// =============================================================================
+// FORK COLLECTION MUTATION
+// =============================================================================
+
+/** Parameters for forking a collection to the user's PDS. */
+interface ForkCollectionParams {
+  agent: Agent;
+  authToken: string;
+  sourceCollectionUri: string;
+  onProgress?: (current: number, total: number) => void;
+}
+
+/** Result of a fork operation. */
+interface ForkCollectionResult {
+  collectionUri: string;
+  entryCount: number;
+}
+
+/**
+ * Forks a collection from the network to the user's PDS.
+ *
+ * Creates a new collection record in the user's PDS with the same name,
+ * description, language, and kind. Then fetches all entries from the
+ * source collection (via memberships) and creates copies with membership
+ * links. Reports progress via the onProgress callback.
+ */
+function useForkCollection() {
+  const queryClient = useQueryClient();
+
+  return useMutation<ForkCollectionResult, APIError, ForkCollectionParams>({
+    mutationFn: async (params) => {
+      const { agent, authToken, sourceCollectionUri, onProgress } = params;
+
+      // 1. Fetch the source collection metadata
+      const { data: sourceCollection, error: collectionError } = await api.GET(
+        '/xrpc/pub.layers.resource.getCollection',
+        { params: { query: { uri: sourceCollectionUri } } },
+      );
+
+      if (collectionError || !sourceCollection) {
+        throw new APIError(
+          `Failed to fetch source collection: ${sourceCollectionUri}`,
+          undefined,
+          '/xrpc/pub.layers.resource.getCollection',
+        );
+      }
+
+      // 2. Create a new collection in the user's PDS
+      const newCollection = await createResourceCollectionRecord(agent, {
+        name: sourceCollection.value.name,
+        description: sourceCollection.value.description,
+        kind: sourceCollection.value.kind,
+        language: sourceCollection.value.language,
+        version: sourceCollection.value.version,
+        ontologyRef: sourceCollection.value.ontologyRef,
+      });
+
+      // Sync the new collection immediately (best-effort)
+      await syncRecordWithAppview(newCollection.uri, authToken).catch(() => {});
+
+      // 3. Fetch all entries from the source collection (paginated)
+      const allMemberships: Array<{
+        entryRef: string;
+        ordinal?: number;
+      }> = [];
+
+      let membershipCursor: string | undefined;
+      do {
+        const { data: memberships, error: membershipError } = await api.GET(
+          '/xrpc/pub.layers.resource.listCollectionMemberships',
+          {
+            params: {
+              query: {
+                collectionRef: sourceCollectionUri,
+                limit: 100,
+                cursor: membershipCursor,
+              },
+            },
+          },
+        );
+
+        if (membershipError || !memberships) {
+          throw new APIError(
+            'Failed to fetch source collection memberships',
+            undefined,
+            '/xrpc/pub.layers.resource.listCollectionMemberships',
+          );
+        }
+
+        for (const record of memberships.records) {
+          allMemberships.push({
+            entryRef: record.value.entryRef,
+            ordinal: record.value.ordinal,
+          });
+        }
+
+        membershipCursor = memberships.cursor;
+      } while (membershipCursor);
+
+      const total = allMemberships.length;
+      onProgress?.(0, total);
+
+      // 4. For each entry, fetch the source entry, create a copy, and link it
+      let copied = 0;
+      for (const membership of allMemberships) {
+        try {
+          // Fetch the source entry
+          const { data: sourceEntry, error: entryError } = await api.GET(
+            '/xrpc/pub.layers.resource.getEntry',
+            { params: { query: { uri: membership.entryRef } } },
+          );
+
+          if (entryError || !sourceEntry) {
+            // Skip entries that fail to fetch
+            copied++;
+            onProgress?.(copied, total);
+            continue;
+          }
+
+          // Create the entry in user's PDS
+          const newEntry = await createResourceEntryRecord(agent, {
+            form: sourceEntry.value.form,
+            lemma: sourceEntry.value.lemma,
+            language: sourceEntry.value.language,
+            ontologyTypeRef: sourceEntry.value.ontologyTypeRef,
+            knowledgeRefs: sourceEntry.value.knowledgeRefs,
+            features: sourceEntry.value.features,
+            components: sourceEntry.value.components,
+            mweKindUri: sourceEntry.value.mweKindUri,
+            mweKind: sourceEntry.value.mweKind,
+            sourceRef: membership.entryRef,
+          });
+
+          // Link entry to the new collection
+          await createCollectionMembershipRecord(agent, {
+            collectionRef: newCollection.uri,
+            entryRef: newEntry.uri,
+            ordinal: membership.ordinal,
+          });
+
+          // Sync both records (best-effort, fire and forget)
+          void Promise.allSettled([syncRecordWithAppview(newEntry.uri, authToken)]);
+        } catch {
+          // Continue with remaining entries on individual failures
+        }
+
+        copied++;
+        onProgress?.(copied, total);
+      }
+
+      // Final sync delay for DB commit
+      await new Promise((resolve) => setTimeout(resolve, SYNC_SETTLE_DELAY));
+
+      return { collectionUri: newCollection.uri, entryCount: copied };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: resourceCollectionKeys.all });
+      queryClient.invalidateQueries({ queryKey: resourceEntryKeys.all });
+      queryClient.invalidateQueries({ queryKey: collectionMembershipKeys.all });
+    },
+  });
+}
+
 export type {
   ResourceCollection,
   ResourceCollectionListResponse,
@@ -624,6 +906,11 @@ export type {
   CreateTemplateParams,
   CreateFillingParams,
   CreateExperimentDefParams,
+  NetworkCollectionResult,
+  NetworkCollectionSearchResponse,
+  NetworkCollectionFilters,
+  ForkCollectionParams,
+  ForkCollectionResult,
 };
 export {
   useProjectCollections,
@@ -638,4 +925,6 @@ export {
   useCreateTemplate,
   useCreateFilling,
   useCreateExperimentDef,
+  useNetworkCollections,
+  useForkCollection,
 };

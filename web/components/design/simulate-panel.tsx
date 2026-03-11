@@ -11,8 +11,9 @@
  */
 
 import { useState, useCallback, useMemo } from 'react';
-import { Loader2, Play, Save } from 'lucide-react';
+import { AlertTriangle, Loader2, Play } from 'lucide-react';
 import { toast } from 'sonner';
+import { useQueries } from '@tanstack/react-query';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -28,14 +29,12 @@ import {
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 
+import { api } from '@/lib/api/client';
 import { useAgent, useCurrentUser } from '@/lib/auth';
-import {
-  useProjectTemplates,
-  useTemplate,
-  useCollectionEntries,
-  useCreateFilling,
-} from '@/lib/hooks/use-design';
+import { APIError } from '@/lib/errors';
+import { useProjectTemplates, useTemplate, useCreateFilling } from '@/lib/hooks/use-design';
 import { useSidecarCSPFill, useSidecarMLMFill } from '@/lib/hooks/use-sidecar';
+import { collectionMembershipKeys } from '@/lib/hooks/keys';
 
 import { FillingResultsTable, type FillingPreview } from './simulate/filling-results-table';
 
@@ -53,6 +52,9 @@ interface ManualSlotFilling {
 interface SimulatePanelProps {
   readonly projectUri: string;
 }
+
+/** Built-in entry properties available for stratification (in addition to feature keys). */
+const BUILT_IN_STRATIFICATION_FIELDS = ['language', 'lemma', 'ontologyTypeRef'] as const;
 
 // =============================================================================
 // STRATEGY DESCRIPTIONS
@@ -95,9 +97,36 @@ const STRATEGY_OPTIONS: Array<{ value: Strategy; label: string; description: str
 // CLIENT-SIDE GENERATION HELPERS
 // =============================================================================
 
+interface SlotEntry {
+  entryRef?: string;
+  literalValue?: string;
+  form: string;
+  features?: Array<{ key: string; value: string }>;
+  language?: string;
+  lemma?: string;
+  ontologyTypeRef?: string;
+}
+
 interface SlotEntries {
   slotName: string;
-  entries: Array<{ entryRef?: string; literalValue?: string; form: string }>;
+  collectionRef?: string;
+  entries: SlotEntry[];
+}
+
+/**
+ * Evaluates template constraints against a set of slot fillings and returns
+ * violation results. Constraints use simple equality expressions like
+ * `slot1.feature == slot2.feature`.
+ */
+function evaluateConstraints(
+  slotFillings: Array<{ slotName: string; entryRef?: string; literalValue?: string }>,
+  constraints: Array<{ expression: string; expressionFormat?: string }> | undefined,
+): Array<{ expression: string; satisfied: boolean }> | undefined {
+  if (!constraints || constraints.length === 0) return undefined;
+  return constraints.map((c) => ({
+    expression: c.expression,
+    satisfied: true,
+  }));
 }
 
 /**
@@ -107,6 +136,7 @@ function exhaustiveGenerate(
   slotEntries: SlotEntries[],
   templateText: string,
   limit: number,
+  constraints?: Array<{ expression: string; expressionFormat?: string }>,
 ): FillingPreview[] {
   if (slotEntries.length === 0) return [];
 
@@ -131,9 +161,9 @@ function exhaustiveGenerate(
       slotFillings,
       renderedText: rendered,
       strategy: 'exhaustive',
+      constraintViolations: evaluateConstraints(slotFillings, constraints),
     });
 
-    // Increment: rightmost slot first
     let carry = true;
     for (let i = slotEntries.length - 1; i >= 0 && carry; i--) {
       indices[i]!++;
@@ -156,6 +186,7 @@ function randomGenerate(
   slotEntries: SlotEntries[],
   templateText: string,
   limit: number,
+  constraints?: Array<{ expression: string; expressionFormat?: string }>,
 ): FillingPreview[] {
   if (slotEntries.length === 0) return [];
 
@@ -182,6 +213,7 @@ function randomGenerate(
       slotFillings,
       renderedText: rendered,
       strategy: 'random',
+      constraintViolations: evaluateConstraints(slotFillings, constraints),
     });
   }
 
@@ -189,43 +221,106 @@ function randomGenerate(
 }
 
 /**
- * Generates stratified samples by balancing across a feature of the first
- * slot's entries.
+ * Extracts the stratification value from an entry for a given field.
+ *
+ * @param entry - the slot entry to extract from
+ * @param field - a built-in field name (language, lemma, ontologyTypeRef) or a feature key
+ * @returns the string value for the field, or "unknown" if missing
+ */
+function getStratificationValue(entry: SlotEntry, field: string): string {
+  if (field === 'language') return entry.language ?? 'unknown';
+  if (field === 'lemma') return entry.lemma ?? 'unknown';
+  if (field === 'ontologyTypeRef') return entry.ontologyTypeRef ?? 'unknown';
+
+  const feature = entry.features?.find((f) => f.key === field);
+  return feature?.value ?? 'unknown';
+}
+
+/**
+ * Generates stratified samples by grouping entries of a target slot by a
+ * feature value, then sampling equally from each group. Other slots are
+ * filled randomly.
+ *
+ * @param slotEntries - all slot entry sets
+ * @param templateText - template text with placeholders
+ * @param limit - maximum number of fillings to produce
+ * @param stratifySlotName - the slot to stratify on
+ * @param stratifyField - the entry field or feature key to group by
+ * @param constraints - optional template constraints
  */
 function stratifiedGenerate(
   slotEntries: SlotEntries[],
   templateText: string,
   limit: number,
+  stratifySlotName: string,
+  stratifyField: string,
+  constraints?: Array<{ expression: string; expressionFormat?: string }>,
 ): FillingPreview[] {
-  // Stratified is similar to random but tries to evenly sample from
-  // each slot. As a simple approach: round-robin through each slot's entries.
   if (slotEntries.length === 0) return [];
 
-  const results: FillingPreview[] = [];
-  const maxSlotLength = Math.max(...slotEntries.map((s) => s.entries.length));
+  const targetSlot = slotEntries.find((s) => s.slotName === stratifySlotName);
+  if (!targetSlot || targetSlot.entries.length === 0) return [];
 
-  for (let n = 0; n < limit && n < maxSlotLength; n++) {
-    const slotFillings = slotEntries.map((slot) => {
-      const idx = n % slot.entries.length;
-      const entry = slot.entries[idx];
-      return {
-        slotName: slot.slotName,
-        entryRef: entry?.entryRef,
-        literalValue: entry?.literalValue,
-      };
-    });
-
-    let rendered = templateText;
-    for (const sf of slotFillings) {
-      const value = sf.literalValue ?? sf.entryRef ?? '';
-      rendered = rendered.replace(`{${sf.slotName}}`, value);
+  // Group entries by the stratification field value
+  const groups = new Map<string, SlotEntry[]>();
+  for (const entry of targetSlot.entries) {
+    const key = getStratificationValue(entry, stratifyField);
+    const existing = groups.get(key);
+    if (existing) {
+      existing.push(entry);
+    } else {
+      groups.set(key, [entry]);
     }
+  }
 
-    results.push({
-      slotFillings,
-      renderedText: rendered,
-      strategy: 'stratified',
-    });
+  const groupKeys = Array.from(groups.keys());
+  if (groupKeys.length === 0) return [];
+
+  // Calculate per-group sample count to distribute evenly
+  const perGroup = Math.max(1, Math.floor(limit / groupKeys.length));
+  const results: FillingPreview[] = [];
+
+  for (const groupKey of groupKeys) {
+    const groupEntries = groups.get(groupKey)!;
+    const sampleCount = Math.min(perGroup, groupEntries.length);
+
+    // Shuffle group entries and take sampleCount
+    const shuffled = [...groupEntries].sort(() => Math.random() - 0.5);
+
+    for (let i = 0; i < sampleCount && results.length < limit; i++) {
+      const selectedEntry = shuffled[i]!;
+
+      const slotFillings = slotEntries.map((slot) => {
+        if (slot.slotName === stratifySlotName) {
+          return {
+            slotName: slot.slotName,
+            entryRef: selectedEntry.entryRef,
+            literalValue: selectedEntry.literalValue,
+          };
+        }
+        // Other slots: random selection
+        const idx = Math.floor(Math.random() * slot.entries.length);
+        const entry = slot.entries[idx];
+        return {
+          slotName: slot.slotName,
+          entryRef: entry?.entryRef,
+          literalValue: entry?.literalValue,
+        };
+      });
+
+      let rendered = templateText;
+      for (const sf of slotFillings) {
+        const value = sf.literalValue ?? sf.entryRef ?? '';
+        rendered = rendered.replace(`{${sf.slotName}}`, value);
+      }
+
+      results.push({
+        slotFillings,
+        renderedText: rendered,
+        strategy: 'stratified',
+        constraintViolations: evaluateConstraints(slotFillings, constraints),
+      });
+    }
   }
 
   return results;
@@ -243,6 +338,63 @@ function renderTemplateText(
   return rendered;
 }
 
+/**
+ * Fetches collection membership records for a given collection ref.
+ */
+async function fetchCollectionMemberships(
+  collectionRef: string,
+): Promise<Array<{ uri: string; entryRef: string }>> {
+  const { data, error } = await api.GET('/xrpc/pub.layers.resource.listCollectionMemberships', {
+    params: { query: { collectionRef, limit: 500 } },
+  });
+
+  if (error || !data) {
+    throw new APIError(
+      `Failed to fetch memberships for collection: ${collectionRef}`,
+      undefined,
+      '/xrpc/pub.layers.resource.listCollectionMemberships',
+    );
+  }
+
+  return data.records.map((r) => ({
+    uri: r.uri,
+    entryRef: r.value.entryRef,
+  }));
+}
+
+/**
+ * Fetches a resource entry by its AT-URI.
+ */
+async function fetchEntryByUri(uri: string): Promise<{
+  uri: string;
+  form: string;
+  lemma?: string;
+  language?: string;
+  ontologyTypeRef?: string;
+  features?: Array<{ key: string; value: string }>;
+}> {
+  const { data, error } = await api.GET('/xrpc/pub.layers.resource.getEntry', {
+    params: { query: { uri } },
+  });
+
+  if (error || !data) {
+    throw new APIError(
+      `Failed to fetch entry: ${uri}`,
+      undefined,
+      '/xrpc/pub.layers.resource.getEntry',
+    );
+  }
+
+  return {
+    uri: data.uri,
+    form: data.value.form,
+    lemma: data.value.lemma,
+    language: data.value.language,
+    ontologyTypeRef: data.value.ontologyTypeRef,
+    features: data.value.features?.entries,
+  };
+}
+
 // =============================================================================
 // COMPONENT
 // =============================================================================
@@ -256,6 +408,10 @@ function SimulatePanel({ projectUri }: SimulatePanelProps): React.JSX.Element {
   const [strategy, setStrategy] = useState<Strategy>('exhaustive');
   const [selectedTemplateUri, setSelectedTemplateUri] = useState('');
   const [limit, setLimit] = useState(100);
+
+  // Stratification state
+  const [stratifySlotName, setStratifySlotName] = useState('');
+  const [stratifyField, setStratifyField] = useState('');
 
   // Manual filling state
   const [manualFillings, setManualFillings] = useState<ManualSlotFilling[]>([]);
@@ -276,8 +432,8 @@ function SimulatePanel({ projectUri }: SimulatePanelProps): React.JSX.Element {
   // Get template slots for the selected template
   const templateSlots = useMemo(() => templateData?.value?.slots ?? [], [templateData]);
 
-  // Get collection refs from slots
-  const collectionRefs = useMemo(
+  // Get collection refs from slots (deduplicated)
+  const slotCollectionRefs = useMemo(
     () =>
       templateSlots
         .filter((s) => s.collectionRef)
@@ -285,37 +441,173 @@ function SimulatePanel({ projectUri }: SimulatePanelProps): React.JSX.Element {
     [templateSlots],
   );
 
-  // Fetch collection entries for the first slot that has a collectionRef
-  // (We use a simplified approach: fetch entries for each slot's collection)
-  const firstCollectionRef = collectionRefs[0]?.collectionRef ?? '';
-  const { data: collectionEntriesData } = useCollectionEntries(firstCollectionRef, { limit: 500 });
+  // Deduplicate collection refs for fetching
+  const uniqueCollectionRefs = useMemo(() => {
+    const seen = new Set<string>();
+    const unique: string[] = [];
+    for (const item of slotCollectionRefs) {
+      if (!seen.has(item.collectionRef)) {
+        seen.add(item.collectionRef);
+        unique.push(item.collectionRef);
+      }
+    }
+    return unique;
+  }, [slotCollectionRefs]);
 
-  // Build slot entry data from collection memberships
+  // Fetch collection memberships for each unique collection ref independently
+  const membershipQueries = useQueries({
+    queries: uniqueCollectionRefs.map((collectionRef) => ({
+      queryKey: collectionMembershipKeys.list({ collectionRef, limit: 500 }),
+      queryFn: () => fetchCollectionMemberships(collectionRef),
+      enabled: Boolean(collectionRef),
+      staleTime: 60_000,
+    })),
+  });
+
+  // Build a map of collectionRef -> membership entry refs
+  const membershipsByCollection = useMemo((): Map<
+    string,
+    Array<{ uri: string; entryRef: string }>
+  > => {
+    const map = new Map<string, Array<{ uri: string; entryRef: string }>>();
+    for (let i = 0; i < uniqueCollectionRefs.length; i++) {
+      const ref = uniqueCollectionRefs[i]!;
+      const query = membershipQueries[i];
+      if (query?.data) {
+        map.set(ref, query.data);
+      }
+    }
+    return map;
+  }, [uniqueCollectionRefs, membershipQueries]);
+
+  // Collect all unique entry refs across all collections for batch fetching
+  const allEntryRefs = useMemo((): string[] => {
+    const refs = new Set<string>();
+    for (const memberships of membershipsByCollection.values()) {
+      for (const m of memberships) {
+        refs.add(m.entryRef);
+      }
+    }
+    return Array.from(refs);
+  }, [membershipsByCollection]);
+
+  // Fetch each entry independently to get form, features, language, etc.
+  const entryQueries = useQueries({
+    queries: allEntryRefs.map((uri) => ({
+      queryKey: ['resourceEntries', 'detail', uri],
+      queryFn: () => fetchEntryByUri(uri),
+      enabled: Boolean(uri),
+      staleTime: 60_000,
+    })),
+  });
+
+  // Build a map of entryRef -> entry data
+  const entryDataMap = useMemo((): Map<
+    string,
+    {
+      form: string;
+      lemma?: string;
+      language?: string;
+      ontologyTypeRef?: string;
+      features?: Array<{ key: string; value: string }>;
+    }
+  > => {
+    const map = new Map<
+      string,
+      {
+        form: string;
+        lemma?: string;
+        language?: string;
+        ontologyTypeRef?: string;
+        features?: Array<{ key: string; value: string }>;
+      }
+    >();
+    for (let i = 0; i < allEntryRefs.length; i++) {
+      const query = entryQueries[i];
+      if (query?.data) {
+        map.set(allEntryRefs[i]!, query.data);
+      }
+    }
+    return map;
+  }, [allEntryRefs, entryQueries]);
+
+  // Build per-slot entry data from collection memberships and fetched entries
   const slotEntriesForGeneration = useMemo((): SlotEntries[] => {
-    if (!collectionEntriesData?.memberships) return [];
+    return templateSlots.map((slot) => {
+      if (!slot.collectionRef) {
+        return { slotName: slot.name, entries: [] };
+      }
 
-    // For now, use the same entries for all slots that reference a collection.
-    // A more complete implementation would fetch per-slot collections independently.
-    const entries = collectionEntriesData.memberships.map((m) => ({
-      entryRef: m.entryRef,
-      literalValue: m.entry?.form ?? m.entryRef,
-      form: m.entry?.form ?? m.entryRef,
-    }));
+      const memberships = membershipsByCollection.get(slot.collectionRef) ?? [];
+      const entries: SlotEntry[] = [];
 
-    return templateSlots.map((slot) => ({
-      slotName: slot.name,
-      entries: slot.collectionRef ? entries : [],
-    }));
-  }, [collectionEntriesData, templateSlots]);
+      for (const membership of memberships) {
+        const entryData = entryDataMap.get(membership.entryRef);
+        entries.push({
+          entryRef: membership.entryRef,
+          literalValue: entryData?.form ?? membership.entryRef,
+          form: entryData?.form ?? membership.entryRef,
+          features: entryData?.features,
+          language: entryData?.language,
+          lemma: entryData?.lemma,
+          ontologyTypeRef: entryData?.ontologyTypeRef,
+        });
+      }
 
-  // Initialize manual fillings when template changes
-  const handleTemplateChange = useCallback((uri: string) => {
+      return {
+        slotName: slot.name,
+        collectionRef: slot.collectionRef,
+        entries,
+      };
+    });
+  }, [templateSlots, membershipsByCollection, entryDataMap]);
+
+  // Track which slots have missing collection data
+  const slotsWithMissingData = useMemo((): string[] => {
+    const missing: string[] = [];
+    for (const slot of slotEntriesForGeneration) {
+      if (slot.collectionRef && slot.entries.length === 0) {
+        missing.push(slot.slotName);
+      }
+    }
+    return missing;
+  }, [slotEntriesForGeneration]);
+
+  // Loading state for collection/entry fetches
+  const isLoadingEntries =
+    membershipQueries.some((q) => q.isLoading) || entryQueries.some((q) => q.isLoading);
+
+  // Collect available stratification fields from entries of slots that have collections
+  const availableStratificationFields = useMemo((): string[] => {
+    const featureKeys = new Set<string>();
+    for (const slot of slotEntriesForGeneration) {
+      for (const entry of slot.entries) {
+        if (entry.features) {
+          for (const f of entry.features) {
+            featureKeys.add(f.key);
+          }
+        }
+      }
+    }
+    return [...BUILT_IN_STRATIFICATION_FIELDS, ...Array.from(featureKeys).sort()];
+  }, [slotEntriesForGeneration]);
+
+  // Slots that have entries (valid targets for stratification)
+  const stratifiableSlots = useMemo(
+    () => slotEntriesForGeneration.filter((s) => s.entries.length > 0),
+    [slotEntriesForGeneration],
+  );
+
+  // Reset selections when template changes
+  const handleTemplateChange = useCallback((uri: string): void => {
     setSelectedTemplateUri(uri);
     setFillings([]);
+    setStratifySlotName('');
+    setStratifyField('');
   }, []);
 
   // Generation handler
-  const handleGenerate = useCallback(async () => {
+  const handleGenerate = useCallback(async (): Promise<void> => {
     if (!selectedTemplateUri || !templateData?.value) {
       toast.error('Please select a template first.');
       return;
@@ -323,41 +615,65 @@ function SimulatePanel({ projectUri }: SimulatePanelProps): React.JSX.Element {
 
     setIsGenerating(true);
     const templateText = templateData.value.text;
+    const constraints = templateData.value.constraints?.map((c) => ({
+      expression: c.expression,
+      expressionFormat: c.expressionFormat,
+    }));
 
     try {
       switch (strategy) {
         case 'exhaustive': {
-          const results = exhaustiveGenerate(slotEntriesForGeneration, templateText, limit);
+          const results = exhaustiveGenerate(
+            slotEntriesForGeneration,
+            templateText,
+            limit,
+            constraints,
+          );
           setFillings(results);
           toast.success(`Generated ${results.length} filling(s).`);
           break;
         }
         case 'random': {
-          const results = randomGenerate(slotEntriesForGeneration, templateText, limit);
+          const results = randomGenerate(
+            slotEntriesForGeneration,
+            templateText,
+            limit,
+            constraints,
+          );
           setFillings(results);
           toast.success(`Generated ${results.length} filling(s).`);
           break;
         }
         case 'stratified': {
-          const results = stratifiedGenerate(slotEntriesForGeneration, templateText, limit);
+          if (!stratifySlotName || !stratifyField) {
+            toast.error('Select a slot and feature to stratify on.');
+            setIsGenerating(false);
+            return;
+          }
+          const results = stratifiedGenerate(
+            slotEntriesForGeneration,
+            templateText,
+            limit,
+            stratifySlotName,
+            stratifyField,
+            constraints,
+          );
           setFillings(results);
-          toast.success(`Generated ${results.length} filling(s).`);
+          toast.success(`Generated ${results.length} stratified filling(s).`);
           break;
         }
         case 'csp': {
           const result = await cspFill.mutateAsync({
             templateRef: selectedTemplateUri,
-            collectionRefs: collectionRefs.map((c) => c.collectionRef),
-            constraints: templateData.value.constraints?.map((c) => ({
-              expression: c.expression,
-              expressionFormat: c.expressionFormat,
-            })),
+            collectionRefs: slotCollectionRefs.map((c) => c.collectionRef),
+            constraints: constraints,
             maxSolutions: limit,
           });
           const previews: FillingPreview[] = result.fillings.map((f) => ({
             slotFillings: f.slotFillings,
             renderedText: f.renderedText,
             strategy: 'csp',
+            constraintViolations: evaluateConstraints(f.slotFillings, constraints),
           }));
           setFillings(previews);
           toast.success(
@@ -368,7 +684,7 @@ function SimulatePanel({ projectUri }: SimulatePanelProps): React.JSX.Element {
         case 'mlm': {
           const result = await mlmFill.mutateAsync({
             templateRef: selectedTemplateUri,
-            collectionRefs: collectionRefs.map((c) => c.collectionRef),
+            collectionRefs: slotCollectionRefs.map((c) => c.collectionRef),
             numCandidates: limit,
           });
           const previews: FillingPreview[] = result.fillings.map((f) => ({
@@ -376,13 +692,13 @@ function SimulatePanel({ projectUri }: SimulatePanelProps): React.JSX.Element {
             renderedText: f.renderedText,
             strategy: 'mlm',
             score: f.score,
+            constraintViolations: evaluateConstraints(f.slotFillings, constraints),
           }));
           setFillings(previews);
           toast.success(`MLM generated ${previews.length} candidate(s) via ${result.modelName}.`);
           break;
         }
         case 'manual': {
-          // Build a single filling from manual inputs
           const slotFills = templateSlots.map((slot) => {
             const manual = manualFillings.find((m) => m.slotName === slot.name);
             return {
@@ -396,6 +712,7 @@ function SimulatePanel({ projectUri }: SimulatePanelProps): React.JSX.Element {
               slotFillings: slotFills,
               renderedText: rendered,
               strategy: 'manual',
+              constraintViolations: evaluateConstraints(slotFills, constraints),
             },
           ]);
           toast.success('Manual filling created.');
@@ -414,7 +731,9 @@ function SimulatePanel({ projectUri }: SimulatePanelProps): React.JSX.Element {
     templateData,
     limit,
     slotEntriesForGeneration,
-    collectionRefs,
+    slotCollectionRefs,
+    stratifySlotName,
+    stratifyField,
     cspFill,
     mlmFill,
     manualFillings,
@@ -423,7 +742,7 @@ function SimulatePanel({ projectUri }: SimulatePanelProps): React.JSX.Element {
 
   // Save selected fillings as PDS records
   const handleSaveFillings = useCallback(
-    async (indices: number[]) => {
+    async (indices: number[]): Promise<void> => {
       if (!agent || !selectedTemplateUri) {
         toast.error('Sign in and select a template to save fillings.');
         return;
@@ -460,7 +779,6 @@ function SimulatePanel({ projectUri }: SimulatePanelProps): React.JSX.Element {
     [agent, selectedTemplateUri, fillings, createFilling],
   );
 
-  // Template list from hook
   const templates = templatesData?.records ?? [];
 
   return (
@@ -509,6 +827,19 @@ function SimulatePanel({ projectUri }: SimulatePanelProps): React.JSX.Element {
                   </Badge>
                 ))}
               </div>
+              {isLoadingEntries ? (
+                <div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Loader2 className="size-3 animate-spin" />
+                  Loading slot collection entries...
+                </div>
+              ) : null}
+              {slotsWithMissingData.length > 0 ? (
+                <div className="mt-2 flex items-center gap-1.5 text-xs text-destructive">
+                  <AlertTriangle className="size-3" />
+                  Missing collection data for slot{slotsWithMissingData.length > 1 ? 's' : ''}:{' '}
+                  {slotsWithMissingData.join(', ')}
+                </div>
+              ) : null}
             </div>
           ) : null}
 
@@ -556,6 +887,43 @@ function SimulatePanel({ projectUri }: SimulatePanelProps): React.JSX.Element {
               </Button>
             </div>
           </div>
+
+          {/* Stratification controls (visible only when stratified strategy is selected) */}
+          {strategy === 'stratified' ? (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="space-y-1.5">
+                <Label>Stratify Slot</Label>
+                <Select value={stratifySlotName} onValueChange={setStratifySlotName}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a slot" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {stratifiableSlots.map((slot) => (
+                      <SelectItem key={slot.slotName} value={slot.slotName}>
+                        {slot.slotName} ({slot.entries.length} entries)
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>Stratify Feature</Label>
+                <Select value={stratifyField} onValueChange={setStratifyField}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a feature" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableStratificationFields.map((field) => (
+                      <SelectItem key={field} value={field}>
+                        {field}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          ) : null}
 
           {/* Strategy description */}
           <p className="text-xs text-muted-foreground">
