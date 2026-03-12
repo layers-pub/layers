@@ -1,119 +1,228 @@
 /**
- * ATProto OAuth client setup for the Layers frontend.
+ * ATProto OAuth client for Layers authentication.
  *
- * Uses @atproto/oauth-client-browser for PKCE, DPoP key management,
- * and automatic token refresh via IndexedDB persistence.
+ * Uses @atproto/oauth-client-browser which handles PKCE, DPoP, PAR,
+ * and session management (IndexedDB) automatically.
  *
  * @module
  */
 
-import { BrowserOAuthClient } from '@atproto/oauth-client-browser';
-import type { OAuthSession } from '@atproto/oauth-client-browser';
+import {
+  BrowserOAuthClient,
+  AtprotoDohHandleResolver,
+  type OAuthSession,
+} from '@atproto/oauth-client-browser';
 
-let clientInstance: BrowserOAuthClient | null = null;
+import type { DID, LayersUser } from './types';
+import { Agent } from '@atproto/api';
+
+/**
+ * Handle resolver using ATProto's DNS-over-HTTPS resolver.
+ *
+ * Uses Google's DoH JSON API endpoint for ATProto-standard handle resolution:
+ * 1. HTTP: GET https://<handle>/.well-known/atproto-did
+ * 2. DNS: _atproto.<handle> TXT record (via DoH)
+ */
+const handleResolver = new AtprotoDohHandleResolver({
+  dohEndpoint: 'https://dns.google/resolve',
+});
+
+let oauthClient: BrowserOAuthClient | null = null;
+let clientInitPromise: Promise<BrowserOAuthClient> | null = null;
 
 /**
  * Returns the base URL for OAuth redirect URIs.
  *
- * In development with a tunnel (ngrok), set NEXT_PUBLIC_OAUTH_BASE_URL
- * to the tunnel URL so that the PDS can redirect back correctly.
+ * In tunnel mode, set NEXT_PUBLIC_OAUTH_BASE_URL to the ngrok URL.
+ * In local mode, uses http://127.0.0.1:3000.
  */
 function getOAuthBaseUrl(): string {
-  if (typeof window === 'undefined') {
-    return process.env.NEXT_PUBLIC_OAUTH_BASE_URL ?? 'http://localhost:3000';
+  if (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_OAUTH_BASE_URL) {
+    return process.env.NEXT_PUBLIC_OAUTH_BASE_URL;
   }
-  return process.env.NEXT_PUBLIC_OAUTH_BASE_URL ?? window.location.origin;
+  if (typeof window !== 'undefined') {
+    return window.location.origin;
+  }
+  return 'http://127.0.0.1:3000';
 }
 
 /**
- * Builds the client metadata URL from the base URL.
+ * Returns the OAuth client_id.
  *
- * The PDS fetches this URL to verify the client before issuing tokens.
+ * ATProto requires exactly "http://localhost" (no port, no path) for
+ * loopback clients. For production URLs, the client_id points to the
+ * client metadata document.
  */
 function getClientId(): string {
   const baseUrl = getOAuthBaseUrl();
+  const url = new URL(baseUrl);
+
+  if (url.hostname === 'localhost' || url.hostname === '127.0.0.1' || url.hostname === '[::1]') {
+    return 'http://localhost';
+  }
+
   return `${baseUrl}/client-metadata.json`;
 }
 
 /**
- * Creates or returns the singleton BrowserOAuthClient instance.
+ * Gets or initializes the singleton OAuth client.
  *
- * The client manages PKCE challenges, DPoP key pairs, and token
- * storage in IndexedDB automatically.
+ * Uses BrowserOAuthClient.load() which handles handle resolution,
+ * PKCE, DPoP, and IndexedDB session storage.
  */
-function createOAuthClient(): BrowserOAuthClient {
-  if (clientInstance) {
-    return clientInstance;
-  }
+async function getOAuthClient(): Promise<BrowserOAuthClient> {
+  if (oauthClient) return oauthClient;
+  if (clientInitPromise) return clientInitPromise;
 
-  const baseUrl = getOAuthBaseUrl();
+  const clientId = getClientId();
 
-  clientInstance = new BrowserOAuthClient({
-    clientMetadata: {
-      client_id: getClientId(),
-      client_name: 'Layers',
-      redirect_uris: [`${baseUrl}/callback` as `https://${string}`],
-      scope: 'atproto transition:generic',
-      grant_types: ['authorization_code', 'refresh_token'],
-      dpop_bound_access_tokens: true,
-      application_type: 'web',
-      token_endpoint_auth_method: 'none',
-    },
-    handleResolver: 'https://bsky.social',
+  clientInitPromise = BrowserOAuthClient.load({ clientId, handleResolver }).then((client) => {
+    oauthClient = client;
+    return client;
   });
 
-  return clientInstance;
+  return clientInitPromise;
 }
 
 /**
  * Initiates the OAuth login flow by redirecting to the user's PDS.
  *
  * @param handle - the user's ATProto handle (e.g., "alice.bsky.social")
+ * @returns the authorization URL to redirect to
  */
-async function login(handle: string): Promise<void> {
-  const client = createOAuthClient();
-  await client.authorize(handle);
+async function login(handle: string): Promise<string> {
+  const client = await getOAuthClient();
+  const scope = 'atproto transition:generic';
+  const url = await client.authorize(handle, { scope });
+  return url.toString();
 }
 
 /**
- * Processes the OAuth callback after the PDS redirects back.
+ * Initializes OAuth and handles any pending callback from PDS redirect.
  *
- * Exchanges the authorization code for access and refresh tokens.
- *
- * @returns the authenticated OAuth session
+ * Call on app startup to:
+ * 1. Handle OAuth callbacks (code + state in URL)
+ * 2. Restore existing sessions from IndexedDB
  */
-async function handleCallback(): Promise<OAuthSession> {
-  const client = createOAuthClient();
+async function initializeOAuth(): Promise<{
+  user: LayersUser;
+  session: OAuthSession;
+  agent: Agent;
+} | null> {
+  const client = await getOAuthClient();
   const params = new URLSearchParams(window.location.search);
-  const { session } = await client.callback(params);
-  return session;
+  const code = params.get('code');
+  const state = params.get('state');
+
+  if (code && state) {
+    const result = await client.callback(params);
+
+    if (result?.session) {
+      const user = await fetchUserProfile(result.session);
+
+      // Clean up URL parameters
+      const url = new URL(window.location.href);
+      url.searchParams.delete('code');
+      url.searchParams.delete('state');
+      url.searchParams.delete('iss');
+      window.history.replaceState({}, '', url.toString());
+
+      return { user, session: result.session, agent: new Agent(result.session) };
+    }
+  }
+
+  return null;
 }
 
 /**
  * Attempts to restore a previous session from IndexedDB.
  *
- * Returns null if no session is stored or the session has expired
- * and cannot be refreshed.
- *
- * @returns the restored session, or null if unavailable
+ * @returns the restored session info, or null if unavailable
  */
-async function restoreSession(): Promise<OAuthSession | null> {
+async function restoreSession(): Promise<{
+  user: LayersUser;
+  session: OAuthSession;
+  agent: Agent;
+} | null> {
+  const client = await getOAuthClient();
+
   try {
-    const client = createOAuthClient();
     const result = await client.init();
-    return result?.session ?? null;
+    if (result?.session) {
+      const user = await fetchUserProfile(result.session);
+      return { user, session: result.session, agent: new Agent(result.session) };
+    }
   } catch {
-    return null;
+    // No stored session or session expired
+  }
+
+  return null;
+}
+
+/**
+ * Fetches user profile from PDS to populate LayersUser.
+ */
+async function fetchUserProfile(session: OAuthSession): Promise<LayersUser> {
+  const agent = new Agent(session);
+  const did = session.did as DID;
+
+  // Resolve PDS endpoint from DID document
+  let pdsUrl = '';
+  try {
+    pdsUrl = await resolvePdsUrl(did);
+  } catch {
+    // Non-fatal; pdsUrl remains empty
+  }
+
+  try {
+    const profile = await agent.getProfile({ actor: did });
+    return {
+      did,
+      handle: profile.data.handle,
+      pdsUrl,
+      isAdmin: false,
+    };
+  } catch {
+    return { did, handle: did, pdsUrl, isAdmin: false };
   }
 }
 
 /**
- * Revokes the current session and clears stored tokens.
+ * Resolves PDS endpoint from a DID document.
  */
-async function logout(): Promise<void> {
-  // The BrowserOAuthClient does not expose a direct revoke method;
-  // clearing the singleton forces re-initialization on next login.
-  clientInstance = null;
+async function resolvePdsUrl(did: DID): Promise<string> {
+  let docUrl: string;
+  if (did.startsWith('did:plc:')) {
+    docUrl = `https://plc.directory/${did}`;
+  } else if (did.startsWith('did:web:')) {
+    const webId = decodeURIComponent(did.slice(8));
+    docUrl = webId.includes(':')
+      ? `https://${webId.split(':')[0]}/${webId.split(':').slice(1).join('/')}/did.json`
+      : `https://${webId}/.well-known/did.json`;
+  } else {
+    return '';
+  }
+
+  const response = await fetch(docUrl);
+  if (!response.ok) return '';
+
+  const doc = (await response.json()) as {
+    service?: Array<{ id: string; type?: string; serviceEndpoint: string }>;
+  };
+
+  const pds = doc.service?.find(
+    (s) => s.id === '#atproto_pds' || s.type === 'AtprotoPersonalDataServer',
+  );
+
+  return pds?.serviceEndpoint ?? '';
 }
 
-export { createOAuthClient, login, handleCallback, restoreSession, logout, getOAuthBaseUrl };
+/**
+ * Revokes the current session and clears stored state.
+ */
+async function logout(): Promise<void> {
+  oauthClient = null;
+  clientInitPromise = null;
+}
+
+export { getOAuthClient, login, initializeOAuth, restoreSession, logout, getOAuthBaseUrl };

@@ -6,9 +6,9 @@
 
 export type { DID, Handle, LayersUser, AuthState, AuthActions } from './types';
 export {
-  createOAuthClient,
+  getOAuthClient,
   login,
-  handleCallback,
+  initializeOAuth,
   restoreSession,
   logout,
   getOAuthBaseUrl,

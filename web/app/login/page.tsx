@@ -2,7 +2,11 @@
 
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Loader2, AlertCircle } from 'lucide-react';
+
 import { useAuth } from '@/lib/auth';
+import { HandleInput } from '@/components/auth/handle-input';
+import { Button } from '@/components/ui/button';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -23,6 +27,11 @@ export default function LoginPage() {
     const trimmed = handle.trim();
     if (!trimmed) {
       setError('Please enter your ATProto handle.');
+      return;
+    }
+
+    if (!trimmed.includes('.') && !trimmed.startsWith('did:')) {
+      setError('Enter a valid handle (e.g., alice.bsky.social) or DID.');
       return;
     }
 
@@ -47,32 +56,36 @@ export default function LoginPage() {
           <label htmlFor="handle" className="block text-sm font-medium">
             Handle
           </label>
-          <input
-            id="handle"
-            type="text"
+          <HandleInput
             value={handle}
-            onChange={(e) => setHandle(e.target.value)}
+            onChange={setHandle}
             placeholder="alice.bsky.social"
-            autoComplete="username"
-            autoFocus
             disabled={isLoading}
-            className="mt-1 block w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+            className="mt-1"
           />
         </div>
 
         {error && (
-          <p className="text-sm text-destructive" role="alert">
-            {error}
-          </p>
+          <div className="flex items-center gap-2 text-sm text-destructive" role="alert">
+            <AlertCircle className="h-4 w-4 shrink-0" />
+            <p>{error}</p>
+          </div>
         )}
 
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-        >
-          {isLoading ? 'Redirecting...' : 'Sign in'}
-        </button>
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Redirecting...
+            </>
+          ) : (
+            'Sign in'
+          )}
+        </Button>
+
+        <p className="text-center text-xs text-muted-foreground">
+          Your data remains in your Personal Data Server. Layers only indexes public records.
+        </p>
       </form>
     </div>
   );

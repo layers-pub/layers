@@ -3,8 +3,7 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   output: 'standalone',
   reactStrictMode: true,
-  allowedDevHosts: ['layers.ngrok.app'],
-
+  allowedDevOrigins: ['https://layers-pub.ngrok.app'],
   images: {
     remotePatterns: [
       {

@@ -69,8 +69,8 @@ services:
 
   sidecar:
     build:
-      context: ..
-      dockerfile: sidecar/Dockerfile
+      context: ../sidecar
+      dockerfile: Dockerfile
     ports:
       - '8000:8000'
     environment:

@@ -26,7 +26,7 @@ interface EnrichmentWorkerConfig {
 }
 
 /**
- * BullMQ worker that processes enrichment jobs from the `layers:enrichment` queue.
+ * BullMQ worker that processes enrichment jobs from the `layers.enrichment` queue.
  *
  * Each job is dispatched to the appropriate enrichment handler via the
  * {@link EnrichmentDispatcher}. Failed jobs are logged and re-thrown
@@ -53,7 +53,7 @@ class EnrichmentWorker {
     this.logger = config.logger ?? createLogger({ service: 'enrichment-worker' });
 
     this.worker = new Worker(
-      'layers:enrichment',
+      'layers.enrichment',
       async (job: Job<EnrichmentJob>) => {
         const result = await config.dispatcher.dispatch(job.data);
         if (!result.ok) {

@@ -3,9 +3,6 @@
 /**
  * React context provider for authentication state.
  *
- * Wraps the OAuth client functions in a React context so that any
- * component in the tree can read auth state or trigger login/logout.
- *
  * @module
  */
 
@@ -16,11 +13,15 @@ import { Agent } from '@atproto/api';
 import { events } from '@/lib/observability/custom-events';
 
 import type { AuthActions, AuthState, LayersUser } from './types';
-import { login as oauthLogin, logout as oauthLogout, restoreSession } from './oauth-client';
+import {
+  login as oauthLogin,
+  logout as oauthLogout,
+  restoreSession,
+  initializeOAuth,
+} from './oauth-client';
 
 type AuthContextValue = AuthState &
   AuthActions & {
-    /** ATProto Agent wrapping the current OAuth session. Null when not authenticated. */
     agent: Agent | null;
   };
 
@@ -33,8 +34,7 @@ interface AuthProviderProps {
 /**
  * Provides authentication state and actions to the component tree.
  *
- * On mount, attempts to restore a previous session from IndexedDB.
- * Exposes login and logout actions that delegate to the OAuth client.
+ * On mount, checks for OAuth callback params, then attempts session restore.
  */
 function AuthProvider({ children }: AuthProviderProps): React.JSX.Element {
   const [user, setUser] = useState<LayersUser | null>(null);
@@ -46,19 +46,27 @@ function AuthProvider({ children }: AuthProviderProps): React.JSX.Element {
   useEffect(() => {
     let cancelled = false;
 
-    async function attemptRestore(): Promise<void> {
+    async function init(): Promise<void> {
       try {
-        const session = await restoreSession();
+        // First, check for OAuth callback (code + state in URL)
+        const callbackResult = await initializeOAuth();
         if (cancelled) return;
 
-        if (session) {
-          setUser({
-            did: session.did as `did:${string}`,
-            handle: session.did,
-            pdsUrl: '',
-            isAdmin: false,
-          });
-          setAgent(new Agent(session));
+        if (callbackResult) {
+          setUser(callbackResult.user);
+          setAgent(callbackResult.agent);
+          events.userAction({ action: 'login', result: 'success' });
+          setIsLoading(false);
+          return;
+        }
+
+        // No callback; try restoring existing session
+        const restored = await restoreSession();
+        if (cancelled) return;
+
+        if (restored) {
+          setUser(restored.user);
+          setAgent(restored.agent);
           events.userAction({ action: 'login', result: 'success' });
         }
       } catch {
@@ -70,7 +78,7 @@ function AuthProvider({ children }: AuthProviderProps): React.JSX.Element {
       }
     }
 
-    void attemptRestore();
+    void init();
 
     return () => {
       cancelled = true;
@@ -80,9 +88,9 @@ function AuthProvider({ children }: AuthProviderProps): React.JSX.Element {
   const login = useCallback(async (handle: string): Promise<void> => {
     setIsLoading(true);
     try {
-      await oauthLogin(handle);
-      // The browser will redirect to the PDS; state updates happen
-      // after the callback page processes the response.
+      const authUrl = await oauthLogin(handle);
+      // Redirect to the PDS authorization page
+      window.location.href = authUrl;
     } catch {
       setIsLoading(false);
       throw new Error('Login failed. Check that your handle is correct.');
@@ -109,11 +117,6 @@ function AuthProvider({ children }: AuthProviderProps): React.JSX.Element {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-/**
- * Returns the full authentication state and actions.
- *
- * Must be called within an AuthProvider.
- */
 function useAuth(): AuthContextValue {
   const context = useContext(AuthContext);
   if (!context) {
@@ -122,25 +125,16 @@ function useAuth(): AuthContextValue {
   return context;
 }
 
-/**
- * Returns whether the current user is authenticated.
- */
 function useIsAuthenticated(): boolean {
   const { isAuthenticated } = useAuth();
   return isAuthenticated;
 }
 
-/**
- * Returns the current user, or null if not authenticated.
- */
 function useCurrentUser(): LayersUser | null {
   const { user } = useAuth();
   return user;
 }
 
-/**
- * Returns the authenticated ATProto Agent, or null if not logged in.
- */
 function useAgent(): Agent | null {
   const { agent } = useAuth();
   return agent;

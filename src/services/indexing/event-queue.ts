@@ -15,18 +15,18 @@ import type { ILogger } from '../../types/interfaces/logger.interface.js';
  * BullMQ queue names for the 12 indexing queues.
  */
 const QUEUE_NAMES = {
-  EXPRESSION: 'layers:expression',
-  SEGMENTATION: 'layers:segmentation',
-  ANNOTATION: 'layers:annotation',
-  ONTOLOGY: 'layers:ontology',
-  CORPUS: 'layers:corpus',
-  RESOURCE: 'layers:resource',
-  JUDGMENT: 'layers:judgment',
-  ALIGNMENT: 'layers:alignment',
-  GRAPH: 'layers:graph',
-  INTEGRATION: 'layers:integration',
-  ENRICHMENT: 'layers:enrichment',
-  IMPORT: 'layers:import',
+  EXPRESSION: 'layers.expression',
+  SEGMENTATION: 'layers.segmentation',
+  ANNOTATION: 'layers.annotation',
+  ONTOLOGY: 'layers.ontology',
+  CORPUS: 'layers.corpus',
+  RESOURCE: 'layers.resource',
+  JUDGMENT: 'layers.judgment',
+  ALIGNMENT: 'layers.alignment',
+  GRAPH: 'layers.graph',
+  INTEGRATION: 'layers.integration',
+  ENRICHMENT: 'layers.enrichment',
+  IMPORT: 'layers.import',
 } as const;
 
 /**
