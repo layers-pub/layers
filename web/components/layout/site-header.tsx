@@ -6,12 +6,14 @@
  * @module
  */
 
+import Image from 'next/image';
 import Link from 'next/link';
-import { Menu, LogOut, LayoutDashboard } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Menu, LogOut, LayoutDashboard, UserCircle, Shield } from 'lucide-react';
 
-import { useAuth } from '@/lib/auth';
+import { useAuth, useCurrentUser } from '@/lib/auth';
 import { cn } from '@/lib/utils';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -144,48 +146,74 @@ function MobileNav(): React.JSX.Element {
 }
 
 function AuthSection(): React.JSX.Element {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
+  const { isAuthenticated, isLoading, logout } = useAuth();
+  const user = useCurrentUser();
 
   if (isLoading) {
-    return <div className="h-8 w-8 animate-pulse rounded-full bg-muted" />;
+    return <div className="h-9 w-9 animate-pulse rounded-full bg-muted" />;
   }
 
   if (!isAuthenticated || !user) {
     return (
       <Button variant="outline" size="sm" render={<Link href="/login" />}>
-        Login
+        Sign In
       </Button>
     );
   }
 
-  const displayName = user.handle || user.did;
-  const initials = getInitials(displayName);
+  const initials = user.displayName
+    ? user.displayName
+        .split(' ')
+        .map((n) => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2)
+    : getInitials(user.handle || user.did);
+
+  const handleLogout = async () => {
+    await logout();
+    router.push('/');
+  };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        render={<Button variant="ghost" className="relative h-8 w-8 rounded-full" />}
+        render={<Button variant="ghost" className="relative h-9 w-9 rounded-full" />}
       >
-        <Avatar className="h-8 w-8">
+        <Avatar className="h-9 w-9">
+          {user.avatar && <AvatarImage src={user.avatar} alt={user.handle} />}
           <AvatarFallback className="text-xs">{initials}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <div className="flex items-center gap-2 px-2 py-1.5">
+          <Avatar className="h-8 w-8">
+            {user.avatar && <AvatarImage src={user.avatar} alt={user.handle} />}
+            <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+          </Avatar>
           <div className="flex flex-col space-y-0.5">
-            <p className="text-sm font-medium">{user.handle}</p>
-            <p className="truncate text-xs text-muted-foreground">{user.did}</p>
+            {user.displayName && (
+              <p className="text-sm font-medium leading-none">{user.displayName}</p>
+            )}
+            <p className="truncate text-xs text-muted-foreground">@{user.handle}</p>
           </div>
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem render={<Link href="/dashboard" />}>
-          <LayoutDashboard className="h-4 w-4" />
+          <LayoutDashboard className="mr-2 h-4 w-4" />
           Dashboard
         </DropdownMenuItem>
+        {user.isAdmin && (
+          <DropdownMenuItem render={<Link href="/admin" />}>
+            <Shield className="mr-2 h-4 w-4" />
+            Admin
+          </DropdownMenuItem>
+        )}
         <DropdownMenuSeparator />
-        <DropdownMenuItem render={<Link href="/logout" />}>
-          <LogOut className="h-4 w-4" />
-          Logout
+        <DropdownMenuItem onClick={handleLogout}>
+          <LogOut className="mr-2 h-4 w-4" />
+          Sign Out
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -197,8 +225,9 @@ function SiteHeader(): React.JSX.Element {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-14 max-w-7xl items-center px-4">
         <MobileNav />
-        <Link href="/" className="mr-6 flex items-center gap-2 font-bold">
-          Layers
+        <Link href="/" className="mr-6 flex items-center gap-2">
+          <Image src="/layers-logo.svg" alt="Layers" width={24} height={24} className="dark:invert" />
+          <span className="text-lg font-bold">Layers</span>
         </Link>
         <DesktopNav />
         <div className="ml-auto flex items-center gap-2">

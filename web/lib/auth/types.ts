@@ -14,6 +14,8 @@ type Handle = string;
 interface LayersUser {
   readonly did: DID;
   readonly handle: Handle;
+  readonly displayName: string;
+  readonly avatar: string;
   readonly pdsUrl: string;
   readonly isAdmin: boolean;
 }

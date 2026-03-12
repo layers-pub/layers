@@ -179,11 +179,13 @@ async function fetchUserProfile(session: OAuthSession): Promise<LayersUser> {
     return {
       did,
       handle: profile.data.handle,
+      displayName: profile.data.displayName ?? '',
+      avatar: profile.data.avatar ?? '',
       pdsUrl,
       isAdmin: false,
     };
   } catch {
-    return { did, handle: did, pdsUrl, isAdmin: false };
+    return { did, handle: did, displayName: '', avatar: '', pdsUrl, isAdmin: false };
   }
 }
 
