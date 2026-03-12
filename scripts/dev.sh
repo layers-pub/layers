@@ -145,6 +145,10 @@ for i in {1..60}; do
   fi
   sleep 1
 done
+
+echo "   Running database migrations..."
+cd "$ROOT_DIR"
+DATABASE_URL="postgresql://layers:layers_dev@127.0.0.1:5432/layers" npx node-pg-migrate up --migrations-dir src/storage/postgresql/migrations -j ts 2>/dev/null && echo -e "${GREEN}   Migrations complete${NC}" || echo -e "${YELLOW}   Migrations skipped (already up to date)${NC}"
 echo ""
 
 # =============================================================================
