@@ -70,7 +70,7 @@ export default function HomePage() {
           alt="Layers"
           width={80}
           height={80}
-          className="mb-6 dark:invert"
+          className="mb-6 rounded-lg"
           priority
         />
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Layers</h1>

@@ -226,7 +226,7 @@ function SiteHeader(): React.JSX.Element {
       <div className="mx-auto flex h-14 max-w-7xl items-center px-4">
         <MobileNav />
         <Link href="/" className="mr-6 flex items-center gap-2">
-          <Image src="/layers-logo.svg" alt="Layers" width={24} height={24} className="dark:invert" />
+          <Image src="/layers-logo.svg" alt="Layers" width={24} height={24} className="rounded" />
           <span className="text-lg font-bold">Layers</span>
         </Link>
         <DesktopNav />
