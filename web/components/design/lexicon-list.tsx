@@ -11,7 +11,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Plus, BookOpen, Languages, Loader2 } from 'lucide-react';
@@ -30,6 +30,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { LanguageCombobox } from '@/components/ui/language-combobox';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Textarea } from '@/components/ui/textarea';
@@ -150,6 +151,7 @@ function CreateLexiconDialog({ onCreated }: CreateLexiconDialogProps): React.JSX
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
     reset,
   } = useForm<LexiconFormValues>({
@@ -224,8 +226,18 @@ function CreateLexiconDialog({ onCreated }: CreateLexiconDialogProps): React.JSX
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="lexicon-language">Language</Label>
-            <Input id="lexicon-language" placeholder="en" {...register('language')} />
+            <Label>Language</Label>
+            <Controller
+              control={control}
+              name="language"
+              render={({ field }) => (
+                <LanguageCombobox
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  className="w-full"
+                />
+              )}
+            />
           </div>
 
           <DialogFooter>

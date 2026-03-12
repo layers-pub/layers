@@ -9,12 +9,13 @@
  * @module
  */
 
-import { useFieldArray, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, Plus, Trash2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { LanguageCombobox } from '@/components/ui/language-combobox';
 import { Label } from '@/components/ui/label';
 import { entryCreateSchema, type EntryFormValues } from '@/lib/schemas/design';
 
@@ -80,8 +81,18 @@ function EntryForm({
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="entry-language">Language</Label>
-        <Input id="entry-language" placeholder="en" {...register('language')} />
+        <Label>Language</Label>
+        <Controller
+          control={control}
+          name="language"
+          render={({ field }) => (
+            <LanguageCombobox
+              value={field.value ?? ''}
+              onChange={field.onChange}
+              className="w-full"
+            />
+          )}
+        />
         {errors.language ? (
           <p className="mt-1 text-sm text-destructive">{errors.language.message}</p>
         ) : null}

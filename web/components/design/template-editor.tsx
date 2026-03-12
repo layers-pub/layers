@@ -19,6 +19,7 @@ import { Save, Trash2, Plus, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { LanguageCombobox } from '@/components/ui/language-combobox';
 import { Skeleton } from '@/components/ui/skeleton';
 
 import type { SlotSchema, ConstraintSchema } from '@/lib/schemas/design';
@@ -266,14 +267,13 @@ function TemplateEditor({ projectUri, templateUri }: TemplateEditorProps): React
           />
         </div>
 
-        <div className="w-32">
-          <Input
+        <div className="w-44">
+          <LanguageCombobox
             value={language}
-            onChange={(e) => {
-              setLanguage(e.target.value);
+            onChange={(v) => {
+              setLanguage(v);
               setIsDirty(true);
             }}
-            placeholder="Language"
             className="h-9 text-sm"
           />
         </div>

@@ -6,12 +6,13 @@
  * @module
  */
 
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { LanguageCombobox } from '@/components/ui/language-combobox';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { corpusCreateSchema, type CorpusFormValues } from '@/lib/schemas';
@@ -38,6 +39,7 @@ function CorpusForm({
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<CorpusFormValues>({
     resolver: zodResolver(corpusCreateSchema),
@@ -70,8 +72,18 @@ function CorpusForm({
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="language">Language</Label>
-        <Input id="language" placeholder="en" {...register('language')} />
+        <Label>Language</Label>
+        <Controller
+          control={control}
+          name="language"
+          render={({ field }) => (
+            <LanguageCombobox
+              value={field.value ?? ''}
+              onChange={field.onChange}
+              className="w-full"
+            />
+          )}
+        />
         {errors.language && (
           <p className="text-sm text-destructive mt-1">{errors.language.message}</p>
         )}

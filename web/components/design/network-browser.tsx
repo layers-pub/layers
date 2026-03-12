@@ -39,6 +39,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { LanguageCombobox } from '@/components/ui/language-combobox';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAgent, useAuth } from '@/lib/auth';
 import { useNetworkCollections, useForkCollection } from '@/lib/hooks/use-design';
@@ -404,11 +405,10 @@ function NetworkBrowser(): React.JSX.Element {
               ))}
             </SelectContent>
           </Select>
-          <Input
-            placeholder="Language (e.g., en)"
+          <LanguageCombobox
             value={languageFilter}
-            onChange={(e) => setLanguageFilter(e.target.value)}
-            className="w-36"
+            onChange={setLanguageFilter}
+            className="w-44"
           />
         </div>
       </div>
