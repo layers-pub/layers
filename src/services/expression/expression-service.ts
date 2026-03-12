@@ -41,6 +41,11 @@ const expressionServiceConfig: RecordServiceConfig<
 interface IExpressionService {
   getByUri(uri: string): Promise<Result<ExpressionView, LayersError>>;
 
+  listAll(
+    limit: number,
+    cursor?: string,
+  ): Promise<Result<{ records: ExpressionView[]; cursor?: string | undefined }, LayersError>>;
+
   listByRepo(
     repo: string,
     limit: number,

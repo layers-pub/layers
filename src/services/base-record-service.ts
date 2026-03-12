@@ -118,6 +118,19 @@ class BaseRecordService<
     return Ok(view);
   }
 
+  async listAll(
+    limit: number,
+    cursor?: string,
+  ): Promise<Result<{ records: TView[]; cursor?: string | undefined }, LayersError>> {
+    const result = await this.repository.listAll(limit, cursor);
+    if (!result.ok) {
+      return Err(result.error);
+    }
+
+    const records = result.value.rows.map((row) => this.serviceConfig.toView(row));
+    return Ok({ records, cursor: result.value.cursor });
+  }
+
   async listByRepo(
     repo: string,
     limit: number,

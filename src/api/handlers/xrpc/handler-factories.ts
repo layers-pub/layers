@@ -70,6 +70,10 @@ function createListHandler(
         limit: number,
         cursor?: string,
       ): Promise<{ ok: boolean; value?: unknown; error?: { code: string; message: string } }>;
+      listAll(
+        limit: number,
+        cursor?: string,
+      ): Promise<{ ok: boolean; value?: unknown; error?: { code: string; message: string } }>;
     }>(serviceKey);
 
     const parsed = paramsSchema.safeParse(c.req.query());
@@ -78,11 +82,15 @@ function createListHandler(
     }
 
     const { repo, limit, cursor } = parsed.data as {
-      repo: string;
+      repo?: string;
       limit: number;
       cursor?: string;
     };
-    const result = await service.listByRepo(repo, limit, cursor);
+
+    const result = repo
+      ? await service.listByRepo(repo, limit, cursor)
+      : await service.listAll(limit, cursor);
+
     if (!result.ok) {
       return c.json({ error: result.error?.code, message: result.error?.message }, 500);
     }

@@ -207,6 +207,38 @@ class BaseRepository<TRecord, TRow extends { readonly indexed_at: Date; readonly
     return Ok(result.value as unknown as TRow);
   }
 
+  async listAll(
+    limit: number,
+    cursor?: string,
+  ): Promise<Result<{ rows: TRow[]; cursor?: string | undefined }, DatabaseError>> {
+    let sql: string;
+    let params: unknown[];
+
+    if (cursor) {
+      const decoded = decodeCursor(cursor);
+      if (!decoded) {
+        return Err(new DatabaseError('Invalid cursor'));
+      }
+      sql = `SELECT * FROM ${this.config.table} WHERE (indexed_at, uri) > ($1, $2) ORDER BY indexed_at, uri LIMIT $3`;
+      params = [decoded.indexedAt, decoded.uri, limit];
+    } else {
+      sql = `SELECT * FROM ${this.config.table} ORDER BY indexed_at, uri LIMIT $1`;
+      params = [limit];
+    }
+
+    const result = await this.pgAdapter.query(sql, params);
+    if (!result.ok) {
+      return result as Result<never, DatabaseError>;
+    }
+
+    const rows = result.value as unknown as TRow[];
+    const lastRow = rows[rows.length - 1];
+    const nextCursor =
+      lastRow && rows.length === limit ? encodeCursor(lastRow.indexed_at, lastRow.uri) : undefined;
+
+    return Ok({ rows, cursor: nextCursor });
+  }
+
   async listByDid(
     did: string,
     limit: number,

@@ -25,7 +25,9 @@ async function listExpressionsHandler(c: Context): Promise<Response> {
     return c.json({ error: 'InvalidRequest', message: 'Missing or invalid parameters' }, 400);
   }
 
-  const result = await service.listByRepo(parsed.data.repo, parsed.data.limit, parsed.data.cursor);
+  const result = parsed.data.repo
+    ? await service.listByRepo(parsed.data.repo, parsed.data.limit, parsed.data.cursor)
+    : await service.listAll(parsed.data.limit, parsed.data.cursor);
   if (!result.ok) {
     return c.json({ error: result.error.code, message: result.error.message }, 500);
   }
