@@ -43,7 +43,7 @@ interface TemplateEditorProps {
 
 function TemplateEditor({ projectUri, templateUri }: TemplateEditorProps): React.JSX.Element {
   const router = useRouter();
-  const { session } = useAuth();
+  const { isAuthenticated } = useAuth();
   const agent = useAgent();
   const queryClient = useQueryClient();
   const isNew = !templateUri || templateUri === 'new';
@@ -132,7 +132,7 @@ function TemplateEditor({ projectUri, templateUri }: TemplateEditorProps): React
   }, []);
 
   const handleSave = useCallback(async () => {
-    if (!agent || !session?.accessJwt) {
+    if (!agent || !isAuthenticated) {
       toast.error('You must be signed in.');
       return;
     }
@@ -169,7 +169,7 @@ function TemplateEditor({ projectUri, templateUri }: TemplateEditorProps): React
       if (isNew) {
         const result = await createTemplate.mutateAsync({
           agent,
-          authToken: session.accessJwt,
+          authToken: '',
           text,
           name: name || undefined,
           language: language || undefined,
@@ -192,7 +192,7 @@ function TemplateEditor({ projectUri, templateUri }: TemplateEditorProps): React
         router.push(`/design/${encodeURIComponent(projectUri)}/templates/${encodedUri}`);
       } else {
         await updateRecord(agent, templateUri!, templateRecord);
-        await syncRecordWithAppview(templateUri!, session.accessJwt);
+        await syncRecordWithAppview(templateUri!, '');
         await queryClient.invalidateQueries({ queryKey: templateKeys.all });
         toast.success('Template updated.');
       }
@@ -204,7 +204,7 @@ function TemplateEditor({ projectUri, templateUri }: TemplateEditorProps): React
     }
   }, [
     agent,
-    session,
+    isAuthenticated,
     text,
     name,
     language,

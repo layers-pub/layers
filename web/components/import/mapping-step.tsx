@@ -244,9 +244,7 @@ function MappingStep({
             Transform
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger asChild>
-                  <HelpCircle className="h-3.5 w-3.5 cursor-help" />
-                </TooltipTrigger>
+                <TooltipTrigger render={<HelpCircle className="h-3.5 w-3.5 cursor-help" />} />
                 <TooltipContent side="top" className="max-w-xs whitespace-pre-line text-left">
                   {TRANSFORM_HELP_LINES.join('\n')}
                 </TooltipContent>
@@ -290,23 +288,25 @@ function MappingStep({
                   {transformError ? (
                     <TooltipProvider>
                       <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Input
-                            value={mapping.transform ?? ''}
-                            onChange={(e) => {
-                              updateMapping(index, 'transform', e.target.value);
-                              // Clear error on change so user can re-type
-                              setTransformErrors((prev) => {
-                                const next = new Map(prev);
-                                next.delete(index);
-                                return next;
-                              });
-                            }}
-                            onBlur={(e) => handleTransformBlur(index, e.target.value)}
-                            placeholder="Transform (optional)"
-                            className="w-full border-destructive text-sm focus-visible:ring-destructive"
-                          />
-                        </TooltipTrigger>
+                        <TooltipTrigger
+                          render={
+                            <Input
+                              value={mapping.transform ?? ''}
+                              onChange={(e) => {
+                                updateMapping(index, 'transform', e.target.value);
+                                // Clear error on change so user can re-type
+                                setTransformErrors((prev) => {
+                                  const next = new Map(prev);
+                                  next.delete(index);
+                                  return next;
+                                });
+                              }}
+                              onBlur={(e) => handleTransformBlur(index, e.target.value)}
+                              placeholder="Transform (optional)"
+                              className="w-full border-destructive text-sm focus-visible:ring-destructive"
+                            />
+                          }
+                        />
                         <TooltipContent side="top" className="max-w-xs text-left text-destructive">
                           {transformError}
                         </TooltipContent>

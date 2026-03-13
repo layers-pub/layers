@@ -6,7 +6,26 @@ import { Select as SelectPrimitive } from '@base-ui/react/select';
 import { cn } from '@/lib/utils';
 import { ChevronDownIcon, CheckIcon, ChevronUpIcon } from 'lucide-react';
 
-const Select = SelectPrimitive.Root;
+/**
+ * Wrapped Select root that normalizes onValueChange to never pass null.
+ *
+ * base-ui's Select.Root passes (value: string | null, eventDetails) but
+ * consumers universally expect (value: string) => void. This wrapper
+ * coerces null to empty string.
+ */
+function Select({
+  onValueChange,
+  ...props
+}: Omit<SelectPrimitive.Root.Props<string>, 'onValueChange'> & {
+  onValueChange?: (value: string) => void;
+}) {
+  return (
+    <SelectPrimitive.Root
+      onValueChange={onValueChange ? (val: string | null) => onValueChange(val ?? '') : undefined}
+      {...props}
+    />
+  );
+}
 
 function SelectGroup({ className, ...props }: SelectPrimitive.Group.Props) {
   return (

@@ -108,10 +108,8 @@ function FormatDetailsCard({ metadata, format }: FormatDetailsCardProps): React.
                 <div>
                   <span className="text-muted-foreground">Media</span>
                   <Tooltip>
-                    <TooltipTrigger asChild>
-                      <p className="max-w-48 truncate font-medium">
-                        {metadata.mediaUrl!.split('/').pop() ?? metadata.mediaUrl}
-                      </p>
+                    <TooltipTrigger render={<p className="max-w-48 truncate font-medium" />}>
+                      {metadata.mediaUrl!.split('/').pop() ?? metadata.mediaUrl}
                     </TooltipTrigger>
                     <TooltipContent>
                       <p className="break-all">{metadata.mediaUrl}</p>

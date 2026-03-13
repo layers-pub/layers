@@ -428,7 +428,7 @@ function TierTimeline({
     }
   }, []);
 
-  const handleZoomChange = React.useCallback((val: number | number[]) => {
+  const handleZoomChange = React.useCallback((val: number | readonly number[]) => {
     const newZoom = Array.isArray(val) ? (val[0] ?? MIN_ZOOM) : val;
     setZoomLevel(newZoom);
   }, []);

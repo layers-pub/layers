@@ -11,7 +11,6 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { api } from '@/lib/api/client';
 import { APIError } from '@/lib/errors';
 
 import { externalAnnotationKeys } from './keys';
@@ -55,20 +54,39 @@ interface ExternalAnnotationView {
 /**
  * Fetches external annotations for a given source URL.
  */
-async function fetchExternalAnnotations(sourceUrl: string): Promise<ExternalAnnotationView[]> {
-  const { data, error } = await api.GET('/api/v1/external-annotations', {
-    params: { query: { url: sourceUrl } },
-  });
+/**
+ * Returns the API base URL for direct fetch calls.
+ *
+ * This endpoint is not in the OpenAPI schema, so we use plain fetch
+ * instead of the typed openapi-fetch client.
+ */
+function getApiBaseUrl(): string {
+  if (typeof window === 'undefined') {
+    return process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001';
+  }
+  if (process.env.NEXT_PUBLIC_DEV_MODE === 'tunnel') {
+    return window.location.origin;
+  }
+  return process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001';
+}
 
-  if (error || !data) {
+async function fetchExternalAnnotations(sourceUrl: string): Promise<ExternalAnnotationView[]> {
+  const base = getApiBaseUrl();
+  const url = new URL('/api/v1/external-annotations', base);
+  url.searchParams.set('url', sourceUrl);
+
+  const response = await fetch(url.toString());
+
+  if (!response.ok) {
     throw new APIError(
       `Failed to fetch external annotations for URL: ${sourceUrl}`,
-      undefined,
+      response.status,
       '/api/v1/external-annotations',
     );
   }
 
-  return (data as { annotations: ExternalAnnotationView[] }).annotations;
+  const body = (await response.json()) as { annotations?: ExternalAnnotationView[] };
+  return body.annotations ?? [];
 }
 
 /**

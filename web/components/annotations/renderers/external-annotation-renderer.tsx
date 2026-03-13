@@ -107,8 +107,8 @@ const ExternalAnnotationCard = React.memo(function ExternalAnnotationCard({
 
       <div className="flex items-center gap-1 text-xs text-muted-foreground">
         <Tooltip>
-          <TooltipTrigger asChild>
-            <span className="cursor-help font-mono">{truncateDid(annotation.creatorDid)}</span>
+          <TooltipTrigger render={<span className="cursor-help font-mono" />}>
+            {truncateDid(annotation.creatorDid)}
           </TooltipTrigger>
           <TooltipContent>
             <span className="font-mono text-xs">{annotation.creatorDid}</span>
@@ -140,12 +140,10 @@ const ExternalSpanHighlight = React.memo(function ExternalSpanHighlight({
 
   return (
     <Tooltip>
-      <TooltipTrigger asChild>
-        <span className="inline">
-          {before ? <span>{before}</span> : null}
-          <mark className="rounded-sm bg-amber-200/60 px-0.5 dark:bg-amber-800/40">{selected}</mark>
-          {after ? <span>{after}</span> : null}
-        </span>
+      <TooltipTrigger render={<span className="inline" />}>
+        {before ? <span>{before}</span> : null}
+        <mark className="rounded-sm bg-amber-200/60 px-0.5 dark:bg-amber-800/40">{selected}</mark>
+        {after ? <span>{after}</span> : null}
       </TooltipTrigger>
       <TooltipContent>
         <div className="text-xs">

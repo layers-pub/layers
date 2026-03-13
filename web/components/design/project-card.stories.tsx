@@ -118,6 +118,9 @@ export const LongDescription: Story = {
 };
 
 export const Loading: Story = {
+  args: {
+    name: 'Loading',
+  },
   render: () => <ProjectCardSkeletonStory />,
 };
 

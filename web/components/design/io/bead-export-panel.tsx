@@ -60,7 +60,7 @@ function BeadExportPanel({ projectUri }: BeadExportPanelProps): React.JSX.Elemen
   const { data: templatesData, isLoading: templatesLoading } = useProjectTemplates(userDid);
 
   // Compute counts
-  const entryCount = entriesData?.memberships?.length ?? 0;
+  const entryCount = entriesData?.records?.length ?? 0;
   const templateCount = templatesData?.records?.length ?? 0;
   const projectName = collectionData?.value?.name ?? 'project';
 
@@ -113,25 +113,21 @@ function BeadExportPanel({ projectUri }: BeadExportPanelProps): React.JSX.Elemen
     setIsExporting(true);
 
     try {
-      const projectData: ProjectExportData = {};
-
-      // Collect entries from memberships
-      if (selected.has('entries') && entriesData?.memberships) {
-        projectData.entries = entriesData.memberships
-          .filter((m) => m.entry)
-          .map((m) => ({
-            form: m.entry!.form ?? '',
-            lemma: m.entry!.lemma,
-            language: m.entry!.language,
-            features: m.entry!.features as
-              | { entries: Array<{ key: string; value: string }> }
-              | undefined,
-          }));
+      // Collect entries from membership records.
+      // Each membership record contains a value with entryRef; the entry
+      // data itself is not embedded in the membership response, so we
+      // export the entryRef as the form field for now.
+      let entries: ProjectExportData['entries'];
+      if (selected.has('entries') && entriesData?.records) {
+        entries = entriesData.records.map((m) => ({
+          form: m.value.entryRef,
+        }));
       }
 
       // Collect templates
+      let templates: ProjectExportData['templates'];
       if (selected.has('templates') && templatesData?.records) {
-        projectData.templates = templatesData.records
+        templates = templatesData.records
           .filter((t) => t.value)
           .map((t) => ({
             name: t.value!.name,
@@ -150,6 +146,11 @@ function BeadExportPanel({ projectUri }: BeadExportPanelProps): React.JSX.Elemen
             })),
           }));
       }
+
+      const projectData: ProjectExportData = {
+        ...(entries ? { entries } : {}),
+        ...(templates ? { templates } : {}),
+      };
 
       const jsonl = exportProjectToBeadJsonlines(projectData);
 

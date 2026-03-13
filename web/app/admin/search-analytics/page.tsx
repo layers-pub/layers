@@ -29,6 +29,11 @@ import {
 function SearchAnalyticsPage(): React.JSX.Element {
   const { data, isLoading } = useAdminSearchAnalytics();
 
+  const volumeData = useMemo(
+    () => (data?.topQueries ?? []).map((row) => ({ label: row.query, value: row.count })),
+    [data?.topQueries],
+  );
+
   if (isLoading || !data) {
     return (
       <div className="space-y-6">
@@ -41,11 +46,6 @@ function SearchAnalyticsPage(): React.JSX.Element {
       </div>
     );
   }
-
-  const volumeData = useMemo(
-    () => data.topQueries.map((row) => ({ label: row.query, value: row.count })),
-    [data.topQueries],
-  );
 
   return (
     <div className="space-y-6">

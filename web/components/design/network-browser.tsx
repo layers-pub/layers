@@ -251,7 +251,7 @@ function ForkProgress({ current, total, collectionName }: ForkProgressProps): Re
     <Card className="border-primary/30 bg-primary/5">
       <CardContent className="py-4">
         <div className="mb-2 flex items-center justify-between text-sm">
-          <span className="font-medium">Forking "{collectionName}"</span>
+          <span className="font-medium">Forking &quot;{collectionName}&quot;</span>
           <span className="text-muted-foreground">
             {current} / {total} entries
           </span>
