@@ -67,7 +67,7 @@ function CreateExpressionContent(): React.JSX.Element {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink render={<Link href="/expressions" />}>Expressions</BreadcrumbLink>
+            <BreadcrumbLink render={<Link href="/corpora" />}>Corpora</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

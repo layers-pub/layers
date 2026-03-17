@@ -27,7 +27,7 @@ const FEATURES = [
     title: 'Annotations',
     description:
       'Token tags, spans, relations, trees, tiers, and document tags across multiple layers.',
-    href: '/expressions',
+    href: '/corpora',
   },
   {
     icon: Network,
@@ -54,7 +54,7 @@ const FEATURES = [
     title: 'Multi-layer',
     description:
       'Stack annotation layers over shared expressions with cross-references and alignments.',
-    href: '/expressions',
+    href: '/corpora',
   },
 ] as const;
 
@@ -96,8 +96,8 @@ export default function HomePage() {
                 Sign in with Bluesky
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button variant="outline" size="lg" render={<Link href="/expressions" />}>
-                Browse
+              <Button variant="outline" size="lg" render={<Link href="/corpora" />}>
+                Browse Corpora
               </Button>
             </>
           )}

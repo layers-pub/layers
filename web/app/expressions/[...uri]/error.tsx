@@ -41,8 +41,8 @@ export default function ExpressionDetailError({
           <p className="mt-1 text-xs text-muted-foreground">Reference: {traceId.slice(0, 8)}</p>
         )}
         <div className="mt-6 flex gap-3">
-          <Button variant="outline" render={<Link href="/expressions" />}>
-            Go back
+          <Button variant="outline" render={<Link href="/search" />}>
+            Search expressions
           </Button>
           <Button onClick={reset}>Retry</Button>
         </div>

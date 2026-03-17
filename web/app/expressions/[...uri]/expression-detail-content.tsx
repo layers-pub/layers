@@ -65,8 +65,8 @@ function ExpressionDetailContent({ uri }: ExpressionDetailContentProps) {
         <p className="mt-2 text-sm text-muted-foreground">
           {error instanceof Error ? error.message : 'An unexpected error occurred.'}
         </p>
-        <Button variant="outline" className="mt-6" render={<Link href="/expressions" />}>
-          Back to expressions
+        <Button variant="outline" className="mt-6" render={<Link href="/search" />}>
+          Search expressions
         </Button>
       </div>
     );
@@ -79,8 +79,8 @@ function ExpressionDetailContent({ uri }: ExpressionDetailContentProps) {
         <p className="mt-2 text-sm text-muted-foreground">
           The requested expression does not exist or has not been indexed yet.
         </p>
-        <Button variant="outline" className="mt-6" render={<Link href="/expressions" />}>
-          Back to expressions
+        <Button variant="outline" className="mt-6" render={<Link href="/search" />}>
+          Search expressions
         </Button>
       </div>
     );

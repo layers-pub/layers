@@ -3,13 +3,29 @@
 /**
  * Site-wide fixed top navigation bar.
  *
+ * Navigation is organized into two dropdown categories (Explore, Create)
+ * plus a standalone Search link and authenticated-only Dashboard/Admin.
+ *
  * @module
  */
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Menu, LogOut, LayoutDashboard, UserCircle, Shield } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import {
+  Menu,
+  LogOut,
+  LayoutDashboard,
+  Shield,
+  BookOpen,
+  Network,
+  FlaskConical,
+  Search,
+  Pencil,
+  FileUp,
+  FolderPlus,
+  ChevronDown,
+} from 'lucide-react';
 
 import { useAuth, useCurrentUser } from '@/lib/auth';
 import { cn } from '@/lib/utils';
@@ -18,23 +34,36 @@ import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 
-const NAV_LINKS = [
-  { href: '/expressions', label: 'Expressions' },
-  { href: '/corpora', label: 'Corpora' },
-  { href: '/ontologies', label: 'Ontologies' },
-  { href: '/experiments', label: 'Experiments' },
-  { href: '/design', label: 'Design' },
-  { href: '/search', label: 'Search' },
+// =============================================================================
+// NAV STRUCTURE
+// =============================================================================
+
+const EXPLORE_LINKS = [
+  { href: '/corpora', label: 'Corpora', icon: BookOpen, description: 'Browse annotated corpora' },
+  { href: '/ontologies', label: 'Ontologies', icon: Network, description: 'Type systems and vocabularies' },
+  { href: '/experiments', label: 'Experiments', icon: FlaskConical, description: 'Judgment tasks and results' },
 ] as const;
 
+const CREATE_LINKS = [
+  { href: '/design', label: 'Design Studio', icon: Pencil, description: 'Build lexicons, templates, and experiments' },
+  { href: '/import', label: 'Import Data', icon: FileUp, description: 'CoNLL-U, BRAT, ELAN, TEI, TextGrid' },
+  { href: '/corpora/new', label: 'New Corpus', icon: FolderPlus, description: 'Create an empty corpus' },
+] as const;
+
+// =============================================================================
+// HELPERS
+// =============================================================================
+
 /**
- * Extracts initials from a handle or DID for the avatar fallback.
+ * Extracts initials from a display name, handle, or DID for the avatar fallback.
  */
 function getInitials(identifier: string): string {
   if (identifier.startsWith('did:')) {
@@ -44,56 +73,96 @@ function getInitials(identifier: string): string {
   return (parts[0] ?? identifier).slice(0, 2).toUpperCase();
 }
 
-function DesktopNav(): React.JSX.Element {
-  const { isAuthenticated } = useAuth();
+/**
+ * Returns true if the current path starts with the given href.
+ */
+function isActive(pathname: string, href: string): boolean {
+  if (href === '/') return pathname === '/';
+  return pathname.startsWith(href);
+}
+
+// =============================================================================
+// DESKTOP NAV
+// =============================================================================
+
+function NavDropdown({
+  label,
+  links,
+  pathname,
+}: {
+  label: string;
+  links: ReadonlyArray<{ href: string; label: string; icon: React.ComponentType<{ className?: string }>; description: string }>;
+  pathname: string;
+}): React.JSX.Element {
+  const active = links.some((l) => isActive(pathname, l.href));
 
   return (
-    <nav className="hidden items-center gap-1 md:flex">
-      {NAV_LINKS.map((link) => (
-        <Link
-          key={link.href}
-          href={link.href}
-          className={cn(
-            'rounded-md px-3 py-2 text-sm font-medium text-muted-foreground',
-            'transition-colors hover:text-foreground',
-          )}
-        >
-          {link.label}
-        </Link>
-      ))}
-      {isAuthenticated ? (
-        <>
-          <Link
-            href="/dashboard"
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={
+          <button
             className={cn(
-              'rounded-md px-3 py-2 text-sm font-medium text-muted-foreground',
-              'transition-colors hover:text-foreground',
+              'flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+              active ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
             )}
-          >
-            Dashboard
-          </Link>
-          <Link
-            href="/admin"
-            className={cn(
-              'rounded-md px-3 py-2 text-sm font-medium text-muted-foreground',
-              'transition-colors hover:text-foreground',
-            )}
-          >
-            Admin
-          </Link>
-        </>
-      ) : null}
+          />
+        }
+      >
+        {label}
+        <ChevronDown className="size-3.5" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start" sideOffset={8} className="w-64">
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>{label}</DropdownMenuLabel>
+          {links.map((link) => (
+            <DropdownMenuItem key={link.href} render={<Link href={link.href} />}>
+              <link.icon className="mr-2.5 size-4 shrink-0 text-muted-foreground" />
+              <div className="flex flex-col">
+                <span className={cn('text-sm', isActive(pathname, link.href) && 'font-medium')}>
+                  {link.label}
+                </span>
+                <span className="text-xs text-muted-foreground">{link.description}</span>
+              </div>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function DesktopNav(): React.JSX.Element {
+  const pathname = usePathname();
+
+  return (
+    <nav className="hidden items-center gap-0.5 md:flex">
+      <NavDropdown label="Explore" links={EXPLORE_LINKS} pathname={pathname} />
+      <NavDropdown label="Create" links={CREATE_LINKS} pathname={pathname} />
+      <Link
+        href="/search"
+        className={cn(
+          'flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+          isActive(pathname, '/search') ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
+        )}
+      >
+        <Search className="size-3.5" />
+        Search
+      </Link>
     </nav>
   );
 }
 
+// =============================================================================
+// MOBILE NAV
+// =============================================================================
+
 function MobileNav(): React.JSX.Element {
-  const { isAuthenticated } = useAuth();
+  const pathname = usePathname();
 
   return (
     <Sheet>
       <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden" />}>
-        <Menu className="h-5 w-5" />
+        <Menu className="size-5" />
         <span className="sr-only">Open menu</span>
       </SheetTrigger>
       <SheetContent side="left" className="w-64">
@@ -104,46 +173,70 @@ function MobileNav(): React.JSX.Element {
             </Link>
           </SheetTitle>
         </SheetHeader>
-        <nav className="mt-6 flex flex-col gap-2">
-          {NAV_LINKS.map((link) => (
+        <nav className="mt-6 flex flex-col gap-1">
+          {/* Explore section */}
+          <p className="px-3 pb-1 pt-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            Explore
+          </p>
+          {EXPLORE_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className={cn(
-                'rounded-md px-3 py-2 text-sm font-medium text-muted-foreground',
-                'transition-colors hover:bg-accent hover:text-foreground',
+                'flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                isActive(pathname, link.href)
+                  ? 'bg-accent text-foreground'
+                  : 'text-muted-foreground hover:bg-accent hover:text-foreground',
               )}
             >
+              <link.icon className="size-4" />
               {link.label}
             </Link>
           ))}
-          {isAuthenticated ? (
-            <>
-              <Link
-                href="/dashboard"
-                className={cn(
-                  'rounded-md px-3 py-2 text-sm font-medium text-muted-foreground',
-                  'transition-colors hover:bg-accent hover:text-foreground',
-                )}
-              >
-                Dashboard
-              </Link>
-              <Link
-                href="/admin"
-                className={cn(
-                  'rounded-md px-3 py-2 text-sm font-medium text-muted-foreground',
-                  'transition-colors hover:bg-accent hover:text-foreground',
-                )}
-              >
-                Admin
-              </Link>
-            </>
-          ) : null}
+
+          {/* Create section */}
+          <p className="px-3 pb-1 pt-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            Create
+          </p>
+          {CREATE_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={cn(
+                'flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                isActive(pathname, link.href)
+                  ? 'bg-accent text-foreground'
+                  : 'text-muted-foreground hover:bg-accent hover:text-foreground',
+              )}
+            >
+              <link.icon className="size-4" />
+              {link.label}
+            </Link>
+          ))}
+
+          {/* Search */}
+          <div className="my-2 h-px bg-border" />
+          <Link
+            href="/search"
+            className={cn(
+              'flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+              isActive(pathname, '/search')
+                ? 'bg-accent text-foreground'
+                : 'text-muted-foreground hover:bg-accent hover:text-foreground',
+            )}
+          >
+            <Search className="size-4" />
+            Search
+          </Link>
         </nav>
       </SheetContent>
     </Sheet>
   );
 }
+
+// =============================================================================
+// AUTH SECTION
+// =============================================================================
 
 function AuthSection(): React.JSX.Element {
   const router = useRouter();
@@ -219,6 +312,10 @@ function AuthSection(): React.JSX.Element {
     </DropdownMenu>
   );
 }
+
+// =============================================================================
+// HEADER
+// =============================================================================
 
 function SiteHeader(): React.JSX.Element {
   return (
