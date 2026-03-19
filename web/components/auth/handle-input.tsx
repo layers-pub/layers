@@ -186,11 +186,7 @@ function HandleInput({
               >
                 {actor.avatar ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={actor.avatar}
-                    alt=""
-                    className="h-8 w-8 rounded-full object-cover"
-                  />
+                  <img src={actor.avatar} alt="" className="h-8 w-8 rounded-full object-cover" />
                 ) : (
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
                     <User className="h-4 w-4 text-muted-foreground" />

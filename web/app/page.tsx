@@ -2,15 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  Layers,
-  BookOpen,
-  FlaskConical,
-  Network,
-  Search,
-  Pencil,
-  ArrowRight,
-} from 'lucide-react';
+import { Layers, BookOpen, FlaskConical, Network, Search, Pencil, ArrowRight } from 'lucide-react';
 
 import { useAuth } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
@@ -46,7 +38,8 @@ const FEATURES = [
   {
     icon: Search,
     title: 'Discovery',
-    description: 'Search across expressions, annotations, and resources with full-text and faceted queries.',
+    description:
+      'Search across expressions, annotations, and resources with full-text and faceted queries.',
     href: '/search',
   },
   {

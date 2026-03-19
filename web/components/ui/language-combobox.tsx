@@ -124,17 +124,12 @@ function LanguageCombobox({
   const [search, setSearch] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const selectedLanguage = useMemo(
-    () => LANGUAGES.find((l) => l.code === value),
-    [value],
-  );
+  const selectedLanguage = useMemo(() => LANGUAGES.find((l) => l.code === value), [value]);
 
   const filtered = useMemo(() => {
     if (!search) return LANGUAGES;
     const q = search.toLowerCase();
-    return LANGUAGES.filter(
-      (l) => l.code.startsWith(q) || l.name.toLowerCase().includes(q),
-    );
+    return LANGUAGES.filter((l) => l.code.startsWith(q) || l.name.toLowerCase().includes(q));
   }, [search]);
 
   const handleSelect = useCallback(
@@ -155,13 +150,19 @@ function LanguageCombobox({
             role="combobox"
             aria-expanded={open}
             disabled={disabled}
-            className={cn('justify-between font-normal', !value && 'text-muted-foreground', className)}
+            className={cn(
+              'justify-between font-normal',
+              !value && 'text-muted-foreground',
+              className,
+            )}
           />
         }
       >
         {selectedLanguage ? (
           <span>
-            <span className="font-mono text-xs text-muted-foreground mr-1.5">{selectedLanguage.code}</span>
+            <span className="font-mono text-xs text-muted-foreground mr-1.5">
+              {selectedLanguage.code}
+            </span>
             {selectedLanguage.name}
           </span>
         ) : (
@@ -196,7 +197,10 @@ function LanguageCombobox({
                 )}
               >
                 <Check
-                  className={cn('h-4 w-4 shrink-0', value === lang.code ? 'opacity-100' : 'opacity-0')}
+                  className={cn(
+                    'h-4 w-4 shrink-0',
+                    value === lang.code ? 'opacity-100' : 'opacity-0',
+                  )}
                 />
                 <span className="font-mono text-xs text-muted-foreground w-6">{lang.code}</span>
                 <span>{lang.name}</span>

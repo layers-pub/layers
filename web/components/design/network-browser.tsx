@@ -405,11 +405,7 @@ function NetworkBrowser(): React.JSX.Element {
               ))}
             </SelectContent>
           </Select>
-          <LanguageCombobox
-            value={languageFilter}
-            onChange={setLanguageFilter}
-            className="w-44"
-          />
+          <LanguageCombobox value={languageFilter} onChange={setLanguageFilter} className="w-44" />
         </div>
       </div>
 

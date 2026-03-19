@@ -48,14 +48,39 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 
 const EXPLORE_LINKS = [
   { href: '/corpora', label: 'Corpora', icon: BookOpen, description: 'Browse annotated corpora' },
-  { href: '/ontologies', label: 'Ontologies', icon: Network, description: 'Type systems and vocabularies' },
-  { href: '/experiments', label: 'Experiments', icon: FlaskConical, description: 'Judgment tasks and results' },
+  {
+    href: '/ontologies',
+    label: 'Ontologies',
+    icon: Network,
+    description: 'Type systems and vocabularies',
+  },
+  {
+    href: '/experiments',
+    label: 'Experiments',
+    icon: FlaskConical,
+    description: 'Judgment tasks and results',
+  },
 ] as const;
 
 const CREATE_LINKS = [
-  { href: '/design', label: 'Design Studio', icon: Pencil, description: 'Build lexicons, templates, and experiments' },
-  { href: '/import', label: 'Import Data', icon: FileUp, description: 'CoNLL-U, BRAT, ELAN, TEI, TextGrid' },
-  { href: '/corpora/new', label: 'New Corpus', icon: FolderPlus, description: 'Create an empty corpus' },
+  {
+    href: '/design',
+    label: 'Design Studio',
+    icon: Pencil,
+    description: 'Build lexicons, templates, and experiments',
+  },
+  {
+    href: '/import',
+    label: 'Import Data',
+    icon: FileUp,
+    description: 'CoNLL-U, BRAT, ELAN, TEI, TextGrid',
+  },
+  {
+    href: '/corpora/new',
+    label: 'New Corpus',
+    icon: FolderPlus,
+    description: 'Create an empty corpus',
+  },
 ] as const;
 
 // =============================================================================
@@ -91,7 +116,12 @@ function NavDropdown({
   pathname,
 }: {
   label: string;
-  links: ReadonlyArray<{ href: string; label: string; icon: React.ComponentType<{ className?: string }>; description: string }>;
+  links: ReadonlyArray<{
+    href: string;
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+    description: string;
+  }>;
   pathname: string;
 }): React.JSX.Element {
   const active = links.some((l) => isActive(pathname, l.href));
@@ -142,7 +172,9 @@ function DesktopNav(): React.JSX.Element {
         href="/search"
         className={cn(
           'flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-colors',
-          isActive(pathname, '/search') ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
+          isActive(pathname, '/search')
+            ? 'text-foreground'
+            : 'text-muted-foreground hover:text-foreground',
         )}
       >
         <Search className="size-3.5" />
