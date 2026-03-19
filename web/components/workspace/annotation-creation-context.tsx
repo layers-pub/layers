@@ -326,8 +326,8 @@ function buildRecordAnchor(anchor: Anchor): Record<string, unknown> {
     case 'textSpan':
       return {
         $type: 'pub.layers.defs#textSpan',
-        start: anchor.start,
-        ending: anchor.end,
+        byteStart: anchor.byteStart,
+        byteEnd: anchor.byteEnd,
       };
     case 'tokenRef':
       return {
@@ -367,8 +367,8 @@ function buildRecordAnchor(anchor: Anchor): Record<string, unknown> {
       return {
         $type: 'pub.layers.defs#pageAnchor',
         page: anchor.page,
-        start: anchor.start,
-        ending: anchor.end,
+        byteStart: anchor.byteStart,
+        byteEnd: anchor.byteEnd,
       };
     default:
       return {};

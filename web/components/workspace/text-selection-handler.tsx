@@ -75,7 +75,7 @@ function rangeToTokenIndices(range: TextRange, tokens: Token[]): number[] {
   for (const token of tokens) {
     // Token overlaps the range if it starts before the range ends
     // and ends after the range starts
-    if (token.start < range.end && token.end > range.start) {
+    if (token.byteStart < range.end && token.byteEnd > range.start) {
       indices.push(token.index);
     }
   }
@@ -99,8 +99,8 @@ function buildAnchor(
       if (!range) return null;
       return {
         type: 'textSpan',
-        start: range.start,
-        end: range.end,
+        byteStart: range.start,
+        byteEnd: range.end,
       };
     }
     // For discontiguous spans, convert all ranges to token indices
@@ -351,10 +351,12 @@ function TextSelectionHandler({
     let lastEnd = 0;
 
     for (const token of tokens) {
-      if (token.start > lastEnd) {
+      // NOTE: text.slice with byte offsets works correctly only for ASCII text.
+      // A future byte-to-char utility will be needed for multi-byte characters.
+      if (token.byteStart > lastEnd) {
         elements.push(
           <span key={`gap-${lastEnd}`} className="whitespace-pre-wrap">
-            {text.slice(lastEnd, token.start)}
+            {text.slice(lastEnd, token.byteStart)}
           </span>,
         );
       }
@@ -383,7 +385,7 @@ function TextSelectionHandler({
         </span>,
       );
 
-      lastEnd = token.end;
+      lastEnd = token.byteEnd;
     }
 
     if (lastEnd < text.length) {

@@ -37,7 +37,7 @@ vi.mock('@/components/ui/tooltip', async () => {
 function makeTokens(words: string[]): Token[] {
   let offset = 0;
   return words.map((text, index) => {
-    const token: Token = { text, index, start: offset, end: offset + text.length };
+    const token: Token = { text, index, byteStart: offset, byteEnd: offset + text.length };
     offset += text.length + 1;
     return token;
   });

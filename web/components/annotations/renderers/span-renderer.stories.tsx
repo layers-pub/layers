@@ -24,34 +24,34 @@ type Story = StoryObj<typeof SpanRenderer>;
 const expressionText = 'John Smith visited New York City last Friday.';
 
 const tokens: Token[] = [
-  { text: 'John', index: 0, start: 0, end: 4 },
-  { text: 'Smith', index: 1, start: 5, end: 10 },
-  { text: 'visited', index: 2, start: 11, end: 18 },
-  { text: 'New', index: 3, start: 19, end: 22 },
-  { text: 'York', index: 4, start: 23, end: 27 },
-  { text: 'City', index: 5, start: 28, end: 32 },
-  { text: 'last', index: 6, start: 33, end: 37 },
-  { text: 'Friday', index: 7, start: 38, end: 44 },
-  { text: '.', index: 8, start: 44, end: 45 },
+  { text: 'John', index: 0, byteStart: 0, byteEnd: 4 },
+  { text: 'Smith', index: 1, byteStart: 5, byteEnd: 10 },
+  { text: 'visited', index: 2, byteStart: 11, byteEnd: 18 },
+  { text: 'New', index: 3, byteStart: 19, byteEnd: 22 },
+  { text: 'York', index: 4, byteStart: 23, byteEnd: 27 },
+  { text: 'City', index: 5, byteStart: 28, byteEnd: 32 },
+  { text: 'last', index: 6, byteStart: 33, byteEnd: 37 },
+  { text: 'Friday', index: 7, byteStart: 38, byteEnd: 44 },
+  { text: '.', index: 8, byteStart: 44, byteEnd: 45 },
 ];
 
 const entitySpanItems: AnnotationItem[] = [
   {
     id: 'span-1',
     label: 'PERSON',
-    anchor: { type: 'textSpan', start: 0, end: 10 },
+    anchor: { type: 'textSpan', byteStart: 0, byteEnd: 10 },
     confidence: 950,
   },
   {
     id: 'span-2',
     label: 'GPE',
-    anchor: { type: 'textSpan', start: 19, end: 32 },
+    anchor: { type: 'textSpan', byteStart: 19, byteEnd: 32 },
     confidence: 880,
   },
   {
     id: 'span-3',
     label: 'DATE',
-    anchor: { type: 'textSpan', start: 33, end: 44 },
+    anchor: { type: 'textSpan', byteStart: 33, byteEnd: 44 },
     confidence: 910,
   },
 ];
@@ -77,19 +77,19 @@ const overlappingItems: AnnotationItem[] = [
   {
     id: 'ovl-1',
     label: 'NP',
-    anchor: { type: 'textSpan', start: 19, end: 32 },
+    anchor: { type: 'textSpan', byteStart: 19, byteEnd: 32 },
     confidence: 900,
   },
   {
     id: 'ovl-2',
     label: 'GPE',
-    anchor: { type: 'textSpan', start: 19, end: 27 },
+    anchor: { type: 'textSpan', byteStart: 19, byteEnd: 27 },
     confidence: 850,
   },
   {
     id: 'ovl-3',
     label: 'PERSON',
-    anchor: { type: 'textSpan', start: 0, end: 10 },
+    anchor: { type: 'textSpan', byteStart: 0, byteEnd: 10 },
   },
 ];
 
@@ -114,7 +114,7 @@ const singleSpanItems: AnnotationItem[] = [
   {
     id: 'single-1',
     label: 'FOCUS',
-    anchor: { type: 'textSpan', start: 11, end: 18 },
+    anchor: { type: 'textSpan', byteStart: 11, byteEnd: 18 },
   },
 ];
 

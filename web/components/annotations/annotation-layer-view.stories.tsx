@@ -24,13 +24,13 @@ type Story = StoryObj<typeof AnnotationLayerView>;
 const text = 'The cat sat on the mat.';
 
 const tokens: Token[] = [
-  { text: 'The', index: 0, start: 0, end: 3 },
-  { text: 'cat', index: 1, start: 4, end: 7 },
-  { text: 'sat', index: 2, start: 8, end: 11 },
-  { text: 'on', index: 3, start: 12, end: 14 },
-  { text: 'the', index: 4, start: 15, end: 18 },
-  { text: 'mat', index: 5, start: 19, end: 22 },
-  { text: '.', index: 6, start: 22, end: 23 },
+  { text: 'The', index: 0, byteStart: 0, byteEnd: 3 },
+  { text: 'cat', index: 1, byteStart: 4, byteEnd: 7 },
+  { text: 'sat', index: 2, byteStart: 8, byteEnd: 11 },
+  { text: 'on', index: 3, byteStart: 12, byteEnd: 14 },
+  { text: 'the', index: 4, byteStart: 15, byteEnd: 18 },
+  { text: 'mat', index: 5, byteStart: 19, byteEnd: 22 },
+  { text: '.', index: 6, byteStart: 22, byteEnd: 23 },
 ];
 
 const tokenTagLayer: AnnotationLayerData = {
@@ -67,13 +67,13 @@ const spanLayer: AnnotationLayerData = {
     {
       id: 'v-span-1',
       label: 'ANIMAL',
-      anchor: { type: 'textSpan', start: 4, end: 7 },
+      anchor: { type: 'textSpan', byteStart: 4, byteEnd: 7 },
       confidence: 900,
     },
     {
       id: 'v-span-2',
       label: 'OBJECT',
-      anchor: { type: 'textSpan', start: 19, end: 22 },
+      anchor: { type: 'textSpan', byteStart: 19, byteEnd: 22 },
       confidence: 850,
     },
   ],

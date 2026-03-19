@@ -355,8 +355,8 @@ function AnnotationWorkspace({
     return firstTokenization.tokens.map((t, i) => ({
       text: t.text ?? '',
       index: i,
-      start: t.textSpan?.start ?? 0,
-      end: t.textSpan?.ending ?? 0,
+      byteStart: t.textSpan?.byteStart ?? 0,
+      byteEnd: t.textSpan?.byteEnd ?? 0,
     }));
   }, [segData?.records]);
 

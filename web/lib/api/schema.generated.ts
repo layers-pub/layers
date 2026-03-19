@@ -1837,12 +1837,16 @@ export interface components {
             /** @description Character offsets within the page text. */
             textSpan?: components["schemas"]["DefsSpan"];
         };
-        /** @description A contiguous span of text defined by character offsets into a source text. */
+        /** @description A contiguous span of text defined by UTF-8 byte offsets. */
         DefsSpan: {
-            /** @description Inclusive start character offset (0-indexed). */
-            start: number;
-            /** @description Exclusive end character offset. */
-            ending: number;
+            /** @description Inclusive start UTF-8 byte offset (0-indexed). */
+            byteStart: number;
+            /** @description Exclusive end UTF-8 byte offset. */
+            byteEnd: number;
+            /** @description Inclusive start character offset. Optional; for compatibility with character-offset datasets. */
+            charStart?: number;
+            /** @description Exclusive end character offset. Optional; for compatibility with character-offset datasets. */
+            charEnd?: number;
         };
         /** @description A normalized spatial value representing a point, region, line, or complex geometry. Parallel to temporalEntity. Subsumes GeoJSON geometry types, WKT primitives, and ISO 19107 spatial schema. Consumers dispatch on which fields are populated: bbox only (pixel bounding box), geometry+type (parsed geometry string), geometry+geometryFormat (format-specific parsing). */
         DefsSpatialEntity: {
@@ -2035,12 +2039,16 @@ export interface components {
             /** @description End time in milliseconds. */
             ending: number;
         };
-        /** @description W3C TextPositionSelector: selects by character offsets. Semantically equivalent to pub.layers.defs#span but named for W3C compatibility with at.margin. */
+        /** @description W3C TextPositionSelector adapted for ATProto: selects by UTF-8 byte offsets. Semantically equivalent to pub.layers.defs#span but named for W3C compatibility with at.margin. */
         DefsTextPositionSelector: {
-            /** @description Starting character position (0-indexed, inclusive). */
-            start: number;
-            /** @description Ending character position (exclusive). */
-            end: number;
+            /** @description Starting UTF-8 byte position (0-indexed, inclusive). */
+            byteStart: number;
+            /** @description Ending UTF-8 byte position (exclusive). */
+            byteEnd: number;
+            /** @description Starting character position (0-indexed, inclusive). Optional; for compatibility with character-offset datasets. */
+            charStart?: number;
+            /** @description Ending character position (exclusive). Optional; for compatibility with character-offset datasets. */
+            charEnd?: number;
         };
         /** @description W3C TextQuoteSelector: selects text by quoting it with surrounding context. Compatible with at.margin.annotation and the W3C Web Annotation Data Model. */
         DefsTextQuoteSelector: {
@@ -2226,7 +2234,7 @@ export interface components {
              * @enum {string}
              */
             kind: "document" | "transcript" | "dialogue" | "social-media" | "email" | "article" | "recording" | "video" | "multimodal" | "code" | "section" | "paragraph" | "chapter" | "turn" | "utterance" | "heading" | "list" | "sentence" | "clause" | "phrase" | "word" | "morpheme" | "character" | "other";
-            /** @description The full raw text of the expression. All character-offset spans reference this string. */
+            /** @description The full raw text of the expression. All byte-offset spans reference this string. */
             text?: string;
             /**
              * Format: uri
@@ -3643,7 +3651,7 @@ export interface components {
             tokenIndex: number;
             /** @description The surface form of the token. */
             text?: string;
-            /** @description Character offsets into the expression text. */
+            /** @description UTF-8 byte offsets into the expression text. */
             textSpan?: components["schemas"]["DefsSpan"];
             temporalSpan?: components["schemas"]["DefsTemporalSpan"];
         };

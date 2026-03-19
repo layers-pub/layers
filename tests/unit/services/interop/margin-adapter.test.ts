@@ -169,7 +169,7 @@ describe('MarginAdapter', () => {
         },
       });
       const anchor = adapter.resolveAnchor(record, 'The cat sat on the mat.');
-      expect(anchor).toEqual({ type: 'textSpan', start: 4, end: 7 });
+      expect(anchor).toEqual({ type: 'textSpan', byteStart: 4, byteEnd: 7 });
     });
 
     it('resolves TextQuoteSelector to textSpan anchor', () => {
@@ -180,7 +180,7 @@ describe('MarginAdapter', () => {
         },
       });
       const anchor = adapter.resolveAnchor(record, 'The cat sat on the mat.');
-      expect(anchor).toEqual({ type: 'textSpan', start: 4, end: 7 });
+      expect(anchor).toEqual({ type: 'textSpan', byteStart: 4, byteEnd: 7 });
     });
 
     it('returns undefined for FragmentSelector', () => {

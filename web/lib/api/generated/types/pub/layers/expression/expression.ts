@@ -49,7 +49,7 @@ export interface Main {
     | 'character'
     | 'other'
     | (string & {})
-  /** The full raw text of the expression. All character-offset spans reference this string. */
+  /** The full raw text of the expression. All byte-offset spans reference this string. */
   text?: string
   /** Reference to the parent Expression this one is nested within. Absent for top-level expressions (documents, recordings, etc.). */
   parentRef?: string

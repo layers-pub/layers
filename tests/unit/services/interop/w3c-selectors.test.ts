@@ -19,25 +19,27 @@ import {
 // ---------------------------------------------------------------------------
 
 describe('textPositionToAnchor', () => {
+  const text = 'The cat sat on the mat.';
+
   it('converts a valid TextPositionSelector to a textSpan anchor', () => {
-    const result = textPositionToAnchor({ type: 'TextPositionSelector', start: 4, end: 7 });
+    const result = textPositionToAnchor({ type: 'TextPositionSelector', start: 4, end: 7 }, text);
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.value).toEqual({ type: 'textSpan', start: 4, end: 7 });
+      expect(result.value).toEqual({ type: 'textSpan', byteStart: 4, byteEnd: 7 });
     }
   });
 
   it('accepts zero start offset', () => {
-    const result = textPositionToAnchor({ type: 'TextPositionSelector', start: 0, end: 5 });
+    const result = textPositionToAnchor({ type: 'TextPositionSelector', start: 0, end: 5 }, text);
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.value.start).toBe(0);
-      expect(result.value.end).toBe(5);
+      expect(result.value.byteStart).toBe(0);
+      expect(result.value.byteEnd).toBe(5);
     }
   });
 
   it('rejects negative start offset', () => {
-    const result = textPositionToAnchor({ type: 'TextPositionSelector', start: -1, end: 5 });
+    const result = textPositionToAnchor({ type: 'TextPositionSelector', start: -1, end: 5 }, text);
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.error.message).toContain('non-negative');
@@ -45,7 +47,7 @@ describe('textPositionToAnchor', () => {
   });
 
   it('rejects negative end offset', () => {
-    const result = textPositionToAnchor({ type: 'TextPositionSelector', start: 0, end: -3 });
+    const result = textPositionToAnchor({ type: 'TextPositionSelector', start: 0, end: -3 }, text);
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.error.message).toContain('non-negative');
@@ -53,7 +55,7 @@ describe('textPositionToAnchor', () => {
   });
 
   it('rejects start equal to end', () => {
-    const result = textPositionToAnchor({ type: 'TextPositionSelector', start: 5, end: 5 });
+    const result = textPositionToAnchor({ type: 'TextPositionSelector', start: 5, end: 5 }, text);
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.error.message).toContain('less than end');
@@ -61,7 +63,7 @@ describe('textPositionToAnchor', () => {
   });
 
   it('rejects start greater than end', () => {
-    const result = textPositionToAnchor({ type: 'TextPositionSelector', start: 10, end: 5 });
+    const result = textPositionToAnchor({ type: 'TextPositionSelector', start: 10, end: 5 }, text);
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.error.message).toContain('less than end');
@@ -80,7 +82,7 @@ describe('textQuoteToAnchor', () => {
     const result = textQuoteToAnchor({ type: 'TextQuoteSelector', exact: 'cat' }, text);
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.value).toEqual({ type: 'textSpan', start: 4, end: 7 });
+      expect(result.value).toEqual({ type: 'textSpan', byteStart: 4, byteEnd: 7 });
     }
   });
 
@@ -92,8 +94,8 @@ describe('textQuoteToAnchor', () => {
     );
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.value.start).toBe(16);
-      expect(result.value.end).toBe(19);
+      expect(result.value.byteStart).toBe(16);
+      expect(result.value.byteEnd).toBe(19);
     }
   });
 
@@ -105,8 +107,8 @@ describe('textQuoteToAnchor', () => {
     );
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.value.start).toBe(0);
-      expect(result.value.end).toBe(3);
+      expect(result.value.byteStart).toBe(0);
+      expect(result.value.byteEnd).toBe(3);
     }
   });
 
@@ -117,7 +119,7 @@ describe('textQuoteToAnchor', () => {
     );
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.value).toEqual({ type: 'textSpan', start: 4, end: 7 });
+      expect(result.value).toEqual({ type: 'textSpan', byteStart: 4, byteEnd: 7 });
     }
   });
 
@@ -146,7 +148,7 @@ describe('textQuoteToAnchor', () => {
     // When prefix does not match any occurrence, it keeps the bestIndex = first occurrence
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.value.start).toBe(0);
+      expect(result.value.byteStart).toBe(0);
     }
   });
 
@@ -154,7 +156,7 @@ describe('textQuoteToAnchor', () => {
     const result = textQuoteToAnchor({ type: 'TextQuoteSelector', exact: 'The' }, text);
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.value).toEqual({ type: 'textSpan', start: 0, end: 3 });
+      expect(result.value).toEqual({ type: 'textSpan', byteStart: 0, byteEnd: 3 });
     }
   });
 
@@ -162,7 +164,7 @@ describe('textQuoteToAnchor', () => {
     const result = textQuoteToAnchor({ type: 'TextQuoteSelector', exact: 'mat.' }, text);
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.value).toEqual({ type: 'textSpan', start: 19, end: 23 });
+      expect(result.value).toEqual({ type: 'textSpan', byteStart: 19, byteEnd: 23 });
     }
   });
 });
@@ -172,13 +174,15 @@ describe('textQuoteToAnchor', () => {
 // ---------------------------------------------------------------------------
 
 describe('anchorToTextPosition', () => {
+  const text = 'The cat sat on the mat.';
+
   it('converts a textSpan anchor to a TextPositionSelector', () => {
-    const selector = anchorToTextPosition({ type: 'textSpan', start: 4, end: 7 });
+    const selector = anchorToTextPosition({ type: 'textSpan', byteStart: 4, byteEnd: 7 }, text);
     expect(selector).toEqual({ type: 'TextPositionSelector', start: 4, end: 7 });
   });
 
   it('preserves zero start offset', () => {
-    const selector = anchorToTextPosition({ type: 'textSpan', start: 0, end: 10 });
+    const selector = anchorToTextPosition({ type: 'textSpan', byteStart: 0, byteEnd: 10 }, text);
     expect(selector.start).toBe(0);
     expect(selector.end).toBe(10);
   });
@@ -192,7 +196,7 @@ describe('anchorToTextQuote', () => {
   const text = 'The cat sat on the mat.';
 
   it('extracts exact text and includes prefix and suffix', () => {
-    const result = anchorToTextQuote({ type: 'textSpan', start: 4, end: 7 }, text);
+    const result = anchorToTextQuote({ type: 'textSpan', byteStart: 4, byteEnd: 7 }, text);
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.value.type).toBe('TextQuoteSelector');
@@ -203,7 +207,7 @@ describe('anchorToTextQuote', () => {
   });
 
   it('omits prefix when anchor starts at the beginning', () => {
-    const result = anchorToTextQuote({ type: 'textSpan', start: 0, end: 3 }, text);
+    const result = anchorToTextQuote({ type: 'textSpan', byteStart: 0, byteEnd: 3 }, text);
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.value.exact).toBe('The');
@@ -213,7 +217,7 @@ describe('anchorToTextQuote', () => {
   });
 
   it('omits suffix when anchor ends at the text end', () => {
-    const result = anchorToTextQuote({ type: 'textSpan', start: 19, end: 23 }, text);
+    const result = anchorToTextQuote({ type: 'textSpan', byteStart: 19, byteEnd: 23 }, text);
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.value.exact).toBe('mat.');
@@ -223,7 +227,7 @@ describe('anchorToTextQuote', () => {
   });
 
   it('respects custom contextChars parameter', () => {
-    const result = anchorToTextQuote({ type: 'textSpan', start: 8, end: 11 }, text, 3);
+    const result = anchorToTextQuote({ type: 'textSpan', byteStart: 8, byteEnd: 11 }, text, 3);
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.value.exact).toBe('sat');
@@ -235,7 +239,7 @@ describe('anchorToTextQuote', () => {
   });
 
   it('returns error for negative start offset', () => {
-    const result = anchorToTextQuote({ type: 'textSpan', start: -1, end: 5 }, text);
+    const result = anchorToTextQuote({ type: 'textSpan', byteStart: -1, byteEnd: 5 }, text);
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.error.message).toContain('out of bounds');
@@ -243,7 +247,7 @@ describe('anchorToTextQuote', () => {
   });
 
   it('returns error when end exceeds text length', () => {
-    const result = anchorToTextQuote({ type: 'textSpan', start: 0, end: 100 }, text);
+    const result = anchorToTextQuote({ type: 'textSpan', byteStart: 0, byteEnd: 100 }, text);
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.error.message).toContain('out of bounds');
@@ -251,7 +255,7 @@ describe('anchorToTextQuote', () => {
   });
 
   it('returns error when start >= end', () => {
-    const result = anchorToTextQuote({ type: 'textSpan', start: 5, end: 5 }, text);
+    const result = anchorToTextQuote({ type: 'textSpan', byteStart: 5, byteEnd: 5 }, text);
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.error.message).toContain('out of bounds');
@@ -272,9 +276,9 @@ describe('round-trip conversions', () => {
   const text = 'The cat sat on the mat.';
 
   it('Layers -> TextPosition -> Layers produces the same anchor', () => {
-    const original = { type: 'textSpan' as const, start: 4, end: 7 };
-    const selector = anchorToTextPosition(original);
-    const roundTrip = textPositionToAnchor(selector);
+    const original = { type: 'textSpan' as const, byteStart: 4, byteEnd: 7 };
+    const selector = anchorToTextPosition(original, text);
+    const roundTrip = textPositionToAnchor(selector, text);
     expect(roundTrip.ok).toBe(true);
     if (roundTrip.ok) {
       expect(roundTrip.value).toEqual(original);
@@ -282,7 +286,7 @@ describe('round-trip conversions', () => {
   });
 
   it('Layers -> TextQuote -> Layers produces the same anchor', () => {
-    const original = { type: 'textSpan' as const, start: 4, end: 7 };
+    const original = { type: 'textSpan' as const, byteStart: 4, byteEnd: 7 };
     const quoteResult = anchorToTextQuote(original, text);
     expect(quoteResult.ok).toBe(true);
     if (!quoteResult.ok) return;
@@ -295,7 +299,7 @@ describe('round-trip conversions', () => {
   });
 
   it('round-trip works for anchor at start of text', () => {
-    const original = { type: 'textSpan' as const, start: 0, end: 3 };
+    const original = { type: 'textSpan' as const, byteStart: 0, byteEnd: 3 };
     const quoteResult = anchorToTextQuote(original, text);
     expect(quoteResult.ok).toBe(true);
     if (!quoteResult.ok) return;
@@ -308,7 +312,7 @@ describe('round-trip conversions', () => {
   });
 
   it('round-trip works for anchor at end of text', () => {
-    const original = { type: 'textSpan' as const, start: 19, end: 23 };
+    const original = { type: 'textSpan' as const, byteStart: 19, byteEnd: 23 };
     const quoteResult = anchorToTextQuote(original, text);
     expect(quoteResult.ok).toBe(true);
     if (!quoteResult.ok) return;

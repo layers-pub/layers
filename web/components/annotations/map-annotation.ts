@@ -28,8 +28,8 @@ function mapAnchor(raw: ApiAnchor | undefined): Anchor | undefined {
   if (raw.textSpan) {
     return {
       type: 'textSpan',
-      start: raw.textSpan.start,
-      end: raw.textSpan.ending,
+      byteStart: raw.textSpan.byteStart,
+      byteEnd: raw.textSpan.byteEnd,
     };
   }
 
@@ -76,8 +76,8 @@ function mapAnchor(raw: ApiAnchor | undefined): Anchor | undefined {
       y: raw.pageAnchor.boundingBox?.y,
       width: raw.pageAnchor.boundingBox?.width,
       height: raw.pageAnchor.boundingBox?.height,
-      start: raw.pageAnchor.textSpan?.start,
-      end: raw.pageAnchor.textSpan?.ending,
+      byteStart: raw.pageAnchor.textSpan?.byteStart,
+      byteEnd: raw.pageAnchor.textSpan?.byteEnd,
     };
   }
 

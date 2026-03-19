@@ -184,10 +184,12 @@ const TokenOverlay = React.memo(function TokenOverlay({
 
   for (const token of tokens) {
     // Render any gap between the previous token and this one
-    if (token.start > lastEnd) {
+    // NOTE: text.slice with byte offsets works correctly only for ASCII text.
+    // A future byte-to-char utility will be needed for multi-byte characters.
+    if (token.byteStart > lastEnd) {
       elements.push(
         <span key={`gap-${lastEnd}`} className="whitespace-pre-wrap">
-          {text.slice(lastEnd, token.start)}
+          {text.slice(lastEnd, token.byteStart)}
         </span>,
       );
     }
@@ -254,7 +256,7 @@ const TokenOverlay = React.memo(function TokenOverlay({
       </Tooltip>,
     );
 
-    lastEnd = token.end;
+    lastEnd = token.byteEnd;
   }
 
   // Render any trailing text after the last token

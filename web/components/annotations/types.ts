@@ -10,7 +10,7 @@ import type { Main as AnnotationLayerRecord } from '@/lib/api/generated/types/pu
  * Anchor locating an annotation within an expression or media.
  *
  * Each anchor type uses a subset of the optional fields. For example,
- * a `textSpan` anchor uses `start` and `end`; a `tokenRef` uses `tokenIndex`.
+ * a `textSpan` anchor uses `byteStart` and `byteEnd`; a `tokenRef` uses `tokenIndex`.
  */
 interface Anchor {
   type:
@@ -21,10 +21,10 @@ interface Anchor {
     | 'boundingBox'
     | 'spatioTemporalAnchor'
     | 'pageAnchor';
-  /** Character start offset (textSpan). */
-  start?: number;
-  /** Character end offset (textSpan). */
-  end?: number;
+  /** UTF-8 byte start offset (textSpan). */
+  byteStart?: number;
+  /** UTF-8 byte end offset (textSpan). */
+  byteEnd?: number;
   /** Single token index (tokenRef). */
   tokenIndex?: number;
   /** Ordered sequence of token indices (tokenRefSequence). */
@@ -130,10 +130,10 @@ interface Token {
   text: string;
   /** Zero-based token index within the segmentation. */
   index: number;
-  /** Character start offset in the expression text. */
-  start: number;
-  /** Character end offset in the expression text. */
-  end: number;
+  /** UTF-8 byte start offset in the expression text. */
+  byteStart: number;
+  /** UTF-8 byte end offset in the expression text. */
+  byteEnd: number;
 }
 
 export type {

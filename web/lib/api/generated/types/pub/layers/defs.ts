@@ -28,13 +28,17 @@ export function validateUuid<V>(v: V) {
   return validate<Uuid & V>(v, id, hashUuid)
 }
 
-/** A contiguous span of text defined by character offsets into a source text. */
+/** A contiguous span of text defined by UTF-8 byte offsets. */
 export interface Span {
   $type?: 'pub.layers.defs#span'
-  /** Inclusive start character offset (0-indexed). */
-  start: number
-  /** Exclusive end character offset. */
-  ending: number
+  /** Inclusive start UTF-8 byte offset (0-indexed). */
+  byteStart: number
+  /** Exclusive end UTF-8 byte offset. */
+  byteEnd: number
+  /** Inclusive start character offset. Optional; for compatibility with character-offset datasets. */
+  charStart?: number
+  /** Exclusive end character offset. Optional; for compatibility with character-offset datasets. */
+  charEnd?: number
 }
 
 const hashSpan = 'span'
@@ -482,13 +486,17 @@ export function validateTextQuoteSelector<V>(v: V) {
   return validate<TextQuoteSelector & V>(v, id, hashTextQuoteSelector)
 }
 
-/** W3C TextPositionSelector: selects by character offsets. Semantically equivalent to pub.layers.defs#span but named for W3C compatibility with at.margin. */
+/** W3C TextPositionSelector adapted for ATProto: selects by UTF-8 byte offsets. Semantically equivalent to pub.layers.defs#span but named for W3C compatibility with at.margin. */
 export interface TextPositionSelector {
   $type?: 'pub.layers.defs#textPositionSelector'
-  /** Starting character position (0-indexed, inclusive). */
-  start: number
-  /** Ending character position (exclusive). */
-  end: number
+  /** Starting UTF-8 byte position (0-indexed, inclusive). */
+  byteStart: number
+  /** Ending UTF-8 byte position (exclusive). */
+  byteEnd: number
+  /** Starting character position (0-indexed, inclusive). Optional; for compatibility with character-offset datasets. */
+  charStart?: number
+  /** Ending character position (exclusive). Optional; for compatibility with character-offset datasets. */
+  charEnd?: number
 }
 
 const hashTextPositionSelector = 'textPositionSelector'

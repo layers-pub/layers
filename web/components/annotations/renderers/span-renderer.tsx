@@ -46,14 +46,14 @@ function resolveSpan(item: AnnotationItem, tokens: Token[]): ResolvedSpan | null
   const anchor = item.anchor;
   if (!anchor) return null;
 
-  if (anchor.type === 'textSpan' && anchor.start != null && anchor.end != null) {
-    return { item, start: anchor.start, end: anchor.end };
+  if (anchor.type === 'textSpan' && anchor.byteStart != null && anchor.byteEnd != null) {
+    return { item, start: anchor.byteStart, end: anchor.byteEnd };
   }
 
   if (anchor.type === 'tokenRef' && anchor.tokenIndex != null) {
     const token = tokens[anchor.tokenIndex];
     if (!token) return null;
-    return { item, start: token.start, end: token.end };
+    return { item, start: token.byteStart, end: token.byteEnd };
   }
 
   if (anchor.type === 'tokenRefSequence' && anchor.tokenIndices && anchor.tokenIndices.length > 0) {
@@ -62,8 +62,8 @@ function resolveSpan(item: AnnotationItem, tokens: Token[]): ResolvedSpan | null
     for (const idx of anchor.tokenIndices) {
       const token = tokens[idx];
       if (!token) continue;
-      if (token.start < minStart) minStart = token.start;
-      if (token.end > maxEnd) maxEnd = token.end;
+      if (token.byteStart < minStart) minStart = token.byteStart;
+      if (token.byteEnd > maxEnd) maxEnd = token.byteEnd;
     }
     if (minStart === Infinity) return null;
     return { item, start: minStart, end: maxEnd };
@@ -111,6 +111,8 @@ function segmentText(text: string, spans: ResolvedSpan[]): TextSegment[] {
     if (start >= end) continue;
 
     const overlapping = spans.filter((s) => s.start <= start && s.end >= end);
+    // NOTE: text.slice with byte offsets works correctly only for ASCII text.
+    // A future byte-to-char utility will be needed for multi-byte characters.
     segments.push({
       text: text.slice(start, end),
       annotations: overlapping.map((s) => s.item),

@@ -68,14 +68,14 @@ describe('mapAnchor', () => {
     expect(mapAnchor(undefined)).toBeUndefined();
   });
 
-  it('maps textSpan anchor (start, ending to start, end)', () => {
-    const result = mapAnchor({ textSpan: { start: 5, ending: 10 } } as Parameters<
+  it('maps textSpan anchor (start, ending to byteStart, byteEnd)', () => {
+    const result = mapAnchor({ textSpan: { byteStart: 5, byteEnd: 10 } } as Parameters<
       typeof mapAnchor
     >[0]);
     expect(result).toEqual({
       type: 'textSpan',
-      start: 5,
-      end: 10,
+      byteStart: 5,
+      byteEnd: 10,
     });
   });
 

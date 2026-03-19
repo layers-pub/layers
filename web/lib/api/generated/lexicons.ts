@@ -2702,18 +2702,29 @@ export const schemaDict = {
       },
       span: {
         type: 'object',
-        description:
-          'A contiguous span of text defined by character offsets into a source text.',
-        required: ['start', 'ending'],
+        description: 'A contiguous span of text defined by UTF-8 byte offsets.',
+        required: ['byteStart', 'byteEnd'],
         properties: {
-          start: {
+          byteStart: {
             type: 'integer',
-            description: 'Inclusive start character offset (0-indexed).',
+            description: 'Inclusive start UTF-8 byte offset (0-indexed).',
             minimum: 0,
           },
-          ending: {
+          byteEnd: {
             type: 'integer',
-            description: 'Exclusive end character offset.',
+            description: 'Exclusive end UTF-8 byte offset.',
+            minimum: 0,
+          },
+          charStart: {
+            type: 'integer',
+            description:
+              'Inclusive start character offset. Optional; for compatibility with character-offset datasets.',
+            minimum: 0,
+          },
+          charEnd: {
+            type: 'integer',
+            description:
+              'Exclusive end character offset. Optional; for compatibility with character-offset datasets.',
             minimum: 0,
           },
         },
@@ -3329,17 +3340,29 @@ export const schemaDict = {
       textPositionSelector: {
         type: 'object',
         description:
-          'W3C TextPositionSelector: selects by character offsets. Semantically equivalent to pub.layers.defs#span but named for W3C compatibility with at.margin.',
-        required: ['start', 'end'],
+          'W3C TextPositionSelector adapted for ATProto: selects by UTF-8 byte offsets. Semantically equivalent to pub.layers.defs#span but named for W3C compatibility with at.margin.',
+        required: ['byteStart', 'byteEnd'],
         properties: {
-          start: {
+          byteStart: {
             type: 'integer',
-            description: 'Starting character position (0-indexed, inclusive).',
+            description: 'Starting UTF-8 byte position (0-indexed, inclusive).',
             minimum: 0,
           },
-          end: {
+          byteEnd: {
             type: 'integer',
-            description: 'Ending character position (exclusive).',
+            description: 'Ending UTF-8 byte position (exclusive).',
+            minimum: 0,
+          },
+          charStart: {
+            type: 'integer',
+            description:
+              'Starting character position (0-indexed, inclusive). Optional; for compatibility with character-offset datasets.',
+            minimum: 0,
+          },
+          charEnd: {
+            type: 'integer',
+            description:
+              'Ending character position (exclusive). Optional; for compatibility with character-offset datasets.',
             minimum: 0,
           },
         },
@@ -4308,7 +4331,7 @@ export const schemaDict = {
             text: {
               type: 'string',
               description:
-                'The full raw text of the expression. All character-offset spans reference this string.',
+                'The full raw text of the expression. All byte-offset spans reference this string.',
               maxLength: 10000000,
             },
             parentRef: {
@@ -8680,7 +8703,7 @@ export const schemaDict = {
           textSpan: {
             type: 'ref',
             ref: 'lex:pub.layers.defs#span',
-            description: 'Character offsets into the expression text.',
+            description: 'UTF-8 byte offsets into the expression text.',
           },
           temporalSpan: {
             type: 'ref',

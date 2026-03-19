@@ -130,13 +130,15 @@ const ExternalSpanHighlight = React.memo(function ExternalSpanHighlight({
   text: string;
 }): React.JSX.Element | null {
   const anchor = annotation.anchor;
-  if (!anchor || anchor.start < 0 || anchor.end > text.length) {
+  if (!anchor || anchor.byteStart < 0 || anchor.byteEnd > text.length) {
     return null;
   }
 
-  const before = text.slice(0, anchor.start);
-  const selected = text.slice(anchor.start, anchor.end);
-  const after = text.slice(anchor.end);
+  // NOTE: text.slice with byte offsets works correctly only for ASCII text.
+  // A future byte-to-char utility will be needed for multi-byte characters.
+  const before = text.slice(0, anchor.byteStart);
+  const selected = text.slice(anchor.byteStart, anchor.byteEnd);
+  const after = text.slice(anchor.byteEnd);
 
   return (
     <Tooltip>
@@ -187,7 +189,7 @@ const ExternalAnnotationRenderer = React.memo(function ExternalAnnotationRendere
   }
 
   const anchored = annotations.filter(
-    (a) => a.anchor && a.anchor.start >= 0 && a.anchor.end <= text.length,
+    (a) => a.anchor && a.anchor.byteStart >= 0 && a.anchor.byteEnd <= text.length,
   );
   const hasAnchored = anchored.length > 0;
 

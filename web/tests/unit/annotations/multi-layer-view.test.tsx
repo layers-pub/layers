@@ -49,8 +49,8 @@ vi.mock('@/components/annotations/composition/layer-toggle-sidebar', () => ({
 const { MultiLayerView } = await import('@/components/annotations/composition/multi-layer-view');
 
 const tokens: Token[] = [
-  { text: 'The', index: 0, start: 0, end: 3 },
-  { text: 'cat', index: 1, start: 4, end: 7 },
+  { text: 'The', index: 0, byteStart: 0, byteEnd: 3 },
+  { text: 'cat', index: 1, byteStart: 4, byteEnd: 7 },
 ];
 const text = 'The cat';
 const expressionUri = 'at://did:plc:test/pub.layers.expression.expression/test1';

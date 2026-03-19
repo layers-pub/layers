@@ -44,7 +44,11 @@ interface ExternalAnnotationView {
   /** W3C motivation value from the original record. */
   readonly motivation: string;
   /** Resolved text span anchor, if the selector could be converted. */
-  readonly anchor?: { readonly type: 'textSpan'; readonly start: number; readonly end: number };
+  readonly anchor?: {
+    readonly type: 'textSpan';
+    readonly byteStart: number;
+    readonly byteEnd: number;
+  };
   /** ISO 8601 creation timestamp. */
   readonly createdAt: string;
   /** MIME format of the body content. */

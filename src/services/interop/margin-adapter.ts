@@ -291,7 +291,7 @@ class MarginAdapter implements IMarginAdapter {
 
     switch (selector.type) {
       case 'TextPositionSelector': {
-        const result = textPositionToAnchor(selector);
+        const result = textPositionToAnchor(selector, expressionText);
         return result.ok ? result.value : undefined;
       }
       case 'TextQuoteSelector': {

@@ -268,7 +268,7 @@ function createTokenDef(overrides?: Partial<TokenDef>): TokenDef {
   return {
     tokenIndex: 0,
     text: 'The',
-    textSpan: { start: 0, ending: 3 },
+    textSpan: { byteStart: 0, byteEnd: 3 },
     ...overrides,
   };
 }
@@ -279,12 +279,12 @@ function createTokenization(overrides?: Partial<Tokenization>): Tokenization {
     uuid: { value: `tok-uuid-${id}` },
     kind: 'whitespace',
     tokens: [
-      createTokenDef({ tokenIndex: 0, text: 'The', textSpan: { start: 0, ending: 3 } }),
-      createTokenDef({ tokenIndex: 1, text: 'cat', textSpan: { start: 4, ending: 7 } }),
-      createTokenDef({ tokenIndex: 2, text: 'sat', textSpan: { start: 8, ending: 11 } }),
-      createTokenDef({ tokenIndex: 3, text: 'on', textSpan: { start: 12, ending: 14 } }),
-      createTokenDef({ tokenIndex: 4, text: 'the', textSpan: { start: 15, ending: 18 } }),
-      createTokenDef({ tokenIndex: 5, text: 'mat', textSpan: { start: 19, ending: 22 } }),
+      createTokenDef({ tokenIndex: 0, text: 'The', textSpan: { byteStart: 0, byteEnd: 3 } }),
+      createTokenDef({ tokenIndex: 1, text: 'cat', textSpan: { byteStart: 4, byteEnd: 7 } }),
+      createTokenDef({ tokenIndex: 2, text: 'sat', textSpan: { byteStart: 8, byteEnd: 11 } }),
+      createTokenDef({ tokenIndex: 3, text: 'on', textSpan: { byteStart: 12, byteEnd: 14 } }),
+      createTokenDef({ tokenIndex: 4, text: 'the', textSpan: { byteStart: 15, byteEnd: 18 } }),
+      createTokenDef({ tokenIndex: 5, text: 'mat', textSpan: { byteStart: 19, byteEnd: 22 } }),
     ],
     ...overrides,
   };

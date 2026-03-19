@@ -3140,244 +3140,6 @@
           }
         }
       }
-    },
-    "/api/v1/external-annotations": {
-      "get": {
-        "operationId": "getExternalAnnotations",
-        "summary": "List external annotations targeting a URL.",
-        "tags": [
-          "external-annotations"
-        ],
-        "parameters": [
-          {
-            "name": "url",
-            "in": "query",
-            "required": true,
-            "description": "The source URL to find co-located external annotations for.",
-            "schema": {
-              "type": "string",
-              "format": "uri"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "description": "Maximum number of results (default 50, max 200).",
-            "schema": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 200,
-              "default": 50
-            }
-          },
-          {
-            "name": "cursor",
-            "in": "query",
-            "required": false,
-            "description": "Pagination cursor (reserved for future use).",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "External annotations matching the URL.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "annotations": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/ExternalAnnotationView"
-                      }
-                    },
-                    "cursor": {
-                      "type": "string",
-                      "nullable": true
-                    }
-                  },
-                  "required": [
-                    "annotations"
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing or invalid URL parameter."
-          },
-          "502": {
-            "description": "Upstream interop service error."
-          }
-        }
-      }
-    },
-    "/api/v1/external-annotations/stats": {
-      "get": {
-        "operationId": "getExternalAnnotationStats",
-        "summary": "Aggregate statistics for external annotations targeting a URL.",
-        "tags": [
-          "external-annotations"
-        ],
-        "parameters": [
-          {
-            "name": "url",
-            "in": "query",
-            "required": true,
-            "description": "The source URL to aggregate statistics for.",
-            "schema": {
-              "type": "string",
-              "format": "uri"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Annotation count and source breakdown.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "count": {
-                      "type": "integer"
-                    },
-                    "sources": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "required": [
-                    "count",
-                    "sources"
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing or invalid URL parameter."
-          },
-          "502": {
-            "description": "Upstream interop service error."
-          }
-        }
-      }
-    },
-    "/api/v1/import/formats": {
-      "get": {
-        "operationId": "listImportFormats",
-        "summary": "List supported annotation import formats.",
-        "tags": [
-          "import"
-        ],
-        "responses": {
-          "200": {
-            "description": "Available import formats with file extensions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "formats": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/ImportFormatInfo"
-                      }
-                    }
-                  },
-                  "required": [
-                    "formats"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/import/validate": {
-      "post": {
-        "operationId": "validateImportFile",
-        "summary": "Validate a file against its annotation format without importing.",
-        "tags": [
-          "import"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "The annotation file to validate."
-                  },
-                  "format": {
-                    "type": "string",
-                    "description": "The annotation format (e.g., conll, brat, elan, tei, praat)."
-                  }
-                },
-                "required": [
-                  "file",
-                  "format"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Validation result with optional preview counts.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "valid": {
-                      "type": "boolean"
-                    },
-                    "errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "preview": {
-                      "type": "object",
-                      "properties": {
-                        "expressions": {
-                          "type": "integer"
-                        },
-                        "segmentations": {
-                          "type": "integer"
-                        },
-                        "layers": {
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "required": [
-                    "valid"
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing file or unsupported format."
-          }
-        }
-      }
     }
   },
   "components": {
@@ -5343,23 +5105,33 @@
         ]
       },
       "DefsSpan": {
-        "description": "A contiguous span of text defined by character offsets into a source text.",
+        "description": "A contiguous span of text defined by UTF-8 byte offsets.",
         "type": "object",
         "properties": {
-          "start": {
-            "description": "Inclusive start character offset (0-indexed).",
+          "byteStart": {
+            "description": "Inclusive start UTF-8 byte offset (0-indexed).",
             "type": "integer",
             "minimum": 0
           },
-          "ending": {
-            "description": "Exclusive end character offset.",
+          "byteEnd": {
+            "description": "Exclusive end UTF-8 byte offset.",
+            "type": "integer",
+            "minimum": 0
+          },
+          "charStart": {
+            "description": "Inclusive start character offset. Optional; for compatibility with character-offset datasets.",
+            "type": "integer",
+            "minimum": 0
+          },
+          "charEnd": {
+            "description": "Exclusive end character offset. Optional; for compatibility with character-offset datasets.",
             "type": "integer",
             "minimum": 0
           }
         },
         "required": [
-          "start",
-          "ending"
+          "byteStart",
+          "byteEnd"
         ]
       },
       "DefsSpatialEntity": {
@@ -5777,23 +5549,33 @@
         ]
       },
       "DefsTextPositionSelector": {
-        "description": "W3C TextPositionSelector: selects by character offsets. Semantically equivalent to pub.layers.defs#span but named for W3C compatibility with at.margin.",
+        "description": "W3C TextPositionSelector adapted for ATProto: selects by UTF-8 byte offsets. Semantically equivalent to pub.layers.defs#span but named for W3C compatibility with at.margin.",
         "type": "object",
         "properties": {
-          "start": {
-            "description": "Starting character position (0-indexed, inclusive).",
+          "byteStart": {
+            "description": "Starting UTF-8 byte position (0-indexed, inclusive).",
             "type": "integer",
             "minimum": 0
           },
-          "end": {
-            "description": "Ending character position (exclusive).",
+          "byteEnd": {
+            "description": "Ending UTF-8 byte position (exclusive).",
+            "type": "integer",
+            "minimum": 0
+          },
+          "charStart": {
+            "description": "Starting character position (0-indexed, inclusive). Optional; for compatibility with character-offset datasets.",
+            "type": "integer",
+            "minimum": 0
+          },
+          "charEnd": {
+            "description": "Ending character position (exclusive). Optional; for compatibility with character-offset datasets.",
             "type": "integer",
             "minimum": 0
           }
         },
         "required": [
-          "start",
-          "end"
+          "byteStart",
+          "byteEnd"
         ]
       },
       "DefsTextQuoteSelector": {
@@ -6278,7 +6060,7 @@
             "maxLength": 128
           },
           "text": {
-            "description": "The full raw text of the expression. All character-offset spans reference this string.",
+            "description": "The full raw text of the expression. All byte-offset spans reference this string.",
             "type": "string",
             "maxLength": 10000000
           },
@@ -9127,7 +8909,7 @@
         ]
       },
       "ResourceDefsSlotFilling": {
-        "description": "A single slot\u2192filler mapping in a filled template. The filler can be an entry reference (AT-URI to a resource entry), a literal value, or both (entry reference with rendered surface form).",
+        "description": "A single slot→filler mapping in a filled template. The filler can be an entry reference (AT-URI to a resource entry), a literal value, or both (entry reference with rendered surface form).",
         "type": "object",
         "properties": {
           "slotName": {
@@ -9287,7 +9069,7 @@
             "format": "uri"
           },
           "slotFillings": {
-            "description": "The slot\u2192filler mappings.",
+            "description": "The slot→filler mappings.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ResourceDefsSlotFilling"
@@ -9991,7 +9773,7 @@
           },
           "textSpan": {
             "$ref": "#/components/schemas/DefsSpan",
-            "description": "Character offsets into the expression text."
+            "description": "UTF-8 byte offsets into the expression text."
           },
           "temporalSpan": {
             "$ref": "#/components/schemas/DefsTemporalSpan"
@@ -10242,85 +10024,6 @@
             "type": "string"
           }
         }
-      },
-      "ExternalAnnotationView": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "source": {
-            "type": "string",
-            "description": "Origin service (e.g., margin.at)."
-          },
-          "uri": {
-            "type": "string",
-            "format": "uri"
-          },
-          "creatorDid": {
-            "type": "string"
-          },
-          "targetUrl": {
-            "type": "string",
-            "format": "uri"
-          },
-          "text": {
-            "type": "string"
-          },
-          "kind": {
-            "type": "string"
-          },
-          "motivation": {
-            "type": "string"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "format": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "source",
-          "uri",
-          "creatorDid",
-          "targetUrl",
-          "text",
-          "kind",
-          "motivation",
-          "createdAt"
-        ]
-      },
-      "ImportFormatInfo": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Canonical format identifier."
-          },
-          "name": {
-            "type": "string",
-            "description": "Human-readable format name."
-          },
-          "extensions": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Accepted file extensions."
-          },
-          "description": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "extensions",
-          "description"
-        ]
       }
     }
   }

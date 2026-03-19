@@ -6,12 +6,19 @@
  * TextQuoteSelector, TextPositionSelector, and FragmentSelector from the
  * W3C Web Annotation Data Model (https://www.w3.org/TR/annotation-model/).
  *
+ * Layers uses UTF-8 byte offsets internally (aligned with ATProto). W3C
+ * selectors use character offsets. Conversion between the two is handled
+ * transparently by these utilities.
+ *
  * @module
  */
+
+import { UnicodeString } from '@atproto/api';
 
 import { Err, Ok, type Result } from '../../types/result.js';
 import { ValidationError } from '../../types/errors.js';
 import { InteropError } from './interop-error.js';
+import { charToByteOffset, byteToCharOffset } from './byte-offset.js';
 
 // ---------------------------------------------------------------------------
 // W3C Selector type definitions
@@ -34,6 +41,8 @@ interface TextQuoteSelector {
 
 /**
  * Selects text by character position offsets within the target resource.
+ *
+ * W3C spec uses character offsets. Layers converts to/from byte offsets.
  *
  * @see https://www.w3.org/TR/annotation-model/#text-position-selector
  */
@@ -68,12 +77,12 @@ type W3CSelector = TextQuoteSelector | TextPositionSelector | FragmentSelector;
 // ---------------------------------------------------------------------------
 
 /**
- * A text span anchor in the Layers coordinate system.
+ * A text span anchor in the Layers coordinate system (byte offsets).
  */
 interface TextSpanAnchor {
   readonly type: 'textSpan';
-  readonly start: number;
-  readonly end: number;
+  readonly byteStart: number;
+  readonly byteEnd: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -81,21 +90,25 @@ interface TextSpanAnchor {
 // ---------------------------------------------------------------------------
 
 /**
- * Converts a W3C TextPositionSelector to a Layers textSpan anchor.
- *
- * This is a direct mapping because both use zero-based character offsets.
+ * Converts a W3C TextPositionSelector (character offsets) to a Layers
+ * textSpan anchor (byte offsets).
  *
  * @param selector - the TextPositionSelector to convert
- * @returns a textSpan anchor, or a validation error if offsets are invalid
+ * @param text - the full expression text, needed for char-to-byte conversion
+ * @returns a textSpan anchor with byte offsets, or a validation error
  *
  * @example
  * ```typescript
- * const anchor = textPositionToAnchor({ type: 'TextPositionSelector', start: 4, end: 7 });
- * // Ok({ type: 'textSpan', start: 4, end: 7 })
+ * const anchor = textPositionToAnchor(
+ *   { type: 'TextPositionSelector', start: 4, end: 7 },
+ *   'The cat sat',
+ * );
+ * // Ok({ type: 'textSpan', byteStart: 4, byteEnd: 7 })
  * ```
  */
 function textPositionToAnchor(
   selector: TextPositionSelector,
+  text: string,
 ): Result<TextSpanAnchor, ValidationError> {
   if (selector.start < 0 || selector.end < 0) {
     return Err(new ValidationError('Selector offsets must be non-negative', 'start/end', 'min'));
@@ -106,11 +119,15 @@ function textPositionToAnchor(
     );
   }
 
-  return Ok({ type: 'textSpan', start: selector.start, end: selector.end });
+  const byteStart = charToByteOffset(text, selector.start);
+  const byteEnd = charToByteOffset(text, selector.end);
+
+  return Ok({ type: 'textSpan', byteStart, byteEnd });
 }
 
 /**
- * Finds a TextQuoteSelector match in expression text and converts to a textSpan anchor.
+ * Finds a TextQuoteSelector match in expression text and converts to a
+ * textSpan anchor with byte offsets.
  *
  * Uses the `prefix` and `suffix` fields for disambiguation when the exact text
  * appears multiple times. Returns the first match if no context is provided or
@@ -118,7 +135,7 @@ function textPositionToAnchor(
  *
  * @param selector - the TextQuoteSelector to resolve
  * @param text - the full expression text to search within
- * @returns a textSpan anchor, or an interop error if the quote is not found
+ * @returns a textSpan anchor with byte offsets, or an interop error
  *
  * @example
  * ```typescript
@@ -126,7 +143,7 @@ function textPositionToAnchor(
  *   { type: 'TextQuoteSelector', exact: 'cat', prefix: 'The ', suffix: ' sat' },
  *   'The cat sat on the mat.',
  * );
- * // Ok({ type: 'textSpan', start: 4, end: 7 })
+ * // Ok({ type: 'textSpan', byteStart: 4, byteEnd: 7 })
  * ```
  */
 function textQuoteToAnchor(
@@ -159,7 +176,7 @@ function textQuoteToAnchor(
 
   // Disambiguate with prefix/suffix if available
   // Safe: we checked occurrences.length > 0 above
-  let bestIndex = occurrences[0] ?? 0;
+  let bestCharIndex = occurrences[0] ?? 0;
 
   if (selector.prefix || selector.suffix) {
     for (const idx of occurrences) {
@@ -178,17 +195,17 @@ function textQuoteToAnchor(
       }
 
       if (prefixMatch && suffixMatch) {
-        bestIndex = idx;
+        bestCharIndex = idx;
         break;
       }
     }
   }
 
-  return Ok({
-    type: 'textSpan',
-    start: bestIndex,
-    end: bestIndex + selector.exact.length,
-  });
+  const charEnd = bestCharIndex + selector.exact.length;
+  const byteStart = charToByteOffset(text, bestCharIndex);
+  const byteEnd = charToByteOffset(text, charEnd);
+
+  return Ok({ type: 'textSpan', byteStart, byteEnd });
 }
 
 // ---------------------------------------------------------------------------
@@ -201,28 +218,36 @@ function textQuoteToAnchor(
 const DEFAULT_CONTEXT_CHARS = 32;
 
 /**
- * Converts a Layers textSpan anchor to a W3C TextPositionSelector.
+ * Converts a Layers textSpan anchor (byte offsets) to a W3C
+ * TextPositionSelector (character offsets).
  *
- * @param anchor - the textSpan anchor with start and end offsets
- * @returns a TextPositionSelector with the same offsets
+ * @param anchor - the textSpan anchor with byte offsets
+ * @param text - the full expression text, needed for byte-to-char conversion
+ * @returns a TextPositionSelector with character offsets
  *
  * @example
  * ```typescript
- * const selector = anchorToTextPosition({ type: 'textSpan', start: 4, end: 7 });
+ * const selector = anchorToTextPosition(
+ *   { type: 'textSpan', byteStart: 4, byteEnd: 7 },
+ *   'The cat sat',
+ * );
  * // { type: 'TextPositionSelector', start: 4, end: 7 }
  * ```
  */
-function anchorToTextPosition(anchor: TextSpanAnchor): TextPositionSelector {
-  return { type: 'TextPositionSelector', start: anchor.start, end: anchor.end };
+function anchorToTextPosition(anchor: TextSpanAnchor, text: string): TextPositionSelector {
+  const charStart = byteToCharOffset(text, anchor.byteStart);
+  const charEnd = byteToCharOffset(text, anchor.byteEnd);
+  return { type: 'TextPositionSelector', start: charStart, end: charEnd };
 }
 
 /**
- * Converts a Layers textSpan anchor to a W3C TextQuoteSelector with context.
+ * Converts a Layers textSpan anchor (byte offsets) to a W3C
+ * TextQuoteSelector with context.
  *
  * Extracts the exact text from the expression and includes surrounding
  * characters as prefix/suffix for disambiguation.
  *
- * @param anchor - the textSpan anchor with start and end offsets
+ * @param anchor - the textSpan anchor with byte offsets
  * @param text - the full expression text
  * @param contextChars - number of context characters to include (default 32)
  * @returns a TextQuoteSelector, or a validation error if offsets are out of bounds
@@ -230,7 +255,7 @@ function anchorToTextPosition(anchor: TextSpanAnchor): TextPositionSelector {
  * @example
  * ```typescript
  * const selector = anchorToTextQuote(
- *   { type: 'textSpan', start: 4, end: 7 },
+ *   { type: 'textSpan', byteStart: 4, byteEnd: 7 },
  *   'The cat sat on the mat.',
  * );
  * // Ok({ type: 'TextQuoteSelector', exact: 'cat', prefix: 'The ', suffix: ' sat on the mat.' })
@@ -241,22 +266,27 @@ function anchorToTextQuote(
   text: string,
   contextChars: number = DEFAULT_CONTEXT_CHARS,
 ): Result<TextQuoteSelector, ValidationError> {
-  if (anchor.start < 0 || anchor.end > text.length || anchor.start >= anchor.end) {
+  const us = new UnicodeString(text);
+
+  if (anchor.byteStart < 0 || anchor.byteEnd > us.length || anchor.byteStart >= anchor.byteEnd) {
     return Err(
       new ValidationError(
-        `Anchor offsets [${anchor.start}, ${anchor.end}) are out of bounds for text of length ${text.length}`,
+        `Anchor byte offsets [${anchor.byteStart}, ${anchor.byteEnd}) are out of bounds for text of ${us.length} bytes`,
         'anchor',
         'bounds',
       ),
     );
   }
 
-  const exact = text.slice(anchor.start, anchor.end);
-  const prefixStart = Math.max(0, anchor.start - contextChars);
-  const suffixEnd = Math.min(text.length, anchor.end + contextChars);
+  const charStart = byteToCharOffset(text, anchor.byteStart);
+  const charEnd = byteToCharOffset(text, anchor.byteEnd);
 
-  const prefix = anchor.start > 0 ? text.slice(prefixStart, anchor.start) : undefined;
-  const suffix = anchor.end < text.length ? text.slice(anchor.end, suffixEnd) : undefined;
+  const exact = text.slice(charStart, charEnd);
+  const prefixStart = Math.max(0, charStart - contextChars);
+  const suffixEnd = Math.min(text.length, charEnd + contextChars);
+
+  const prefix = charStart > 0 ? text.slice(prefixStart, charStart) : undefined;
+  const suffix = charEnd < text.length ? text.slice(charEnd, suffixEnd) : undefined;
 
   return Ok({ type: 'TextQuoteSelector', exact, prefix, suffix });
 }
