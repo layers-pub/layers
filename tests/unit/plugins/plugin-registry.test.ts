@@ -13,12 +13,12 @@ import { Ok } from '@/types/result.js';
 
 function createMockImporter(overrides?: Partial<IFormatImporter>): IFormatImporter {
   return {
-    format: 'conll',
+    format: 'conllu',
     name: 'Test Importer',
     version: '1.0.0',
     parse: vi.fn().mockResolvedValue(
       Ok({
-        format: 'conll',
+        format: 'conllu',
         expressions: [],
         segmentations: [],
         annotationLayers: [],
@@ -53,9 +53,9 @@ describe('PluginRegistry', () => {
       const importer = createMockImporter();
       registry.register(importer);
 
-      expect(registry.hasImporter('conll')).toBe(true);
-      expect(mockLogger.info).toHaveBeenCalledWith('Plugin registered', {
-        format: 'conll',
+      expect(registry.hasImporter('conllu')).toBe(true);
+      expect(mockLogger.info).toHaveBeenCalledWith('Importer plugin registered', {
+        format: 'conllu',
         name: 'Test Importer',
       });
     });
@@ -71,10 +71,10 @@ describe('PluginRegistry', () => {
     });
 
     it('allows different formats to be registered', () => {
-      registry.register(createMockImporter({ format: 'conll' }));
+      registry.register(createMockImporter({ format: 'conllu' }));
       registry.register(createMockImporter({ format: 'brat', name: 'BRAT Importer' }));
 
-      expect(registry.hasImporter('conll')).toBe(true);
+      expect(registry.hasImporter('conllu')).toBe(true);
       expect(registry.hasImporter('brat')).toBe(true);
     });
   });
@@ -84,7 +84,7 @@ describe('PluginRegistry', () => {
       const importer = createMockImporter();
       registry.register(importer);
 
-      const result = registry.getImporter('conll');
+      const result = registry.getImporter('conllu');
       expect(result).toBe(importer);
     });
 
@@ -97,7 +97,7 @@ describe('PluginRegistry', () => {
   describe('listPlugins', () => {
     it('returns metadata for all registered plugins', () => {
       registry.register(
-        createMockImporter({ format: 'conll', name: 'CoNLL Importer', version: '1.0.0' }),
+        createMockImporter({ format: 'conllu', name: 'CoNLL Importer', version: '1.0.0' }),
       );
       registry.register(
         createMockImporter({ format: 'brat', name: 'BRAT Importer', version: '2.0.0' }),
@@ -106,10 +106,10 @@ describe('PluginRegistry', () => {
       const plugins = registry.listPlugins();
       expect(plugins).toHaveLength(2);
       expect(plugins[0]).toEqual({
-        id: 'conll-importer',
+        id: 'conllu-importer',
         name: 'CoNLL Importer',
         version: '1.0.0',
-        format: 'conll',
+        format: 'conllu',
         description: 'CoNLL Importer v1.0.0',
       });
       expect(plugins[1]).toEqual({
@@ -129,7 +129,7 @@ describe('PluginRegistry', () => {
   describe('hasImporter', () => {
     it('returns true for registered formats', () => {
       registry.register(createMockImporter());
-      expect(registry.hasImporter('conll')).toBe(true);
+      expect(registry.hasImporter('conllu')).toBe(true);
     });
 
     it('returns false for unregistered formats', () => {

@@ -11,8 +11,16 @@
 
 import type { Context, Hono } from 'hono';
 
+import type { OpticKind } from '@panproto/core';
+
 import type { ImportFormat } from '../../../../types/interfaces/plugin.interface.js';
+import type { IPanprotoService } from '../../../../types/interfaces/panproto.interface.js';
 import type { PluginRegistry } from '../../../../plugins/plugin-registry.js';
+import {
+  ALL_FORMATS,
+  getProtocolMeta,
+  type ProtocolMeta,
+} from '../../../../services/panproto/protocol-registry.js';
 
 /**
  * Describes a supported import format returned by the formats endpoint.
@@ -20,65 +28,51 @@ import type { PluginRegistry } from '../../../../plugins/plugin-registry.js';
 interface FormatInfo {
   readonly id: ImportFormat;
   readonly name: string;
-  readonly extensions: string[];
+  readonly extensions: readonly string[];
   readonly description: string;
 }
 
 /**
- * Mapping from user-facing format labels to canonical ImportFormat values.
+ * Build a format alias map from the protocol registry.
+ *
+ * Maps various user-facing labels to canonical ImportFormat values:
+ * the format key itself, the panproto protocol ID (snake_case), and
+ * the human-readable display name (lowercased).
  */
-const FORMAT_ALIASES: Record<string, ImportFormat> = {
-  conll: 'conll',
-  'conll-u': 'conll',
-  brat: 'brat',
-  elan: 'elan',
-  tei: 'tei',
-  'tei xml': 'tei',
-  praat: 'praat',
-  'praat textgrid': 'praat',
-};
+function buildAliasMap(): Record<string, ImportFormat> {
+  const aliases: Record<string, ImportFormat> = {};
+  for (const meta of ALL_FORMATS) {
+    aliases[meta.format] = meta.format;
+    aliases[meta.protocol] = meta.format;
+    aliases[meta.name.toLowerCase()] = meta.format;
+  }
+  // Legacy aliases
+  aliases['conll'] = 'conllu';
+  aliases['conll-u'] = 'conllu';
+  aliases['tei xml'] = 'tei';
+  aliases['praat textgrid'] = 'praat';
+  return aliases;
+}
+
+const FORMAT_ALIASES: Record<string, ImportFormat> = buildAliasMap();
 
 /**
- * Static list of supported import formats with metadata.
+ * Derive the supported formats list from the protocol registry.
  */
-const SUPPORTED_FORMATS: readonly FormatInfo[] = [
-  {
-    id: 'conll',
-    name: 'CoNLL-U',
-    extensions: ['.conllu', '.conll'],
-    description: 'CoNLL-U format for morphological and syntactic annotations',
-  },
-  {
-    id: 'brat',
-    name: 'BRAT',
-    extensions: ['.ann', '.txt'],
-    description: 'BRAT standoff annotation format for entities, relations, and events',
-  },
-  {
-    id: 'elan',
-    name: 'ELAN',
-    extensions: ['.eaf'],
-    description: 'ELAN annotation format for time-aligned multimedia annotations',
-  },
-  {
-    id: 'tei',
-    name: 'TEI XML',
-    extensions: ['.xml', '.tei'],
-    description: 'TEI XML format for text encoding and inline annotations',
-  },
-  {
-    id: 'praat',
-    name: 'Praat TextGrid',
-    extensions: ['.TextGrid'],
-    description: 'Praat TextGrid format for phonetic interval and point annotations',
-  },
-];
+const SUPPORTED_FORMATS: readonly FormatInfo[] = ALL_FORMATS.map(
+  (meta: ProtocolMeta): FormatInfo => ({
+    id: meta.format,
+    name: meta.name,
+    extensions: meta.extensions,
+    description: `${meta.name} annotation format`,
+  }),
+);
 
 /**
  * Normalizes a user-supplied format string to a canonical ImportFormat value.
  *
- * Accepts both canonical lowercase identifiers (e.g., "conll") and
- * display-style names (e.g., "CoNLL-U", "TEI XML", "Praat TextGrid").
+ * Accepts canonical identifiers, panproto protocol IDs, and display-style
+ * names (case-insensitive).
  *
  * @param input - the raw format string from the request
  * @returns the canonical ImportFormat, or undefined if unrecognized
@@ -115,12 +109,31 @@ function parseMappings(raw: string | undefined): FieldMapping[] {
 }
 
 /**
+ * Response shape for the dry-run endpoint.
+ */
+interface DryRunResponse {
+  readonly coverageRatio: number;
+  readonly opticKind: OpticKind | null;
+  readonly preview: {
+    readonly expressions: number;
+    readonly segmentations: number;
+    readonly layers: number;
+  };
+  readonly metadata?: Record<string, unknown> | undefined;
+}
+
+/**
  * Registers import-related REST routes on the given Hono app.
  *
  * @param app - the Hono application instance
  * @param pluginRegistry - the plugin registry containing format importers
+ * @param panprotoService - optional panproto service for optic kind classification
  */
-function importRoutes(app: Hono, pluginRegistry: PluginRegistry): void {
+function importRoutes(
+  app: Hono,
+  pluginRegistry: PluginRegistry,
+  panprotoService?: IPanprotoService,
+): void {
   /**
    * GET /api/v1/import/formats
    *
@@ -192,6 +205,115 @@ function importRoutes(app: Hono, pluginRegistry: PluginRegistry): void {
         layers: parseResult.value.annotationLayers.length,
       },
     });
+  });
+
+  /**
+   * POST /api/v1/import/dry-run
+   *
+   * Validates and parses a file, then returns a coverage report and optic
+   * kind classification without executing the full import. No authentication
+   * required.
+   */
+  app.post('/api/v1/import/dry-run', async (c: Context) => {
+    const body = await c.req.parseBody();
+
+    const file = body.file;
+    const formatRaw = body.format;
+
+    if (!file || !(file instanceof File)) {
+      return c.json({ error: 'VALIDATION_ERROR', message: 'No file provided' }, 400);
+    }
+
+    if (typeof formatRaw !== 'string' || !formatRaw) {
+      return c.json({ error: 'VALIDATION_ERROR', message: 'Format is required' }, 400);
+    }
+
+    const format = normalizeFormat(formatRaw);
+    if (!format) {
+      return c.json(
+        { error: 'VALIDATION_ERROR', message: `Unsupported format: ${formatRaw}` },
+        400,
+      );
+    }
+
+    const importer = pluginRegistry.getImporter(format);
+    if (!importer) {
+      return c.json(
+        { error: 'VALIDATION_ERROR', message: `No importer registered for format: ${format}` },
+        400,
+      );
+    }
+
+    const content = await file.text();
+
+    // Validate first
+    const validationResult = importer.validate(content);
+    if (!validationResult.ok) {
+      return c.json(
+        {
+          error: 'VALIDATION_ERROR',
+          message: `File validation failed: ${validationResult.error.message}`,
+        },
+        400,
+      );
+    }
+
+    // Parse the file to get the full result
+    const parseResult = await importer.parse(content);
+
+    if (!parseResult.ok) {
+      return c.json(
+        {
+          error: 'PLUGIN_ERROR',
+          message: `Parse failed: ${parseResult.error.message}`,
+        },
+        500,
+      );
+    }
+
+    const result = parseResult.value;
+
+    // Compute optic kind if panprotoService is available and format maps to a protocol
+    let opticKind: OpticKind | null = null;
+    const protocolMeta = getProtocolMeta(format);
+
+    if (panprotoService && protocolMeta) {
+      try {
+        const analysis = await panprotoService.getAnalysis();
+        const chain = await panprotoService.getChain(protocolMeta.protocol);
+        const schema = await panprotoService.getLayersSchema();
+        opticKind = analysis.opticKind(chain, schema);
+      } catch {
+        // Optic kind computation is best-effort; fall back to null
+      }
+    }
+
+    // Coverage ratio: derived from the optic kind classification.
+    // A successful parse means all records were structurally converted.
+    // The optic kind tells us about information fidelity:
+    // - iso: lossless bidirectional (1.0)
+    // - lens: forward-complete but lossy reverse (1.0 for import)
+    // - prism: partial (some inputs may not match; 1.0 here since parse succeeded)
+    // - affine: partial and lossy (1.0 here since parse succeeded)
+    // - traversal: multi-focus (1.0 here since parse succeeded)
+    // If parse succeeded, all input records were covered; coverage is 1.0.
+    // The optic kind communicates the round-trip fidelity, not the import coverage.
+    const totalRecords =
+      result.expressions.length + result.segmentations.length + result.annotationLayers.length;
+    const coverageRatio = totalRecords > 0 ? 1.0 : 0.0;
+
+    const response: DryRunResponse = {
+      coverageRatio,
+      opticKind,
+      preview: {
+        expressions: result.expressions.length,
+        segmentations: result.segmentations.length,
+        layers: result.annotationLayers.length,
+      },
+      metadata: result.metadata as Record<string, unknown> | undefined,
+    };
+
+    return c.json(response);
   });
 
   /**
@@ -281,4 +403,4 @@ function importRoutes(app: Hono, pluginRegistry: PluginRegistry): void {
 }
 
 export { importRoutes, normalizeFormat, SUPPORTED_FORMATS };
-export type { FieldMapping, FormatInfo };
+export type { DryRunResponse, FieldMapping, FormatInfo };

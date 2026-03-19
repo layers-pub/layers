@@ -12,6 +12,8 @@ import { AlertCircle, CheckCircle2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import type { FieldMapping } from './mapping-step';
+import type { OpticKind } from './optic-kind-badge';
+import { OpticKindBadge } from './optic-kind-badge';
 
 interface ValidationStepProps {
   /** Current field mappings. */
@@ -20,6 +22,8 @@ interface ValidationStepProps {
   format: string;
   /** Callback fired when validation passes. */
   onValidated: () => void;
+  /** The optic kind from a previous dry-run or import, if available. */
+  opticKind?: OpticKind | null;
 }
 
 /**
@@ -121,7 +125,12 @@ function validateMappings(mappings: FieldMapping[], format: string): ValidationR
  * Runs validation synchronously on mount. Calls onValidated() immediately
  * if all checks pass; otherwise displays the list of errors.
  */
-function ValidationStep({ mappings, format, onValidated }: ValidationStepProps): React.JSX.Element {
+function ValidationStep({
+  mappings,
+  format,
+  onValidated,
+  opticKind,
+}: ValidationStepProps): React.JSX.Element {
   const result = useMemo(() => validateMappings(mappings, format), [mappings, format]);
 
   useEffect(() => {
@@ -140,7 +149,10 @@ function ValidationStep({ mappings, format, onValidated }: ValidationStepProps):
           <div className="flex items-center gap-3 py-4">
             <CheckCircle2 className="h-5 w-5 text-green-600" />
             <div>
-              <p className="text-sm font-medium text-green-600">Validation passed</p>
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-medium text-green-600">Validation passed</p>
+                {opticKind && <OpticKindBadge opticKind={opticKind} />}
+              </div>
               <p className="text-xs text-muted-foreground">
                 All {mappings.length} field mappings are valid. Ready to import.
               </p>

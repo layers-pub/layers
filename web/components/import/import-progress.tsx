@@ -15,6 +15,8 @@ import { Progress } from '@/components/ui/progress';
 import { getBaseUrl } from '@/lib/api/client';
 
 import type { FieldMapping } from './mapping-step';
+import type { OpticKind } from './optic-kind-badge';
+import { OpticKindBadge } from './optic-kind-badge';
 
 interface ImportProgressProps {
   /** The file to import. */
@@ -25,6 +27,8 @@ interface ImportProgressProps {
   mappings: FieldMapping[];
   /** Callback fired when the import completes and the user acknowledges. */
   onComplete: () => void;
+  /** Callback fired when the optic kind is determined from response metadata. */
+  onOpticKind?: (kind: OpticKind) => void;
 }
 
 type ImportStatus = 'uploading' | 'processing' | 'complete' | 'error';
@@ -91,6 +95,18 @@ function extractSummary(body: Record<string, unknown>): ImportSummary {
 }
 
 /**
+ * Extracts the opticKind field from the response metadata, if present.
+ */
+function extractOpticKind(body: Record<string, unknown>): OpticKind | null {
+  const metadata = body['metadata'];
+  if (typeof metadata !== 'object' || metadata === null) return null;
+
+  const kind = (metadata as Record<string, unknown>)['opticKind'];
+  if (typeof kind === 'string') return kind as OpticKind;
+  return null;
+}
+
+/**
  * Submits an import request and displays progress through upload, processing,
  * and completion states.
  */
@@ -99,10 +115,12 @@ function ImportProgress({
   format,
   mappings,
   onComplete,
+  onOpticKind,
 }: ImportProgressProps): React.JSX.Element {
   const [status, setStatus] = useState<ImportStatus>('uploading');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [summary, setSummary] = useState<ImportSummary | null>(null);
+  const [opticKind, setOpticKind] = useState<OpticKind | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -122,6 +140,13 @@ function ImportProgress({
 
         const importSummary = extractSummary(responseBody);
         setSummary(importSummary);
+
+        const kind = extractOpticKind(responseBody);
+        if (kind) {
+          setOpticKind(kind);
+          onOpticKind?.(kind);
+        }
+
         setStatus('complete');
       } catch (err) {
         if (cancelled) return;
@@ -135,7 +160,7 @@ function ImportProgress({
     return () => {
       cancelled = true;
     };
-  }, [file, format, mappings]);
+  }, [file, format, mappings, onOpticKind]);
 
   const progressValue =
     status === 'uploading' ? 25 : status === 'processing' ? 60 : status === 'complete' ? 100 : 0;
@@ -184,7 +209,10 @@ function ImportProgress({
       {status === 'complete' && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Import Summary</CardTitle>
+            <CardTitle className="flex items-center gap-2 text-base">
+              Import Summary
+              {opticKind && <OpticKindBadge opticKind={opticKind} />}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {summary &&

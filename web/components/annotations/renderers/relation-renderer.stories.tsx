@@ -22,13 +22,13 @@ export default meta;
 type Story = StoryObj<typeof RelationRenderer>;
 
 const tokens: Token[] = [
-  { text: 'The', index: 0, start: 0, end: 3 },
-  { text: 'cat', index: 1, start: 4, end: 7 },
-  { text: 'chased', index: 2, start: 8, end: 14 },
-  { text: 'the', index: 3, start: 15, end: 18 },
-  { text: 'mouse', index: 4, start: 19, end: 24 },
-  { text: 'quickly', index: 5, start: 25, end: 32 },
-  { text: '.', index: 6, start: 32, end: 33 },
+  { text: 'The', index: 0, byteStart: 0, byteEnd: 3 },
+  { text: 'cat', index: 1, byteStart: 4, byteEnd: 7 },
+  { text: 'chased', index: 2, byteStart: 8, byteEnd: 14 },
+  { text: 'the', index: 3, byteStart: 15, byteEnd: 18 },
+  { text: 'mouse', index: 4, byteStart: 19, byteEnd: 24 },
+  { text: 'quickly', index: 5, byteStart: 25, byteEnd: 32 },
+  { text: '.', index: 6, byteStart: 32, byteEnd: 33 },
 ];
 
 const srlItems: AnnotationItem[] = [

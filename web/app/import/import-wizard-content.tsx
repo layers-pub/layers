@@ -20,7 +20,7 @@ import {
   ValidationStep,
   ImportProgress,
 } from '@/components/import';
-import type { FieldMapping } from '@/components/import';
+import type { FieldMapping, OpticKind } from '@/components/import';
 import { useWizardPersistence } from '@/lib/hooks/use-wizard-persistence';
 import type { WizardPersistedState } from '@/lib/hooks/use-wizard-persistence';
 import { events } from '@/lib/observability/custom-events';
@@ -41,6 +41,8 @@ interface WizardState {
   previewRows: string[][] | null;
   isValidated: boolean;
   isImporting: boolean;
+  /** Optic kind from panproto metadata, set after dry-run or import completes. */
+  opticKind: OpticKind | null;
 }
 
 const INITIAL_STATE: WizardState = {
@@ -51,6 +53,7 @@ const INITIAL_STATE: WizardState = {
   previewRows: null,
   isValidated: false,
   isImporting: false,
+  opticKind: null,
 };
 
 /**
@@ -126,6 +129,7 @@ function ImportWizardContent(): React.JSX.Element {
       previewRows: savedState.previewRows,
       isValidated: false,
       isImporting: false,
+      opticKind: null,
     });
     acceptResume();
   }, [savedState, acceptResume]);
@@ -183,6 +187,10 @@ function ImportWizardContent(): React.JSX.Element {
 
   const handleValidated = useCallback(() => {
     setState((prev) => ({ ...prev, isValidated: true }));
+  }, []);
+
+  const handleOpticKind = useCallback((kind: OpticKind) => {
+    setState((prev) => ({ ...prev, opticKind: kind }));
   }, []);
 
   const handleImportComplete = useCallback(() => {
@@ -250,6 +258,7 @@ function ImportWizardContent(): React.JSX.Element {
           mappings={state.mappings}
           format={state.format}
           onValidated={handleValidated}
+          opticKind={state.opticKind}
         />
       )}
 
@@ -259,6 +268,7 @@ function ImportWizardContent(): React.JSX.Element {
           format={state.format}
           mappings={state.mappings}
           onComplete={handleImportComplete}
+          onOpticKind={handleOpticKind}
         />
       )}
 

@@ -43,8 +43,8 @@ export default function ImportPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">Import Data</h1>
         <p className="mt-2 text-muted-foreground">
-          Import linguistic annotation data from CoNLL-U, BRAT, ELAN, TEI XML, or Praat TextGrid
-          formats.
+          Import linguistic annotation data from 21 supported formats including CoNLL-U, BRAT, ELAN,
+          TEI XML, Praat TextGrid, AMR, UCCA, FoLiA, and more.
         </p>
       </div>
       <AuthGuard>

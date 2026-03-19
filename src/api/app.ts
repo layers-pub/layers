@@ -43,6 +43,7 @@ import {
 import type { SessionManager } from '../auth/session-manager.js';
 import type { PluginRegistry } from '../plugins/plugin-registry.js';
 import type { IMarginIndexer } from '../services/interop/margin-indexer.js';
+import type { IPanprotoService } from '../types/interfaces/panproto.interface.js';
 import { errorHandler } from './xrpc/error-handler.js';
 import { registerXRPCRoutes } from './xrpc/router.js';
 import type { XRPCMethodMap } from './xrpc/types.js';
@@ -61,6 +62,7 @@ interface AppDependencies {
   readonly oauthClient?: NodeOAuthClient | undefined;
   readonly xrpcMethods?: XRPCMethodMap;
   readonly pluginRegistry?: PluginRegistry | undefined;
+  readonly panprotoService?: IPanprotoService | undefined;
   readonly marginIndexer?: IMarginIndexer | undefined;
 }
 
@@ -148,7 +150,7 @@ function createApp(deps: AppDependencies): Hono {
 
   // Import endpoints (parse annotation files via format importer plugins)
   if (deps.pluginRegistry) {
-    importRoutes(app, deps.pluginRegistry);
+    importRoutes(app, deps.pluginRegistry, deps.panprotoService);
   }
 
   // External annotations endpoints (margin.at interop, public read)

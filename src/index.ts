@@ -137,12 +137,9 @@ import { TemplateCompositionsRepository } from './storage/postgresql/template-co
 import { TemplatesRepository } from './storage/postgresql/templates-repository.js';
 import { TypeDefsRepository } from './storage/postgresql/type-defs-repository.js';
 import { PluginRegistry } from './plugins/plugin-registry.js';
-import { ConllImporter } from './plugins/importers/conll-importer.js';
-import { BratImporter } from './plugins/importers/brat-importer.js';
-import { ElanImporter } from './plugins/importers/elan-importer.js';
-import { TeiImporter } from './plugins/importers/tei-importer.js';
-import { PraatImporter } from './plugins/importers/praat-importer.js';
 import { BeadJsonlinesImporter } from './plugins/importers/bead-jsonlines-importer.js';
+import { createPanprotoImporters } from './plugins/importers/panproto-importer.js';
+import { PanprotoService } from './services/panproto/panproto-service.js';
 import { MarginIndexer } from './services/interop/margin-indexer.js';
 import { createRedisClient } from './storage/redis/client.js';
 
@@ -563,14 +560,16 @@ jobScheduler.register(
   }),
 );
 
-// Build plugin registry and register format importers
+// Build panproto service for format conversion
+const panprotoService = new PanprotoService(redis);
+container.register('IPanprotoService', { useValue: panprotoService });
+
+// Build plugin registry and register format importers/exporters
 const pluginRegistry = new PluginRegistry();
-pluginRegistry.register(new ConllImporter());
-pluginRegistry.register(new BratImporter());
-pluginRegistry.register(new ElanImporter());
-pluginRegistry.register(new TeiImporter());
-pluginRegistry.register(new PraatImporter());
 pluginRegistry.register(new BeadJsonlinesImporter());
+for (const importer of createPanprotoImporters(panprotoService)) {
+  pluginRegistry.register(importer);
+}
 container.register('PluginRegistry', { useValue: pluginRegistry });
 
 // Build margin.at interop indexer for external annotations
@@ -619,6 +618,7 @@ const app = createApp({
   oauthClient,
   xrpcMethods,
   pluginRegistry,
+  panprotoService,
   marginIndexer,
 });
 
