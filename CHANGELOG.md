@@ -4,6 +4,17 @@ All notable changes to the Layers lexicon schemas will be documented in this fil
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.6.0] - 2026-03-19
+
+### Changed
+
+- **Breaking:** Switch `pub.layers.defs#span` and `pub.layers.defs#textPositionSelector` from character offsets to UTF-8 byte offsets. Required fields are now `byteStart`/`byteEnd`; optional `charStart`/`charEnd` fields added for compatibility with character-offset datasets.
+- Update `pub.layers.segmentation.defs#token.textSpan` description to reference byte offsets.
+- Update `pub.layers.expression.expression#text` description to reference byte offsets.
+- Update all integration data model docs (BRAT, CoNLL-U, NAF, NIF, UIMA, LAF/GrAF, PAULA, W3C Web Annotation, Concrete) to reflect byte-offset field names.
+- Update guides (multimodal annotation, judgment data, psycholinguistic data) with byte-offset examples.
+- Update appview plan docs (firehose ingestion, indexing strategy) with byte-offset validation rules and queries.
+
 ## [0.5.0] - 2026-03-03
 
 ### Added

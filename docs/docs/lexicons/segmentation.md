@@ -50,7 +50,7 @@ A single token within a tokenization.
 |-------|------|-------------|
 | `tokenIndex` | integer | Position of this token in the tokenization (0-based). |
 | `text` | string | The surface form of the token. |
-| `textSpan` | ref | Character offsets into the expression text. Ref: `pub.layers.defs#span` |
+| `textSpan` | ref | UTF-8 byte offsets into the expression text. Ref: `pub.layers.defs#span` |
 | `temporalSpan` | ref | Temporal span for audio/video-grounded tokens. Ref: `pub.layers.defs#temporalSpan` |
 
 ## XRPC Queries

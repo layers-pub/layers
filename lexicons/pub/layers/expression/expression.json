@@ -29,7 +29,7 @@
           },
           "text": {
             "type": "string",
-            "description": "The full raw text of the expression. All character-offset spans reference this string.",
+            "description": "The full raw text of the expression. All byte-offset spans reference this string.",
             "maxLength": 10000000
           },
           "parentRef": {

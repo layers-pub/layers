@@ -70,8 +70,8 @@ SELECT $1, ordinality - 1, elem->>'label', elem->>'value',
        WHEN elem->'anchor'->>'tokenRef' IS NOT NULL THEN 'tokenRef'
        WHEN elem->'anchor'->>'temporalSpan' IS NOT NULL THEN 'temporalSpan'
        ELSE 'other' END,
-  (elem->'anchor'->'textSpan'->>'start')::int,
-  (elem->'anchor'->'textSpan'->>'end')::int,
+  (elem->'anchor'->'textSpan'->>'byteStart')::int,
+  (elem->'anchor'->'textSpan'->>'byteEnd')::int,
   (elem->'anchor'->'tokenRef'->>'tokenIndex')::int,
   (elem->>'confidence')::int
 FROM jsonb_array_elements($12->'annotations') WITH ORDINALITY AS t(elem, ordinality);

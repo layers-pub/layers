@@ -25,7 +25,7 @@ Format: `T{id}\t{type} {start} {end}\t{text}`
 
 | brat Feature | Layers Equivalent | Notes |
 |---|---|---|
-| T-annotation | `pub.layers.annotation.defs#annotation` with `anchor.textSpan` | A labeled span of text. `{type}` → `annotation.label`; `{start}/{end}` → `anchor.textSpan.start`/`anchor.textSpan.ending`. |
+| T-annotation | `pub.layers.annotation.defs#annotation` with `anchor.textSpan` | A labeled span of text. `{type}` → `annotation.label`; `{start}/{end}` → `anchor.textSpan.byteStart`/`anchor.textSpan.byteEnd`. The import pipeline converts character offsets to byte offsets at import time. |
 | Discontinuous spans | `anchor.tokenRefSequence` with non-contiguous indices | brat represents discontinuous spans as `{start1} {end1};{start2} {end2}`. Layers uses `tokenRefSequence` with non-contiguous `tokenIndexes`, or multiple character spans in features. |
 | Entity annotations | `annotationLayer(kind="span", subkind="entity-mention")` | Named entities, gene mentions, chemical names, etc. |
 | Trigger annotations | `annotationLayer(kind="span", subkind="event-mention")` | Event triggers (the text that evokes an event). |

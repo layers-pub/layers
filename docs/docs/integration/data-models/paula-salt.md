@@ -43,7 +43,7 @@ Salt is a graph-based meta-model for linguistic annotation that serves as the co
 
 | Salt Edge Type | Layers Equivalent | Notes |
 |---|---|---|
-| `STextualRelation` | `token.textSpan` | Token-to-text anchoring. `sStart`/`sEnd` → `span.start`/`span.ending`. |
+| `STextualRelation` | `token.textSpan` | Token-to-text anchoring. `sStart`/`sEnd` → `span.byteStart`/`span.byteEnd`. The import pipeline converts character offsets to byte offsets at import time. |
 | `STimelineRelation` | Temporal anchoring via `annotation.anchor.temporalSpan` | Token-to-timeline anchoring for spoken data. |
 | `SSpanningRelation` | `annotation.anchor.tokenRefSequence` | Span-to-token membership. |
 | `SDominanceRelation` | `annotation.parentId`/`annotation.childIds` | Parent-child edges in hierarchical structures (constituency trees). |

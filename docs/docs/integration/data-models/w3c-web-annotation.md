@@ -55,11 +55,11 @@ Layers includes W3C-compatible selectors in `pub.layers.defs`:
 | W3C Selector | Layers Equivalent | Notes |
 |---|---|---|
 | `TextQuoteSelector` | `pub.layers.defs#textQuoteSelector` | Select by quoting text. `exact` → exact match; `prefix`/`suffix` → context. Direct mapping. |
-| `TextPositionSelector` | `pub.layers.defs#textPositionSelector` | Select by character offsets. `start`/`end` → same fields. Direct mapping. |
+| `TextPositionSelector` | `pub.layers.defs#textPositionSelector` | Select by UTF-8 byte offsets. W3C `start`/`end` → `byteStart`/`byteEnd`. The import pipeline converts character offsets to byte offsets at import time. |
 | `FragmentSelector` | `pub.layers.defs#fragmentSelector` | Select by URI fragment. `value` → fragment identifier; `conformsTo` → fragment spec URI. Direct mapping. |
 | `CssSelector` | `pub.layers.defs#externalTarget.selector` (via features) | CSS selector string. Stored in `externalTarget` features when annotating web resources. |
 | `XPathSelector` | `pub.layers.defs#externalTarget.selector` (via features) | XPath expression. Stored in features. |
-| `DataPositionSelector` | `pub.layers.defs#span` | Byte/character offset selection. |
+| `DataPositionSelector` | `pub.layers.defs#span` | UTF-8 byte offset selection. |
 | `SvgSelector` | `pub.layers.defs#boundingBox` or features | SVG-based spatial selection. Layers uses `boundingBox` for rectangular regions; arbitrary SVG shapes go in features. |
 | `RangeSelector` | Composite of two selectors | Start/end defined by two separate selectors. Representable by combining two anchor fields. |
 | `TimeSelector` (Media Fragments) | `pub.layers.defs#temporalSpan` | Media fragment time selection. `start`/`end` in seconds → `temporalSpan.start`/`temporalSpan.ending` in milliseconds. |

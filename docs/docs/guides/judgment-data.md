@@ -226,7 +226,7 @@ Participants select and optionally label text regions. Responses go in `textSpan
 ```json
 {
   "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42" },
-  "textSpan": { "start": 0, "end": 7 },
+  "textSpan": { "byteStart": 0, "byteEnd": 7 },
   "responseTimeMs": 3200
 }
 ```

@@ -24,7 +24,7 @@ NAF is a layered stand-off annotation format designed for NLP pipeline interoper
 | NAF Element | Layers Equivalent | Notes |
 |---|---|---|
 | `<text>` layer | `pub.layers.expression.text` | Raw text. |
-| `<wf>` (word form) | `pub.layers.expression.expression` (kind: `token`) | Tokens with character offsets. `@offset` → `token.textSpan.start`; `@length` → derived from text; `@sent` → sentence grouping. |
+| `<wf>` (word form) | `pub.layers.expression.expression` (kind: `token`) | Tokens with byte offsets. `@offset` → `token.textSpan.byteStart`; `@length` → derived from text; `@sent` → sentence grouping. The import pipeline converts character offsets to byte offsets at import time. |
 
 ### Terms Layer
 

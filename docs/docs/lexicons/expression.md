@@ -19,7 +19,7 @@ An expression record representing any linguistic unit, from a full document to a
 | `id` | string | A corpus-level unique identifier (headline, URL, document ID, etc.). |
 | `kindUri` | at-uri | AT-URI of the expression kind definition node. Community-expandable via knowledge graph. |
 | `kind` | string | Expression kind slug (fallback when kindUri unavailable). Known values: `document`, `transcript`, `dialogue`, `social-media`, `email`, `article`, `recording`, `video`, `multimodal`, `code`, `section`, `paragraph`, `chapter`, `turn`, `utterance`, `heading`, `list`, `sentence`, `clause`, `phrase`, `word`, `morpheme`, `character`, `other` |
-| `text` | string | The full raw text of the expression. All character-offset spans reference this string. |
+| `text` | string | The full raw text of the expression. All byte-offset spans reference this string. |
 | `mediaRef` | at-uri | Reference to an associated media record (audio, video, image). |
 | `mediaBlob` | blob | Optional inline media blob. |
 | `language` | string | BCP-47 language tag for the primary language. |

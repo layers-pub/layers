@@ -42,7 +42,7 @@ anchor = {
 ```
 
 **Kinds**:
-- `textSpan`: `{start: number, end: number}` byte/character offsets in text.
+- `textSpan`: `{byteStart: number, byteEnd: number}` UTF-8 byte offsets in text.
 - `tokenRef`: single token identifier (localId or recordRef).
 - `tokenRefSequence`: `{tokens: objectRef[]}` ordered sequence of tokens.
 - `temporalSpan`: `{start: number, end: number}` time in seconds (audio, video).
@@ -297,8 +297,8 @@ textQuoteSelector = {
 
 textPositionSelector = {
   type: "TextPositionSelector"
-  start: number                 // Byte/character offset
-  end: number
+  byteStart: number             // UTF-8 byte offset
+  byteEnd: number
 }
 
 fragmentSelector = {

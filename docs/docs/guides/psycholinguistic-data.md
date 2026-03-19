@@ -67,10 +67,10 @@ A segmentation record defines the regions of interest:
   "expression": "at://did:plc:researcher/pub.layers.expression.expression/item-42",
   "kind": "region",
   "tokens": [
-    { "text": "The cat", "start": 0, "end": 7 },
-    { "text": "chased", "start": 8, "end": 14 },
-    { "text": "the mouse", "start": 15, "end": 24 },
-    { "text": "across the garden", "start": 25, "end": 42 }
+    { "text": "The cat", "byteStart": 0, "byteEnd": 7 },
+    { "text": "chased", "byteStart": 8, "byteEnd": 14 },
+    { "text": "the mouse", "byteStart": 15, "byteEnd": 24 },
+    { "text": "across the garden", "byteStart": 25, "byteEnd": 42 }
   ]
 }
 ```
@@ -162,7 +162,7 @@ Fixations are annotations with `temporalSpan` anchors on the stimulus expression
       "uuid": "fix-001",
       "anchor": {
         "kind": "textSpan",
-        "textSpan": { "start": 8, "end": 14 }
+        "textSpan": { "byteStart": 8, "byteEnd": 14 }
       },
       "label": "fixation",
       "features": {
@@ -179,7 +179,7 @@ Fixations are annotations with `temporalSpan` anchors on the stimulus expression
       "uuid": "fix-002",
       "anchor": {
         "kind": "textSpan",
-        "textSpan": { "start": 15, "end": 24 }
+        "textSpan": { "byteStart": 15, "byteEnd": 24 }
       },
       "label": "fixation",
       "features": {

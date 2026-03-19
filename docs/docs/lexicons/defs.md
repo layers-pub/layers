@@ -20,12 +20,14 @@ A universally unique identifier for cross-referencing annotation objects.
 ### span
 **Type:** Object
 
-A contiguous span of text defined by character offsets into a source text.
+A contiguous span of text defined by UTF-8 byte offsets into a source text.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `start` | integer | Inclusive start character offset (0-indexed). |
-| `ending` | integer | Exclusive end character offset. |
+| `byteStart` | integer | Inclusive start byte offset (0-indexed). |
+| `byteEnd` | integer | Exclusive end byte offset. |
+| `charStart` | integer | Optional inclusive start character offset (0-indexed). |
+| `charEnd` | integer | Optional exclusive end character offset. |
 
 ### tokenRef
 **Type:** Object
@@ -195,7 +197,7 @@ Anchor to a specific page and region in a paged document (PDF, etc.). Compatible
 |-------|------|-------------|
 | `page` | integer | 0-indexed page number. |
 | `boundingBox` | ref | Ref: `#boundingBox` |
-| `textSpan` | ref | Character offsets within the page text. Ref: `#span` |
+| `textSpan` | ref | UTF-8 byte offsets within the page text. Ref: `#span` |
 
 ### textQuoteSelector
 **Type:** Object
@@ -211,12 +213,14 @@ W3C TextQuoteSelector: select text by quoting it with surrounding context. Compa
 ### textPositionSelector
 **Type:** Object
 
-W3C TextPositionSelector: select by character offsets. Semantically equivalent to pub.layers.defs#span but named for W3C compatibility with at.margin.
+W3C TextPositionSelector: select by UTF-8 byte offsets. Semantically equivalent to pub.layers.defs#span but named for W3C compatibility with at.margin.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `start` | integer | Starting character position (0-indexed, inclusive). |
-| `end` | integer | Ending character position (exclusive). |
+| `byteStart` | integer | Starting byte position (0-indexed, inclusive). |
+| `byteEnd` | integer | Ending byte position (exclusive). |
+| `charStart` | integer | Optional starting character position (0-indexed, inclusive). |
+| `charEnd` | integer | Optional ending character position (exclusive). |
 
 ### fragmentSelector
 **Type:** Object
@@ -247,7 +251,7 @@ Abstract anchor: how an annotation attaches to its source data. This is a polymo
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `textSpan` | ref | Character-offset span in the expression text. Ref: `#span` |
+| `textSpan` | ref | Byte-offset span in the expression text. Ref: `#span` |
 | `tokenRef` | ref | Single token reference. Ref: `#tokenRef` |
 | `tokenRefSequence` | ref | Sequence of token references (possibly non-contiguous). Ref: `#tokenRefSequence` |
 | `temporalSpan` | ref | Temporal span in audio/video. Ref: `#temporalSpan` |

@@ -152,7 +152,7 @@ The record is validated against its Lexicon JSON schema using `@atproto/lexicon`
 
 Records that pass Lexicon validation are then checked against stricter Zod schemas that encode Layers-specific business rules:
 
-- Annotation spans must have `start < end`
+- Annotation spans must have `byteStart < byteEnd`
 - Segmentation token offsets must be monotonically increasing and within the expression's text length
 - Ontology `typeDef` records must reference an existing `ontology` AT-URI
 - Graph edges must reference valid `graphNode` AT-URIs

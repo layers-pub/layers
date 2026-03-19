@@ -24,7 +24,7 @@ LAF is the ISO standard for linguistic annotation interchange. It defines a thre
 | LAF Layer | Layers Equivalent | Notes |
 |---|---|---|
 | Media layer (primary data) | `pub.layers.expression.expression` + `pub.layers.media.media` | The expression record holds text; media records hold audio/video/image. |
-| Anchoring layer (regions) | `pub.layers.defs#anchor` (polymorphic) | LAF's anchoring to regions of primary data maps to Layers's polymorphic `anchor` type: `span` (character offsets), `tokenRef`, `tokenRefSequence`, `temporalSpan`, `spatioTemporalAnchor`, `pageAnchor`, `externalTarget`. |
+| Anchoring layer (regions) | `pub.layers.defs#anchor` (polymorphic) | LAF's anchoring to regions of primary data maps to Layers's polymorphic `anchor` type: `span` (UTF-8 byte offsets), `tokenRef`, `tokenRefSequence`, `temporalSpan`, `spatioTemporalAnchor`, `pageAnchor`, `externalTarget`. |
 | Annotation layer (graph) | `pub.layers.annotation.annotationLayer` + `pub.layers.graph` | Labeled nodes and edges. Layers provides both within-layer graph structures (`annotation` with `parentId`/`childIds`/`headIndex`/`arguments`) and cross-layer/cross-document graph structures (`pub.layers.graph.graphEdgeSet`). |
 
 ### LAF Data Model Primitives

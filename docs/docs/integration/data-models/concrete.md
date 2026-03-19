@@ -30,11 +30,11 @@ Concrete is a stand-off annotation data model originally defined via Apache Thri
 
 | Concrete Type | Layers Equivalent | Notes |
 |---|---|---|
-| `Section` | `pub.layers.expression.expression` with `kind="section"` (or `paragraph`, `chapter`, `turn`, etc.) | Concrete sections map to nested Expressions with `parentRef` pointing to the document Expression and `anchor` specifying character offsets. Layers adds `kindUri` for community-expandable section types and `temporalSpan` for audio/video sections. |
+| `Section` | `pub.layers.expression.expression` with `kind="section"` (or `paragraph`, `chapter`, `turn`, etc.) | Concrete sections map to nested Expressions with `parentRef` pointing to the document Expression and `anchor` specifying UTF-8 byte offsets. Layers adds `kindUri` for community-expandable section types and `temporalSpan` for audio/video sections. |
 | `Sentence` | `pub.layers.expression.expression` with `kind="sentence"` | Nested Expression with `parentRef` pointing to its section. Layers adds `temporalSpan`. |
 | `Tokenization` | `pub.layers.segmentation.segmentation` | Tokenization is represented in the segmentation record, which contains a list of tokens decomposing an expression's text. Each tokenization has an optional `expressionRef` that scopes it to a specific sub-expression (e.g., a sentence-level expression). Layers supports multiple tokenizations per expression and community-expandable tokenization strategies via `kindUri`. |
 | `Token` | `pub.layers.expression.expression` with `kind="word"` | Concrete's `Token` has `tokenIndex`, `text`, and `TextSpan`; Layers adds `temporalSpan` for audio-grounded tokens. Tokens are word-level Expressions nested within their sentence. |
-| `TextSpan` | `pub.layers.defs#span` | Concrete uses `start`/`ending` (exclusive); Layers uses the same convention. |
+| `TextSpan` | `pub.layers.defs#span` | Concrete uses `start`/`ending` (exclusive); Layers uses `byteStart`/`byteEnd` (UTF-8 byte offsets, exclusive end). The import pipeline converts character offsets to byte offsets at import time. |
 
 ### Segmentation and Structural Binding
 
@@ -121,5 +121,5 @@ A Concrete Communication can be converted to Layers records as follows:
 8. For each `Parse`, create an `annotationLayer` with `kind="tree"`, `subkind="constituency"`
 9. For each `DependencyParse`, create an `annotationLayer` with `kind="graph"`, `subkind="dependency"`
 
-All UUID references are preserved. Character offsets (TextSpan) transfer directly.
+All UUID references are preserved. The import pipeline converts Concrete's character offsets (TextSpan) to UTF-8 byte offsets at import time.
 

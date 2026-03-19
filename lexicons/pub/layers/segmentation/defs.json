@@ -20,7 +20,7 @@
         "textSpan": {
           "type": "ref",
           "ref": "pub.layers.defs#span",
-          "description": "Character offsets into the expression text."
+          "description": "UTF-8 byte offsets into the expression text."
         },
         "temporalSpan": {
           "type": "ref",

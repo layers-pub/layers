@@ -29,7 +29,7 @@ UIMA is a framework for building text analytics pipelines. The Common Analysis S
 | **Type System** | `pub.layers.ontology.ontology` | UIMA's type system descriptor defines annotation types with inheritance. Layers's `ontology` with `typeDef` and `parentTypeRef` provides equivalent type hierarchies. |
 | **Type** | `pub.layers.ontology.typeDef` | A named type with features and parent type. `typeKind` + `allowedRoles` + `allowedValues` cover UIMA's feature declarations. |
 | **Feature** (on a type) | `pub.layers.ontology.defs#roleSlot` + `typeDef.allowedValues` | UIMA features on types (e.g., `entityType` feature on `NamedEntity` type) map to role slots or allowed values on type definitions. |
-| **Annotation** (base type) | `pub.layers.annotation.defs#annotation` | The base UIMA `Annotation` type has `begin`, `end` (character offsets) and a reference to its SofA. Layers's `annotation` has `anchor.textSpan` (begin/end) and the layer references an `expression`. |
+| **Annotation** (base type) | `pub.layers.annotation.defs#annotation` | The base UIMA `Annotation` type has `begin`, `end` (character offsets) and a reference to its SofA. Layers's `annotation` has `anchor.textSpan` (`byteStart`/`byteEnd`, UTF-8 byte offsets) and the layer references an `expression`. The import pipeline converts character offsets to byte offsets at import time. |
 | **AnnotationBase** | `pub.layers.annotation.defs#annotation` | Common fields: `uuid`, `confidence`, `features`. |
 
 ### UIMA Built-in Types

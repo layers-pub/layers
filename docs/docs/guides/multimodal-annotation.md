@@ -12,10 +12,10 @@ Every annotation attaches to source data through an [`anchor`](../foundations/pr
 
 | Anchor Kind | Modality | Value |
 |-------------|----------|-------|
-| `textSpan` | Text | `{start, end}` byte/character offsets |
+| `textSpan` | Text | `{byteStart, byteEnd}` UTF-8 byte offsets |
 | `tokenRef` | Text | Single token identifier |
 | `tokenRefSequence` | Text | Ordered sequence of token references |
-| `temporalSpan` | Audio/Video | `{start, end}` time in milliseconds |
+| `temporalSpan` | Audio/Video | `{start, ending}` time in milliseconds |
 | `spatioTemporalAnchor` | Video | Keyframe-based bounding boxes over time |
 | `pageAnchor` | Paged documents | `{page, x, y, width, height}` |
 | `externalTarget` | Web/External | URL or resource identifier |
@@ -57,7 +57,7 @@ A video media record can carry both `videoInfo` and `audioInfo` since video file
 
 ## Annotating Text
 
-Text annotation uses `textSpan` or `tokenRef` anchors. Character offsets reference the expression's `text` field.
+Text annotation uses `textSpan` or `tokenRef` anchors. UTF-8 byte offsets reference the expression's `text` field.
 
 ```json
 {
@@ -67,7 +67,7 @@ Text annotation uses `textSpan` or `tokenRef` anchors. Character offsets referen
     {
       "anchor": {
         "kind": "textSpan",
-        "textSpan": { "start": 0, "end": 5 }
+        "textSpan": { "byteStart": 0, "byteEnd": 5 }
       },
       "label": "PERSON",
       "text": "Alice"
@@ -162,7 +162,7 @@ Image annotation uses bounding boxes in pixel coordinates via the `spatial` fiel
     {
       "anchor": {
         "kind": "textSpan",
-        "textSpan": { "start": 0, "end": 0 }
+        "textSpan": { "byteStart": 0, "byteEnd": 0 }
       },
       "label": "cat",
       "spatial": {

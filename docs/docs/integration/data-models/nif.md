@@ -25,7 +25,7 @@ NIF is an RDF/Linked Data-based format for representing NLP annotations as web r
 |---|---|---|
 | `nif:Context` | `pub.layers.expression.expression` | The document/text being annotated. NIF's `nif:isString` → `expression.text`. |
 | `nif:String` (base class) | `pub.layers.annotation.defs#annotation` | Any annotated substring. NIF identifies strings by URI (offset-based); Layers uses UUID + character span anchoring. |
-| `nif:RFC5147String` / `nif:OffsetBasedString` | `pub.layers.defs#span` | Character offset-based string identification. NIF's `nif:beginIndex`/`nif:endIndex` → `span.start`/`span.ending`. |
+| `nif:RFC5147String` / `nif:OffsetBasedString` | `pub.layers.defs#span` | Offset-based string identification. NIF's `nif:beginIndex`/`nif:endIndex` → `span.byteStart`/`span.byteEnd`. The import pipeline converts character offsets to UTF-8 byte offsets at import time. |
 | `nif:Word` | `pub.layers.expression.expression` (kind: `token`) | Word-level string. |
 | `nif:Sentence` | `pub.layers.expression.expression` (kind: `sentence`) | Sentence-level string. |
 | `nif:Phrase` | `pub.layers.annotation.defs#annotation` with `kind="span"` | Phrase/constituent annotation. |
@@ -36,7 +36,7 @@ NIF is an RDF/Linked Data-based format for representing NLP annotations as web r
 | NIF Property | Layers Equivalent | Notes |
 |---|---|---|
 | `nif:anchorOf` | `token.text` or derived from `expression.text` + offsets | The surface string. |
-| `nif:beginIndex` / `nif:endIndex` | `anchor.textSpan.start` / `anchor.textSpan.ending` | Character offsets (0-based, exclusive end). |
+| `nif:beginIndex` / `nif:endIndex` | `anchor.textSpan.byteStart` / `anchor.textSpan.byteEnd` | UTF-8 byte offsets (0-based, exclusive end). The import pipeline converts character offsets to byte offsets at import time. |
 | `nif:referenceContext` | Annotation layer's `expression` reference | The document context. |
 | `nif:posTag` | `annotationLayer(kind="token-tag", subkind="pos")` → `annotation.label` | POS tag. |
 | `nif:lemma` | `annotationLayer(kind="token-tag", subkind="lemma")` → `annotation.value` | Lemma. |
@@ -76,7 +76,7 @@ http://example.org/doc1#char=0,5
 # Layers equivalent:
 {
   "anchor": {
-    "textSpan": { "start": 0, "ending": 5 }
+    "textSpan": { "byteStart": 0, "byteEnd": 5 }
   }
 }
 ```
