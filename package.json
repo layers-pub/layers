@@ -6,6 +6,10 @@
   "description": "Composable ATProto lexicons for representing, sharing, and interlinking linguistic annotation data in a decentralized network.",
   "scripts": {
     "validate": "node validate-lexicons.mjs",
+    "codegen": "node codegen/generate.mjs && node codegen/extract-storage-specs.mjs && node codegen/emit-sql.mjs",
+    "codegen:check": "node codegen/check-breaking.mjs",
+    "codegen:baseline": "node codegen/check-breaking.mjs --write",
+    "codegen:sql": "node codegen/emit-sql.mjs",
     "dev": "./scripts/dev.sh local",
     "dev:tunnel": "./scripts/dev.sh tunnel",
     "dev:stop": "./scripts/dev.sh stop",
@@ -42,11 +46,11 @@
     "pnpm": ">=10.0.0"
   },
   "dependencies": {
-    "@panproto/core": "^0.8.0",
     "@atproto/api": "latest",
     "@atproto/identity": "latest",
     "@atproto/lexicon": "latest",
     "@atproto/oauth-client-node": "latest",
+    "@atproto/tap": "^0.2.13",
     "@atproto/xrpc-server": "latest",
     "@elastic/elasticsearch": "latest",
     "@hono/node-server": "latest",
@@ -60,6 +64,7 @@
     "@opentelemetry/sdk-metrics": "latest",
     "@opentelemetry/sdk-node": "latest",
     "@opentelemetry/semantic-conventions": "latest",
+    "@panproto/core": "file:/Users/awhite48/Projects/phrom/sdk/typescript",
     "bullmq": "latest",
     "cockatiel": "latest",
     "hono": "latest",

@@ -367,6 +367,8 @@ function TextSelectionHandler({
         <span
           key={`token-${token.index}`}
           role="button"
+          aria-label={`Token ${token.index}: ${token.text}`}
+          aria-pressed={isSelected}
           tabIndex={0}
           className={cn(
             'cursor-pointer rounded-sm border-b border-border/50 px-px transition-colors',

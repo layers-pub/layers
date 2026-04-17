@@ -1,0 +1,136 @@
+{
+  "$type": "panproto.protolens",
+  "id": "pub.layers.media.media.db-projection",
+  "description": "Lexicon → appview DB projection for pub.layers.media.media",
+  "source": "pub.layers.media.media",
+  "target": "pub.layers.media.media.view",
+  "steps": [],
+  "extensions": {
+    "table": {
+      "name": "medias",
+      "row_struct": "MediaRow",
+      "conflict_keys": [
+        "uri"
+      ],
+      "include_rkey": true,
+      "columns": [
+        {
+          "name": "uri",
+          "ts_type": "string"
+        },
+        {
+          "name": "did",
+          "ts_type": "string"
+        },
+        {
+          "name": "rkey",
+          "ts_type": "string"
+        },
+        {
+          "name": "kind",
+          "ts_type": "string"
+        },
+        {
+          "name": "mime_type",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "duration_ms",
+          "ts_type": "number | null"
+        },
+        {
+          "name": "language",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "indexed_at",
+          "ts_type": "Date"
+        },
+        {
+          "name": "record",
+          "ts_type": "MediaRecord"
+        }
+      ]
+    },
+    "storage": {
+      "collection": "pub.layers.media.media",
+      "table": "media_records",
+      "esIndex": "media_records",
+      "neo4jLabel": "Media",
+      "resourceName": "Media",
+      "columns": {
+        "kind": {
+          "kind": "field",
+          "path": "kind"
+        },
+        "mime_type": {
+          "kind": "field",
+          "path": "mimeType",
+          "nullable": true
+        },
+        "duration_ms": {
+          "kind": "field",
+          "path": "durationMs",
+          "nullable": true
+        },
+        "language": {
+          "kind": "field",
+          "path": "language",
+          "nullable": true
+        },
+        "indexed_at": {
+          "kind": "now"
+        },
+        "record": {
+          "kind": "record-json"
+        }
+      },
+      "nodeProps": {
+        "kind": {
+          "kind": "field",
+          "path": "kind"
+        },
+        "language": {
+          "kind": "field",
+          "path": "language",
+          "nullable": true
+        }
+      },
+      "edges": [],
+      "es": {
+        "fields": {
+          "uri": {
+            "kind": "row",
+            "column": "uri"
+          },
+          "did": {
+            "kind": "row",
+            "column": "did"
+          },
+          "kind": {
+            "kind": "row",
+            "column": "kind"
+          },
+          "title": {
+            "kind": "record-field",
+            "path": "title",
+            "nullable": true
+          },
+          "description": {
+            "kind": "record-field",
+            "path": "description",
+            "nullable": true
+          },
+          "mime_type": {
+            "kind": "row",
+            "column": "mime_type"
+          },
+          "language": {
+            "kind": "row",
+            "column": "language"
+          }
+        }
+      }
+    }
+  }
+}

@@ -29,7 +29,7 @@ const VALID_ENV = {
   NEO4J_QUERY_TIMEOUT: '30000',
   REDIS_URL: 'redis://localhost:6379',
   REDIS_CONNECT_TIMEOUT: '5000',
-  LAYERS_RELAY_URL: 'wss://bsky.network',
+  LAYERS_TAP_URL: 'http://tap:2480',
   JWT_SECRET: 'a-very-long-secret-that-is-at-least-32-characters-long',
   OTEL_EXPORTER_OTLP_ENDPOINT: 'http://localhost:4318',
   OTEL_SERVICE_NAME: 'layers-appview',
@@ -127,8 +127,14 @@ describe('Config schema validation', () => {
       expect(result.success).toBe(true);
     });
 
-    it('accepts valid relay WebSocket URL', () => {
-      const env = { ...VALID_ENV, LAYERS_RELAY_URL: 'wss://relay.example.com' };
+    it('accepts valid Tap server URL', () => {
+      const env = { ...VALID_ENV, LAYERS_TAP_URL: 'https://tap.example.com:2480' };
+      const result = configSchema.safeParse(env);
+      expect(result.success).toBe(true);
+    });
+
+    it('accepts optional Tap admin password', () => {
+      const env = { ...VALID_ENV, LAYERS_TAP_ADMIN_PASSWORD: 'secret' };
       const result = configSchema.safeParse(env);
       expect(result.success).toBe(true);
     });

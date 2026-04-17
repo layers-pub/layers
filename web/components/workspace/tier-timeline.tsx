@@ -185,6 +185,7 @@ const TimelineSegment = React.memo(function TimelineSegment({
         render={
           <div
             role="button"
+            aria-label={`${item.label}${item.value ? ` — ${item.value}` : ''} (${startTime.toFixed(2)}s–${endTime.toFixed(2)}s)`}
             tabIndex={0}
             className="absolute top-0.5 bottom-0.5 flex items-center justify-center overflow-hidden rounded-sm px-1 text-[10px] font-medium cursor-pointer hover:brightness-110 transition-[filter]"
             style={{

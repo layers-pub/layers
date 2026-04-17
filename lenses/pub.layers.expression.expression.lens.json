@@ -1,0 +1,190 @@
+{
+  "$type": "panproto.protolens",
+  "id": "pub.layers.expression.expression.db-projection",
+  "description": "Lexicon → appview DB projection for pub.layers.expression.expression",
+  "source": "pub.layers.expression.expression",
+  "target": "pub.layers.expression.expression.view",
+  "steps": [],
+  "extensions": {
+    "table": {
+      "name": "expressions",
+      "row_struct": "ExpressionRow",
+      "conflict_keys": [
+        "uri"
+      ],
+      "include_rkey": true,
+      "columns": [
+        {
+          "name": "uri",
+          "ts_type": "string"
+        },
+        {
+          "name": "did",
+          "ts_type": "string"
+        },
+        {
+          "name": "rkey",
+          "ts_type": "string"
+        },
+        {
+          "name": "text",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "kind",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "language",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "source_url",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "source_ref",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "eprint_ref",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "parent_ref",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "indexed_at",
+          "ts_type": "Date"
+        },
+        {
+          "name": "record",
+          "ts_type": "ExpressionRecord"
+        }
+      ]
+    },
+    "storage": {
+      "collection": "pub.layers.expression.expression",
+      "table": "expressions",
+      "esIndex": "expressions",
+      "neo4jLabel": "Expression",
+      "resourceName": "Expression",
+      "columns": {
+        "text": {
+          "kind": "field",
+          "path": "text",
+          "nullable": true
+        },
+        "kind": {
+          "kind": "field",
+          "path": "kind",
+          "nullable": true
+        },
+        "language": {
+          "kind": "field",
+          "path": "language",
+          "nullable": true
+        },
+        "source_url": {
+          "kind": "field",
+          "path": "sourceUrl",
+          "nullable": true
+        },
+        "source_ref": {
+          "kind": "field",
+          "path": "sourceRef",
+          "nullable": true
+        },
+        "eprint_ref": {
+          "kind": "field",
+          "path": "eprintRef",
+          "nullable": true
+        },
+        "parent_ref": {
+          "kind": "field",
+          "path": "parentRef",
+          "nullable": true
+        },
+        "indexed_at": {
+          "kind": "now"
+        },
+        "record": {
+          "kind": "record-json"
+        }
+      },
+      "nodeProps": {
+        "kind": {
+          "kind": "field",
+          "path": "kind",
+          "nullable": true
+        },
+        "language": {
+          "kind": "field",
+          "path": "language",
+          "nullable": true
+        },
+        "text": {
+          "kind": "raw",
+          "src": "record.text ? record.text.slice(0, 500) : null"
+        },
+        "indexedAt": {
+          "kind": "raw",
+          "src": "new Date().toISOString()"
+        }
+      },
+      "edges": [
+        {
+          "type": "REFERENCES",
+          "targetPath": "sourceRef",
+          "nullable": true
+        },
+        {
+          "type": "REFERENCES",
+          "targetPath": "eprintRef",
+          "nullable": true
+        }
+      ],
+      "es": {
+        "fields": {
+          "uri": {
+            "kind": "row",
+            "column": "uri"
+          },
+          "did": {
+            "kind": "row",
+            "column": "did"
+          },
+          "text": {
+            "kind": "row",
+            "column": "text"
+          },
+          "kind": {
+            "kind": "row",
+            "column": "kind"
+          },
+          "language": {
+            "kind": "row",
+            "column": "language"
+          },
+          "source_url": {
+            "kind": "row",
+            "column": "source_url"
+          },
+          "source_ref": {
+            "kind": "row",
+            "column": "source_ref"
+          },
+          "eprint_ref": {
+            "kind": "row",
+            "column": "eprint_ref"
+          },
+          "parent_ref": {
+            "kind": "row",
+            "column": "parent_ref"
+          }
+        }
+      }
+    }
+  }
+}

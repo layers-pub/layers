@@ -1,0 +1,125 @@
+{
+  "$type": "panproto.protolens",
+  "id": "pub.layers.ontology.typeDef.db-projection",
+  "description": "Lexicon → appview DB projection for pub.layers.ontology.typeDef",
+  "source": "pub.layers.ontology.typeDef",
+  "target": "pub.layers.ontology.typeDef.view",
+  "steps": [],
+  "extensions": {
+    "table": {
+      "name": "type_defs",
+      "row_struct": "TypeDefRow",
+      "conflict_keys": [
+        "uri"
+      ],
+      "include_rkey": true,
+      "columns": [
+        {
+          "name": "uri",
+          "ts_type": "string"
+        },
+        {
+          "name": "did",
+          "ts_type": "string"
+        },
+        {
+          "name": "rkey",
+          "ts_type": "string"
+        },
+        {
+          "name": "ontology_ref",
+          "ts_type": "string"
+        },
+        {
+          "name": "name",
+          "ts_type": "string"
+        },
+        {
+          "name": "type_kind",
+          "ts_type": "string"
+        },
+        {
+          "name": "indexed_at",
+          "ts_type": "Date"
+        },
+        {
+          "name": "record",
+          "ts_type": "TypeDefRecord"
+        }
+      ]
+    },
+    "storage": {
+      "collection": "pub.layers.ontology.typeDef",
+      "table": "type_defs",
+      "esIndex": "type_defs",
+      "neo4jLabel": "TypeDef",
+      "resourceName": "TypeDef",
+      "columns": {
+        "ontology_ref": {
+          "kind": "field",
+          "path": "ontologyRef"
+        },
+        "name": {
+          "kind": "field",
+          "path": "name"
+        },
+        "type_kind": {
+          "kind": "field",
+          "path": "typeKind"
+        },
+        "indexed_at": {
+          "kind": "now"
+        },
+        "record": {
+          "kind": "record-json"
+        }
+      },
+      "nodeProps": {
+        "name": {
+          "kind": "field",
+          "path": "name"
+        },
+        "typeKind": {
+          "kind": "field",
+          "path": "typeKind"
+        }
+      },
+      "edges": [
+        {
+          "type": "REFERENCES",
+          "targetPath": "ontologyRef",
+          "nullable": true
+        }
+      ],
+      "es": {
+        "fields": {
+          "uri": {
+            "kind": "row",
+            "column": "uri"
+          },
+          "did": {
+            "kind": "row",
+            "column": "did"
+          },
+          "name": {
+            "kind": "row",
+            "column": "name"
+          },
+          "ontology_ref": {
+            "kind": "row",
+            "column": "ontology_ref"
+          },
+          "type_kind": {
+            "kind": "row",
+            "column": "type_kind"
+          },
+          "gloss": {
+            "kind": "record-field",
+            "path": "gloss",
+            "nullable": true
+          }
+        }
+      }
+    }
+  }
+}

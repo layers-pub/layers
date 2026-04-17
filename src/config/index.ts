@@ -25,7 +25,19 @@ const configSchema = z.object({
   NEO4J_QUERY_TIMEOUT: z.coerce.number().int().default(30_000),
   REDIS_URL: z.string().default('redis://localhost:6379'),
   REDIS_CONNECT_TIMEOUT: z.coerce.number().int().default(5_000),
-  LAYERS_RELAY_URL: z.string().url().default('wss://bsky.network'),
+  /**
+   * HTTP(S) URL of the Tap server. Layers consumes record events from Tap,
+   * not directly from the AT Protocol relay. Tap is configured separately
+   * (see deployment docs) with `TAP_SIGNAL_COLLECTION=pub.layers.*` and
+   * `TAP_COLLECTION_FILTERS=pub.layers.*` so it discovers + backfills every
+   * repo on the network that publishes Layers records.
+   */
+  LAYERS_TAP_URL: z.string().url().default('http://localhost:2480'),
+  /**
+   * Basic-auth password for the Tap admin API. Required if the Tap server
+   * was started with `TAP_ADMIN_PASSWORD`.
+   */
+  LAYERS_TAP_ADMIN_PASSWORD: z.string().optional(),
   JWT_SECRET: z.string().min(32),
   OTEL_EXPORTER_OTLP_ENDPOINT: z.string().url().optional(),
   OTEL_SERVICE_NAME: z.string().default('layers-appview'),

@@ -1,0 +1,115 @@
+{
+  "$type": "panproto.protolens",
+  "id": "pub.layers.resource.collectionMembership.db-projection",
+  "description": "Lexicon → appview DB projection for pub.layers.resource.collectionMembership",
+  "source": "pub.layers.resource.collectionMembership",
+  "target": "pub.layers.resource.collectionMembership.view",
+  "steps": [],
+  "extensions": {
+    "table": {
+      "name": "collection_memberships",
+      "row_struct": "CollectionMembershipRow",
+      "conflict_keys": [
+        "uri"
+      ],
+      "include_rkey": true,
+      "columns": [
+        {
+          "name": "uri",
+          "ts_type": "string"
+        },
+        {
+          "name": "did",
+          "ts_type": "string"
+        },
+        {
+          "name": "rkey",
+          "ts_type": "string"
+        },
+        {
+          "name": "collection_ref",
+          "ts_type": "string"
+        },
+        {
+          "name": "entry_ref",
+          "ts_type": "string"
+        },
+        {
+          "name": "ordinal",
+          "ts_type": "number | null"
+        },
+        {
+          "name": "indexed_at",
+          "ts_type": "Date"
+        },
+        {
+          "name": "record",
+          "ts_type": "CollectionMembershipRecord"
+        }
+      ]
+    },
+    "storage": {
+      "collection": "pub.layers.resource.collectionMembership",
+      "table": "collection_memberships",
+      "esIndex": "collection_memberships",
+      "neo4jLabel": "Resource",
+      "resourceName": "CollectionMembership",
+      "columns": {
+        "collection_ref": {
+          "kind": "field",
+          "path": "collectionRef"
+        },
+        "entry_ref": {
+          "kind": "field",
+          "path": "entryRef"
+        },
+        "ordinal": {
+          "kind": "field",
+          "path": "ordinal",
+          "nullable": true
+        },
+        "indexed_at": {
+          "kind": "now"
+        },
+        "record": {
+          "kind": "record-json"
+        }
+      },
+      "nodeProps": {
+        "collectionRef": {
+          "kind": "field",
+          "path": "collectionRef"
+        },
+        "entryRef": {
+          "kind": "field",
+          "path": "entryRef"
+        }
+      },
+      "edges": [],
+      "es": {
+        "fields": {
+          "uri": {
+            "kind": "row",
+            "column": "uri"
+          },
+          "did": {
+            "kind": "row",
+            "column": "did"
+          },
+          "collection_ref": {
+            "kind": "row",
+            "column": "collection_ref"
+          },
+          "entry_ref": {
+            "kind": "row",
+            "column": "entry_ref"
+          },
+          "ordinal": {
+            "kind": "row",
+            "column": "ordinal"
+          }
+        }
+      }
+    }
+  }
+}

@@ -210,6 +210,8 @@ const TokenOverlay = React.memo(function TokenOverlay({
           render={
             <span
               role="button"
+              aria-label={tooltipLabel}
+              aria-pressed={isViewSelected || isAnnotateSelected}
               tabIndex={0}
               className={cn(
                 'cursor-pointer rounded-sm border-b border-border/50 px-px transition-colors',

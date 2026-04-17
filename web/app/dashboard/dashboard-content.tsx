@@ -26,17 +26,17 @@ function SummaryCards({ userDid }: { readonly userDid: string }): React.JSX.Elem
     {
       title: 'My Expressions',
       icon: FileText,
-      href: `/expressions?creator=${encodeURIComponent(userDid)}`,
+      href: `/expression?repo=${encodeURIComponent(userDid)}`,
     },
     {
       title: 'My Annotations',
       icon: Layers,
-      href: `/search?type=annotation&creator=${encodeURIComponent(userDid)}`,
+      href: `/annotation-layer?repo=${encodeURIComponent(userDid)}`,
     },
     {
       title: 'My Corpora',
       icon: BookOpen,
-      href: `/corpora?creator=${encodeURIComponent(userDid)}`,
+      href: `/corpus?repo=${encodeURIComponent(userDid)}`,
     },
   ] as const;
 
@@ -78,7 +78,7 @@ function QuickActions(): React.JSX.Element {
       <Button
         variant="outline"
         className="h-auto flex-col gap-2 py-4"
-        render={<Link href="/expressions/new" />}
+        render={<Link href="/expression/new" />}
       >
         <Plus className="h-5 w-5" />
         <span>Create Expression</span>
@@ -86,7 +86,7 @@ function QuickActions(): React.JSX.Element {
       <Button
         variant="outline"
         className="h-auto flex-col gap-2 py-4"
-        render={<Link href="/corpora/new" />}
+        render={<Link href="/corpus/new" />}
       >
         <Plus className="h-5 w-5" />
         <span>Create Corpus</span>
@@ -212,7 +212,7 @@ function DashboardContent(): React.JSX.Element {
             variant="link"
             size="sm"
             className="h-auto p-0"
-            render={<Link href={`/changelog?creator=${encodeURIComponent(user.did)}`} />}
+            render={<Link href={`/changelog-entry?did=${encodeURIComponent(user.did)}`} />}
           >
             View more <ArrowRight className="h-3 w-3" />
           </Button>

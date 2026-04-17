@@ -101,9 +101,13 @@ function InlineAnnotationItemEditor({
           className="text-xs cursor-pointer hover:underline"
           onClick={() => setIsEditing(true)}
           role="button"
+          aria-label={`Edit label for ${item.label}`}
           tabIndex={0}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') setIsEditing(true);
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setIsEditing(true);
+            }
           }}
         >
           {item.label}

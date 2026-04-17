@@ -111,6 +111,10 @@ interface LanguageComboboxProps {
   readonly placeholder?: string;
   readonly className?: string;
   readonly disabled?: boolean;
+  /** DOM id forwarded to the trigger for <Label htmlFor=...> association. */
+  readonly id?: string;
+  /** Explicit aria-label, used when no adjacent <Label> exists. */
+  readonly 'aria-label'?: string;
 }
 
 function LanguageCombobox({
@@ -119,6 +123,8 @@ function LanguageCombobox({
   placeholder = 'Language',
   className,
   disabled,
+  id,
+  'aria-label': ariaLabel,
 }: LanguageComboboxProps) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -146,9 +152,11 @@ function LanguageCombobox({
       <PopoverTrigger
         render={
           <Button
+            id={id}
             variant="outline"
             role="combobox"
             aria-expanded={open}
+            aria-label={ariaLabel ?? (id ? undefined : placeholder)}
             disabled={disabled}
             className={cn(
               'justify-between font-normal',

@@ -1,0 +1,32 @@
+name: Lexicon gate
+on:
+  pull_request:
+    paths:
+      - 'lexicons/**'
+      - 'codegen/**'
+      - 'lenses/**'
+
+jobs:
+  breaking-change:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - name: Validate lexicons
+        run: pnpm validate
+      - name: Regenerate code from lexicons
+        run: pnpm codegen
+      - name: Ensure committed code matches codegen output
+        run: |
+          if ! git diff --quiet; then
+            echo "::error::Committed code is out of date with codegen output."
+            git diff --stat
+            exit 1
+          fi
+      - name: Check for breaking schema changes
+        run: pnpm codegen:check

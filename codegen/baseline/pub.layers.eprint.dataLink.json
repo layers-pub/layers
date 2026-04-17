@@ -1,0 +1,156 @@
+{
+  "id": "pub.layers.eprint.dataLink",
+  "required": [
+    "createdAt",
+    "dataKind",
+    "eprintUri"
+  ],
+  "properties": {
+    "annotationRefs": {
+      "type": "array",
+      "format": null,
+      "maxLength": 10000,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": {
+        "type": "string",
+        "ref": null
+      },
+      "ref": null
+    },
+    "corpusRef": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "datetime",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "dataKind": {
+      "type": "string",
+      "format": null,
+      "maxLength": 128,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": [
+        "annotation-layer",
+        "corpus",
+        "evaluation-data",
+        "gold-standard",
+        "model-output",
+        "replication",
+        "supplementary"
+      ],
+      "items": null,
+      "ref": null
+    },
+    "dataKindUri": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "description": {
+      "type": "string",
+      "format": null,
+      "maxLength": 10000,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "eprintDid": {
+      "type": "string",
+      "format": "did",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "eprintUri": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "expressionRefs": {
+      "type": "array",
+      "format": null,
+      "maxLength": 10000,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": {
+        "type": "string",
+        "ref": null
+      },
+      "ref": null
+    },
+    "features": {
+      "type": "ref",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": "pub.layers.defs#featureMap"
+    },
+    "paperSection": {
+      "type": "string",
+      "format": null,
+      "maxLength": 256,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "reproducibility": {
+      "type": "ref",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": "pub.layers.eprint.defs#reproducibilityInfo"
+    }
+  }
+}

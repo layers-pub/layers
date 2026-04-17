@@ -18,7 +18,6 @@
 'use client';
 
 import * as React from 'react';
-import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from 'react-resizable-panels';
 
 import { Skeleton } from '@/components/ui/skeleton';
 import { getLayerColor } from '@/lib/annotation-palette';
@@ -42,6 +41,7 @@ import { TextSelectionHandler } from './text-selection-handler';
 import { AnnotationPanel } from './annotation-panel';
 import { ExpressionPanel } from './expression-panel';
 import { MetadataPanel } from './metadata-panel';
+import { WorkspaceShell } from './workspace-shell';
 
 /** Token selection modes for the expression panel. */
 type SelectionMode = 'view' | 'token' | 'span' | 'tokenSequence';
@@ -76,17 +76,6 @@ function toLayerData(layer: AnnotationLayer, colorIndex: number): AnnotationLaye
     items: mapAnnotations(layer.value.annotations),
     color: getLayerColor(colorIndex),
   };
-}
-
-/**
- * A thin visual handle for panel resize.
- */
-function ResizeHandle(): React.JSX.Element {
-  return (
-    <PanelResizeHandle className="relative w-1.5 bg-transparent group data-[resize-handle-active]:bg-primary/10">
-      <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-px bg-border transition-colors group-hover:bg-primary/50" />
-    </PanelResizeHandle>
-  );
 }
 
 /**
@@ -474,8 +463,9 @@ function AnnotationWorkspace({
         </div>
       ) : null}
 
-      <PanelGroup orientation="horizontal" className="flex-1 min-h-0">
-        <Panel defaultSize={25} minSize={15} collapsible>
+      <WorkspaceShell
+        className="flex-1 min-h-0"
+        expression={
           <ExpressionPanel
             expressionUri={expressionUri}
             text={text}
@@ -485,11 +475,8 @@ function AnnotationWorkspace({
             selectedTokens={selectedTokens}
             onSelectionChange={handleSelectionChange}
           />
-        </Panel>
-
-        <ResizeHandle />
-
-        <Panel defaultSize={50} minSize={30}>
+        }
+        annotations={
           <AnnotationPanel
             expressionUri={expressionUri}
             text={text}
@@ -497,11 +484,8 @@ function AnnotationWorkspace({
             isEditMode={isEditMode}
             onPendingCountChange={setPendingCount}
           />
-        </Panel>
-
-        <ResizeHandle />
-
-        <Panel defaultSize={25} minSize={15} collapsible>
+        }
+        metadata={
           <MetadataPanel
             expressionUri={expressionUri}
             text={text}
@@ -516,8 +500,8 @@ function AnnotationWorkspace({
             onSelectionModeChange={setSelectionMode}
             onDiscardChanges={handleDiscardChanges}
           />
-        </Panel>
-      </PanelGroup>
+        }
+      />
     </div>
   );
 

@@ -1,0 +1,187 @@
+{
+  "id": "pub.layers.alignment.alignment",
+  "required": [
+    "createdAt",
+    "kind",
+    "links"
+  ],
+  "properties": {
+    "createdAt": {
+      "type": "string",
+      "format": "datetime",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "expression": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "features": {
+      "type": "ref",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": "pub.layers.defs#featureMap"
+    },
+    "kind": {
+      "type": "string",
+      "format": null,
+      "maxLength": 128,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": [
+        "audio-to-text",
+        "custom",
+        "error-to-correction",
+        "interlinear",
+        "layer-to-layer",
+        "parallel-text",
+        "tokenization-to-tokenization"
+      ],
+      "items": null,
+      "ref": null
+    },
+    "kindUri": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "knowledgeRefs": {
+      "type": "array",
+      "format": null,
+      "maxLength": 16,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": {
+        "type": "ref",
+        "ref": "pub.layers.defs#knowledgeRef"
+      },
+      "ref": null
+    },
+    "links": {
+      "type": "array",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": {
+        "type": "ref",
+        "ref": "pub.layers.defs#alignmentLink"
+      },
+      "ref": null
+    },
+    "metadata": {
+      "type": "ref",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": "pub.layers.defs#annotationMetadata"
+    },
+    "source": {
+      "type": "ref",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": "pub.layers.defs#objectRef"
+    },
+    "sourceLang": {
+      "type": "string",
+      "format": null,
+      "maxLength": 64,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "subkind": {
+      "type": "string",
+      "format": null,
+      "maxLength": 128,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": [
+        "custom",
+        "forced-alignment",
+        "manual-alignment",
+        "morpheme-to-gloss",
+        "phrase-to-phrase",
+        "sentence-to-sentence",
+        "word-to-morpheme",
+        "word-to-word"
+      ],
+      "items": null,
+      "ref": null
+    },
+    "subkindUri": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "target": {
+      "type": "ref",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": "pub.layers.defs#objectRef"
+    },
+    "targetLang": {
+      "type": "string",
+      "format": null,
+      "maxLength": 64,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    }
+  }
+}

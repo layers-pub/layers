@@ -8,7 +8,7 @@ import { createLogger } from '../../observability/logger.js';
 import { LayersMetrics } from '../../observability/metrics-exporter.js';
 import type { ILogger } from '../../types/interfaces/logger.interface.js';
 
-import type { ParsedCommitOp } from './commit-handler.js';
+import type { ParsedRecordOp } from './types.js';
 import type { DLQHandler } from './dlq-handler.js';
 import type { ErrorClassifier } from './error-classifier.js';
 import type { IRecordHandler } from './record-handler.js';
@@ -66,7 +66,7 @@ class EventProcessor {
    * to the appropriate method based on the operation action. If no handler
    * is registered, the event is logged and dropped.
    */
-  async process(op: ParsedCommitOp, did: string, cursor: number): Promise<void> {
+  async process(op: ParsedRecordOp, did: string, cursor: number): Promise<void> {
     this.logger.debug('Processing event', {
       action: op.action,
       collection: op.collection,

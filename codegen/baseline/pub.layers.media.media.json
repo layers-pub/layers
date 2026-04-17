@@ -1,0 +1,226 @@
+{
+  "id": "pub.layers.media.media",
+  "required": [
+    "createdAt",
+    "kind"
+  ],
+  "properties": {
+    "audio": {
+      "type": "ref",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": "pub.layers.media.defs#audioInfo"
+    },
+    "blob": {
+      "type": "blob",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "datetime",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "description": {
+      "type": "string",
+      "format": null,
+      "maxLength": 10000,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "document": {
+      "type": "ref",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": "pub.layers.media.defs#documentInfo"
+    },
+    "durationMs": {
+      "type": "integer",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": 0,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "externalUri": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": 2048,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "features": {
+      "type": "ref",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": "pub.layers.defs#featureMap"
+    },
+    "fileSizeBytes": {
+      "type": "integer",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": 0,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "kind": {
+      "type": "string",
+      "format": null,
+      "maxLength": 128,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": [
+        "audio",
+        "document",
+        "image",
+        "video"
+      ],
+      "items": null,
+      "ref": null
+    },
+    "kindUri": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "knowledgeRefs": {
+      "type": "array",
+      "format": null,
+      "maxLength": 32,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": {
+        "type": "ref",
+        "ref": "pub.layers.defs#knowledgeRef"
+      },
+      "ref": null
+    },
+    "language": {
+      "type": "string",
+      "format": null,
+      "maxLength": 32,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "metadata": {
+      "type": "ref",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": "pub.layers.defs#annotationMetadata"
+    },
+    "mimeType": {
+      "type": "string",
+      "format": null,
+      "maxLength": 128,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "parentMediaRef": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "startOffsetMs": {
+      "type": "integer",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": 0,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "title": {
+      "type": "string",
+      "format": null,
+      "maxLength": 1024,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "video": {
+      "type": "ref",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": "pub.layers.media.defs#videoInfo"
+    }
+  }
+}

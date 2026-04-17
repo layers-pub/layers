@@ -1,0 +1,92 @@
+{
+  "id": "pub.layers.changelog.entry",
+  "required": [
+    "createdAt",
+    "sections",
+    "subject",
+    "subjectCollection",
+    "summary"
+  ],
+  "properties": {
+    "createdAt": {
+      "type": "string",
+      "format": "datetime",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "previousVersion": {
+      "type": "ref",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": "pub.layers.changelog.defs#semanticVersion"
+    },
+    "sections": {
+      "type": "array",
+      "format": null,
+      "maxLength": 20,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": {
+        "type": "ref",
+        "ref": "pub.layers.changelog.defs#changeSection"
+      },
+      "ref": null
+    },
+    "subject": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "subjectCollection": {
+      "type": "string",
+      "format": null,
+      "maxLength": 256,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "summary": {
+      "type": "string",
+      "format": null,
+      "maxLength": 500,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "version": {
+      "type": "ref",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": "pub.layers.changelog.defs#semanticVersion"
+    }
+  }
+}

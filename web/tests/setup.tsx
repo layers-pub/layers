@@ -87,6 +87,12 @@ Object.defineProperty(window, 'IntersectionObserver', {
   value: MockIntersectionObserver,
 });
 
+// jsdom does not implement Element.scrollIntoView, which cmdk and other
+// libraries call when options are selected.
+if (typeof Element !== 'undefined' && !Element.prototype.scrollIntoView) {
+  Element.prototype.scrollIntoView = vi.fn();
+}
+
 class MockResizeObserver implements ResizeObserver {
   observe = vi.fn();
   unobserve = vi.fn();

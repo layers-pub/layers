@@ -17,5 +17,6 @@ data:
   NEO4J_URI: 'bolt://neo4j.layers.svc.cluster.local:7687'
   REDIS_HOST: 'redis.layers.svc.cluster.local'
   REDIS_PORT: '6379'
-  # ATProto relay for firehose subscription
-  ATPROTO_RELAY_URL: 'wss://bsky.network'
+  # Tap sync service: collection-signal mode delivers every pub.layers.*
+  # record without Layers having to speak the raw firehose protocol.
+  LAYERS_TAP_URL: 'http://tap.layers.svc.cluster.local:2480'

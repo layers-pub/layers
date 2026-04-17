@@ -1,0 +1,96 @@
+{
+  "id": "pub.layers.resource.templateComposition",
+  "required": [
+    "compositionType",
+    "createdAt",
+    "members"
+  ],
+  "properties": {
+    "compositionType": {
+      "type": "string",
+      "format": null,
+      "maxLength": 128,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": [
+        "alternation",
+        "custom",
+        "parallel",
+        "sequence",
+        "tree"
+      ],
+      "items": null,
+      "ref": null
+    },
+    "compositionTypeUri": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "datetime",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "experimentRef": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "features": {
+      "type": "ref",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": "pub.layers.defs#featureMap"
+    },
+    "members": {
+      "type": "array",
+      "format": null,
+      "maxLength": 256,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": {
+        "type": "ref",
+        "ref": "pub.layers.resource.defs#templateMember"
+      },
+      "ref": null
+    },
+    "metadata": {
+      "type": "ref",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": "pub.layers.defs#annotationMetadata"
+    }
+  }
+}

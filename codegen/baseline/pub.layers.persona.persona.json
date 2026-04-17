@@ -1,0 +1,174 @@
+{
+  "id": "pub.layers.persona.persona",
+  "required": [
+    "createdAt",
+    "name"
+  ],
+  "properties": {
+    "createdAt": {
+      "type": "string",
+      "format": "datetime",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "description": {
+      "type": "string",
+      "format": null,
+      "maxLength": 10000,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "domain": {
+      "type": "string",
+      "format": null,
+      "maxLength": 256,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": [
+        "biomedical",
+        "custom",
+        "humanities",
+        "intelligence",
+        "legal",
+        "linguistics",
+        "nlp",
+        "social-science"
+      ],
+      "items": null,
+      "ref": null
+    },
+    "domainUri": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "features": {
+      "type": "ref",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": "pub.layers.defs#featureMap"
+    },
+    "guidelines": {
+      "type": "string",
+      "format": null,
+      "maxLength": 100000,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "guidelinesBlob": {
+      "type": "blob",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "kind": {
+      "type": "string",
+      "format": null,
+      "maxLength": 128,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": [
+        "crowd-worker",
+        "custom",
+        "expert-panel",
+        "guidelines-persona",
+        "human-annotator",
+        "ml-model"
+      ],
+      "items": null,
+      "ref": null
+    },
+    "kindUri": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "knowledgeRefs": {
+      "type": "array",
+      "format": null,
+      "maxLength": 32,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": {
+        "type": "ref",
+        "ref": "pub.layers.defs#knowledgeRef"
+      },
+      "ref": null
+    },
+    "name": {
+      "type": "string",
+      "format": null,
+      "maxLength": 256,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "ontologyRefs": {
+      "type": "array",
+      "format": null,
+      "maxLength": 32,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": {
+        "type": "string",
+        "ref": null
+      },
+      "ref": null
+    },
+    "parentRef": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    }
+  }
+}

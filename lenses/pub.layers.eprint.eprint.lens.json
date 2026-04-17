@@ -1,0 +1,149 @@
+{
+  "$type": "panproto.protolens",
+  "id": "pub.layers.eprint.eprint.db-projection",
+  "description": "Lexicon → appview DB projection for pub.layers.eprint.eprint",
+  "source": "pub.layers.eprint.eprint",
+  "target": "pub.layers.eprint.eprint.view",
+  "steps": [],
+  "extensions": {
+    "table": {
+      "name": "eprints",
+      "row_struct": "EprintRow",
+      "conflict_keys": [
+        "uri"
+      ],
+      "include_rkey": true,
+      "columns": [
+        {
+          "name": "uri",
+          "ts_type": "string"
+        },
+        {
+          "name": "did",
+          "ts_type": "string"
+        },
+        {
+          "name": "rkey",
+          "ts_type": "string"
+        },
+        {
+          "name": "eprint_identifier",
+          "ts_type": "string"
+        },
+        {
+          "name": "eprint_identifier_type",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "link_type",
+          "ts_type": "string"
+        },
+        {
+          "name": "corpus_ref",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "indexed_at",
+          "ts_type": "Date"
+        },
+        {
+          "name": "record",
+          "ts_type": "EprintRecord"
+        }
+      ]
+    },
+    "storage": {
+      "collection": "pub.layers.eprint.eprint",
+      "table": "eprints",
+      "esIndex": "eprints",
+      "neo4jLabel": "Eprint",
+      "resourceName": "Eprint",
+      "columns": {
+        "eprint_identifier": {
+          "kind": "field",
+          "path": "eprintIdentifier"
+        },
+        "eprint_identifier_type": {
+          "kind": "field",
+          "path": "eprintIdentifierType",
+          "nullable": true
+        },
+        "link_type": {
+          "kind": "field",
+          "path": "linkType"
+        },
+        "corpus_ref": {
+          "kind": "field",
+          "path": "corpusRef",
+          "nullable": true
+        },
+        "indexed_at": {
+          "kind": "now"
+        },
+        "record": {
+          "kind": "record-json"
+        }
+      },
+      "nodeProps": {
+        "eprintIdentifier": {
+          "kind": "field",
+          "path": "eprintIdentifier"
+        },
+        "linkType": {
+          "kind": "field",
+          "path": "linkType"
+        },
+        "indexedAt": {
+          "kind": "raw",
+          "src": "new Date().toISOString()"
+        }
+      },
+      "edges": [
+        {
+          "type": "REFERENCES",
+          "targetPath": "corpusRef",
+          "nullable": true
+        },
+        {
+          "type": "REFERENCES",
+          "targetPath": "platformEprintRef",
+          "nullable": true
+        }
+      ],
+      "es": {
+        "fields": {
+          "uri": {
+            "kind": "row",
+            "column": "uri"
+          },
+          "did": {
+            "kind": "row",
+            "column": "did"
+          },
+          "eprint_identifier": {
+            "kind": "row",
+            "column": "eprint_identifier"
+          },
+          "eprint_identifier_type": {
+            "kind": "row",
+            "column": "eprint_identifier_type"
+          },
+          "link_type": {
+            "kind": "row",
+            "column": "link_type"
+          },
+          "citation": {
+            "kind": "record-field",
+            "path": "citation",
+            "nullable": true
+          },
+          "description": {
+            "kind": "record-field",
+            "path": "description",
+            "nullable": true
+          }
+        }
+      }
+    }
+  }
+}

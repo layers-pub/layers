@@ -1,0 +1,178 @@
+{
+  "$type": "panproto.protolens",
+  "id": "pub.layers.judgment.experimentDef.db-projection",
+  "description": "Lexicon → appview DB projection for pub.layers.judgment.experimentDef",
+  "source": "pub.layers.judgment.experimentDef",
+  "target": "pub.layers.judgment.experimentDef.view",
+  "steps": [],
+  "extensions": {
+    "table": {
+      "name": "experiment_defs",
+      "row_struct": "ExperimentDefRow",
+      "conflict_keys": [
+        "uri"
+      ],
+      "include_rkey": true,
+      "columns": [
+        {
+          "name": "uri",
+          "ts_type": "string"
+        },
+        {
+          "name": "did",
+          "ts_type": "string"
+        },
+        {
+          "name": "rkey",
+          "ts_type": "string"
+        },
+        {
+          "name": "name",
+          "ts_type": "string"
+        },
+        {
+          "name": "measure",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "task_type",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "design_type",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "ontology_ref",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "persona_ref",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "corpus_ref",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "indexed_at",
+          "ts_type": "Date"
+        },
+        {
+          "name": "record",
+          "ts_type": "ExperimentDefRecord"
+        }
+      ]
+    },
+    "storage": {
+      "collection": "pub.layers.judgment.experimentDef",
+      "table": "experiment_defs",
+      "esIndex": "experiment_defs",
+      "neo4jLabel": "ExperimentDef",
+      "resourceName": "ExperimentDef",
+      "columns": {
+        "name": {
+          "kind": "field",
+          "path": "name"
+        },
+        "measure": {
+          "kind": "field",
+          "path": "measureType",
+          "nullable": true
+        },
+        "task_type": {
+          "kind": "field",
+          "path": "taskType",
+          "nullable": true
+        },
+        "design_type": {
+          "kind": "field",
+          "path": "design",
+          "nullable": true
+        },
+        "ontology_ref": {
+          "kind": "field",
+          "path": "ontologyRef",
+          "nullable": true
+        },
+        "persona_ref": {
+          "kind": "field",
+          "path": "personaRef",
+          "nullable": true
+        },
+        "corpus_ref": {
+          "kind": "field",
+          "path": "corpusRef",
+          "nullable": true
+        },
+        "indexed_at": {
+          "kind": "now"
+        },
+        "record": {
+          "kind": "record-json"
+        }
+      },
+      "nodeProps": {
+        "name": {
+          "kind": "field",
+          "path": "name"
+        },
+        "measure": {
+          "kind": "field",
+          "path": "measureType",
+          "nullable": true
+        },
+        "taskType": {
+          "kind": "field",
+          "path": "taskType",
+          "nullable": true
+        }
+      },
+      "edges": [
+        {
+          "type": "REFERENCES",
+          "targetPath": "ontologyRef",
+          "nullable": true
+        },
+        {
+          "type": "REFERENCES",
+          "targetPath": "personaRef",
+          "nullable": true
+        },
+        {
+          "type": "REFERENCES",
+          "targetPath": "corpusRef",
+          "nullable": true
+        }
+      ],
+      "es": {
+        "fields": {
+          "uri": {
+            "kind": "row",
+            "column": "uri"
+          },
+          "did": {
+            "kind": "row",
+            "column": "did"
+          },
+          "name": {
+            "kind": "row",
+            "column": "name"
+          },
+          "description": {
+            "kind": "raw",
+            "src": "typed.record?.description ?? null"
+          },
+          "measure": {
+            "kind": "row",
+            "column": "measure"
+          },
+          "task_type": {
+            "kind": "row",
+            "column": "task_type"
+          }
+        }
+      }
+    }
+  }
+}

@@ -8,6 +8,8 @@ import { Providers } from '@/components/providers';
 import { ObservabilityProvider } from '@/lib/observability/context';
 import { FaroRouteTracker } from '@/components/observability/faro-route-tracker';
 import { MainLayout } from '@/components/layout/main-layout';
+import { MobileBottomNav } from '@/components/nav/mobile-bottom-nav';
+import { CommandPalette } from '@/components/command-palette';
 import { cn } from '@/lib/utils';
 import '@/styles/globals.css';
 
@@ -47,8 +49,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Suspense>
               <FaroRouteTracker />
             </Suspense>
-            <div className="relative flex min-h-screen flex-col">
+            <div className="relative flex min-h-screen flex-col pb-16 md:pb-0">
               <MainLayout>{children}</MainLayout>
+              <MobileBottomNav />
+              <CommandPalette />
             </div>
           </Providers>
         </ObservabilityProvider>

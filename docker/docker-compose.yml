@@ -79,11 +79,38 @@ services:
     networks:
       - layers_network
 
+  tap:
+    # Tap sync service. Runs in collection-signal mode so every repo on the
+    # network that publishes a pub.layers.* record is auto-discovered and
+    # backfilled. The indexer connects at http://tap:2480 and receives clean
+    # JSON record events (no CAR parsing, no crypto, no firehose framing).
+    # See https://github.com/bluesky-social/indigo/tree/main/cmd/tap
+    image: ghcr.io/bluesky-social/tap:latest
+    ports:
+      - '2480:2480'
+    environment:
+      TAP_BIND: ':2480'
+      TAP_RELAY_URL: 'https://relay1.us-east.bsky.network'
+      TAP_DATABASE_URL: 'sqlite:///data/tap.db'
+      TAP_SIGNAL_COLLECTION: 'pub.layers.persona.persona'
+      TAP_COLLECTION_FILTERS: 'pub.layers.*'
+      TAP_ADMIN_PASSWORD: 'layers_dev'
+    volumes:
+      - layers_tap_data:/data
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://localhost:2480/healthz || exit 1']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    networks:
+      - layers_network
+
 volumes:
   layers_pg_data:
   layers_es_data:
   layers_neo4j_data:
   layers_redis_data:
+  layers_tap_data:
 
 networks:
   layers_network:

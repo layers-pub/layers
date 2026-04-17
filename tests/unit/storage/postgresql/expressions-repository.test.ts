@@ -73,9 +73,10 @@ describe('expressionRecordSchema', () => {
     expect(result.success).toBe(true);
   });
 
-  it('validates a minimal valid record (just id + createdAt)', () => {
+  it('validates a minimal valid record (id + kind + createdAt)', () => {
     const record = {
       id: 'expr-minimal',
+      kind: 'sentence',
       createdAt: '2026-01-15T12:00:00Z',
     };
 
@@ -120,6 +121,7 @@ describe('toExpressionView', () => {
       indexed_at: new Date('2026-01-15T12:00:00Z'),
       record: {
         id: 'expr-001',
+        kind: 'text',
         text: 'The cat sat on the mat.',
         createdAt: '2026-01-15T12:00:00Z',
       },

@@ -320,9 +320,11 @@ function BeadImportWizard({ projectUri, onComplete }: BeadImportWizardProps): Re
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           role="button"
+          aria-label="Upload JSONLines file"
           tabIndex={0}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
               fileInputRef.current?.click();
             }
           }}

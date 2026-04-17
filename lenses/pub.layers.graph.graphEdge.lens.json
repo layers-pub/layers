@@ -1,0 +1,127 @@
+{
+  "$type": "panproto.protolens",
+  "id": "pub.layers.graph.graphEdge.db-projection",
+  "description": "Lexicon → appview DB projection for pub.layers.graph.graphEdge",
+  "source": "pub.layers.graph.graphEdge",
+  "target": "pub.layers.graph.graphEdge.view",
+  "steps": [],
+  "extensions": {
+    "table": {
+      "name": "graph_edges",
+      "row_struct": "GraphEdgeRow",
+      "conflict_keys": [
+        "uri"
+      ],
+      "include_rkey": true,
+      "columns": [
+        {
+          "name": "uri",
+          "ts_type": "string"
+        },
+        {
+          "name": "did",
+          "ts_type": "string"
+        },
+        {
+          "name": "rkey",
+          "ts_type": "string"
+        },
+        {
+          "name": "source_ref",
+          "ts_type": "string"
+        },
+        {
+          "name": "target_ref",
+          "ts_type": "string"
+        },
+        {
+          "name": "edge_type",
+          "ts_type": "string"
+        },
+        {
+          "name": "edge_set_ref",
+          "ts_type": "string | null"
+        },
+        {
+          "name": "confidence",
+          "ts_type": "number | null"
+        },
+        {
+          "name": "indexed_at",
+          "ts_type": "Date"
+        },
+        {
+          "name": "record",
+          "ts_type": "GraphEdgeRecord"
+        }
+      ]
+    },
+    "storage": {
+      "collection": "pub.layers.graph.graphEdge",
+      "table": "graph_edges",
+      "esIndex": "graph_edges",
+      "neo4jLabel": "GraphEdge",
+      "resourceName": "GraphEdge",
+      "columns": {
+        "edge_type": {
+          "kind": "field",
+          "path": "edgeType"
+        },
+        "edge_set_ref": {
+          "kind": "literal",
+          "value": null
+        },
+        "confidence": {
+          "kind": "field",
+          "path": "confidence",
+          "nullable": true
+        },
+        "indexed_at": {
+          "kind": "now"
+        },
+        "record": {
+          "kind": "record-json"
+        }
+      },
+      "nodeProps": {
+        "edgeType": {
+          "kind": "field",
+          "path": "edgeType"
+        }
+      },
+      "edges": [],
+      "es": {
+        "fields": {
+          "uri": {
+            "kind": "row",
+            "column": "uri"
+          },
+          "did": {
+            "kind": "row",
+            "column": "did"
+          },
+          "source_ref": {
+            "kind": "row",
+            "column": "source_ref"
+          },
+          "target_ref": {
+            "kind": "row",
+            "column": "target_ref"
+          },
+          "edge_type": {
+            "kind": "row",
+            "column": "edge_type"
+          },
+          "edge_set_ref": {
+            "kind": "row",
+            "column": "edge_set_ref"
+          },
+          "confidence": {
+            "kind": "row",
+            "column": "confidence"
+          }
+        }
+      }
+    }
+  }
+}

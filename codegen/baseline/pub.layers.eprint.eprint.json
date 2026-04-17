@@ -1,0 +1,205 @@
+{
+  "id": "pub.layers.eprint.eprint",
+  "required": [
+    "createdAt",
+    "eprintIdentifier",
+    "linkType"
+  ],
+  "properties": {
+    "annotationRefs": {
+      "type": "array",
+      "format": null,
+      "maxLength": 1000,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": {
+        "type": "string",
+        "ref": null
+      },
+      "ref": null
+    },
+    "citation": {
+      "type": "string",
+      "format": null,
+      "maxLength": 4096,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "corpusRef": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "datetime",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "description": {
+      "type": "string",
+      "format": null,
+      "maxLength": 10000,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "eprintIdentifier": {
+      "type": "string",
+      "format": null,
+      "maxLength": 512,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "eprintIdentifierType": {
+      "type": "string",
+      "format": null,
+      "maxLength": 128,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": [
+        "acl-anthology",
+        "arxiv",
+        "at-uri",
+        "custom",
+        "doi",
+        "isbn",
+        "pubmed",
+        "semantic-scholar",
+        "url"
+      ],
+      "items": null,
+      "ref": null
+    },
+    "eprintIdentifierTypeUri": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "eprintUri": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "expressionRefs": {
+      "type": "array",
+      "format": null,
+      "maxLength": 1000,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": {
+        "type": "string",
+        "ref": null
+      },
+      "ref": null
+    },
+    "features": {
+      "type": "ref",
+      "format": null,
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": "pub.layers.defs#featureMap"
+    },
+    "knowledgeRefs": {
+      "type": "array",
+      "format": null,
+      "maxLength": 32,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": {
+        "type": "ref",
+        "ref": "pub.layers.defs#knowledgeRef"
+      },
+      "ref": null
+    },
+    "linkType": {
+      "type": "string",
+      "format": null,
+      "maxLength": 128,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": [
+        "annotates",
+        "cited-in",
+        "described-in",
+        "evaluated-in",
+        "extends",
+        "produced-by",
+        "replicated-from",
+        "supplements",
+        "test-data-for",
+        "training-data-for"
+      ],
+      "items": null,
+      "ref": null
+    },
+    "linkTypeUri": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    },
+    "platformEprintRef": {
+      "type": "string",
+      "format": "at-uri",
+      "maxLength": null,
+      "minLength": null,
+      "maximum": null,
+      "minimum": null,
+      "knownValues": null,
+      "items": null,
+      "ref": null
+    }
+  }
+}

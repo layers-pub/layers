@@ -249,9 +249,13 @@ function UploadStep({ onFileSelect }: UploadStepProps): React.JSX.Element {
           !isDragOver && 'border-muted-foreground/25 hover:border-muted-foreground/50',
         )}
         role="button"
+        aria-label="Upload file: drop here or press Enter to browse"
         tabIndex={0}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') inputRef.current?.click();
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            inputRef.current?.click();
+          }
         }}
       >
         <Upload className="h-8 w-8 text-muted-foreground" />
