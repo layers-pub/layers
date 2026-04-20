@@ -12,3 +12,12 @@ export type { RateLimiterConfig, RateLimitResult, RateLimitTier } from './rate-l
 export { requestContext } from './request-context.js';
 export { secureHeaders } from './secure-headers.js';
 export { serviceInjection } from './service-injection.js';
+export {
+  denyResponse,
+  requireAccount,
+  requireBlob,
+  requireIdentity,
+  requireRepo,
+  requireRpc,
+  scopeEnforcer,
+} from './require-scope.js';

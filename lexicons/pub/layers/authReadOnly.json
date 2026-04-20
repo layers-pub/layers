@@ -1,0 +1,73 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.authReadOnly",
+  "defs": {
+    "main": {
+      "type": "permission-set",
+      "title": "Read Layers records",
+      "detail": "Read linguistic annotation records (expressions, annotations, corpora, ontologies) indexed by the Layers appview. Grants no write access.",
+      "permissions": [
+        {
+          "type": "permission",
+          "resource": "rpc",
+          "inheritAud": true,
+          "lxm": [
+            "pub.layers.expression.getExpression",
+            "pub.layers.expression.listExpressions",
+            "pub.layers.corpus.getCorpus",
+            "pub.layers.corpus.listCorpora",
+            "pub.layers.corpus.getMembership",
+            "pub.layers.corpus.listMemberships",
+            "pub.layers.ontology.getOntology",
+            "pub.layers.ontology.listOntologies",
+            "pub.layers.ontology.getTypeDef",
+            "pub.layers.ontology.listTypeDefs",
+            "pub.layers.persona.getPersona",
+            "pub.layers.persona.listPersonas",
+            "pub.layers.annotation.getAnnotationLayer",
+            "pub.layers.annotation.listAnnotationLayers",
+            "pub.layers.annotation.getClusterSet",
+            "pub.layers.annotation.listClusterSets",
+            "pub.layers.segmentation.getSegmentation",
+            "pub.layers.segmentation.listSegmentations",
+            "pub.layers.alignment.getAlignment",
+            "pub.layers.alignment.listAlignments",
+            "pub.layers.graph.getGraphNode",
+            "pub.layers.graph.listGraphNodes",
+            "pub.layers.graph.getGraphEdge",
+            "pub.layers.graph.listGraphEdges",
+            "pub.layers.graph.getGraphEdgeSet",
+            "pub.layers.graph.listGraphEdgeSets",
+            "pub.layers.judgment.getExperimentDef",
+            "pub.layers.judgment.listExperimentDefs",
+            "pub.layers.judgment.getJudgmentSet",
+            "pub.layers.judgment.listJudgmentSets",
+            "pub.layers.judgment.getAgreementReport",
+            "pub.layers.judgment.listAgreementReports",
+            "pub.layers.resource.getCollection",
+            "pub.layers.resource.listCollections",
+            "pub.layers.resource.getEntry",
+            "pub.layers.resource.listEntries",
+            "pub.layers.resource.getFilling",
+            "pub.layers.resource.listFillings",
+            "pub.layers.resource.getTemplate",
+            "pub.layers.resource.listTemplates",
+            "pub.layers.resource.getTemplateComposition",
+            "pub.layers.resource.listTemplateCompositions",
+            "pub.layers.resource.getCollectionMembership",
+            "pub.layers.resource.listCollectionMemberships",
+            "pub.layers.eprint.getEprint",
+            "pub.layers.eprint.listEprints",
+            "pub.layers.eprint.getDataLink",
+            "pub.layers.eprint.listDataLinks",
+            "pub.layers.media.getMedia",
+            "pub.layers.media.listMedia",
+            "pub.layers.changelog.getEntry",
+            "pub.layers.changelog.listEntries",
+            "pub.layers.changelog.listByCollection"
+          ]
+        }
+      ]
+    }
+  }
+}

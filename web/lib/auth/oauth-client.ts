@@ -15,6 +15,12 @@ import {
 
 import type { DID, LayersUser } from './types';
 import { Agent } from '@atproto/api';
+import {
+  DEFAULT_APPVIEW_AUDIENCE,
+  buildLayersScopeString,
+  type AppviewAudience,
+  type LayersScopeProfile,
+} from './scope-profiles';
 
 /**
  * Handle resolver using ATProto's DNS-over-HTTPS resolver.
@@ -87,14 +93,33 @@ async function getOAuthClient(): Promise<BrowserOAuthClient> {
 /**
  * Initiates the OAuth login flow by redirecting to the user's PDS.
  *
- * @param handle - the user's ATProto handle (e.g., "alice.bsky.social")
- * @returns the authorization URL to redirect to
+ * The scope is built from a named Layers profile and the appview audience
+ * every `include:` binds to. Call sites pick the profile based on what the
+ * user just opted into (e.g. 'annotator' if they clicked "Start annotating",
+ * 'login-only' for a bare sign-in).
  */
-async function login(handle: string): Promise<string> {
+async function login(
+  handle: string,
+  profile: LayersScopeProfile = 'login-only',
+  audience: AppviewAudience = DEFAULT_APPVIEW_AUDIENCE,
+): Promise<string> {
   const client = await getOAuthClient();
-  const scope = 'atproto transition:generic';
+  const scope = buildLayersScopeString(profile, audience);
   const url = await client.authorize(handle, { scope });
   return url.toString();
+}
+
+/**
+ * Starts an OAuth flow that replaces the current session with one carrying an
+ * expanded scope set. Used for progressive scope upgrades, per
+ * https://atproto.com/guides/oauth-patterns#progressive-scope-requests.
+ */
+async function upgradeScope(
+  handle: string,
+  profile: LayersScopeProfile,
+  audience: AppviewAudience = DEFAULT_APPVIEW_AUDIENCE,
+): Promise<string> {
+  return login(handle, profile, audience);
 }
 
 /**
@@ -227,4 +252,12 @@ async function logout(): Promise<void> {
   clientInitPromise = null;
 }
 
-export { getOAuthClient, login, initializeOAuth, restoreSession, logout, getOAuthBaseUrl };
+export {
+  getOAuthClient,
+  login,
+  upgradeScope,
+  initializeOAuth,
+  restoreSession,
+  logout,
+  getOAuthBaseUrl,
+};

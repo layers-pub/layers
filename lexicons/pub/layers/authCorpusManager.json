@@ -1,0 +1,59 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.authCorpusManager",
+  "defs": {
+    "main": {
+      "type": "permission-set",
+      "title": "Manage corpora and resource collections",
+      "detail": "Create and curate corpora, memberships, resource collections, entries, and templates. Includes read access to all Layers records.",
+      "permissions": [
+        {
+          "type": "permission",
+          "resource": "repo",
+          "collection": [
+            "pub.layers.corpus.corpus",
+            "pub.layers.corpus.membership",
+            "pub.layers.resource.collection",
+            "pub.layers.resource.collectionMembership",
+            "pub.layers.resource.entry",
+            "pub.layers.resource.filling",
+            "pub.layers.resource.template",
+            "pub.layers.resource.templateComposition",
+            "pub.layers.eprint.eprint",
+            "pub.layers.eprint.dataLink",
+            "pub.layers.media.media",
+            "pub.layers.changelog.entry"
+          ]
+        },
+        {
+          "type": "permission",
+          "resource": "rpc",
+          "inheritAud": true,
+          "lxm": [
+            "pub.layers.corpus.getCorpus",
+            "pub.layers.corpus.listCorpora",
+            "pub.layers.corpus.getMembership",
+            "pub.layers.corpus.listMemberships",
+            "pub.layers.resource.getCollection",
+            "pub.layers.resource.listCollections",
+            "pub.layers.resource.getEntry",
+            "pub.layers.resource.listEntries",
+            "pub.layers.resource.getFilling",
+            "pub.layers.resource.listFillings",
+            "pub.layers.resource.getTemplate",
+            "pub.layers.resource.listTemplates",
+            "pub.layers.eprint.getEprint",
+            "pub.layers.eprint.listEprints",
+            "pub.layers.eprint.getDataLink",
+            "pub.layers.eprint.listDataLinks",
+            "pub.layers.media.getMedia",
+            "pub.layers.media.listMedia",
+            "pub.layers.changelog.getEntry",
+            "pub.layers.changelog.listEntries",
+            "pub.layers.changelog.listByCollection"
+          ]
+        }
+      ]
+    }
+  }
+}

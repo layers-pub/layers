@@ -17,6 +17,7 @@ import { Panproto } from '@panproto/core';
 import { beforeAll, describe, expect, it } from 'vitest';
 
 import { loadLensRegistry } from '../../src/services/indexing/lens-registry.js';
+import { parsePermissionSetDocument } from '../../src/auth/permissions/index.js';
 
 const ROOT = join(__dirname, '..', '..');
 const LEX_DIR = join(ROOT, 'lexicons', 'pub', 'layers');
@@ -42,10 +43,33 @@ beforeAll(async () => {
   }
 });
 
+function isPermissionSet(raw: unknown): raw is {
+  id: string;
+  defs: { main: { type: 'permission-set' } };
+} {
+  const r = raw as { defs?: { main?: { type?: string } } };
+  return r?.defs?.main?.type === 'permission-set';
+}
+
 describe('ATProto lexicon compliance (via panproto)', () => {
-  it('parses every lexicon through panproto without error', () => {
+  it('parses every record/query/procedure lexicon through panproto without error', () => {
     for (const { id, raw } of lexicons) {
+      if (isPermissionSet(raw)) continue;
       expect(() => panproto.parseLexicon(raw as Record<string, unknown>), id).not.toThrow();
+    }
+  });
+
+  it('parses every permission-set lexicon through the permissions module', () => {
+    for (const { id, raw } of lexicons) {
+      if (!isPermissionSet(raw)) continue;
+      expect(
+        () =>
+          parsePermissionSetDocument(
+            raw as unknown as Parameters<typeof parsePermissionSetDocument>[0],
+            id,
+          ),
+        id,
+      ).not.toThrow();
     }
   });
 
@@ -56,6 +80,14 @@ describe('ATProto lexicon compliance (via panproto)', () => {
     );
     for (const { id } of records) {
       expect(registry.has(id), `lens registry missing ${id}`).toBe(true);
+    }
+  });
+
+  it('permission-set lexicons are not routed through the record registry', () => {
+    const registry = loadLensRegistry();
+    for (const { id, raw } of lexicons) {
+      if (!isPermissionSet(raw)) continue;
+      expect(registry.has(id), `permission set ${id} unexpectedly in lens registry`).toBe(false);
     }
   });
 

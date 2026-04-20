@@ -2,18 +2,21 @@
  * Generic XRPC method map.
  *
  * One function produces every `pub.layers.*` list + get + (optional) search
- * endpoint by reading the generated backend registry. Per-record handler
- * files (`persona/index.ts`, `corpus/index.ts`, ...) are no longer required:
- * the registry tells us which services exist, which params they accept, and
- * which search filters are valid.
+ * endpoint by reading the generated backend registry. Every endpoint is
+ * wrapped so the request must either be anonymous (we still allow anonymous
+ * reads while the permission model rolls out) OR carry an rpc permission
+ * whose `lxm` matches the endpoint NSID and whose `aud` matches the
+ * configured appview audience.
  *
  * @module
  */
 
+import type { Context } from 'hono';
 import { z, type ZodType } from 'zod';
 
 import { backendRecordKinds, type BackendParamMeta } from '../../../generated/record-registry.js';
-import type { XRPCMethodMap } from '../../xrpc/types.js';
+import { denyResponse, requireRpc } from '../../middleware/require-scope.js';
+import type { XRPCMethod, XRPCMethodMap } from '../../xrpc/types.js';
 import { createGetHandler, createListHandler, createSearchHandler } from './handler-factories.js';
 
 /**
@@ -51,6 +54,29 @@ function serviceKeyForSlug(slug: string): string {
 }
 
 /**
+ * Wraps a handler so authenticated requests must carry an rpc scope whose
+ * `lxm` matches the endpoint NSID; anonymous requests pass through
+ * unchanged. This is the spec-compliant behaviour for GET endpoints: public
+ * reads are allowed, but an authenticated call that claims only
+ * `atproto` (and no rpc scope for the endpoint) is a 403.
+ */
+function withScope(
+  nsid: string,
+  inner: (c: Context) => Promise<Response>,
+): (c: Context) => Promise<Response> {
+  return async (c) => {
+    const auth = c.get('auth') as { readonly authenticated: boolean } | undefined;
+    if (auth?.authenticated) {
+      const decision = requireRpc(c, nsid);
+      if (!decision.allowed) {
+        return denyResponse(c, { kind: 'rpc', lxm: nsid, aud: '' }, decision);
+      }
+    }
+    return inner(c);
+  };
+}
+
+/**
  * Returns an XRPC method map covering every list + get endpoint declared by
  * the lexicons. Callers compose this with any bespoke-endpoint maps (search,
  * admin, etc.) into the final app registration.
@@ -62,17 +88,21 @@ export function genericRecordMethods(): XRPCMethodMap {
     const serviceKey = serviceKeyForSlug(kind.slug);
 
     if (kind.getEndpoint) {
-      methods[kind.getEndpoint] = {
-        handler: createGetHandler(serviceKey, getParamsSchema),
-        auth: 'none',
+      const nsid = kind.getEndpoint;
+      const method: XRPCMethod = {
+        handler: withScope(nsid, createGetHandler(serviceKey, getParamsSchema)),
+        auth: 'optional',
       };
+      methods[nsid] = method;
     }
 
     if (kind.listEndpoint) {
-      methods[kind.listEndpoint] = {
-        handler: createListHandler(serviceKey, listParamsSchema(kind.listParams)),
-        auth: 'none',
+      const nsid = kind.listEndpoint;
+      const method: XRPCMethod = {
+        handler: withScope(nsid, createListHandler(serviceKey, listParamsSchema(kind.listParams))),
+        auth: 'optional',
       };
+      methods[nsid] = method;
     }
   }
 
@@ -81,31 +111,22 @@ export function genericRecordMethods(): XRPCMethodMap {
 
 /**
  * Builds an XRPC method map for every `searchXxx` endpoint declared in the
- * lexicon corpus. Unlike list/get which are present for every record kind,
- * search endpoints only exist for a subset; this scans the registry for
- * matching endpoints at callsite.
- *
- * The search method on the service follows the naming convention
- * `search${SlugPascalPlural}`.
+ * lexicon corpus.
  */
 export function genericSearchMethods(searchEndpoints: ReadonlyMap<string, string>): XRPCMethodMap {
   const methods: XRPCMethodMap = {};
   for (const [nsid, methodName] of searchEndpoints) {
-    // Reuse the generic search schema: `q` + `limit` + `cursor` + any
-    // extra params (kept as optional strings) will pass through as filters.
     const schema = z.object({
       q: z.string().min(1),
       limit: z.coerce.number().int().min(1).max(100).default(20),
       cursor: z.string().optional(),
     });
-    // Derive the service key from the NSID's penultimate segment. E.g.
-    // `pub.layers.persona.searchPersonas` → PersonaService.
     const parts = nsid.split('.');
     const domain = parts[parts.length - 2] ?? '';
     const serviceKey = `${domain.charAt(0).toUpperCase()}${domain.slice(1)}Service`;
     methods[nsid] = {
-      handler: createSearchHandler(serviceKey, schema, methodName),
-      auth: 'none',
+      handler: withScope(nsid, createSearchHandler(serviceKey, schema, methodName)),
+      auth: 'optional',
     };
   }
   return methods;

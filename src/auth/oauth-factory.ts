@@ -1,8 +1,12 @@
 /**
  * Factory for creating a fully configured NodeOAuthClient.
  *
- * Assembles Redis-backed state and session stores, configures client metadata,
- * and returns a NodeOAuthClient ready for ATProto OAuth flows.
+ * Assembles Redis-backed state and session stores, assembles the granular
+ * OAuth scope string (no `transition:generic`), and returns a NodeOAuthClient
+ * ready for ATProto OAuth flows. The maximum scope declared in client
+ * metadata is the union of every granular scope the Layers app may ever
+ * request; individual authorize() calls select a subset per the
+ * progressive-scope pattern.
  *
  * @module
  */
@@ -11,6 +15,11 @@ import type { Redis } from 'ioredis';
 
 import { NodeOAuthClient } from '@atproto/oauth-client-node';
 
+import {
+  LAYERS_MAXIMUM_SCOPE,
+  buildLayersScopeString,
+  type LayersScopeProfile,
+} from './permissions/layers-scopes.js';
 import { RedisSessionStore, RedisStateStore } from './oauth-stores.js';
 
 /**
@@ -23,28 +32,20 @@ interface OAuthFactoryConfig {
   readonly redirectUri: string;
   /** Redis client for state and session persistence. */
   readonly redis: Redis;
+  /**
+   * Optional override for the maximum scope declared in the client metadata
+   * document. Defaults to {@link LAYERS_MAXIMUM_SCOPE} which includes every
+   * permission set the app may ever request.
+   */
+  readonly maximumScope?: string;
 }
 
 /**
  * Creates a NodeOAuthClient configured for the Layers appview.
  *
  * The client uses Redis-backed stores for state (PKCE, CSRF) and sessions
- * (OAuth tokens, DPoP keys). Client metadata follows ATProto conventions
- * with DPoP-bound access tokens and the `atproto transition:generic` scope.
- *
- * @param config - factory configuration with client ID, redirect URI, and Redis client
- * @returns a fully configured NodeOAuthClient
- *
- * @example
- * ```typescript
- * const oauthClient = createLayersOAuthClient({
- *   clientId: "https://layers.pub/client-metadata.json",
- *   redirectUri: "https://layers.pub/callback",
- *   redis,
- * });
- *
- * const url = await oauthClient.authorize(handle, { state: "random" });
- * ```
+ * (OAuth tokens, DPoP keys). Client metadata declares the maximum set of
+ * scopes Layers may ever request; per-authorize() flows request a subset.
  */
 function createLayersOAuthClient(config: OAuthFactoryConfig): NodeOAuthClient {
   const stateStore = new RedisStateStore(config.redis);
@@ -55,7 +56,7 @@ function createLayersOAuthClient(config: OAuthFactoryConfig): NodeOAuthClient {
       client_id: config.clientId,
       client_name: 'Layers',
       redirect_uris: [config.redirectUri],
-      scope: 'atproto transition:generic',
+      scope: config.maximumScope ?? LAYERS_MAXIMUM_SCOPE,
       grant_types: ['authorization_code', 'refresh_token'],
       response_types: ['code'],
       token_endpoint_auth_method: 'none',
@@ -67,5 +68,5 @@ function createLayersOAuthClient(config: OAuthFactoryConfig): NodeOAuthClient {
   });
 }
 
-export { createLayersOAuthClient };
-export type { OAuthFactoryConfig };
+export { createLayersOAuthClient, buildLayersScopeString, LAYERS_MAXIMUM_SCOPE };
+export type { OAuthFactoryConfig, LayersScopeProfile };

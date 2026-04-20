@@ -1,0 +1,47 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.authExperimenter",
+  "defs": {
+    "main": {
+      "type": "permission-set",
+      "title": "Run annotation experiments",
+      "detail": "Design experiments and collect judgments: experiment definitions, judgment sets, agreement reports, templates, template compositions, and fillings. Includes read access to all Layers records.",
+      "permissions": [
+        {
+          "type": "permission",
+          "resource": "repo",
+          "collection": [
+            "pub.layers.judgment.experimentDef",
+            "pub.layers.judgment.judgmentSet",
+            "pub.layers.judgment.agreementReport",
+            "pub.layers.resource.template",
+            "pub.layers.resource.templateComposition",
+            "pub.layers.resource.filling",
+            "pub.layers.persona.persona"
+          ]
+        },
+        {
+          "type": "permission",
+          "resource": "rpc",
+          "inheritAud": true,
+          "lxm": [
+            "pub.layers.judgment.getExperimentDef",
+            "pub.layers.judgment.listExperimentDefs",
+            "pub.layers.judgment.getJudgmentSet",
+            "pub.layers.judgment.listJudgmentSets",
+            "pub.layers.judgment.getAgreementReport",
+            "pub.layers.judgment.listAgreementReports",
+            "pub.layers.resource.getTemplate",
+            "pub.layers.resource.listTemplates",
+            "pub.layers.resource.getTemplateComposition",
+            "pub.layers.resource.listTemplateCompositions",
+            "pub.layers.resource.getFilling",
+            "pub.layers.resource.listFillings",
+            "pub.layers.persona.getPersona",
+            "pub.layers.persona.listPersonas"
+          ]
+        }
+      ]
+    }
+  }
+}

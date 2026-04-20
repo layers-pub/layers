@@ -1,0 +1,41 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.authOntologyEditor",
+  "defs": {
+    "main": {
+      "type": "permission-set",
+      "title": "Edit ontologies",
+      "detail": "Create and edit ontologies, type definitions, and the graph records that connect them. Includes read access to all Layers records.",
+      "permissions": [
+        {
+          "type": "permission",
+          "resource": "repo",
+          "collection": [
+            "pub.layers.ontology.ontology",
+            "pub.layers.ontology.typeDef",
+            "pub.layers.graph.graphNode",
+            "pub.layers.graph.graphEdge",
+            "pub.layers.graph.graphEdgeSet"
+          ]
+        },
+        {
+          "type": "permission",
+          "resource": "rpc",
+          "inheritAud": true,
+          "lxm": [
+            "pub.layers.ontology.getOntology",
+            "pub.layers.ontology.listOntologies",
+            "pub.layers.ontology.getTypeDef",
+            "pub.layers.ontology.listTypeDefs",
+            "pub.layers.graph.getGraphNode",
+            "pub.layers.graph.listGraphNodes",
+            "pub.layers.graph.getGraphEdge",
+            "pub.layers.graph.listGraphEdges",
+            "pub.layers.graph.getGraphEdgeSet",
+            "pub.layers.graph.listGraphEdgeSets"
+          ]
+        }
+      ]
+    }
+  }
+}
