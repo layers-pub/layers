@@ -1,0 +1,18 @@
+{
+  "$schema": "dev.idiolect.spec.verification_runner",
+  "description": "Verification runners shipped by the Layers appview. Each runner produces signed dev.idiolect.verification records attesting a property of a pub.layers.* lens or schema.",
+  "runners": [
+    {
+      "name": "layers_roundtrip",
+      "kind": "roundtrip-test",
+      "description": "Runs put(get(x))==x over a corpus of pub.layers.* records for a given PanprotoLens.",
+      "module": "runners::layers_roundtrip"
+    },
+    {
+      "name": "layers_static_check",
+      "kind": "static-check",
+      "description": "Runs panproto::check::validate on a lens against its source/target schemas.",
+      "module": "runners::layers_static_check"
+    }
+  ]
+}

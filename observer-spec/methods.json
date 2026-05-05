@@ -1,0 +1,34 @@
+{
+  "$schema": "dev.idiolect.spec.observation_method",
+  "description": "Observation methods the Layers appview publishes. Each method folds pub.layers.* firehose events into a pub.layers.observation.* record. Hand-written ObservationMethod impls live in layers-observer/src/methods/<name>.rs; codegen emits the registry.",
+  "methods": [
+    {
+      "name": "annotation_coverage",
+      "description": "Fraction of expressions in a corpus that have at least one annotation layer targeting them.",
+      "module": "methods::annotation_coverage",
+      "inputs": ["pub.layers.annotation.annotationLayer", "pub.layers.expression.expression", "pub.layers.corpus.membership"],
+      "window": "rolling_7d"
+    },
+    {
+      "name": "agreement_by_layer",
+      "description": "Mean pairwise agreement per annotation layer, using pub.layers.judgment.agreementReport.",
+      "module": "methods::agreement_by_layer",
+      "inputs": ["pub.layers.judgment.agreementReport", "pub.layers.annotation.annotationLayer"],
+      "window": "snapshot"
+    },
+    {
+      "name": "corpus_growth",
+      "description": "Record-count deltas per corpus over time, bucketed daily.",
+      "module": "methods::corpus_growth",
+      "inputs": ["pub.layers.corpus.corpus", "pub.layers.corpus.membership"],
+      "window": "rolling_30d"
+    },
+    {
+      "name": "lens_adoption",
+      "description": "Invocation counts of Layers-defined panproto lenses, grouped by (source, target) schema pair.",
+      "module": "methods::lens_adoption",
+      "inputs": ["dev.idiolect.encounter"],
+      "window": "rolling_7d"
+    }
+  ]
+}
