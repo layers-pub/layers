@@ -91,9 +91,11 @@ function AuthProvider({ children }: AuthProviderProps): React.JSX.Element {
       const authUrl = await oauthLogin(handle);
       // Redirect to the PDS authorization page
       window.location.href = authUrl;
-    } catch {
+    } catch (err) {
       setIsLoading(false);
-      throw new Error('Login failed. Check that your handle is correct.');
+      console.error('[oauth] login failed', err);
+      const reason = err instanceof Error ? err.message : 'unknown error';
+      throw new Error(`Login failed: ${reason}`);
     }
   }, []);
 
