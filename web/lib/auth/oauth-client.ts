@@ -75,14 +75,20 @@ function getClientId(): string {
     url.hostname === '127.0.0.1' ||
     url.hostname === '[::1]'
   ) {
-    // Build the callback URL from the actual browsing origin so
-    // session storage (IndexedDB is origin-scoped) and the OAuth
-    // redirect agree on hostname+port. ATProto's loopback profile
-    // accepts both `localhost` and `127.0.0.1`.
-    const origin =
-      typeof window !== 'undefined' ? window.location.origin : baseUrl;
+    // RFC 8252 requires loopback redirects to use a literal IP
+    // (`127.0.0.1` or `[::1]`), not the `localhost` hostname.
+    // `BrowserOAuthClient.load` rejects the latter outright. Reuse
+    // the current page's port so the dev server actually picks up
+    // the redirect; if the user is browsing on `localhost:<port>`
+    // the round-trip will land on `127.0.0.1:<port>`, a different
+    // origin — they need to access the app on `127.0.0.1` to keep
+    // IndexedDB-scoped OAuth state coherent.
+    const port =
+      typeof window !== 'undefined' && window.location.port
+        ? window.location.port
+        : url.port || '3000';
     const params = new URLSearchParams({
-      redirect_uri: `${origin}/callback`,
+      redirect_uri: `http://127.0.0.1:${port}/callback`,
       scope: 'atproto transition:generic',
     });
     return `http://localhost?${params.toString()}`;
