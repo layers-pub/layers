@@ -5,6 +5,7 @@
 
 import { z } from 'zod';
 
+/** Validator for `pub.layers.ontology.typeDef` records — every constraint here is derived from the lexicon. */
 export const schema = z.object({
   allowedRoles: z.array(z.unknown()).max(64).optional(),
   allowedValues: z.array(z.string().max(512)).max(256).optional(),
@@ -20,4 +21,5 @@ export const schema = z.object({
 });
 
 export type SchemaInput = z.input<typeof schema>;
+
 export type SchemaOutput = z.output<typeof schema>;

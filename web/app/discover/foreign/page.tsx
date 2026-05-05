@@ -12,16 +12,16 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
-import { useListExternalRecords } from '@/lib/api/generated/queries/integration.js';
+import { useListExternalRecords } from '@/lib/api/generated/queries/integration';
 import {
   lensRegistry,
   lensSourcePrefixes,
-} from '@/lib/lenses/generated/registry.js';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.js';
-import { Badge } from '@/components/ui/badge.js';
-import { Button } from '@/components/ui/button.js';
-import { Skeleton } from '@/components/ui/skeleton.js';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs.js';
+} from '@/lib/lenses/generated/registry';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function ForeignBrowserPage(): React.JSX.Element {
   const prefixes = lensSourcePrefixes();

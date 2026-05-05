@@ -5,6 +5,7 @@
 
 import { z } from 'zod';
 
+/** Validator for `pub.layers.annotation.annotationLayer` records — every constraint here is derived from the lexicon. */
 export const schema = z.object({
   alternativesRef: z.string().regex(/^at:\/\//, 'must start with at://').optional(),
   annotations: z.array(z.unknown()),
@@ -28,4 +29,5 @@ export const schema = z.object({
 });
 
 export type SchemaInput = z.input<typeof schema>;
+
 export type SchemaOutput = z.output<typeof schema>;

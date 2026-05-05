@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 
-import { haptic } from '@/lib/haptics.js';
+import { haptic } from '@/lib/haptics';
 
 /** Options for {@link usePullToRefresh}. */
 export interface UsePullToRefreshOptions {

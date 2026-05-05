@@ -12,13 +12,13 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { useApplyLens } from '@/lib/api/generated/queries/integration.js';
-import { findLensBySource } from '@/lib/lenses/generated/registry.js';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.js';
-import { Input } from '@/components/ui/input.js';
-import { Button } from '@/components/ui/button.js';
-import { Skeleton } from '@/components/ui/skeleton.js';
-import { Badge } from '@/components/ui/badge.js';
+import { useApplyLens } from '@/lib/api/generated/queries/integration';
+import { findLensBySource } from '@/lib/lenses/generated/registry';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
 
 export default function LensPage(): React.JSX.Element {
   const router = useRouter();

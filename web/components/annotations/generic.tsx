@@ -15,9 +15,9 @@
 
 import { useEffect, useState } from 'react';
 
-import type { AnnotationSlotProps } from '@/components/annotations/registry.js';
-import { loadFields } from '@/lib/forms/generated/index.js';
-import type { FormField } from '@/lib/forms/generated/index.js';
+import type { AnnotationSlotProps } from '@/components/annotations/registry';
+import { loadFields } from '@/lib/forms/generated/index';
+import type { FormField } from '@/lib/forms/generated/index';
 
 interface FieldMetadata {
   readonly fields: readonly FormField[];

@@ -5,6 +5,7 @@
 
 import { z } from 'zod';
 
+/** Validator for `pub.layers.alignment.alignment` records — every constraint here is derived from the lexicon. */
 export const schema = z.object({
   createdAt: z.string().datetime({ offset: true }),
   expression: z.string().regex(/^at:\/\//, 'must start with at://').optional(),
@@ -23,4 +24,5 @@ export const schema = z.object({
 });
 
 export type SchemaInput = z.input<typeof schema>;
+
 export type SchemaOutput = z.output<typeof schema>;

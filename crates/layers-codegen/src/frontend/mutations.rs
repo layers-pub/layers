@@ -124,9 +124,9 @@ fn walk(root: &Path, visit: &mut impl FnMut(&Path) -> Result<()>) -> Result<()> 
 fn build_index_module<'a>(namespaces: impl IntoIterator<Item = &'a String>) -> TsModule {
     let mut module = TsModule::new();
     module.leading_comment = Some("Barrel of every mutation namespace + the RecordWriter context.".into());
-    module.item(TsItem::Raw("export * from './writer.js';\n".into()));
+    module.item(TsItem::Raw("export * from './writer';\n".into()));
     for ns in namespaces {
-        module.item(TsItem::Raw(format!("export * from './{ns}.js';\n")));
+        module.item(TsItem::Raw(format!("export * from './{ns}';\n")));
     }
     module
 }
@@ -189,7 +189,7 @@ fn build_namespace_module(namespace: &str, entries: &[RecordEntry]) -> TsModule 
             )
             .add_type("UseMutationOptions"),
         )
-        .import(TsImport::named("./writer.js", ["useRecordWriter"]));
+        .import(TsImport::named("./writer", ["useRecordWriter"]));
 
     for entry in entries {
         let combined = format!("{}{}", pascal_case(&entry.namespace), entry.pascal);

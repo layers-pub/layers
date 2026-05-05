@@ -5,6 +5,7 @@
 
 import { z } from 'zod';
 
+/** Validator for `pub.layers.graph.graphEdge` records — every constraint here is derived from the lexicon. */
 export const schema = z.object({
   confidence: z.number().int().min(0).max(1000).optional(),
   createdAt: z.string().datetime({ offset: true }),
@@ -19,4 +20,5 @@ export const schema = z.object({
 });
 
 export type SchemaInput = z.input<typeof schema>;
+
 export type SchemaOutput = z.output<typeof schema>;

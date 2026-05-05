@@ -11,16 +11,16 @@
 import { use, useState } from 'react';
 import Link from 'next/link';
 
-import { useListExpressions } from '@/lib/api/generated/queries/expression.js';
-import { useListCorpora } from '@/lib/api/generated/queries/corpus.js';
-import { useListAnnotationLayers } from '@/lib/api/generated/queries/annotation.js';
-import { useListExperimentDefs } from '@/lib/api/generated/queries/judgment.js';
-import { useListExternalRecords } from '@/lib/api/generated/queries/integration.js';
-import { useListChangelogEntries } from '@/lib/api/generated/queries/changelog.js';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.js';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs.js';
-import { Skeleton } from '@/components/ui/skeleton.js';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar.js';
+import { useListExpressions } from '@/lib/api/generated/queries/expression';
+import { useListCorpora } from '@/lib/api/generated/queries/corpus';
+import { useListAnnotationLayers } from '@/lib/api/generated/queries/annotation';
+import { useListExperimentDefs } from '@/lib/api/generated/queries/judgment';
+import { useListExternalRecords } from '@/lib/api/generated/queries/integration';
+import { useListChangelogEntries } from '@/lib/api/generated/queries/changelog';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 interface ListResponse {
   records?: readonly { uri: string; cid?: string; value?: Record<string, unknown> }[];

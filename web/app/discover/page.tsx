@@ -12,24 +12,24 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
-import { useListExpressions } from '@/lib/api/generated/queries/expression.js';
-import { useListCorpora } from '@/lib/api/generated/queries/corpus.js';
-import { useListAnnotationLayers } from '@/lib/api/generated/queries/annotation.js';
-import { useListOntologies } from '@/lib/api/generated/queries/ontology.js';
-import { useListSegmentations } from '@/lib/api/generated/queries/segmentation.js';
-import { useListAlignments } from '@/lib/api/generated/queries/alignment.js';
-import { useListGraphNodes } from '@/lib/api/generated/queries/graph.js';
-import { useListExperimentDefs } from '@/lib/api/generated/queries/judgment.js';
-import { useListPersonas } from '@/lib/api/generated/queries/persona.js';
-import { useListMedia } from '@/lib/api/generated/queries/media.js';
-import { useListEprints } from '@/lib/api/generated/queries/eprint.js';
-import { useListChangelogEntries } from '@/lib/api/generated/queries/changelog.js';
-import { useListExternalRecords } from '@/lib/api/generated/queries/integration.js';
-import { useListCollections } from '@/lib/api/generated/queries/resource.js';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.js';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs.js';
-import { Skeleton } from '@/components/ui/skeleton.js';
-import { Badge } from '@/components/ui/badge.js';
+import { useListExpressions } from '@/lib/api/generated/queries/expression';
+import { useListCorpora } from '@/lib/api/generated/queries/corpus';
+import { useListAnnotationLayers } from '@/lib/api/generated/queries/annotation';
+import { useListOntologies } from '@/lib/api/generated/queries/ontology';
+import { useListSegmentations } from '@/lib/api/generated/queries/segmentation';
+import { useListAlignments } from '@/lib/api/generated/queries/alignment';
+import { useListGraphNodes } from '@/lib/api/generated/queries/graph';
+import { useListExperimentDefs } from '@/lib/api/generated/queries/judgment';
+import { useListPersonas } from '@/lib/api/generated/queries/persona';
+import { useListMedia } from '@/lib/api/generated/queries/media';
+import { useListEprints } from '@/lib/api/generated/queries/eprint';
+import { useListChangelogEntries } from '@/lib/api/generated/queries/changelog';
+import { useListExternalRecords } from '@/lib/api/generated/queries/integration';
+import { useListCollections } from '@/lib/api/generated/queries/resource';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
 
 interface RecordView {
   uri: string;

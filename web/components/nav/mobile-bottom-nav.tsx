@@ -15,8 +15,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Compass, Home, Sparkles, SquarePen, User } from 'lucide-react';
 
-import { useScrollDirection } from '@/lib/hooks/use-scroll-direction.js';
-import { cn } from '@/lib/utils.js';
+import { useScrollDirection } from '@/lib/hooks/use-scroll-direction';
+import { cn } from '@/lib/utils';
 
 const ITEMS = [
   { href: '/', label: 'Home', icon: Home },

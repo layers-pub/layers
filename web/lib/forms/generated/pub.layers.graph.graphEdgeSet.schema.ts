@@ -5,6 +5,7 @@
 
 import { z } from 'zod';
 
+/** Validator for `pub.layers.graph.graphEdgeSet` records — every constraint here is derived from the lexicon. */
 export const schema = z.object({
   createdAt: z.string().datetime({ offset: true }),
   edgeType: z.union([z.enum(['coreference', 'causal', 'part-of', 'member-of', 'type-of', 'same-as', 'related-to', 'derived-from', 'supports', 'contradicts', 'discourse', 'bridging', 'before', 'after', 'meets', 'met-by', 'overlaps', 'overlapped-by', 'starts', 'started-by', 'during', 'contains', 'finishes', 'finished-by', 'equals', 'simultaneous', 'initiates', 'culminates', 'terminates', 'continues', 'reinitiates', 'disconnected', 'externally-connected', 'partially-overlapping', 'tangential-proper-part', 'non-tangential-proper-part', 'tangential-proper-part-inverse', 'non-tangential-proper-part-inverse', 'spatially-equal', 'north-of', 'south-of', 'east-of', 'west-of', 'above', 'below', 'in-front-of', 'behind', 'left-of', 'right-of', 'near', 'far', 'adjacent', 'custom']), z.string()]).optional(),
@@ -17,4 +18,5 @@ export const schema = z.object({
 });
 
 export type SchemaInput = z.input<typeof schema>;
+
 export type SchemaOutput = z.output<typeof schema>;

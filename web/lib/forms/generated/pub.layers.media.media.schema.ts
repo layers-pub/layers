@@ -5,6 +5,7 @@
 
 import { z } from 'zod';
 
+/** Validator for `pub.layers.media.media` records — every constraint here is derived from the lexicon. */
 export const schema = z.object({
   audio: z.unknown().optional(),
   blob: z.unknown().optional(),
@@ -28,4 +29,5 @@ export const schema = z.object({
 });
 
 export type SchemaInput = z.input<typeof schema>;
+
 export type SchemaOutput = z.output<typeof schema>;

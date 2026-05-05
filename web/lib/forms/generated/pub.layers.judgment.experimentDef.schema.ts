@@ -5,6 +5,7 @@
 
 import { z } from 'zod';
 
+/** Validator for `pub.layers.judgment.experimentDef` records — every constraint here is derived from the lexicon. */
 export const schema = z.object({
   collectionRefs: z.array(z.string().regex(/^at:\/\//, 'must start with at://')).max(64).optional(),
   corpusRef: z.string().regex(/^at:\/\//, 'must start with at://').optional(),
@@ -30,4 +31,5 @@ export const schema = z.object({
 });
 
 export type SchemaInput = z.input<typeof schema>;
+
 export type SchemaOutput = z.output<typeof schema>;

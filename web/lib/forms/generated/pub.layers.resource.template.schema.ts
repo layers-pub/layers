@@ -5,6 +5,7 @@
 
 import { z } from 'zod';
 
+/** Validator for `pub.layers.resource.template` records — every constraint here is derived from the lexicon. */
 export const schema = z.object({
   constraints: z.array(z.unknown()).max(64).optional(),
   createdAt: z.string().datetime({ offset: true }),
@@ -20,4 +21,5 @@ export const schema = z.object({
 });
 
 export type SchemaInput = z.input<typeof schema>;
+
 export type SchemaOutput = z.output<typeof schema>;

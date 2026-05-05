@@ -5,6 +5,7 @@
 
 import { z } from 'zod';
 
+/** Validator for `pub.layers.eprint.eprint` records — every constraint here is derived from the lexicon. */
 export const schema = z.object({
   annotationRefs: z.array(z.string().regex(/^at:\/\//, 'must start with at://')).max(1000).optional(),
   citation: z.string().max(4096).optional(),
@@ -24,4 +25,5 @@ export const schema = z.object({
 });
 
 export type SchemaInput = z.input<typeof schema>;
+
 export type SchemaOutput = z.output<typeof schema>;

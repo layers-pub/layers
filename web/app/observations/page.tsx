@@ -13,17 +13,17 @@
 
 import { useMemo, useState } from 'react';
 
-import { useListExternalRecords } from '@/lib/api/generated/queries/integration.js';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.js';
-import { Skeleton } from '@/components/ui/skeleton.js';
-import { Badge } from '@/components/ui/badge.js';
+import { useListExternalRecords } from '@/lib/api/generated/queries/integration';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
 import {
   MobileDrawer,
   MobileDrawerContent,
   MobileDrawerHeader,
   MobileDrawerTitle,
   MobileDrawerTrigger,
-} from '@/components/ui/mobile-drawer.js';
+} from '@/components/ui/mobile-drawer';
 
 interface ObservationValue {
   readonly method?: string;

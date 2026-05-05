@@ -32,8 +32,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog.js';
-import { cn } from '@/lib/utils.js';
+} from '@/components/ui/dialog';
+import { cn } from '@/lib/utils';
 
 /**
  * Track viewport width to decide drawer-vs-dialog at runtime. Switches

@@ -12,18 +12,18 @@
 
 import { useState } from 'react';
 
-import { lensRegistry, lensSourcePrefixes } from '@/lib/lenses/generated/registry.js';
-import type { LensRegistryEntry } from '@/lib/lenses/generated/registry.js';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.js';
-import { Badge } from '@/components/ui/badge.js';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs.js';
+import { lensRegistry, lensSourcePrefixes } from '@/lib/lenses/generated/registry';
+import type { LensRegistryEntry } from '@/lib/lenses/generated/registry';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   MobileDrawer,
   MobileDrawerContent,
   MobileDrawerHeader,
   MobileDrawerTitle,
   MobileDrawerTrigger,
-} from '@/components/ui/mobile-drawer.js';
+} from '@/components/ui/mobile-drawer';
 
 export default function LensesPage(): React.JSX.Element {
   const prefixes = lensSourcePrefixes();

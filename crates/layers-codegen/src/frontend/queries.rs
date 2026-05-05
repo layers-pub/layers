@@ -98,7 +98,7 @@ fn build_index_module<'a>(namespaces: impl IntoIterator<Item = &'a String>) -> T
     module.leading_comment = Some("Barrel of every generated namespace hook module.".into());
     let names: Vec<&String> = namespaces.into_iter().collect();
     for ns in names {
-        module.item(TsItem::Raw(format!("export * from './{ns}.js';\n")));
+        module.item(TsItem::Raw(format!("export * from './{ns}';\n")));
     }
     module
 }
@@ -117,8 +117,8 @@ fn build_namespace_module(namespace: &str, entries: &[&Value]) -> TsModule {
             .add_type("UseInfiniteQueryOptions")
             .add_type("UseQueryOptions"),
         )
-        .import(TsImport::named("@/lib/api/client.js", ["api"]))
-        .import(TsImport::types("@/lib/api/schema.generated.js", ["paths"]));
+        .import(TsImport::named("@/lib/api/client", ["api"]))
+        .import(TsImport::types("@/lib/api/schema.generated", ["paths"]));
 
     let mut keys: Vec<KeysFactoryEntry> = Vec::new();
     for entry in entries {

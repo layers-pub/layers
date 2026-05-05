@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef } from 'react';
 
-import { haptic } from '@/lib/haptics.js';
+import { haptic } from '@/lib/haptics';
 
 /** Options for {@link useLongPress}. */
 export interface UseLongPressOptions {
