@@ -55,16 +55,37 @@ function getOAuthBaseUrl(): string {
 /**
  * Returns the OAuth client_id.
  *
- * ATProto requires exactly "http://localhost" (no port, no path) for
- * loopback clients. For production URLs, the client_id points to the
- * client metadata document.
+ * ATProto's loopback client identifier is `http://localhost`. Per the
+ * OAuth-loopback profile, fields the synthetic metadata needs to
+ * override (redirect_uri, scope, …) ride along as query parameters on
+ * that identifier — without `redirect_uri`, the library defaults to a
+ * port-less `http://127.0.0.1/` and the PDS bounces the user there
+ * after authorisation. We compose the callback URL from the dev
+ * server's actual port so the round-trip lands back in the Next app.
+ *
+ * For production URLs, the client_id points to the hosted client
+ * metadata document and no query-string overrides are needed.
  */
 function getClientId(): string {
   const baseUrl = getOAuthBaseUrl();
   const url = new URL(baseUrl);
 
-  if (url.hostname === 'localhost' || url.hostname === '127.0.0.1' || url.hostname === '[::1]') {
-    return 'http://localhost';
+  if (
+    url.hostname === 'localhost' ||
+    url.hostname === '127.0.0.1' ||
+    url.hostname === '[::1]'
+  ) {
+    // Build the callback URL from the actual browsing origin so
+    // session storage (IndexedDB is origin-scoped) and the OAuth
+    // redirect agree on hostname+port. ATProto's loopback profile
+    // accepts both `localhost` and `127.0.0.1`.
+    const origin =
+      typeof window !== 'undefined' ? window.location.origin : baseUrl;
+    const params = new URLSearchParams({
+      redirect_uri: `${origin}/callback`,
+      scope: 'atproto transition:generic',
+    });
+    return `http://localhost?${params.toString()}`;
   }
 
   return `${baseUrl}/client-metadata.json`;
