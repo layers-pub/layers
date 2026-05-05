@@ -1,0 +1,38 @@
+[package]
+name = "layers-auth"
+description = "Granular OAuth scope + service-auth enforcement for the Layers appview."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+idiolect-identity = { workspace = true }
+idiolect-oauth    = { workspace = true }
+
+serde        = { workspace = true }
+serde_json   = { workspace = true }
+thiserror    = { workspace = true }
+tokio        = { workspace = true, features = ["sync", "macros", "rt"] }
+tracing      = { workspace = true }
+time         = { workspace = true }
+jsonwebtoken = { workspace = true }
+reqwest      = { workspace = true }
+async-trait  = { workspace = true }
+base64       = "0.22"
+p256         = { workspace = true }
+uuid         = { version = "1", features = ["v4"] }
+
+[dev-dependencies]
+tokio       = { workspace = true, features = ["macros", "rt", "rt-multi-thread", "test-util"] }
+wiremock    = "0.6"
+serde_json  = { workspace = true }
+rand        = "0.8"
+async-trait = { workspace = true }
+reqwest     = { workspace = true }

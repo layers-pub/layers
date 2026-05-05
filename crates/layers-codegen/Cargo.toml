@@ -1,0 +1,34 @@
+[package]
+name = "layers-codegen"
+description = "Thin driver that points idiolect-codegen's library surface at Layers' pub.layers.* lexicon tree. The stock idiolect-codegen CLI is hardcoded to lexicons/dev/*, so Layers runs codegen through this binary instead."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[[bin]]
+name = "layers-codegen"
+path = "src/main.rs"
+
+[dependencies]
+idiolect-codegen = { workspace = true }
+idiolect-lens    = { workspace = true }
+
+panproto-schema    = { workspace = true }
+panproto-protocols = { workspace = true }
+panproto-lens      = { workspace = true }
+panproto-lens-dsl  = { workspace = true }
+
+serde      = { workspace = true }
+serde_json = { workspace = true }
+anyhow     = { workspace = true }
+thiserror  = { workspace = true }
+sha2       = "0.10"
+rmp-serde  = "1"
+base64     = "0.22"

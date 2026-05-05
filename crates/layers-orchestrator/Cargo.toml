@@ -1,0 +1,65 @@
+[package]
+name = "layers-orchestrator"
+description = "Read-only HTTP query API for the Layers appview. Serves XRPC routes auto-wired from orchestrator-spec/queries.json, enforces granular scopes via layers-auth, and reads from layers-storage backends."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[[bin]]
+name = "layers-orchestrator"
+path = "src/bin/layers_orchestrator.rs"
+
+[dependencies]
+layers-records = { path = "../layers-records" }
+layers-storage = { path = "../layers-storage", default-features = false, features = ["postgres", "redis"] }
+layers-auth    = { path = "../layers-auth" }
+redis          = { workspace = true }
+reqwest        = { workspace = true }
+idiolect-lens  = { workspace = true }
+idiolect-records = { workspace = true }
+panproto-schema = { workspace = true }
+base64         = "0.22"
+rmp-serde      = "1"
+sha2           = "0.10"
+
+idiolect-identity = { workspace = true }
+
+sqlx = { workspace = true }
+async-trait = { workspace = true }
+
+serde      = { workspace = true }
+serde_json = { workspace = true }
+thiserror  = { workspace = true }
+tokio      = { workspace = true, features = ["macros", "rt-multi-thread", "signal"] }
+tracing    = { workspace = true }
+anyhow     = { workspace = true }
+axum       = { workspace = true }
+tower      = { workspace = true }
+tower-http = { workspace = true, features = ["trace", "cors", "compression-gzip", "request-id"] }
+time       = { workspace = true }
+
+tracing-subscriber    = { workspace = true }
+metrics               = { workspace = true }
+metrics-exporter-prometheus = { workspace = true }
+uuid              = { version = "1", features = ["v4"] }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt", "rt-multi-thread", "test-util"] }
+tower = { workspace = true, features = ["util"] }
+hyper = { workspace = true }
+http-body-util = "0.1"
+testcontainers = { workspace = true }
+testcontainers-modules = { workspace = true }
+layers-indexer = { path = "../layers-indexer" }
+layers-records = { path = "../layers-records" }
+idiolect-indexer = { workspace = true }
+serde_json = { workspace = true }
+async-trait = { workspace = true }
+wiremock = "0.6"

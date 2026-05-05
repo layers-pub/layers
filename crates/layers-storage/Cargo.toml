@@ -1,0 +1,44 @@
+[package]
+name = "layers-storage"
+description = "Storage adapters for the Layers appview: PostgreSQL (source of truth), Elasticsearch (search), Neo4j (graph), Redis (cache). One RecordStore impl per pub.layers.* record type."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[features]
+default = ["postgres", "elasticsearch", "redis"]
+postgres      = ["dep:sqlx"]
+elasticsearch = ["dep:reqwest"]
+neo4j         = ["dep:reqwest"]
+redis         = ["dep:redis"]
+
+[dependencies]
+layers-records = { path = "../layers-records" }
+
+idiolect-indexer = { workspace = true }
+
+async-trait = { workspace = true }
+
+serde      = { workspace = true }
+serde_json = { workspace = true }
+thiserror  = { workspace = true }
+tokio      = { workspace = true, features = ["macros", "rt", "sync"] }
+tracing    = { workspace = true }
+time       = { workspace = true }
+
+sqlx          = { workspace = true, optional = true }
+redis         = { workspace = true, optional = true }
+reqwest       = { workspace = true, optional = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt", "rt-multi-thread", "sync", "time"] }
+serde_json = { workspace = true }
+testcontainers = { workspace = true }
+testcontainers-modules = { workspace = true, features = ["redis"] }

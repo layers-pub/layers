@@ -1,0 +1,102 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/layers-records",
+    "crates/layers-indexer",
+    "crates/layers-orchestrator",
+    "crates/layers-storage",
+    "crates/layers-auth",
+    "crates/layers-observer",
+    "crates/layers-codegen",
+    "crates/layers-verify",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95"
+license = "MIT"
+repository = "https://github.com/layers-pub/layers"
+homepage = "https://layers.pub"
+authors = ["Aaron Steven White <aaronstevenwhite@gmail.com>"]
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[workspace.lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+cargo = { level = "warn", priority = -1 }
+missing_docs_in_private_items = "allow"
+module_name_repetitions = "allow"
+multiple_crate_versions = "allow"
+significant_drop_tightening = "allow"
+future_not_send = "allow"
+items_after_statements = "allow"
+too_long_first_doc_paragraph = "allow"
+
+[workspace.dependencies]
+# idiolect: the metaframework layers is built on. path deps during local
+# development; switch to a git tag for publish. paths are resolved relative
+# to this workspace manifest.
+idiolect-records      = { path = "../../idiolect/crates/idiolect-records" }
+idiolect-indexer      = { path = "../../idiolect/crates/idiolect-indexer" }
+idiolect-orchestrator = { path = "../../idiolect/crates/idiolect-orchestrator" }
+idiolect-observer     = { path = "../../idiolect/crates/idiolect-observer" }
+idiolect-verify       = { path = "../../idiolect/crates/idiolect-verify" }
+idiolect-lens         = { path = "../../idiolect/crates/idiolect-lens" }
+idiolect-migrate      = { path = "../../idiolect/crates/idiolect-migrate" }
+idiolect-identity     = { path = "../../idiolect/crates/idiolect-identity" }
+idiolect-oauth        = { path = "../../idiolect/crates/idiolect-oauth" }
+idiolect-codegen      = { path = "../../idiolect/crates/idiolect-codegen" }
+
+# panproto: must match the version idiolect pins. keep in lockstep.
+panproto-schema    = { git = "https://github.com/panproto/panproto.git", tag = "v0.39.0" }
+panproto-lens-dsl  = { git = "https://github.com/panproto/panproto.git", tag = "v0.39.0" }
+panproto-protocols = { git = "https://github.com/panproto/panproto.git", tag = "v0.39.0" }
+panproto-check     = { git = "https://github.com/panproto/panproto.git", tag = "v0.39.0" }
+panproto-lens      = { git = "https://github.com/panproto/panproto.git", tag = "v0.39.0" }
+panproto-inst      = { git = "https://github.com/panproto/panproto.git", tag = "v0.39.0" }
+
+serde      = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.149"
+thiserror  = "2.0.18"
+anyhow     = "1.0.100"
+tokio      = { version = "1.48", default-features = false }
+tracing    = "0.1"
+async-trait = "0.1"
+time       = { version = "0.3.45", features = ["serde", "serde-well-known"] }
+
+# http / web
+axum       = "0.8"
+tower      = "0.5"
+tower-http = "0.6"
+hyper      = "1.5"
+reqwest    = { version = "0.12", default-features = false, features = ["rustls-tls", "json"] }
+
+# storage
+sqlx       = { version = "0.8", default-features = false, features = ["runtime-tokio-rustls", "postgres", "json", "time", "uuid"] }
+redis      = { version = "0.27", features = ["tokio-rustls-comp", "connection-manager"] }
+
+# auth
+jsonwebtoken = "9"
+p256 = { version = "0.13", features = ["ecdsa", "jwk", "pem"] }
+testcontainers = "0.23"
+testcontainers-modules = { version = "0.11", features = ["postgres", "redis"] }
+# casbin: RBAC enforcer. Integration lands in Phase 3; the crate version
+# is chosen then against whatever upstream release is green at that point
+# (recent 2.x releases have had compile-time fallout on rust 1.95).
+
+# observability
+opentelemetry            = "0.27"
+opentelemetry_sdk        = { version = "0.27", features = ["rt-tokio"] }
+opentelemetry-otlp       = "0.27"
+tracing-opentelemetry    = "0.28"
+tracing-subscriber       = { version = "0.3", features = ["env-filter", "json"] }
+metrics                  = "0.24"
+metrics-exporter-prometheus = { version = "0.16", default-features = false }
+metrics-process          = "2.4"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

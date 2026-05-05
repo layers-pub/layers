@@ -1,0 +1,53 @@
+[package]
+name = "layers-indexer"
+description = "Firehose indexer for the Layers appview. Binds idiolect-indexer's event loop to a pub.layers-specific RecordHandler that fans decoded records out to layers-storage writers."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[[bin]]
+name = "layers-indexer"
+path = "src/bin/layers_indexer.rs"
+
+[features]
+default = ["cursor-postgres", "firehose-jetstream", "reconnecting"]
+firehose-tapped     = ["idiolect-indexer/firehose-tapped"]
+firehose-jetstream  = ["idiolect-indexer/firehose-jetstream"]
+cursor-postgres     = ["layers-storage/postgres"]
+elasticsearch       = ["layers-storage/elasticsearch"]
+neo4j               = ["layers-storage/neo4j"]
+reconnecting        = ["idiolect-indexer/reconnecting"]
+
+[dependencies]
+layers-records = { path = "../layers-records" }
+layers-storage = { path = "../layers-storage", default-features = false, features = ["postgres"] }
+sqlx = { workspace = true }
+axum = { workspace = true }
+
+idiolect-indexer = { workspace = true }
+idiolect-records = { workspace = true }
+
+serde      = { workspace = true }
+serde_json = { workspace = true }
+thiserror  = { workspace = true }
+tokio      = { workspace = true, features = ["macros", "rt-multi-thread", "signal"] }
+tracing    = { workspace = true }
+anyhow     = { workspace = true }
+tracing-subscriber = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt", "rt-multi-thread", "sync"] }
+serde_json = { workspace = true }
+async-trait = { workspace = true }
+testcontainers = { workspace = true }
+testcontainers-modules = { workspace = true }
+sqlx = { workspace = true }
+layers-storage = { path = "../layers-storage", default-features = false, features = ["postgres"] }
+reqwest = { workspace = true }

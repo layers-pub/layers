@@ -1,0 +1,29 @@
+[package]
+name = "layers-verify"
+description = "Verification runners for Layers-published PanprotoLens records. Wraps idiolect-verify with corpus-based roundtrip and static-check harnesses scoped to pub.layers.* records."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+layers-records = { path = "../layers-records" }
+
+idiolect-verify = { workspace = true }
+idiolect-lens   = { workspace = true }
+
+serde      = { workspace = true }
+serde_json = { workspace = true }
+thiserror  = { workspace = true }
+tokio      = { workspace = true, features = ["macros", "rt", "sync"] }
+tracing    = { workspace = true }
+async-trait = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt", "test-util"] }

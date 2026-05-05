@@ -1,0 +1,20 @@
+[package]
+name = "layers-records"
+description = "Generated Rust types for the 26 pub.layers.* record types. Emitted by idiolect-codegen from layers/lexicons/pub/layers."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+idiolect-records = { workspace = true }
+serde      = { workspace = true }
+serde_json = { workspace = true }
+thiserror  = { workspace = true }
+time       = { workspace = true }
