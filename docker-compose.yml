@@ -1,0 +1,125 @@
+# Local-development docker-compose for the Layers appview.
+#
+# Spins up Postgres, Redis, Elasticsearch, Neo4j, and the three Rust
+# binaries with their environment wiring. `docker compose up` boots
+# the whole appview at `http://localhost:8080`.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: layers
+      POSTGRES_PASSWORD: layers
+      POSTGRES_DB: layers
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U layers"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d:ro
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+
+  elasticsearch:
+    image: elasticsearch:8.15.0
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:9200/_cluster/health || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 60
+
+  neo4j:
+    image: neo4j:5
+    environment:
+      NEO4J_AUTH: neo4j/layerslocal
+      NEO4J_PLUGINS: '["apoc"]'
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:7474/ || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 60
+
+  orchestrator:
+    build:
+      context: .
+      args:
+        BIN: layers-orchestrator
+    environment:
+      LAYERS_DB_URL: postgres://layers:layers@postgres:5432/layers
+      LAYERS_BIND: 0.0.0.0:8080
+      LAYERS_DID: did:web:layers.local
+      LAYERS_REDIS_URL: redis://redis:6379
+      LAYERS_RATE_LIMIT: "240"
+      LAYERS_RATE_WINDOW_S: "60"
+      LAYERS_TRUST_FORWARDED_FOR: "true"
+      LAYERS_PUBLIC_ORIGIN: http://localhost:8080
+      LAYERS_LOG: layers_orchestrator=info,axum=info,tower_http=info
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  indexer:
+    build:
+      context: .
+      args:
+        BIN: layers-indexer
+    environment:
+      LAYERS_DB_URL: postgres://layers:layers@postgres:5432/layers
+      LAYERS_JETSTREAM_URL: wss://jetstream2.us-east.bsky.network/subscribe?wantedCollections=pub.layers.*
+      LAYERS_ES_URL: http://elasticsearch:9200
+      LAYERS_NEO4J_URL: http://neo4j:7474
+      LAYERS_NEO4J_AUTH: "Basic bmVvNGo6bGF5ZXJzbG9jYWw="
+      LAYERS_HEALTH_BIND: 0.0.0.0:8081
+      LAYERS_FOREIGN_PREFIXES: "dev.idiolect.,site.standard.,pub.leaflet.,at.margin.,network.cosmik.,sh.tangled.,social.grain.,place.stream.,com.voxport.,app.dropanchor.,at.mapped.,app.greengale.,app.beaconbits."
+      LAYERS_LOG: layers_indexer=info,idiolect_indexer=info
+    ports:
+      - "8081:8081"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+      neo4j:
+        condition: service_healthy
+
+  observer:
+    build:
+      context: .
+      args:
+        BIN: layers-observer
+    environment:
+      LAYERS_DB_URL: postgres://layers:layers@postgres:5432/layers
+      LAYERS_OBSERVER_OUT: "-"
+      LAYERS_OBSERVER_INTERVAL_S: "300"
+      LAYERS_LOG: layers_observer=info
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pg-data:
