@@ -39,12 +39,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const LEX_DIR = join(__dirname, '..', 'lexicons', 'pub', 'layers');
 
-const PDS = process.env.PDS;
-const IDENTIFIER = process.env.IDENTIFIER;
+const PDS = process.env.PDS ?? 'https://lexicons.layers.pub';
+const IDENTIFIER = process.env.IDENTIFIER ?? 'lexicons.layers.pub';
 const PASSWORD = process.env.PASSWORD;
 
-if (!PDS || !IDENTIFIER || !PASSWORD) {
-  console.error('Missing required env: PDS, IDENTIFIER, PASSWORD');
+if (!PASSWORD) {
+  console.error('Missing required env PASSWORD (account password for ' + IDENTIFIER + ')');
   process.exit(1);
 }
 

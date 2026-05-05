@@ -1,0 +1,73 @@
+# Compose overlay that runs a Bluesky PDS alongside the appview to host
+# canonical `pub.layers.*` records: permission sets, registry seed
+# lexicons, ontologies maintained by the appview operator. The PDS
+# advertises its hostname as ${LAYERS_SERVICE_PDS_HOSTNAME}; production
+# value is `lexicons.layers.pub`.
+#
+# Bring up alongside the main compose file:
+#
+#   docker compose \
+#     -f docker-compose.yml \
+#     -f docker-compose.service-pds.yml \
+#     up -d service-pds
+#
+# Required secrets (generate once, put in `.env`):
+#
+#   LAYERS_SERVICE_PDS_HOSTNAME=lexicons.layers.pub
+#   LAYERS_SERVICE_PDS_JWT_SECRET=<openssl rand -hex 32>
+#   LAYERS_SERVICE_PDS_ADMIN_PASSWORD=<openssl rand -hex 24>
+#   LAYERS_SERVICE_PDS_ROTATION_KEY=<openssl rand -hex 32>
+
+x-default-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: '3'
+
+services:
+  service-pds:
+    image: ghcr.io/bluesky-social/pds:latest
+    container_name: layers-service-pds
+    restart: unless-stopped
+    logging: *default-logging
+    environment:
+      PDS_HOSTNAME: ${LAYERS_SERVICE_PDS_HOSTNAME:?LAYERS_SERVICE_PDS_HOSTNAME is required}
+      PDS_DATA_DIRECTORY: /pds
+      PDS_BLOBSTORE_DISK_LOCATION: /pds/blocks
+      PDS_DID_PLC_URL: https://plc.directory
+      PDS_BSKY_APP_VIEW_URL: https://api.bsky.app
+      PDS_BSKY_APP_VIEW_DID: did:web:api.bsky.app
+      PDS_REPORT_SERVICE_URL: https://mod.bsky.app
+      PDS_REPORT_SERVICE_DID: did:plc:ar7c4by46qjdydhdevvrndac
+      PDS_CRAWLERS: https://bsky.network
+      PDS_JWT_SECRET: ${LAYERS_SERVICE_PDS_JWT_SECRET:?LAYERS_SERVICE_PDS_JWT_SECRET is required}
+      PDS_ADMIN_PASSWORD: ${LAYERS_SERVICE_PDS_ADMIN_PASSWORD:?LAYERS_SERVICE_PDS_ADMIN_PASSWORD is required}
+      PDS_PLC_ROTATION_KEY_K256_PRIVATE_KEY_HEX: ${LAYERS_SERVICE_PDS_ROTATION_KEY:?LAYERS_SERVICE_PDS_ROTATION_KEY is required}
+    volumes:
+      - service_pds_data:/pds
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://127.0.0.1:3000/xrpc/_health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 256M
+    labels:
+      # Traefik route. The appview compose file already declares the
+      # `traefik` service; this label-set wires the PDS hostname onto
+      # it with letsencrypt-issued TLS.
+      - traefik.enable=true
+      - traefik.http.routers.service-pds.rule=Host(`${LAYERS_SERVICE_PDS_HOSTNAME}`)
+      - traefik.http.routers.service-pds.entrypoints=websecure
+      - traefik.http.routers.service-pds.tls.certresolver=letsencrypt
+      - traefik.http.services.service-pds.loadbalancer.server.port=3000
+
+volumes:
+  service_pds_data:

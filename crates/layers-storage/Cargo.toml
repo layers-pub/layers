@@ -13,11 +13,12 @@ publish = false
 workspace = true
 
 [features]
-default = ["postgres", "elasticsearch", "redis"]
+default = ["postgres", "elasticsearch", "redis", "service-pds"]
 postgres      = ["dep:sqlx"]
 elasticsearch = ["dep:reqwest"]
 neo4j         = ["dep:reqwest"]
 redis         = ["dep:redis"]
+service-pds   = ["dep:reqwest"]
 
 [dependencies]
 layers-records = { path = "../layers-records" }

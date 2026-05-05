@@ -23,6 +23,9 @@ pub mod sink;
 #[cfg(feature = "postgres")]
 pub mod external;
 
+#[cfg(feature = "service-pds")]
+pub mod service_pds;
+
 #[cfg(feature = "postgres")]
 pub use external::{
     DEFAULT_FOREIGN_PREFIXES, ExternalRecordSink, PostgresExternalSink, is_default_foreign,
