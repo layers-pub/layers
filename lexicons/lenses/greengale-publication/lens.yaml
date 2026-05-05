@@ -1,0 +1,23 @@
+id: pub.layers.lens.greengale.publication-to-resource-collection
+description: |
+  Lift a GreenGale publication (app.greengale.publication) into
+  a Layers resource.collection.
+
+  `name` and `description` survive. `url` becomes `sourceUri`.
+  `theme`, `voiceTheme`, `enableSiteStandard` drop from the
+  typed surface as platform-specific metadata.
+source: app.greengale.publication
+target: pub.layers.resource.collection
+steps:
+  - remove_field: theme
+  - remove_field: voiceTheme
+  - remove_field: enableSiteStandard
+  - remove_field: url
+  - add_field:
+      name: kind
+      kind: string
+      default: "publication"
+  - add_field:
+      name: createdAt
+      kind: string
+      default: "1970-01-01T00:00:00.000Z"

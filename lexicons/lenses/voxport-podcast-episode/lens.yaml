@@ -1,0 +1,46 @@
+id: pub.layers.lens.voxport.podcast-episode-to-expression
+description: |
+  Lift a VoxPort podcast episode (com.voxport.podcast.episode) into a
+  Layers expression. Podcast episodes carry spoken language as their
+  primary content; the audio blob, optional transcript ref, summary
+  text, and chapter markers are all natural Layers-expression fodder
+  (temporalSpan / spatioTemporalAnchor anchors apply directly to the
+  audio body).
+
+  `title` becomes the Layers `id` so the expression keys on the
+  episode title. `audio` (a blob) is renamed to `mediaBlob` so the
+  bytes survive on the Layers record. `audioUrl` (when present)
+  becomes `sourceUrl`. `summary` becomes `text`. `series` (parent
+  series strongRef) becomes `parentRef`. `transcript`, `chapters`
+  drop from the typed surface — downstream tooling reattaches them
+  via metadata fields once the runtime field-pass runs. `duration`,
+  `episodeNumber`, `seasonNumber`, `episodeType`, `explicit`,
+  `image`, `tags`, `publishedAt`, `updatedAt` drop from the typed
+  surface; they're podcast-specific and have no Layers counterparts.
+source: com.voxport.podcast.episode
+target: pub.layers.expression.expression
+steps:
+  - rename_field: { old: title, new: id }
+  - rename_field: { old: audio, new: mediaBlob }
+  - rename_field: { old: audioUrl, new: sourceUrl }
+  - rename_field: { old: summary, new: text }
+  - rename_field: { old: series, new: parentRef }
+  - remove_field: transcript
+  - remove_field: chapters
+  - remove_field: duration
+  - remove_field: episodeNumber
+  - remove_field: seasonNumber
+  - remove_field: episodeType
+  - remove_field: explicit
+  - remove_field: image
+  - remove_field: tags
+  - remove_field: publishedAt
+  - remove_field: updatedAt
+  - add_field:
+      name: kind
+      kind: string
+      default: "podcast-episode"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/expression-kinds#podcast-episode"

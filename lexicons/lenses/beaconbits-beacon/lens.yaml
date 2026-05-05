@@ -1,0 +1,33 @@
+id: pub.layers.lens.beaconbits.beacon-to-expression
+description: |
+  Lift a BeaconBits beacon (app.beaconbits.beacon) into a Layers
+  expression. Beacons are short location-anchored shouts about
+  a venue — a chain-named beacon with a free-text shout, optional
+  rating, mentions, and a reveal time.
+
+  `shout` (the user's text) becomes Layers `text`. `venueName`
+  becomes Layers `id` so beacons key on the venue display name.
+  `venueUri` (OSM URI) becomes `sourceUrl`. `post`, `rating`,
+  `location`, `mentions`, `revealAt`, `chainName`, `visibility`
+  drop from the typed surface.
+source: app.beaconbits.beacon
+target: pub.layers.expression.expression
+steps:
+  - rename_field: { old: shout, new: text }
+  - rename_field: { old: venueName, new: id }
+  - rename_field: { old: venueUri, new: sourceUrl }
+  - remove_field: post
+  - remove_field: rating
+  - remove_field: location
+  - remove_field: mentions
+  - remove_field: revealAt
+  - remove_field: chainName
+  - remove_field: visibility
+  - add_field:
+      name: kind
+      kind: string
+      default: "venue-shout"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/expression-kinds#venue-shout"

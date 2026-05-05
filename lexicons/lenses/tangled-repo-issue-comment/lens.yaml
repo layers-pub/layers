@@ -1,0 +1,33 @@
+id: pub.layers.lens.tangled.repo-issue-comment-to-annotation-layer
+description: |
+  Lift a Tangled issue comment (sh.tangled.repo.issue.comment) into
+  a Layers annotation layer.
+
+  `issue` (the parent issue's AT-URI) becomes `parentLayerRef`.
+  `body` (markdown text) is preserved via add_field for the runtime
+  to materialise into the annotations array. `commentId`, `owner`,
+  `repo` drop from the typed surface.
+source: sh.tangled.repo.issue.comment
+target: pub.layers.annotation.annotationLayer
+steps:
+  - rename_field: { old: issue, new: parentLayerRef }
+  - remove_field: body
+  - remove_field: commentId
+  - remove_field: owner
+  - remove_field: repo
+  - add_field:
+      name: kind
+      kind: string
+      default: "commenting"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/oa-motivation"
+  - add_field:
+      name: annotations
+      kind: array
+      default: []
+  - add_field:
+      name: expression
+      kind: string
+      default: ""

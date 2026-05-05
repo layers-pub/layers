@@ -1,0 +1,18 @@
+id: pub.layers.lens.margin.collection-to-resource-collection
+description: |
+  Lift a Margin annotation collection (at.margin.collection) into a
+  Layers resource collection (pub.layers.resource.collection).
+
+  Margin's `name` survives unchanged. `description` survives. `icon`
+  is dropped (Layers collections have no icon-URI field today). The
+  Layers `kind` field is fixed to `"annotation-set"` so downstream
+  tooling distinguishes Margin-derived collections from corpora and
+  other resource sets.
+source: at.margin.collection
+target: pub.layers.resource.collection
+steps:
+  - remove_field: icon
+  - add_field:
+      name: kind
+      kind: string
+      default: "annotation-set"

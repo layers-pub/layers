@@ -1,0 +1,37 @@
+id: pub.layers.lens.idiolect.encounter-to-expression
+description: |
+  Lift an idiolect encounter (dev.idiolect.encounter) into a Layers
+  expression. Encounters are structured records of using a lens on
+  a source instance.
+
+  `kind` (encounter taxonomy token) survives. `occurredAt` becomes
+  `createdAt`. lens/sourceSchema/targetSchema/sourceInstance/
+  producedOutput/use/downstreamResult/downstreamResultVocab/
+  annotations/holder/basis/kindVocab/visibility drop from the
+  typed surface — they live on the source as panproto-specific
+  provenance and aren't part of Layers' linguistic-expression model.
+source: dev.idiolect.encounter
+target: pub.layers.expression.expression
+steps:
+  - rename_field: { old: occurredAt, new: createdAt }
+  - remove_field: lens
+  - remove_field: sourceSchema
+  - remove_field: targetSchema
+  - remove_field: sourceInstance
+  - remove_field: producedOutput
+  - remove_field: use
+  - remove_field: downstreamResult
+  - remove_field: downstreamResultVocab
+  - remove_field: annotations
+  - remove_field: holder
+  - remove_field: basis
+  - remove_field: kindVocab
+  - remove_field: visibility
+  - add_field:
+      name: id
+      kind: string
+      default: "encounter"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/expression-kinds#idiolect-encounter"

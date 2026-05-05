@@ -1,0 +1,28 @@
+id: pub.layers.lens.grain.story-to-expression
+description: |
+  Lift a Grain story (social.grain.story) into a Layers expression.
+
+  Grain stories are blob-bearing user expressions. `media` (a blob
+  ref) is renamed to `mediaBlob` so the Layers expression carries
+  the photo bytes inline. `aspectRatio`, `location`, `address`,
+  `labels` drop from the typed record surface.
+source: social.grain.story
+target: pub.layers.expression.expression
+steps:
+  - rename_field: { old: media, new: mediaBlob }
+  - remove_field: aspectRatio
+  - remove_field: location
+  - remove_field: address
+  - remove_field: labels
+  - add_field:
+      name: id
+      kind: string
+      default: "story"
+  - add_field:
+      name: kind
+      kind: string
+      default: "photo-story"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/expression-kinds#photo-story"

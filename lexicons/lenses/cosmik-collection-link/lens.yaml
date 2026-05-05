@@ -1,0 +1,19 @@
+id: pub.layers.lens.cosmik.collection-link-to-membership
+description: |
+  Lift a Semble/Cosmik collection link (network.cosmik.collectionLink)
+  into a Layers resource.collectionMembership.
+
+  `collection` and `card` are strongRefs whose `.uri` field carries
+  the AT-URI; we rename them to `collectionRef` and `entryRef`
+  respectively so the Layers membership row points the right way.
+  `addedAt` is renamed to `createdAt`. `originalCard`, `provenance`,
+  `addedBy` drop from the typed surface.
+source: network.cosmik.collectionLink
+target: pub.layers.resource.collectionMembership
+steps:
+  - rename_field: { old: collection, new: collectionRef }
+  - rename_field: { old: card, new: entryRef }
+  - rename_field: { old: addedAt, new: createdAt }
+  - remove_field: addedBy
+  - remove_field: originalCard
+  - remove_field: provenance

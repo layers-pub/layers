@@ -1,0 +1,34 @@
+id: pub.layers.lens.grain.comment-to-annotation-layer
+description: |
+  Lift a Grain comment (social.grain.comment) into a Layers
+  annotation layer.
+
+  Grain's `subject` (the gallery/photo AT-URI) becomes
+  `parentLayerRef`. `text` survives via add_field for the runtime
+  to materialise into the annotations array. `focus` (a spatial
+  pointer within the photo), `replyTo`, `facets` drop from the
+  typed record surface.
+source: social.grain.comment
+target: pub.layers.annotation.annotationLayer
+steps:
+  - rename_field: { old: subject, new: parentLayerRef }
+  - remove_field: text
+  - remove_field: facets
+  - remove_field: focus
+  - remove_field: replyTo
+  - add_field:
+      name: kind
+      kind: string
+      default: "commenting"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/oa-motivation"
+  - add_field:
+      name: annotations
+      kind: array
+      default: []
+  - add_field:
+      name: expression
+      kind: string
+      default: ""

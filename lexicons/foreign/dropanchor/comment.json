@@ -1,0 +1,57 @@
+{
+  "id": "app.dropanchor.comment",
+  "defs": {
+    "main": {
+      "key": "tid",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "text",
+          "createdAt",
+          "checkinRef"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 1000,
+            "description": "The comment text content"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When the comment was created"
+          },
+          "checkinRef": {
+            "ref": "#strongRef",
+            "type": "ref",
+            "description": "Reference to the check-in being commented on"
+          }
+        }
+      },
+      "description": "A comment record for check-ins in the Anchor app"
+    },
+    "strongRef": {
+      "type": "object",
+      "required": [
+        "uri",
+        "cid"
+      ],
+      "properties": {
+        "cid": {
+          "type": "string",
+          "format": "cid",
+          "description": "Content identifier (CID) of the referenced record"
+        },
+        "uri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT Protocol URI of the referenced record"
+        }
+      },
+      "description": "A strong reference to another record"
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

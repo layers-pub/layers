@@ -1,0 +1,28 @@
+id: pub.layers.lens.tangled.repo-pull-comment-to-annotation-layer
+description: |
+  Lift a Tangled pull-request comment (sh.tangled.repo.pull.comment)
+  into a Layers annotation layer. Same shape as the issue-comment
+  lens but parented at the pull URI instead of the issue URI.
+source: sh.tangled.repo.pull.comment
+target: pub.layers.annotation.annotationLayer
+steps:
+  - rename_field: { old: pull, new: parentLayerRef }
+  - remove_field: body
+  - remove_field: owner
+  - remove_field: repo
+  - add_field:
+      name: kind
+      kind: string
+      default: "commenting"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/oa-motivation"
+  - add_field:
+      name: annotations
+      kind: array
+      default: []
+  - add_field:
+      name: expression
+      kind: string
+      default: ""

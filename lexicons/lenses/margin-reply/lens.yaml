@@ -1,0 +1,33 @@
+id: pub.layers.lens.margin.reply-to-annotation-layer
+description: |
+  Lift a Margin reply (at.margin.reply) into a Layers annotation
+  layer with a single reply-motivation annotation entry.
+
+  Margin's `parent` strongRef carries the AT-URI of the record being
+  replied to. We rename `parent` to `parentLayerRef` so traversals
+  from a parent annotation hit every reply targeting it. The
+  free-text `text` survives in the layer body via add_field for
+  Layers' `annotations` array; the per-call materialization happens
+  at runtime when value-level field transforms run.
+source: at.margin.reply
+target: pub.layers.annotation.annotationLayer
+steps:
+  - rename_field: { old: parent, new: parentLayerRef }
+  - remove_field: root
+  - remove_field: format
+  - add_field:
+      name: kind
+      kind: string
+      default: "replying"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/oa-motivation"
+  - add_field:
+      name: annotations
+      kind: array
+      default: []
+  - add_field:
+      name: expression
+      kind: string
+      default: ""
