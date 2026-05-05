@@ -1,1 +1,0 @@
-CREATE CONSTRAINT expression_uri IF NOT EXISTS FOR (e:Expression) REQUIRE e.uri IS UNIQUE;
