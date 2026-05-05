@@ -14,6 +14,11 @@ Thumbs.db
 dist/
 *.tsbuildinfo
 
+# Rust build output
+target/
+*.rmeta
+*.rlib
+
 # Docs
 docs/node_modules/
 docs/.docusaurus/
