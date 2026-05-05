@@ -18,21 +18,21 @@ import { Languages, BookOpen } from 'lucide-react';
 function ProjectCardStory({
   name,
   description,
-  language,
+  languages,
 }: {
   readonly name: string;
   readonly description?: string;
-  readonly language?: string;
+  readonly languages?: readonly string[];
 }): React.JSX.Element {
   return (
     <Card className="h-full transition-colors hover:bg-muted/30">
       <CardHeader className="pb-2">
         <div className="flex items-start justify-between gap-2">
           <CardTitle className="text-base font-semibold leading-tight">{name}</CardTitle>
-          {language ? (
+          {languages && languages.length > 0 ? (
             <Badge variant="outline" className="shrink-0">
               <Languages className="mr-1 size-3" />
-              {language}
+              {languages.length === 1 ? languages[0] : `${languages.length} langs`}
             </Badge>
           ) : null}
         </div>
@@ -98,7 +98,7 @@ export const Default: Story = {
   args: {
     name: 'English Acceptability',
     description: 'Lexicon and experiment design for English acceptability judgments.',
-    language: 'en',
+    languages: ['en'],
   },
 };
 
@@ -113,7 +113,7 @@ export const LongDescription: Story = {
     name: 'Multilingual Valency Lexicon',
     description:
       'A comprehensive resource collecting valency frames across 12 languages with templates for forced-choice and magnitude estimation experiments. Includes constraints for balanced sampling across verb classes.',
-    language: 'mul',
+    languages: ['mul'],
   },
 };
 

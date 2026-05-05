@@ -68,7 +68,7 @@ interface SlotFilling {
 interface ExportEntry {
   readonly form: string;
   readonly lemma?: string;
-  readonly language?: string;
+  readonly languages?: readonly string[];
   readonly features?: FeatureMap;
   readonly knowledgeRefs?: readonly KnowledgeRef[];
 }
@@ -79,7 +79,7 @@ interface ExportEntry {
 interface ExportTemplate {
   readonly name?: string;
   readonly text: string;
-  readonly language?: string;
+  readonly languages?: readonly string[];
   readonly slots: readonly Slot[];
   readonly constraints?: readonly Constraint[];
 }
@@ -158,8 +158,8 @@ function exportEntry(entry: ExportEntry): Record<string, unknown> {
     obj['lemma'] = entry.lemma;
   }
 
-  if (entry.language) {
-    obj['language'] = entry.language;
+  if (entry.languages && entry.languages.length > 0) {
+    obj['languages'] = entry.languages;
   }
 
   if (entry.features && entry.features.entries.length > 0) {
@@ -200,8 +200,8 @@ function exportTemplate(template: ExportTemplate): Record<string, unknown> {
     obj['name'] = template.name;
   }
 
-  if (template.language) {
-    obj['language'] = template.language;
+  if (template.languages && template.languages.length > 0) {
+    obj['languages'] = template.languages;
   }
 
   if (template.constraints && template.constraints.length > 0) {

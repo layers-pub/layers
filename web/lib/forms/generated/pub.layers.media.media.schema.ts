@@ -19,7 +19,7 @@ export const schema = z.object({
   kind: z.union([z.enum(['audio', 'video', 'image', 'document']), z.string()]),
   kindUri: z.string().regex(/^at:\/\//, 'must start with at://').optional(),
   knowledgeRefs: z.array(z.unknown()).max(32).optional(),
-  language: z.string().max(32).optional(),
+  languages: z.array(z.string().max(32)).max(128).optional(),
   metadata: z.unknown().optional(),
   mimeType: z.string().max(128).optional(),
   parentMediaRef: z.string().regex(/^at:\/\//, 'must start with at://').optional(),

@@ -258,10 +258,14 @@
             "maxLength": 256,
             "type": "string"
           },
-          "language": {
-            "description": "BCP-47 language tag for this annotation layer, if different from the expression's language.",
-            "maxLength": 64,
-            "type": "string"
+          "languages": {
+            "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
+            "items": {
+              "maxLength": 32,
+              "type": "string"
+            },
+            "maxItems": 128,
+            "type": "array"
           },
           "metadata": {
             "$ref": "#/components/schemas/DefsAnnotationMetadata"
@@ -1030,13 +1034,8 @@
           "features": {
             "$ref": "#/components/schemas/DefsFeatureMap"
           },
-          "language": {
-            "description": "Primary BCP-47 language tag.",
-            "maxLength": 32,
-            "type": "string"
-          },
           "languages": {
-            "description": "All languages represented.",
+            "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
             "items": {
               "maxLength": 32,
               "type": "string"
@@ -2867,18 +2866,13 @@
             "maxItems": 128,
             "type": "array"
           },
-          "language": {
-            "description": "BCP-47 language tag for the primary language.",
-            "maxLength": 32,
-            "type": "string"
-          },
           "languages": {
-            "description": "Additional BCP-47 tags for multilingual or code-switching expressions.",
+            "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
             "items": {
               "maxLength": 32,
               "type": "string"
             },
-            "maxItems": 64,
+            "maxItems": 128,
             "type": "array"
           },
           "mediaBlob": {
@@ -4690,10 +4684,14 @@
             "maxItems": 32,
             "type": "array"
           },
-          "language": {
-            "description": "BCP-47 language tag.",
-            "maxLength": 32,
-            "type": "string"
+          "languages": {
+            "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
+            "items": {
+              "maxLength": 32,
+              "type": "string"
+            },
+            "maxItems": 128,
+            "type": "array"
           },
           "metadata": {
             "$ref": "#/components/schemas/DefsAnnotationMetadata",
@@ -5301,10 +5299,14 @@
             "maxItems": 32,
             "type": "array"
           },
-          "language": {
-            "description": "BCP-47 language tag.",
-            "maxLength": 32,
-            "type": "string"
+          "languages": {
+            "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
+            "items": {
+              "maxLength": 32,
+              "type": "string"
+            },
+            "maxItems": 128,
+            "type": "array"
           },
           "metadata": {
             "$ref": "#/components/schemas/DefsAnnotationMetadata",
@@ -5564,10 +5566,14 @@
             "maxItems": 32,
             "type": "array"
           },
-          "language": {
-            "description": "BCP-47 language tag.",
-            "maxLength": 32,
-            "type": "string"
+          "languages": {
+            "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
+            "items": {
+              "maxLength": 32,
+              "type": "string"
+            },
+            "maxItems": 128,
+            "type": "array"
           },
           "lemma": {
             "description": "Canonical/citation form.",
@@ -6130,10 +6136,14 @@
             "maxItems": 32,
             "type": "array"
           },
-          "language": {
-            "description": "BCP-47 language tag.",
-            "maxLength": 32,
-            "type": "string"
+          "languages": {
+            "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
+            "items": {
+              "maxLength": 32,
+              "type": "string"
+            },
+            "maxItems": 128,
+            "type": "array"
           },
           "metadata": {
             "$ref": "#/components/schemas/DefsAnnotationMetadata",

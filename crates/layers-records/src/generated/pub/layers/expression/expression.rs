@@ -36,10 +36,7 @@ pub struct Expression {
     /// References to knowledge base entries relevant to this expression.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub knowledge_refs: Option<Vec<crate::generated::r#pub::layers::defs::KnowledgeRef>>,
-    /// BCP-47 language tag for the primary language.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub language: Option<String>,
-    /// Additional BCP-47 tags for multilingual or code-switching expressions.
+    /// BCP-47 language tags this record covers. Empty when language is unspecified or unknown.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub languages: Option<Vec<String>>,
     /// Optional inline media blob.

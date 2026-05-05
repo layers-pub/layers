@@ -100,12 +100,13 @@ export const fields: readonly FormField[] = [
     maxLength: 256,
   },
   {
-    name: 'language',
-    kind: 'string',
-    label: 'Language',
-    description: 'BCP-47 language tag for this annotation layer, if different from the expression\'s language.',
+    name: 'languages',
+    kind: 'array',
+    label: 'Languages',
+    description: 'BCP-47 language tags this record covers. Empty when language is unspecified or unknown.',
     required: false,
-    maxLength: 64,
+    maxLength: 128,
+    itemKind: 'string',
   },
   {
     name: 'metadata',

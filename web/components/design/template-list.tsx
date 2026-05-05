@@ -81,9 +81,9 @@ function TemplateCard({
               {constraintCount} {constraintCount === 1 ? 'constraint' : 'constraints'}
             </Badge>
           )}
-          {value.language && (
+          {value.languages && (
             <Badge variant="outline" className="text-[10px]">
-              {value.language}
+              {value.languages}
             </Badge>
           )}
         </div>

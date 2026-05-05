@@ -3,7 +3,7 @@
 /**
  * Form for creating or editing a resource entry.
  *
- * Fields: form (required), lemma, language, features (dynamic key-value
+ * Fields: form (required), lemma, languages, features (dynamic key-value
  * pairs with add/remove).
  *
  * @module
@@ -15,7 +15,7 @@ import { Loader2, Plus, Trash2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { LanguageCombobox } from '@/components/ui/language-combobox';
+import { LanguagesMultiCombobox } from '@/components/ui/languages-multicombobox';
 import { Label } from '@/components/ui/label';
 import { entryCreateSchema, type EntryFormValues } from '@/lib/schemas/design';
 
@@ -52,7 +52,7 @@ function EntryForm({
     defaultValues: defaultValues ?? {
       form: '',
       lemma: '',
-      language: '',
+      languages: [],
       features: [],
     },
   });
@@ -81,20 +81,22 @@ function EntryForm({
       </div>
 
       <div className="space-y-1.5">
-        <Label>Language</Label>
+        <Label>Languages</Label>
         <Controller
           control={control}
-          name="language"
+          name="languages"
           render={({ field }) => (
-            <LanguageCombobox
-              value={field.value ?? ''}
-              onChange={field.onChange}
+            <LanguagesMultiCombobox
+              value={field.value ?? []}
+              onChange={(next) => field.onChange([...next])}
               className="w-full"
             />
           )}
         />
-        {errors.language ? (
-          <p className="mt-1 text-sm text-destructive">{errors.language.message}</p>
+        {errors.languages ? (
+          <p className="mt-1 text-sm text-destructive">
+            {errors.languages.message}
+          </p>
         ) : null}
       </div>
 

@@ -13,7 +13,7 @@ export const schema = z.object({
   kind: z.union([z.enum(['lexicon', 'frame-inventory', 'gazetteer', 'paradigm', 'stop-list', 'stimulus-pool', 'custom']), z.string()]).optional(),
   kindUri: z.string().regex(/^at:\/\//, 'must start with at://').optional(),
   knowledgeRefs: z.array(z.unknown()).max(32).optional(),
-  language: z.string().max(32).optional(),
+  languages: z.array(z.string().max(32)).max(128).optional(),
   metadata: z.unknown().optional(),
   name: z.string().max(512),
   ontologyRef: z.string().regex(/^at:\/\//, 'must start with at://').optional(),

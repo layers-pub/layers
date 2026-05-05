@@ -39,11 +39,7 @@ export interface Expression {
   */
   knowledgeRefs?: KnowledgeRef[];
   /**
-  * BCP-47 language tag for the primary language.
-  */
-  language?: string;
-  /**
-  * Additional BCP-47 tags for multilingual or code-switching expressions.
+  * BCP-47 language tags this record covers. Empty when language is unspecified or unknown.
   */
   languages?: string[];
   /**

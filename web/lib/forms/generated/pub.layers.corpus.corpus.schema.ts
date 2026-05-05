@@ -15,7 +15,6 @@ export const schema = z.object({
   eprintRefs: z.array(z.string().regex(/^at:\/\//, 'must start with at://')).max(64).optional(),
   expressionCount: z.number().int().min(0).optional(),
   features: z.unknown().optional(),
-  language: z.string().max(32).optional(),
   languages: z.array(z.string().max(32)).max(128).optional(),
   license: z.string().max(256).optional(),
   name: z.string().max(512),

@@ -88,7 +88,7 @@ function LexiconEditor({ collectionUri }: LexiconEditorProps): React.JSX.Element
         membershipUri: membership.uri,
         form: entry.form,
         lemma: entry.lemma,
-        language: entry.language,
+        languages: entry.languages,
         features: entry.features as EntryView['features'],
       });
     }
@@ -125,7 +125,7 @@ function LexiconEditor({ collectionUri }: LexiconEditorProps): React.JSX.Element
       const entryResult = await createResourceEntryRecord(agent, {
         form: values.form,
         lemma: values.lemma,
-        language: values.language,
+        languages: values.languages,
         features: featureMap,
       });
 
@@ -234,8 +234,8 @@ function LexiconEditor({ collectionUri }: LexiconEditorProps): React.JSX.Element
             <h2 className="text-lg font-semibold">{collection?.value.name ?? 'Lexicon Editor'}</h2>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Badge variant="secondary">{entries.length} entries</Badge>
-              {collection?.value.language ? (
-                <Badge variant="outline">{collection.value.language}</Badge>
+              {collection?.value.languages ? (
+                <Badge variant="outline">{collection.value.languages}</Badge>
               ) : null}
             </div>
           </div>
@@ -294,7 +294,7 @@ function LexiconEditor({ collectionUri }: LexiconEditorProps): React.JSX.Element
                   defaultValues={{
                     form: selectedEntry.form,
                     lemma: selectedEntry.lemma ?? '',
-                    language: selectedEntry.language ?? '',
+                    languages: [...(selectedEntry.languages ?? [])],
                     features: selectedEntry.features?.entries ?? [],
                   }}
                   onSubmit={handleCreate}

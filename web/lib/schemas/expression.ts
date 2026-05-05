@@ -6,15 +6,19 @@
 
 import { z } from 'zod';
 
-const expressionCreateSchema = z.object({
-  text: z.string().min(1, 'Text is required').max(100_000),
-  language: z
-    .string()
-    .max(10)
-    .optional()
-    .refine((v) => !v || v.length >= 2, 'Language code must be at least 2 characters'),
-  source: z.string().max(1024).optional(),
-});
+import { schema as expressionLexiconSchema } from '@/lib/forms/generated/pub.layers.expression.expression.schema';
+
+/**
+ * Picks the user-editable subset of the expression record lexicon.
+ * Field names + base constraints come from the generated lexicon
+ * Zod; the form layer tightens `text` to required.
+ */
+const expressionCreateSchema = expressionLexiconSchema
+  .pick({ text: true, languages: true, sourceUrl: true })
+  .extend({
+    text: z.string().min(1, 'Text is required').max(100_000),
+    languages: z.array(z.string().min(2).max(32)),
+  });
 
 type ExpressionFormValues = z.infer<typeof expressionCreateSchema>;
 

@@ -12,7 +12,7 @@ export const schema = z.object({
   features: z.unknown().optional(),
   form: z.string().max(4096),
   knowledgeRefs: z.array(z.unknown()).max(32).optional(),
-  language: z.string().max(32).optional(),
+  languages: z.array(z.string().max(32)).max(128).optional(),
   lemma: z.string().max(1024).optional(),
   metadata: z.unknown().optional(),
   mweKind: z.union([z.enum(['compound', 'phrasal-verb', 'idiom', 'light-verb', 'named-entity', 'collocation', 'custom']), z.string()]).optional(),

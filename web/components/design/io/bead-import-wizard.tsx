@@ -159,7 +159,7 @@ function BeadImportWizard({ projectUri, onComplete }: BeadImportWizardProps): Re
             const entryResult = await createResourceEntryRecord(agent, {
               form: String(data['form'] ?? ''),
               lemma: data['lemma'] ? String(data['lemma']) : undefined,
-              language: data['language'] ? String(data['language']) : undefined,
+              languages: data['language'] ? [String(data['language'])] : [],
               features: data['features']
                 ? {
                     entries: Object.entries(data['features'] as Record<string, string>).map(
@@ -184,7 +184,7 @@ function BeadImportWizard({ projectUri, onComplete }: BeadImportWizardProps): Re
             const templateResult = await createTemplateRecord(agent, {
               text: String(data['text'] ?? ''),
               name: data['name'] ? String(data['name']) : undefined,
-              language: data['language'] ? String(data['language']) : undefined,
+              languages: data['language'] ? [String(data['language'])] : [],
               slots,
             });
             createdUri = templateResult.uri;

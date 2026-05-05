@@ -8,7 +8,10 @@
       "key": "tid",
       "record": {
         "type": "object",
-        "required": ["name", "createdAt"],
+        "required": [
+          "name",
+          "createdAt"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -23,20 +26,6 @@
             "type": "string",
             "maxLength": 64
           },
-          "language": {
-            "type": "string",
-            "description": "Primary BCP-47 language tag.",
-            "maxLength": 32
-          },
-          "languages": {
-            "type": "array",
-            "description": "All languages represented.",
-            "maxLength": 128,
-            "items": {
-              "type": "string",
-              "maxLength": 32
-            }
-          },
           "domainUri": {
             "type": "string",
             "format": "at-uri",
@@ -45,7 +34,18 @@
           "domain": {
             "type": "string",
             "description": "Domain slug (fallback when domainUri unavailable).",
-            "knownValues": ["news", "biomedical", "legal", "social-media", "dialogue", "literary", "scientific", "web", "spoken", "custom"],
+            "knownValues": [
+              "news",
+              "biomedical",
+              "legal",
+              "social-media",
+              "dialogue",
+              "literary",
+              "scientific",
+              "web",
+              "spoken",
+              "custom"
+            ],
             "maxLength": 256
           },
           "license": {
@@ -88,6 +88,15 @@
           "createdAt": {
             "type": "string",
             "format": "datetime"
+          },
+          "languages": {
+            "type": "array",
+            "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
+            "maxLength": 128,
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
           }
         }
       }

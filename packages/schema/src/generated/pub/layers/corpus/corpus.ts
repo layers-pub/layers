@@ -32,11 +32,7 @@ export interface Corpus {
   expressionCount?: number;
   features?: FeatureMap;
   /**
-  * Primary BCP-47 language tag.
-  */
-  language?: string;
-  /**
-  * All languages represented.
+  * BCP-47 language tags this record covers. Empty when language is unspecified or unknown.
   */
   languages?: string[];
   /**

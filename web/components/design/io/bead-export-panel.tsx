@@ -132,7 +132,7 @@ function BeadExportPanel({ projectUri }: BeadExportPanelProps): React.JSX.Elemen
           .map((t) => ({
             name: t.value!.name,
             text: t.value!.text ?? '',
-            language: t.value!.language,
+            languages: t.value!.languages,
             slots: (t.value!.slots ?? []).map((s) => ({
               name: s.name,
               required: s.required,

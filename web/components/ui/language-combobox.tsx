@@ -12,98 +12,15 @@ import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { LANGUAGES as SHARED_LANGUAGES } from '@/components/ui/language-codes';
 
 /**
- * Common ISO 639-1 language codes with English names.
- *
- * Covers the most common languages in linguistic annotation work,
- * plus all languages with significant NLP resources.
+ * Re-export the comprehensive code list from the shared module so
+ * legacy imports of `LANGUAGES` from this file keep working. Prefer
+ * importing from `@/components/ui/language-codes` directly.
  */
-const LANGUAGES = [
-  { code: 'af', name: 'Afrikaans' },
-  { code: 'am', name: 'Amharic' },
-  { code: 'ar', name: 'Arabic' },
-  { code: 'az', name: 'Azerbaijani' },
-  { code: 'be', name: 'Belarusian' },
-  { code: 'bg', name: 'Bulgarian' },
-  { code: 'bn', name: 'Bengali' },
-  { code: 'bs', name: 'Bosnian' },
-  { code: 'ca', name: 'Catalan' },
-  { code: 'cs', name: 'Czech' },
-  { code: 'cy', name: 'Welsh' },
-  { code: 'da', name: 'Danish' },
-  { code: 'de', name: 'German' },
-  { code: 'el', name: 'Greek' },
-  { code: 'en', name: 'English' },
-  { code: 'es', name: 'Spanish' },
-  { code: 'et', name: 'Estonian' },
-  { code: 'eu', name: 'Basque' },
-  { code: 'fa', name: 'Persian' },
-  { code: 'fi', name: 'Finnish' },
-  { code: 'fr', name: 'French' },
-  { code: 'ga', name: 'Irish' },
-  { code: 'gl', name: 'Galician' },
-  { code: 'gu', name: 'Gujarati' },
-  { code: 'ha', name: 'Hausa' },
-  { code: 'he', name: 'Hebrew' },
-  { code: 'hi', name: 'Hindi' },
-  { code: 'hr', name: 'Croatian' },
-  { code: 'hu', name: 'Hungarian' },
-  { code: 'hy', name: 'Armenian' },
-  { code: 'id', name: 'Indonesian' },
-  { code: 'is', name: 'Icelandic' },
-  { code: 'it', name: 'Italian' },
-  { code: 'ja', name: 'Japanese' },
-  { code: 'jv', name: 'Javanese' },
-  { code: 'ka', name: 'Georgian' },
-  { code: 'kk', name: 'Kazakh' },
-  { code: 'km', name: 'Khmer' },
-  { code: 'kn', name: 'Kannada' },
-  { code: 'ko', name: 'Korean' },
-  { code: 'ku', name: 'Kurdish' },
-  { code: 'la', name: 'Latin' },
-  { code: 'lt', name: 'Lithuanian' },
-  { code: 'lv', name: 'Latvian' },
-  { code: 'mk', name: 'Macedonian' },
-  { code: 'ml', name: 'Malayalam' },
-  { code: 'mn', name: 'Mongolian' },
-  { code: 'mr', name: 'Marathi' },
-  { code: 'ms', name: 'Malay' },
-  { code: 'mt', name: 'Maltese' },
-  { code: 'my', name: 'Burmese' },
-  { code: 'ne', name: 'Nepali' },
-  { code: 'nl', name: 'Dutch' },
-  { code: 'no', name: 'Norwegian' },
-  { code: 'pa', name: 'Punjabi' },
-  { code: 'pl', name: 'Polish' },
-  { code: 'ps', name: 'Pashto' },
-  { code: 'pt', name: 'Portuguese' },
-  { code: 'ro', name: 'Romanian' },
-  { code: 'ru', name: 'Russian' },
-  { code: 'sa', name: 'Sanskrit' },
-  { code: 'sd', name: 'Sindhi' },
-  { code: 'si', name: 'Sinhala' },
-  { code: 'sk', name: 'Slovak' },
-  { code: 'sl', name: 'Slovenian' },
-  { code: 'so', name: 'Somali' },
-  { code: 'sq', name: 'Albanian' },
-  { code: 'sr', name: 'Serbian' },
-  { code: 'sv', name: 'Swedish' },
-  { code: 'sw', name: 'Swahili' },
-  { code: 'ta', name: 'Tamil' },
-  { code: 'te', name: 'Telugu' },
-  { code: 'tg', name: 'Tajik' },
-  { code: 'th', name: 'Thai' },
-  { code: 'tl', name: 'Tagalog' },
-  { code: 'tr', name: 'Turkish' },
-  { code: 'uk', name: 'Ukrainian' },
-  { code: 'ur', name: 'Urdu' },
-  { code: 'uz', name: 'Uzbek' },
-  { code: 'vi', name: 'Vietnamese' },
-  { code: 'yo', name: 'Yoruba' },
-  { code: 'zh', name: 'Chinese' },
-  { code: 'zu', name: 'Zulu' },
-] as const;
+const LANGUAGES = SHARED_LANGUAGES;
+
 
 interface LanguageComboboxProps {
   readonly value: string;

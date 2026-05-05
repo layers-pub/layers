@@ -76,14 +76,14 @@ async function fetchProjectCollections(filters: {
   repo?: string;
   limit?: number;
   cursor?: string;
-  language?: string;
+  languages?: readonly string[];
 }): Promise<ResourceCollectionListResponse> {
   const { data, error } = await api.GET('/xrpc/pub.layers.resource.listCollections', {
     params: {
       query: { ...filters, kind: 'stimulus-pool', repo: filters.repo ?? '' } as {
         repo: string;
         kind?: string;
-        language?: string;
+        languages?: readonly string[];
         limit?: number;
         cursor?: string;
       },
@@ -141,7 +141,7 @@ async function fetchEntries(filters: {
   repo: string;
   limit?: number;
   cursor?: string;
-  language?: string;
+  languages?: readonly string[];
 }): Promise<ResourceEntryListResponse> {
   const { data, error } = await api.GET('/xrpc/pub.layers.resource.listEntries', {
     params: { query: filters },
@@ -189,7 +189,7 @@ function useProjectCollections(filters: {
   repo?: string;
   limit?: number;
   cursor?: string;
-  language?: string;
+  languages?: readonly string[];
 }) {
   return useQuery({
     queryKey: resourceCollectionKeys.list({ ...filters, kind: 'stimulus-pool' }),
@@ -240,7 +240,7 @@ function useCollectionEntries(
  * @param filters - query parameters (repo, limit, cursor, language)
  * @returns query result containing the entry list
  */
-function useEntries(filters: { repo: string; limit?: number; cursor?: string; language?: string }) {
+function useEntries(filters: { repo: string; limit?: number; cursor?: string; languages?: readonly string[] }) {
   return useQuery({
     queryKey: resourceEntryKeys.list(filters),
     queryFn: () => fetchEntries(filters),
@@ -270,7 +270,7 @@ function useEntry(uri: string) {
 
 async function fetchProjectTemplates(filters: {
   repo: string;
-  language?: string;
+  languages?: readonly string[];
   limit?: number;
   cursor?: string;
 }): Promise<TemplateListResponse> {
@@ -318,7 +318,7 @@ async function fetchTemplate(uri: string): Promise<Template> {
  */
 function useProjectTemplates(
   repo: string,
-  options?: { language?: string; limit?: number; cursor?: string },
+  options?: { languages?: readonly string[]; limit?: number; cursor?: string },
 ) {
   const filters = { repo, ...options };
   return useQuery({
@@ -355,7 +355,7 @@ interface CreateEntryParams {
   collectionRef: string;
   form: string;
   lemma?: string;
-  language?: string;
+  languages?: readonly string[];
   features?: Array<{ key: string; value: string }>;
   ordinal?: number;
 }
@@ -374,7 +374,7 @@ function useCreateEntry() {
       const entryResult = await createResourceEntryRecord(params.agent, {
         form: params.form,
         lemma: params.lemma,
-        language: params.language,
+        languages: params.languages,
         features: featureMap,
       });
 
@@ -449,7 +449,7 @@ interface CreateTemplateParams {
   authToken: string;
   text: string;
   name?: string;
-  language?: string;
+  languages?: readonly string[];
   slots: Array<{
     name: string;
     description?: string;
@@ -477,7 +477,7 @@ function useCreateTemplate() {
       const result = await createTemplateRecord(params.agent, {
         text: params.text,
         name: params.name,
-        language: params.language,
+        languages: params.languages,
         slots: params.slots,
         constraints: params.constraints.length > 0 ? params.constraints : undefined,
         experimentRef: params.experimentRef,
@@ -620,7 +620,7 @@ interface NetworkCollectionResult {
   did: string;
   name: string;
   description?: string;
-  language?: string;
+  languages?: readonly string[];
   kind?: string;
   entryCount?: number;
 }
@@ -635,7 +635,7 @@ interface NetworkCollectionSearchResponse {
 /** Parameters for searching published collections on the network. */
 interface NetworkCollectionFilters {
   query: string;
-  language?: string;
+  languages?: readonly string[];
   kind?: string;
   limit?: number;
   cursor?: string;
@@ -676,12 +676,13 @@ async function fetchNetworkCollections(
   const needle = filters.query.trim().toLowerCase();
   const collections: NetworkCollectionResult[] = data.records.map((row) => {
     const record = row.value as Record<string, unknown>;
+    const langs = record['languages'];
     return {
       uri: row.uri,
       did: row.uri.split('/')[2] ?? '',
       name: getStringField(record, 'name') ?? 'Untitled',
       description: getStringField(record, 'description'),
-      language: getStringField(record, 'language'),
+      languages: Array.isArray(langs) ? (langs.filter((x) => typeof x === 'string') as string[]) : undefined,
       kind: getStringField(record, 'kind'),
       entryCount: typeof record['entryCount'] === 'number' ? record['entryCount'] : undefined,
     };
@@ -692,7 +693,10 @@ async function fetchNetworkCollections(
       && !(c.description?.toLowerCase().includes(needle) ?? false)) {
       return false;
     }
-    if (filters.language && c.language !== filters.language) return false;
+    if (filters.languages && filters.languages.length > 0) {
+      const cs = c.languages ?? [];
+      if (!filters.languages.some((l) => cs.includes(l))) return false;
+    }
     if (filters.kind && c.kind !== filters.kind) return false;
     return true;
   });
@@ -722,7 +726,7 @@ function useNetworkCollections(filters: NetworkCollectionFilters) {
     queryKey: searchKeys.list({
       type: 'pub.layers.resource.collection',
       q: filters.query,
-      language: filters.language,
+      languages: filters.languages,
       kind: filters.kind,
       cursor: filters.cursor,
     }),
@@ -784,7 +788,7 @@ function useForkCollection() {
         name: sourceCollection.value.name,
         description: sourceCollection.value.description,
         kind: sourceCollection.value.kind,
-        language: sourceCollection.value.language,
+        languages: sourceCollection.value.languages,
         version: sourceCollection.value.version,
         ontologyRef: sourceCollection.value.ontologyRef,
       });
@@ -855,7 +859,7 @@ function useForkCollection() {
           const newEntry = await createResourceEntryRecord(agent, {
             form: sourceEntry.value.form,
             lemma: sourceEntry.value.lemma,
-            language: sourceEntry.value.language,
+            languages: sourceEntry.value.languages,
             ontologyTypeRef: sourceEntry.value.ontologyTypeRef,
             knowledgeRefs: sourceEntry.value.knowledgeRefs,
             features: sourceEntry.value.features,

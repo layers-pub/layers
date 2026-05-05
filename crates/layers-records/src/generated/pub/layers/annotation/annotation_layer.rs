@@ -38,9 +38,9 @@ pub struct AnnotationLayer {
     /// Identifier for the label set used (e.g., 'universal-pos', 'ontonotes-ner', 'penn-treebank-pos').
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub label_set: Option<String>,
-    /// BCP-47 language tag for this annotation layer, if different from the expression's language.
+    /// BCP-47 language tags this record covers. Empty when language is unspecified or unknown.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub language: Option<String>,
+    pub languages: Option<Vec<String>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub metadata: Option<crate::generated::r#pub::layers::defs::AnnotationMetadata>,
     /// Reference to a pub.layers.ontology defining the types used in this layer.

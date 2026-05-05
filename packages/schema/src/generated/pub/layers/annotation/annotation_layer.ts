@@ -42,9 +42,9 @@ export interface AnnotationLayer {
   */
   labelSet?: string;
   /**
-  * BCP-47 language tag for this annotation layer, if different from the expression's language.
+  * BCP-47 language tags this record covers. Empty when language is unspecified or unknown.
   */
-  language?: string;
+  languages?: string[];
   metadata?: AnnotationMetadata;
   /**
   * Reference to a pub.layers.ontology defining the types used in this layer.

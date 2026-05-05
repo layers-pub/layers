@@ -20,9 +20,9 @@ export interface Collection {
   kindUri?: string;
   knowledgeRefs?: KnowledgeRef[];
   /**
-  * BCP-47 language tag.
+  * BCP-47 language tags this record covers. Empty when language is unspecified or unknown.
   */
-  language?: string;
+  languages?: string[];
   /**
   * Provenance: who curated this collection, with what tool.
   */

@@ -34,11 +34,11 @@ interface EntryView {
   readonly membershipUri: string;
   readonly form: string;
   readonly lemma?: string;
-  readonly language?: string;
+  readonly languages?: readonly string[];
   readonly features?: { entries?: Array<{ key: string; value: string }> };
 }
 
-type SortField = 'form' | 'lemma' | 'language';
+type SortField = 'form' | 'lemma' | 'languages';
 type SortDirection = 'asc' | 'desc';
 
 // =============================================================================
@@ -111,8 +111,12 @@ function EntryTable({
           return compareStrings(a.form, b.form, sortDirection);
         case 'lemma':
           return compareStrings(a.lemma, b.lemma, sortDirection);
-        case 'language':
-          return compareStrings(a.language, b.language, sortDirection);
+        case 'languages':
+          return compareStrings(
+            a.languages?.join(',') ?? undefined,
+            b.languages?.join(',') ?? undefined,
+            sortDirection,
+          );
         default:
           return 0;
       }
@@ -230,7 +234,7 @@ function EntryTable({
                 <Button
                   variant="ghost"
                   size="xs"
-                  onClick={() => handleSort('language')}
+                  onClick={() => handleSort('languages')}
                   className="-ml-2 font-medium"
                 >
                   Language
@@ -263,7 +267,7 @@ function EntryTable({
                   <TableCell className="text-muted-foreground">{entry.lemma || '\u2014'}</TableCell>
                   <TableCell>{pos ? <Badge variant="secondary">{pos}</Badge> : null}</TableCell>
                   <TableCell className="text-muted-foreground">
-                    {entry.language || '\u2014'}
+                    {entry.languages || '\u2014'}
                   </TableCell>
                   <TableCell onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center gap-1">

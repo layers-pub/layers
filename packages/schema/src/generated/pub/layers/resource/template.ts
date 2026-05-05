@@ -23,9 +23,9 @@ export interface Template {
   features?: FeatureMap;
   knowledgeRefs?: KnowledgeRef[];
   /**
-  * BCP-47 language tag.
+  * BCP-47 language tags this record covers. Empty when language is unspecified or unknown.
   */
-  language?: string;
+  languages?: string[];
   /**
   * Provenance: who designed this template, with what tool.
   */

@@ -26,9 +26,9 @@ export interface Entry {
   */
   knowledgeRefs?: KnowledgeRef[];
   /**
-  * BCP-47 language tag.
+  * BCP-47 language tags this record covers. Empty when language is unspecified or unknown.
   */
-  language?: string;
+  languages?: string[];
   /**
   * Canonical/citation form.
   */

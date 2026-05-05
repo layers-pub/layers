@@ -12,7 +12,7 @@ export const schema = z.object({
   experimentRef: z.string().regex(/^at:\/\//, 'must start with at://').optional(),
   features: z.unknown().optional(),
   knowledgeRefs: z.array(z.unknown()).max(32).optional(),
-  language: z.string().max(32).optional(),
+  languages: z.array(z.string().max(32)).max(128).optional(),
   metadata: z.unknown().optional(),
   name: z.string().max(512).optional(),
   ontologyRef: z.string().regex(/^at:\/\//, 'must start with at://').optional(),

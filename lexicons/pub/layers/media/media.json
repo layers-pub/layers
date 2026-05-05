@@ -9,7 +9,10 @@
       "key": "tid",
       "record": {
         "type": "object",
-        "required": ["kind", "createdAt"],
+        "required": [
+          "kind",
+          "createdAt"
+        ],
         "properties": {
           "kindUri": {
             "type": "string",
@@ -19,7 +22,12 @@
           "kind": {
             "type": "string",
             "description": "Media kind slug (fallback when kindUri unavailable).",
-            "knownValues": ["audio", "video", "image", "document"],
+            "knownValues": [
+              "audio",
+              "video",
+              "image",
+              "document"
+            ],
             "maxLength": 128
           },
           "title": {
@@ -33,7 +41,12 @@
           "blob": {
             "type": "blob",
             "description": "The media blob.",
-            "accept": ["audio/*", "video/*", "image/*", "application/pdf"],
+            "accept": [
+              "audio/*",
+              "video/*",
+              "image/*",
+              "application/pdf"
+            ],
             "maxSize": 104857600
           },
           "externalUri": {
@@ -81,11 +94,6 @@
             "ref": "pub.layers.media.defs#documentInfo",
             "description": "Document-specific metadata. Present for scanned documents, manuscripts, etc."
           },
-          "language": {
-            "type": "string",
-            "description": "BCP-47 language tag.",
-            "maxLength": 32
-          },
           "knowledgeRefs": {
             "type": "array",
             "description": "Knowledge graph references.",
@@ -108,6 +116,15 @@
           "createdAt": {
             "type": "string",
             "format": "datetime"
+          },
+          "languages": {
+            "type": "array",
+            "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
+            "maxLength": 128,
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
           }
         }
       }

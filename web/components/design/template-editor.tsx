@@ -19,7 +19,7 @@ import { Save, Trash2, Plus, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { LanguageCombobox } from '@/components/ui/language-combobox';
+import { LanguagesMultiCombobox } from '@/components/ui/languages-multicombobox';
 import { Skeleton } from '@/components/ui/skeleton';
 
 import type { SlotSchema, ConstraintSchema } from '@/lib/schemas/design';
@@ -57,7 +57,7 @@ function TemplateEditor({ projectUri, templateUri }: TemplateEditorProps): React
   // Form state
   const [name, setName] = useState('');
   const [text, setText] = useState('');
-  const [language, setLanguage] = useState('');
+  const [languages, setLanguages] = useState<readonly string[]>([]);
   const [slots, setSlots] = useState<SlotSchema[]>([]);
   const [constraints, setConstraints] = useState<ConstraintSchema[]>([]);
   const [_isDirty, setIsDirty] = useState(false);
@@ -68,7 +68,7 @@ function TemplateEditor({ projectUri, templateUri }: TemplateEditorProps): React
       const v = templateData.value;
       setName(v.name ?? '');
       setText(v.text);
-      setLanguage(v.language ?? '');
+      setLanguages(v.languages ?? []);
       setSlots(
         (v.slots ?? []).map((s) => ({
           name: s.name,
@@ -147,7 +147,7 @@ function TemplateEditor({ projectUri, templateUri }: TemplateEditorProps): React
         $type: 'pub.layers.resource.template' as const,
         text,
         name: name || undefined,
-        language: language || undefined,
+        languages: languages.length > 0 ? Array.from(languages) : undefined,
         slots: slots.map((s) => ({
           name: s.name,
           description: s.description,
@@ -172,7 +172,7 @@ function TemplateEditor({ projectUri, templateUri }: TemplateEditorProps): React
           authToken: '',
           text,
           name: name || undefined,
-          language: language || undefined,
+          languages: Array.from(languages),
           slots: slots.map((s) => ({
             name: s.name,
             description: s.description,
@@ -207,7 +207,7 @@ function TemplateEditor({ projectUri, templateUri }: TemplateEditorProps): React
     isAuthenticated,
     text,
     name,
-    language,
+    languages,
     slots,
     constraints,
     isNew,
@@ -267,11 +267,11 @@ function TemplateEditor({ projectUri, templateUri }: TemplateEditorProps): React
           />
         </div>
 
-        <div className="w-44">
-          <LanguageCombobox
-            value={language}
-            onChange={(v) => {
-              setLanguage(v);
+        <div className="w-56">
+          <LanguagesMultiCombobox
+            value={languages}
+            onChange={(next) => {
+              setLanguages(next);
               setIsDirty(true);
             }}
             className="h-9 text-sm"

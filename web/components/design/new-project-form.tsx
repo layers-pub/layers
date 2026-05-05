@@ -20,7 +20,7 @@ import { PageHeader } from '@/components/layout/page-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { LanguageCombobox } from '@/components/ui/language-combobox';
+import { LanguagesMultiCombobox } from '@/components/ui/languages-multicombobox';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useAgent } from '@/lib/auth';
@@ -45,7 +45,7 @@ function NewProjectForm(): React.JSX.Element {
     defaultValues: {
       name: '',
       description: '',
-      language: '',
+      languages: [],
     },
   });
 
@@ -61,7 +61,7 @@ function NewProjectForm(): React.JSX.Element {
       const result = await createResourceCollectionRecord(agent, {
         name: values.name,
         description: values.description,
-        language: values.language,
+        languages: values.languages,
         kind: 'stimulus-pool',
       });
 
@@ -116,20 +116,27 @@ function NewProjectForm(): React.JSX.Element {
             </div>
 
             <div className="space-y-1.5">
-              <Label>Language</Label>
+              <Label>Languages</Label>
               <Controller
                 control={control}
-                name="language"
+                name="languages"
                 render={({ field }) => (
-                  <LanguageCombobox
-                    value={field.value ?? ''}
-                    onChange={field.onChange}
+                  <LanguagesMultiCombobox
+                    value={field.value ?? []}
+                    onChange={(next) => field.onChange([...next])}
                     className="w-full"
                   />
                 )}
               />
-              {errors.language ? (
-                <p className="mt-1 text-sm text-destructive">{errors.language.message}</p>
+              <p className="text-xs text-muted-foreground">
+                Pick every language this project covers. Type a BCP-47 tag (e.g.{' '}
+                <code className="font-mono">en-US</code>,{' '}
+                <code className="font-mono">zh-Hant</code>) to add a custom one.
+              </p>
+              {errors.languages ? (
+                <p className="mt-1 text-sm text-destructive">
+                  {errors.languages.message}
+                </p>
               ) : null}
             </div>
 

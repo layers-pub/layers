@@ -19,7 +19,7 @@ const FEATURES = [
     title: 'Annotations',
     description:
       'Token tags, spans, relations, trees, tiers, and document tags across multiple layers.',
-    href: '/corpora',
+    href: '/discover?tab=annotation',
   },
   {
     icon: Network,
@@ -40,14 +40,14 @@ const FEATURES = [
     title: 'Discovery',
     description:
       'Search across expressions, annotations, and resources with full-text and faceted queries.',
-    href: '/search',
+    href: '/discover',
   },
   {
     icon: Layers,
-    title: 'Multi-layer',
+    title: 'Cross-app interop',
     description:
-      'Stack annotation layers over shared expressions with cross-references and alignments.',
-    href: '/corpora',
+      'Lens any ATProto record from twelve indexed upstreams (margin, leaflet, grain, …) into Layers shape.',
+    href: '/lens',
   },
 ] as const;
 

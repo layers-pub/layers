@@ -36,10 +36,7 @@ pub struct Corpus {
     pub expression_count: Option<i64>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub features: Option<crate::generated::r#pub::layers::defs::FeatureMap>,
-    /// Primary BCP-47 language tag.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub language: Option<String>,
-    /// All languages represented.
+    /// BCP-47 language tags this record covers. Empty when language is unspecified or unknown.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub languages: Option<Vec<String>>,
     /// License identifier (e.g., 'CC-BY-4.0', 'LDC-User-Agreement').

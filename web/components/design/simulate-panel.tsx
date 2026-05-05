@@ -54,7 +54,7 @@ interface SimulatePanelProps {
 }
 
 /** Built-in entry properties available for stratification (in addition to feature keys). */
-const BUILT_IN_STRATIFICATION_FIELDS = ['language', 'lemma', 'ontologyTypeRef'] as const;
+const BUILT_IN_STRATIFICATION_FIELDS = ['languages', 'lemma', 'ontologyTypeRef'] as const;
 
 // =============================================================================
 // STRATEGY DESCRIPTIONS
@@ -102,7 +102,7 @@ interface SlotEntry {
   literalValue?: string;
   form: string;
   features?: Array<{ key: string; value: string }>;
-  language?: string;
+  languages?: readonly string[];
   lemma?: string;
   ontologyTypeRef?: string;
 }
@@ -228,7 +228,7 @@ function randomGenerate(
  * @returns the string value for the field, or "unknown" if missing
  */
 function getStratificationValue(entry: SlotEntry, field: string): string {
-  if (field === 'language') return entry.language ?? 'unknown';
+  if (field === 'languages') return (entry.languages ?? []).join(',') || 'unknown';
   if (field === 'lemma') return entry.lemma ?? 'unknown';
   if (field === 'ontologyTypeRef') return entry.ontologyTypeRef ?? 'unknown';
 
@@ -369,7 +369,7 @@ async function fetchEntryByUri(uri: string): Promise<{
   uri: string;
   form: string;
   lemma?: string;
-  language?: string;
+  languages?: readonly string[];
   ontologyTypeRef?: string;
   features?: Array<{ key: string; value: string }>;
 }> {
@@ -389,7 +389,7 @@ async function fetchEntryByUri(uri: string): Promise<{
     uri: data.uri,
     form: data.value.form,
     lemma: data.value.lemma,
-    language: data.value.language,
+    languages: data.value.languages,
     ontologyTypeRef: data.value.ontologyTypeRef,
     features: data.value.features?.entries,
   };
@@ -507,7 +507,7 @@ function SimulatePanel({ projectUri }: SimulatePanelProps): React.JSX.Element {
     {
       form: string;
       lemma?: string;
-      language?: string;
+      languages?: readonly string[];
       ontologyTypeRef?: string;
       features?: Array<{ key: string; value: string }>;
     }
@@ -517,7 +517,7 @@ function SimulatePanel({ projectUri }: SimulatePanelProps): React.JSX.Element {
       {
         form: string;
         lemma?: string;
-        language?: string;
+        languages?: readonly string[];
         ontologyTypeRef?: string;
         features?: Array<{ key: string; value: string }>;
       }
@@ -548,7 +548,7 @@ function SimulatePanel({ projectUri }: SimulatePanelProps): React.JSX.Element {
           literalValue: entryData?.form ?? membership.entryRef,
           form: entryData?.form ?? membership.entryRef,
           features: entryData?.features,
-          language: entryData?.language,
+          languages: entryData?.languages,
           lemma: entryData?.lemma,
           ontologyTypeRef: entryData?.ontologyTypeRef,
         });

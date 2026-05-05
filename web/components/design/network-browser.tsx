@@ -39,7 +39,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { LanguageCombobox } from '@/components/ui/language-combobox';
+import { LanguagesMultiCombobox } from '@/components/ui/languages-multicombobox';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAgent, useAuth } from '@/lib/auth';
 import { useNetworkCollections, useForkCollection } from '@/lib/hooks/use-design';
@@ -91,7 +91,7 @@ interface CollectionCardProps {
   readonly uri: string;
   readonly name: string;
   readonly description?: string;
-  readonly language?: string;
+  readonly languages?: readonly string[];
   readonly kind?: string;
   readonly did: string;
   readonly entryCount?: number;
@@ -104,7 +104,7 @@ function CollectionCard({
   uri,
   name,
   description,
-  language,
+  languages,
   kind,
   did,
   entryCount,
@@ -118,10 +118,10 @@ function CollectionCard({
         <div className="flex items-start justify-between gap-2">
           <CardTitle className="min-w-0 text-base font-semibold leading-tight">{name}</CardTitle>
           <div className="flex shrink-0 items-center gap-1.5">
-            {language ? (
+            {languages && languages.length > 0 ? (
               <Badge variant="outline">
                 <Languages className="mr-1 size-3" />
-                {language}
+                {languages.length === 1 ? languages[0] : `${languages.length} langs`}
               </Badge>
             ) : null}
             {kind ? <Badge variant="secondary">{kind}</Badge> : null}
@@ -271,39 +271,38 @@ function NetworkBrowser(): React.JSX.Element {
   const agent = useAgent();
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [languageFilter, setLanguageFilter] = useState('');
+  const [languagesFilter, setLanguagesFilter] = useState<readonly string[]>([]);
   const [kindFilter, setKindFilter] = useState('');
   const [cursor, setCursor] = useState<string | undefined>(undefined);
   const [prevCursors, setPrevCursors] = useState<string[]>([]);
 
   const debouncedSearch = useDebouncedValue(searchTerm, DEBOUNCE_MS);
 
-  // Reset cursor when filters change
+  // Reset cursor when filters change.
   const lastFiltersRef = useRef({
     search: debouncedSearch,
-    language: languageFilter,
+    languages: languagesFilter,
     kind: kindFilter,
   });
   useEffect(() => {
     const prev = lastFiltersRef.current;
-    if (
-      prev.search !== debouncedSearch ||
-      prev.language !== languageFilter ||
-      prev.kind !== kindFilter
-    ) {
+    const langsChanged =
+      prev.languages.length !== languagesFilter.length ||
+      prev.languages.some((l, i) => l !== languagesFilter[i]);
+    if (prev.search !== debouncedSearch || langsChanged || prev.kind !== kindFilter) {
       setCursor(undefined);
       setPrevCursors([]);
       lastFiltersRef.current = {
         search: debouncedSearch,
-        language: languageFilter,
+        languages: languagesFilter,
         kind: kindFilter,
       };
     }
-  }, [debouncedSearch, languageFilter, kindFilter]);
+  }, [debouncedSearch, languagesFilter, kindFilter]);
 
   const { data, isLoading, isError, error, refetch } = useNetworkCollections({
     query: debouncedSearch,
-    language: languageFilter || undefined,
+    languages: languagesFilter.length > 0 ? Array.from(languagesFilter) : undefined,
     kind: kindFilter || undefined,
     cursor,
     limit: 12,
@@ -405,7 +404,11 @@ function NetworkBrowser(): React.JSX.Element {
               ))}
             </SelectContent>
           </Select>
-          <LanguageCombobox value={languageFilter} onChange={setLanguageFilter} className="w-44" />
+          <LanguagesMultiCombobox
+            value={languagesFilter}
+            onChange={setLanguagesFilter}
+            className="w-56"
+          />
         </div>
       </div>
 
@@ -443,7 +446,7 @@ function NetworkBrowser(): React.JSX.Element {
                 uri={collection.uri}
                 name={collection.name}
                 description={collection.description}
-                language={collection.language}
+                languages={collection.languages}
                 kind={collection.kind}
                 did={collection.did}
                 entryCount={collection.entryCount}

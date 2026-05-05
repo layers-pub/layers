@@ -45,7 +45,7 @@ export const EditMode: Story = {
     defaultValues: {
       form: 'runs',
       lemma: 'run',
-      language: 'en',
+      languages: ['en'],
       features: [
         { key: 'pos', value: 'verb' },
         { key: 'tense', value: 'present' },
@@ -67,7 +67,7 @@ export const WithFeatures: Story = {
     defaultValues: {
       form: 'chat',
       lemma: 'chat',
-      language: 'fr',
+      languages: ['fr'],
       features: [
         { key: 'gender', value: 'masculine' },
         { key: 'number', value: 'singular' },
@@ -83,7 +83,7 @@ export const Empty: Story = {
     defaultValues: {
       form: '',
       lemma: '',
-      language: '',
+      languages: [],
       features: [],
     },
   },

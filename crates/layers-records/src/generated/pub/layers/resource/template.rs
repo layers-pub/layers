@@ -28,9 +28,9 @@ pub struct Template {
     pub features: Option<crate::generated::r#pub::layers::defs::FeatureMap>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub knowledge_refs: Option<Vec<crate::generated::r#pub::layers::defs::KnowledgeRef>>,
-    /// BCP-47 language tag.
+    /// BCP-47 language tags this record covers. Empty when language is unspecified or unknown.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub language: Option<String>,
+    pub languages: Option<Vec<String>>,
     /// Provenance: who designed this template, with what tool.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub metadata: Option<crate::generated::r#pub::layers::defs::AnnotationMetadata>,

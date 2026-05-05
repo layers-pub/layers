@@ -1047,8 +1047,8 @@ export interface components {
             kindUri?: string;
             /** @description Identifier for the label set used (e.g., 'universal-pos', 'ontonotes-ner', 'penn-treebank-pos'). */
             labelSet?: string;
-            /** @description BCP-47 language tag for this annotation layer, if different from the expression's language. */
-            language?: string;
+            /** @description BCP-47 language tags this record covers. Empty when language is unspecified or unknown. */
+            languages?: string[];
             metadata?: components["schemas"]["DefsAnnotationMetadata"];
             /**
              * Format: at-uri
@@ -1305,9 +1305,7 @@ export interface components {
             /** @description Number of expressions in the corpus. */
             expressionCount?: number;
             features?: components["schemas"]["DefsFeatureMap"];
-            /** @description Primary BCP-47 language tag. */
-            language?: string;
-            /** @description All languages represented. */
+            /** @description BCP-47 language tags this record covers. Empty when language is unspecified or unknown. */
             languages?: string[];
             /** @description License identifier (e.g., 'CC-BY-4.0', 'LDC-User-Agreement'). */
             license?: string;
@@ -2003,9 +2001,7 @@ export interface components {
             kindUri?: string;
             /** @description References to knowledge base entries relevant to this expression. */
             knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** @description BCP-47 language tag for the primary language. */
-            language?: string;
-            /** @description Additional BCP-47 tags for multilingual or code-switching expressions. */
+            /** @description BCP-47 language tags this record covers. Empty when language is unspecified or unknown. */
             languages?: string[];
             /** @description Optional inline media blob. */
             mediaBlob?: {
@@ -2615,8 +2611,8 @@ export interface components {
             kindUri?: string;
             /** @description Knowledge graph references. */
             knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** @description BCP-47 language tag. */
-            language?: string;
+            /** @description BCP-47 language tags this record covers. Empty when language is unspecified or unknown. */
+            languages?: string[];
             /** @description Provenance: who created/uploaded this media record, with what tool. */
             metadata?: components["schemas"]["DefsAnnotationMetadata"];
             mimeType?: string;
@@ -2837,8 +2833,8 @@ export interface components {
              */
             kindUri?: string;
             knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** @description BCP-47 language tag. */
-            language?: string;
+            /** @description BCP-47 language tags this record covers. Empty when language is unspecified or unknown. */
+            languages?: string[];
             /** @description Provenance: who curated this collection, with what tool. */
             metadata?: components["schemas"]["DefsAnnotationMetadata"];
             /** @description Human-readable name for this collection. */
@@ -2954,8 +2950,8 @@ export interface components {
             form: string;
             /** @description Knowledge graph groundings (WordNet synset, FrameNet lexical unit, Wikidata, etc.). */
             knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** @description BCP-47 language tag. */
-            language?: string;
+            /** @description BCP-47 language tags this record covers. Empty when language is unspecified or unknown. */
+            languages?: string[];
             /** @description Canonical/citation form. */
             lemma?: string;
             /** @description Provenance: who created this entry, with what tool, under what persona. */
@@ -3153,8 +3149,8 @@ export interface components {
             /** @description Open-ended features: measureType, taskType, category, domain, etc. */
             features?: components["schemas"]["DefsFeatureMap"];
             knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** @description BCP-47 language tag. */
-            language?: string;
+            /** @description BCP-47 language tags this record covers. Empty when language is unspecified or unknown. */
+            languages?: string[];
             /** @description Provenance: who designed this template, with what tool. */
             metadata?: components["schemas"]["DefsAnnotationMetadata"];
             /** @description Human-readable template name. */

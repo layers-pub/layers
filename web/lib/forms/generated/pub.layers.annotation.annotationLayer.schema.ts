@@ -16,7 +16,7 @@ export const schema = z.object({
   kind: z.union([z.enum(['token-tag', 'span', 'relation', 'tree', 'graph', 'tier', 'document-tag']), z.string()]),
   kindUri: z.string().regex(/^at:\/\//, 'must start with at://').optional(),
   labelSet: z.string().max(256).optional(),
-  language: z.string().max(64).optional(),
+  languages: z.array(z.string().max(32)).max(128).optional(),
   metadata: z.unknown().optional(),
   ontologyRef: z.string().regex(/^at:\/\//, 'must start with at://').optional(),
   parentLayerRef: z.string().regex(/^at:\/\//, 'must start with at://').optional(),

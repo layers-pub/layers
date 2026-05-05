@@ -11,15 +11,29 @@
 
 import { z } from 'zod';
 
+import { schema as collectionLexiconSchema } from '@/lib/forms/generated/pub.layers.resource.collection.schema';
+import { schema as entryLexiconSchema } from '@/lib/forms/generated/pub.layers.resource.entry.schema';
+import { schema as templateLexiconSchema } from '@/lib/forms/generated/pub.layers.resource.template.schema';
+
 // =============================================================================
 // PROJECT (COLLECTION)
 // =============================================================================
 
-const projectCreateSchema = z.object({
-  name: z.string().min(1, 'Name is required').max(512),
-  description: z.string().max(50_000).optional(),
-  language: z.string().max(32).optional(),
-});
+/**
+ * Project-creation form. Picks the editable subset of
+ * `pub.layers.resource.collection` from the generated lexicon Zod
+ * so any lexicon rename surfaces as a TypeScript error here. UI-level
+ * tightening (required name, required at-least-one language) is
+ * declared via `.extend`.
+ */
+const projectCreateSchema = collectionLexiconSchema
+  .pick({ name: true, description: true, languages: true })
+  .extend({
+    name: z.string().min(1, 'Name is required').max(512),
+    languages: z
+      .array(z.string().min(1).max(32))
+      .min(1, 'Pick at least one language'),
+  });
 
 type ProjectFormValues = z.infer<typeof projectCreateSchema>;
 
@@ -32,12 +46,14 @@ const entryFeatureSchema = z.object({
   value: z.string().min(1, 'Feature value is required'),
 });
 
-const entryCreateSchema = z.object({
-  form: z.string().min(1, 'Form is required').max(2048),
-  lemma: z.string().max(2048).optional(),
-  language: z.string().max(32).optional(),
-  features: z.array(entryFeatureSchema).optional(),
-});
+/** Lexicon-derived entry schema, narrowed to the fields this form edits. */
+const entryCreateSchema = entryLexiconSchema
+  .pick({ form: true, lemma: true, languages: true })
+  .extend({
+    form: z.string().min(1, 'Form is required').max(2048),
+    languages: z.array(z.string().min(1).max(32)),
+    features: z.array(entryFeatureSchema).optional(),
+  });
 
 type EntryFormValues = z.infer<typeof entryCreateSchema>;
 
@@ -74,13 +90,14 @@ const constraintSchema = z.object({
 
 type ConstraintSchema = z.infer<typeof constraintSchema>;
 
-const templateCreateSchema = z.object({
-  text: z.string().min(1, 'Template text is required').max(50_000),
-  name: z.string().max(512).optional(),
-  language: z.string().max(32).optional(),
-  slots: z.array(slotSchema).default([]),
-  constraints: z.array(constraintSchema).default([]),
-});
+const templateCreateSchema = templateLexiconSchema
+  .pick({ text: true, name: true, languages: true })
+  .extend({
+    text: z.string().min(1, 'Template text is required').max(50_000),
+    languages: z.array(z.string().min(1).max(32)),
+    slots: z.array(slotSchema).default([]),
+    constraints: z.array(constraintSchema).default([]),
+  });
 
 type TemplateFormValues = z.infer<typeof templateCreateSchema>;
 

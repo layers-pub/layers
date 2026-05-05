@@ -72,12 +72,13 @@ export const fields: readonly FormField[] = [
     itemKind: 'ref',
   },
   {
-    name: 'language',
-    kind: 'string',
-    label: 'Language',
-    description: 'BCP-47 language tag.',
+    name: 'languages',
+    kind: 'array',
+    label: 'Languages',
+    description: 'BCP-47 language tags this record covers. Empty when language is unspecified or unknown.',
     required: false,
-    maxLength: 32,
+    maxLength: 128,
+    itemKind: 'string',
   },
   {
     name: 'lemma',

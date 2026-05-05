@@ -28,10 +28,10 @@ interface ProjectCardProps {
   readonly uri: string;
   readonly name: string;
   readonly description?: string;
-  readonly language?: string;
+  readonly languages?: readonly string[];
 }
 
-function ProjectCard({ uri, name, description, language }: ProjectCardProps): React.JSX.Element {
+function ProjectCard({ uri, name, description, languages }: ProjectCardProps): React.JSX.Element {
   const encodedUri = encodeURIComponent(uri);
 
   return (
@@ -40,10 +40,10 @@ function ProjectCard({ uri, name, description, language }: ProjectCardProps): Re
         <CardHeader className="pb-2">
           <div className="flex items-start justify-between gap-2">
             <CardTitle className="text-base font-semibold leading-tight">{name}</CardTitle>
-            {language ? (
+            {languages && languages.length > 0 ? (
               <Badge variant="outline" className="shrink-0">
                 <Languages className="mr-1 size-3" />
-                {language}
+                {languages.length === 1 ? languages[0] : `${languages.length} langs`}
               </Badge>
             ) : null}
           </div>
@@ -166,7 +166,7 @@ function DesignDashboard(): React.JSX.Element {
               uri={record.uri}
               name={record.value.name ?? 'Untitled'}
               description={record.value.description}
-              language={record.value.language}
+              languages={record.value.languages}
             />
           ))}
         </div>

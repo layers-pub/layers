@@ -112,7 +112,7 @@ async function createExpressionRecord(
   agent: Agent,
   data: {
     text: string;
-    language?: string;
+    languages?: readonly string[];
     kind?: ExpressionRecord.Main['kind'];
   },
 ): Promise<CreateRecordResult> {
@@ -123,7 +123,7 @@ async function createExpressionRecord(
     id: crypto.randomUUID(),
     kind: data.kind ?? 'sentence',
     text: data.text,
-    language: data.language,
+    languages: data.languages ? Array.from(data.languages) : undefined,
     createdAt: new Date().toISOString(),
   };
 
@@ -142,7 +142,7 @@ async function createCorpusRecord(
   data: {
     name: string;
     description?: string;
-    language?: string;
+    languages?: readonly string[];
     license?: string;
   },
 ): Promise<CreateRecordResult> {
@@ -152,7 +152,7 @@ async function createCorpusRecord(
     $type: 'pub.layers.corpus.corpus',
     name: data.name,
     description: data.description,
-    language: data.language,
+    languages: data.languages ? Array.from(data.languages) : undefined,
     license: data.license,
     createdAt: new Date().toISOString(),
   };
@@ -246,7 +246,7 @@ async function createAnnotationLayerRecord(
     segmentationRef?: string;
     labelSet?: string;
     sourceMethod?: AnnotationLayerRecord.Main['sourceMethod'];
-    language?: string;
+    languages?: readonly string[];
     parentLayerRef?: string;
     rank?: number;
     alternativesRef?: string;
@@ -266,7 +266,7 @@ async function createAnnotationLayerRecord(
     tokenizationId: data.tokenizationId,
     labelSet: data.labelSet,
     sourceMethod: data.sourceMethod,
-    language: data.language,
+    languages: data.languages ? Array.from(data.languages) : undefined,
     parentLayerRef: data.parentLayerRef,
     rank: data.rank,
     alternativesRef: data.alternativesRef,
@@ -432,7 +432,7 @@ async function createMediaRecord(
     mimeType?: string;
     durationMs?: number;
     fileSizeBytes?: number;
-    language?: string;
+    languages?: readonly string[];
     metadata?: LayersDefs.AnnotationMetadata;
   },
 ): Promise<CreateRecordResult> {
@@ -448,7 +448,7 @@ async function createMediaRecord(
     mimeType: data.mimeType,
     durationMs: data.durationMs,
     fileSizeBytes: data.fileSizeBytes,
-    language: data.language,
+    languages: data.languages ? Array.from(data.languages) : undefined,
     metadata: data.metadata,
     createdAt: new Date().toISOString(),
   };
@@ -479,7 +479,7 @@ async function createResourceEntryRecord(
   data: {
     form: string;
     lemma?: string;
-    language?: string;
+    languages?: readonly string[];
     ontologyTypeRef?: string;
     knowledgeRefs?: LayersDefs.KnowledgeRef[];
     features?: LayersDefs.FeatureMap;
@@ -498,7 +498,7 @@ async function createResourceEntryRecord(
     $type: COLLECTIONS.entry,
     form: data.form,
     lemma: data.lemma,
-    language: data.language,
+    languages: data.languages ? Array.from(data.languages) : undefined,
     ontologyTypeRef: data.ontologyTypeRef,
     knowledgeRefs: data.knowledgeRefs,
     features: data.features,
@@ -534,7 +534,7 @@ async function createResourceCollectionRecord(
     description?: string;
     kindUri?: string;
     kind?: ResourceCollectionRecord.Main['kind'];
-    language?: string;
+    languages?: readonly string[];
     version?: string;
     ontologyRef?: string;
     knowledgeRefs?: LayersDefs.KnowledgeRef[];
@@ -552,7 +552,7 @@ async function createResourceCollectionRecord(
     description: data.description,
     kindUri: data.kindUri,
     kind: data.kind,
-    language: data.language,
+    languages: data.languages ? Array.from(data.languages) : undefined,
     version: data.version,
     ontologyRef: data.ontologyRef,
     knowledgeRefs: data.knowledgeRefs,
@@ -624,7 +624,7 @@ async function createTemplateRecord(
     text: string;
     slots: ResourceDefs.Slot[];
     name?: string;
-    language?: string;
+    languages?: readonly string[];
     constraints?: LayersDefs.Constraint[];
     ontologyRef?: string;
     experimentRef?: string;
@@ -642,7 +642,7 @@ async function createTemplateRecord(
     text: data.text,
     slots: data.slots,
     name: data.name,
-    language: data.language,
+    languages: data.languages ? Array.from(data.languages) : undefined,
     constraints: data.constraints,
     ontologyRef: data.ontologyRef,
     experimentRef: data.experimentRef,

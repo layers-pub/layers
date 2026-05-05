@@ -112,7 +112,7 @@ function createExpressionRecord(overrides?: Partial<ExpressionRecord>): Expressi
     id: `expr-${id}`,
     kind: 'sentence',
     text: 'The cat sat on the mat.',
-    language: 'en',
+    languages: ['en'],
     createdAt: TEST_TIMESTAMP,
     ...overrides,
   };
@@ -148,7 +148,7 @@ function createCorpusRecord(overrides?: Partial<CorpusRecord>): CorpusRecord {
   return {
     name: `Test Corpus ${id}`,
     description: 'A test corpus for unit testing.',
-    language: 'en',
+    languages: ['en'],
     license: 'CC-BY-4.0',
     domain: 'scientific',
     createdAt: TEST_TIMESTAMP,

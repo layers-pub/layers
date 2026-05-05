@@ -30,7 +30,8 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { LanguageCombobox } from '@/components/ui/language-combobox';
+import { LanguagesMultiCombobox } from '@/components/ui/languages-multicombobox';
+import { schema as collectionLexiconSchema } from '@/lib/forms/generated/pub.layers.resource.collection.schema';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Textarea } from '@/components/ui/textarea';
@@ -45,11 +46,12 @@ import { useProjectCollections } from '@/lib/hooks/use-design';
 // SCHEMAS
 // =============================================================================
 
-const lexiconCreateSchema = z.object({
-  name: z.string().min(1, 'Name is required').max(512),
-  description: z.string().max(50_000).optional(),
-  language: z.string().max(32).optional(),
-});
+const lexiconCreateSchema = collectionLexiconSchema
+  .pick({ name: true, description: true, languages: true })
+  .extend({
+    name: z.string().min(1, 'Name is required').max(512),
+    languages: z.array(z.string().min(1).max(32)),
+  });
 
 type LexiconFormValues = z.infer<typeof lexiconCreateSchema>;
 
@@ -70,7 +72,7 @@ interface LexiconCardProps {
   readonly projectUri: string;
   readonly name: string;
   readonly description?: string;
-  readonly language?: string;
+  readonly languages?: readonly string[];
   readonly kind?: string;
 }
 
@@ -79,7 +81,7 @@ function LexiconCard({
   projectUri,
   name,
   description,
-  language,
+  languages,
   kind,
 }: LexiconCardProps): React.JSX.Element {
   const encodedProjectUri = encodeURIComponent(projectUri);
@@ -92,10 +94,10 @@ function LexiconCard({
           <div className="flex items-start justify-between gap-2">
             <CardTitle className="text-base font-semibold leading-tight">{name}</CardTitle>
             <div className="flex shrink-0 items-center gap-1.5">
-              {language ? (
+              {languages && languages.length > 0 ? (
                 <Badge variant="outline">
                   <Languages className="mr-1 size-3" />
-                  {language}
+                  {languages.length === 1 ? languages[0] : `${languages.length} langs`}
                 </Badge>
               ) : null}
               {kind ? <Badge variant="secondary">{kind}</Badge> : null}
@@ -156,7 +158,7 @@ function CreateLexiconDialog({ onCreated }: CreateLexiconDialogProps): React.JSX
     reset,
   } = useForm<LexiconFormValues>({
     resolver: zodResolver(lexiconCreateSchema),
-    defaultValues: { name: '', description: '', language: '' },
+    defaultValues: { name: '', description: '', languages: [] },
   });
 
   async function onSubmit(values: LexiconFormValues): Promise<void> {
@@ -171,7 +173,7 @@ function CreateLexiconDialog({ onCreated }: CreateLexiconDialogProps): React.JSX
       const result = await createResourceCollectionRecord(agent, {
         name: values.name,
         description: values.description,
-        language: values.language,
+        languages: values.languages,
         kind: 'lexicon',
       });
 
@@ -226,14 +228,14 @@ function CreateLexiconDialog({ onCreated }: CreateLexiconDialogProps): React.JSX
           </div>
 
           <div className="space-y-1.5">
-            <Label>Language</Label>
+            <Label>Languages</Label>
             <Controller
               control={control}
-              name="language"
+              name="languages"
               render={({ field }) => (
-                <LanguageCombobox
-                  value={field.value ?? ''}
-                  onChange={field.onChange}
+                <LanguagesMultiCombobox
+                  value={field.value ?? []}
+                  onChange={(next) => field.onChange([...next])}
                   className="w-full"
                 />
               )}
@@ -305,7 +307,7 @@ function LexiconList({ projectUri }: LexiconListProps): React.JSX.Element {
               projectUri={projectUri}
               name={record.value.name}
               description={record.value.description}
-              language={record.value.language}
+              languages={record.value.languages}
               kind={record.value.kind}
             />
           ))}
