@@ -20,6 +20,11 @@
             "pub.layers.graph.graphEdge",
             "pub.layers.graph.graphEdgeSet",
             "pub.layers.persona.persona"
+          ],
+          "action": [
+            "create",
+            "update",
+            "delete"
           ]
         },
         {

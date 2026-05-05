@@ -23,6 +23,11 @@
             "pub.layers.eprint.dataLink",
             "pub.layers.media.media",
             "pub.layers.changelog.entry"
+          ],
+          "action": [
+            "create",
+            "update",
+            "delete"
           ]
         },
         {

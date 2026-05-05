@@ -16,6 +16,11 @@
             "pub.layers.graph.graphNode",
             "pub.layers.graph.graphEdge",
             "pub.layers.graph.graphEdgeSet"
+          ],
+          "action": [
+            "create",
+            "update",
+            "delete"
           ]
         },
         {

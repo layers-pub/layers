@@ -14,7 +14,15 @@ import {
 } from '@atproto/oauth-client-browser';
 
 import type { DID, LayersUser } from './types';
-import { Agent } from '@atproto/api';
+import { Agent, AtpAgent } from '@atproto/api';
+
+/**
+ * Read-only agent pointed at the public Bluesky appview. Used to
+ * fetch `app.bsky.actor.getProfile` for any DID without depending on
+ * the user's PDS hosting the bsky API surface.
+ */
+const PUBLIC_BSKY_APPVIEW = 'https://public.api.bsky.app';
+const publicBskyAgent = new AtpAgent({ service: PUBLIC_BSKY_APPVIEW });
 import {
   DEFAULT_APPVIEW_AUDIENCE,
   buildLayersScopeString,
@@ -215,19 +223,25 @@ async function restoreSession(): Promise<{
  * Fetches user profile from PDS to populate LayersUser.
  */
 async function fetchUserProfile(session: OAuthSession): Promise<LayersUser> {
-  const agent = new Agent(session);
   const did = session.did as DID;
 
-  // Resolve PDS endpoint from DID document
+  // Resolve PDS endpoint from DID document.
   let pdsUrl = '';
   try {
     pdsUrl = await resolvePdsUrl(did);
   } catch {
-    // Non-fatal; pdsUrl remains empty
+    // Non-fatal; pdsUrl remains empty.
   }
 
+  // Fetch the bsky profile (handle, displayName, avatar) from the
+  // public appview. The OAuth session's PDS doesn't host
+  // `app.bsky.actor.getProfile`, so calling it through the
+  // session-bound `Agent` would fail and we'd fall back to showing
+  // the raw DID in the navbar.
   try {
-    const profile = await agent.getProfile({ actor: did });
+    const profile = await publicBskyAgent.app.bsky.actor.getProfile({
+      actor: did,
+    });
     return {
       did,
       handle: profile.data.handle,
@@ -236,7 +250,8 @@ async function fetchUserProfile(session: OAuthSession): Promise<LayersUser> {
       pdsUrl,
       isAdmin: false,
     };
-  } catch {
+  } catch (err) {
+    console.warn('[oauth] bsky profile lookup failed; falling back to DID', err);
     return { did, handle: did, displayName: '', avatar: '', pdsUrl, isAdmin: false };
   }
 }

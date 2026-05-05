@@ -18,6 +18,11 @@
             "pub.layers.resource.templateComposition",
             "pub.layers.resource.filling",
             "pub.layers.persona.persona"
+          ],
+          "action": [
+            "create",
+            "update",
+            "delete"
           ]
         },
         {

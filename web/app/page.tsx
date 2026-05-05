@@ -98,7 +98,10 @@ export default function HomePage() {
 
         {isAuthenticated && user && (
           <p className="mt-4 text-sm text-muted-foreground">
-            Signed in as <span className="font-medium text-foreground">@{user.handle}</span>
+            Signed in as{' '}
+            <span className="font-medium text-foreground">
+              {user.displayName || `@${user.handle}`}
+            </span>
           </p>
         )}
       </section>
