@@ -429,6 +429,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/xrpc/pub.layers.integration.applyLens": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** pub.layers.integration.applyLens */
+        get: operations["applyLens"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/xrpc/pub.layers.integration.getExternal": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** pub.layers.integration.getExternal */
+        get: operations["getExternal"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/xrpc/pub.layers.integration.listExternal": {
         parameters: {
             query?: never;
@@ -2162,6 +2196,47 @@ export interface components {
             /** Format: at-uri */
             uri: string;
             value: components["schemas"]["GraphGraphNodeMain"];
+        };
+        IntegrationApplyLensOutput: {
+            /** @description Imported source record view, identical to `getExternal`'s response. */
+            source: {
+                /** Format: cid */
+                cid?: string;
+                fromCache: boolean;
+                nsid: string;
+                /** Format: at-uri */
+                uri: string;
+                value: {
+                    [key: string]: unknown;
+                };
+            };
+            /** @description Lensed target record + metadata. */
+            target: {
+                /**
+                 * Format: at-uri
+                 * @description AT-URI of the `dev.panproto.schema.lens` record that produced this output.
+                 */
+                lensUri: string;
+                /** @description NSID of the projected record (always under `pub.layers.*`). */
+                targetNsid: string;
+                /** @description Projected target record body. */
+                value: {
+                    [key: string]: unknown;
+                };
+            };
+        };
+        IntegrationGetExternalOutput: {
+            /** Format: cid */
+            cid?: string;
+            /** @description True when served from `external_records` without a network fetch. */
+            fromCache: boolean;
+            nsid: string;
+            /** Format: at-uri */
+            uri: string;
+            /** @description Foreign record body as published by the source. */
+            value: {
+                [key: string]: unknown;
+            };
         };
         IntegrationListExternalOutput: {
             cursor?: string;
@@ -3949,6 +4024,67 @@ export interface operations {
             403: components["responses"]["Error"];
             404: components["responses"]["Error"];
             429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
+        };
+    };
+    applyLens: {
+        parameters: {
+            query: {
+                /** @description AT-URI of the foreign record to lens into Layers shape. */
+                uri: string;
+                /** @description Bypass the cached source-record copy and refetch from the upstream PDS. */
+                fresh?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Lens result envelope. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        lensUri?: string;
+                        sourceUri: string;
+                        targetNsid: string;
+                        value: Record<string, never>;
+                    };
+                };
+            };
+            400: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            500: components["responses"]["Error"];
+        };
+    };
+    getExternal: {
+        parameters: {
+            query: {
+                /** @description AT-URI of the foreign record to fetch. */
+                uri: string;
+                /** @description Bypass the cached copy and refetch from the source PDS. */
+                fresh?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecordView"];
+                };
+            };
+            400: components["responses"]["Error"];
+            404: components["responses"]["Error"];
             500: components["responses"]["Error"];
         };
     };

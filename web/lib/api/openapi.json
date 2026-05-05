@@ -7949,6 +7949,125 @@
         ]
       }
     },
+    "/xrpc/pub.layers.integration.applyLens": {
+      "get": {
+        "operationId": "applyLens",
+        "parameters": [
+          {
+            "description": "AT-URI of the foreign record to lens into Layers shape.",
+            "in": "query",
+            "name": "uri",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Bypass the cached source-record copy and refetch from the upstream PDS.",
+            "in": "query",
+            "name": "fresh",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "lensUri": {
+                      "type": "string"
+                    },
+                    "sourceUri": {
+                      "type": "string"
+                    },
+                    "targetNsid": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "sourceUri",
+                    "targetNsid",
+                    "value"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Lens result envelope."
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "summary": "pub.layers.integration.applyLens",
+        "tags": [
+          "integration"
+        ]
+      }
+    },
+    "/xrpc/pub.layers.integration.getExternal": {
+      "get": {
+        "operationId": "getExternal",
+        "parameters": [
+          {
+            "description": "AT-URI of the foreign record to fetch.",
+            "in": "query",
+            "name": "uri",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Bypass the cached copy and refetch from the source PDS.",
+            "in": "query",
+            "name": "fresh",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordView"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "summary": "pub.layers.integration.getExternal",
+        "tags": [
+          "integration"
+        ]
+      }
+    },
     "/xrpc/pub.layers.integration.listExternal": {
       "get": {
         "operationId": "list_external_records",

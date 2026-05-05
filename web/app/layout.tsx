@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import { Geist } from 'next/font/google';
@@ -34,6 +34,16 @@ export const metadata: Metadata = {
     title: 'Layers | Decentralized Linguistic Annotation',
     description: 'Decentralized linguistic annotation on ATProto.',
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+  ],
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

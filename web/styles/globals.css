@@ -228,3 +228,28 @@
     animation: highlight-flash 1.5s ease-out;
   }
 }
+
+@layer utilities {
+  /* Mobile tap-target floor: WCAG 2.5.8 + iOS HIG 44pt minimum. */
+  .tap-target {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+  }
+
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .pl-safe {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .pr-safe {
+    padding-right: env(safe-area-inset-right);
+  }
+}

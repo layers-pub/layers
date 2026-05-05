@@ -24,6 +24,7 @@ use idiolect_codegen::emit::family::FamilyConfig;
 use idiolect_codegen::{Example, emit, lexicon, rustfmt_source};
 use serde_json::Value;
 
+mod frontend;
 mod lenses;
 mod lexicon_jsonschema;
 
@@ -75,15 +76,31 @@ fn run() -> Result<ExitCode> {
         "generate" => {
             cmd_generate(&lexicons_dir, &rust_out, &ts_out, false)?;
             cmd_routes(&routes_spec, &routes_out, false)?;
-            cmd_openapi(&routes_spec, &openapi_out, false)
+            cmd_openapi(&routes_spec, &openapi_out, false)?;
+            frontend::cmd_frontend(&repo_root, false)
         }
         "check" => {
             cmd_generate(&lexicons_dir, &rust_out, &ts_out, true)?;
             cmd_routes(&routes_spec, &routes_out, true)?;
-            cmd_openapi(&routes_spec, &openapi_out, true)
+            cmd_openapi(&routes_spec, &openapi_out, true)?;
+            // Frontend codegen drift checks (queries hooks + lens
+            // registry) reuse the same byte-equality gate. The
+            // openapi-typescript step is in-place; CI catches drift
+            // via `git diff --exit-code`.
+            let mut drift = false;
+            drift |= frontend::queries::emit(&repo_root, true)?;
+            drift |= frontend::lenses::emit(&repo_root, true)?;
+            drift |= frontend::forms::emit(&repo_root, true)?;
+            drift |= frontend::mutations::emit(&repo_root, true)?;
+            if drift {
+                Ok(ExitCode::from(1))
+            } else {
+                Ok(ExitCode::SUCCESS)
+            }
         }
         "routes" => cmd_routes(&routes_spec, &routes_out, false),
         "openapi" => cmd_openapi(&routes_spec, &openapi_out, false),
+        "frontend" => frontend::cmd_frontend(&repo_root, false),
         "lenses" => lenses::cmd_lenses(&repo_root, false),
         "list" => {
             list_lexicons(&lexicons_dir)?;
@@ -256,6 +273,98 @@ fn cmd_openapi(spec: &Path, out: &Path, check_only: bool) -> Result<ExitCode> {
             all_components.entry(k).or_insert(v);
         }
     }
+
+    // Hand-mounted integration routes (`getExternal`, `applyLens`)
+    // live outside the spec-driven generated tree but the frontend
+    // needs typed access. Register them in the OpenAPI doc so the
+    // openapi-typescript step picks them up.
+    paths.insert(
+        "/xrpc/pub.layers.integration.getExternal".to_owned(),
+        serde_json::json!({
+            "get": {
+                "summary": "pub.layers.integration.getExternal",
+                "operationId": "getExternal",
+                "tags": ["integration"],
+                "parameters": [
+                    {
+                        "name": "uri",
+                        "in": "query",
+                        "required": true,
+                        "schema": { "type": "string" },
+                        "description": "AT-URI of the foreign record to fetch."
+                    },
+                    {
+                        "name": "fresh",
+                        "in": "query",
+                        "required": false,
+                        "schema": { "type": "boolean" },
+                        "description": "Bypass the cached copy and refetch from the source PDS."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": { "$ref": "#/components/schemas/RecordView" }
+                            }
+                        }
+                    },
+                    "400": { "$ref": "#/components/responses/Error" },
+                    "404": { "$ref": "#/components/responses/Error" },
+                    "500": { "$ref": "#/components/responses/Error" }
+                }
+            }
+        }),
+    );
+    paths.insert(
+        "/xrpc/pub.layers.integration.applyLens".to_owned(),
+        serde_json::json!({
+            "get": {
+                "summary": "pub.layers.integration.applyLens",
+                "operationId": "applyLens",
+                "tags": ["integration"],
+                "parameters": [
+                    {
+                        "name": "uri",
+                        "in": "query",
+                        "required": true,
+                        "schema": { "type": "string" },
+                        "description": "AT-URI of the foreign record to lens into Layers shape."
+                    },
+                    {
+                        "name": "fresh",
+                        "in": "query",
+                        "required": false,
+                        "schema": { "type": "boolean" },
+                        "description": "Bypass the cached source-record copy and refetch from the upstream PDS."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lens result envelope.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "required": ["sourceUri", "targetNsid", "value"],
+                                    "properties": {
+                                        "sourceUri": { "type": "string" },
+                                        "lensUri":   { "type": "string" },
+                                        "targetNsid": { "type": "string" },
+                                        "value":      { "type": "object" }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": { "$ref": "#/components/responses/Error" },
+                    "404": { "$ref": "#/components/responses/Error" },
+                    "500": { "$ref": "#/components/responses/Error" }
+                }
+            }
+        }),
+    );
 
     let document = serde_json::json!({
         "openapi": "3.1.0",
@@ -654,6 +763,6 @@ fn print_help() {
     eprintln!(
         "layers-codegen — emit Rust + TypeScript bindings for pub.layers.* lexicons\n\n\
          USAGE:\n    layers-codegen <SUBCOMMAND>\n\n\
-         SUBCOMMANDS:\n    generate    Emit layers-records + @layers-pub/schema + routes + openapi\n    check       Drift gate (non-zero exit if disk differs)\n    routes      Emit just the orchestrator route table\n    openapi     Emit just web/lib/api/openapi.json\n    list        Print every pub.layers.* NSID found on disk\n    help        Show this message\n"
+         SUBCOMMANDS:\n    generate    Emit every codegen artefact (records + schema + routes + openapi + frontend)\n    check       Drift gate (non-zero exit if disk differs)\n    routes      Emit just the orchestrator route table\n    openapi     Emit just web/lib/api/openapi.json\n    frontend    Emit web/lib/api/generated/queries/, web/lib/lenses/generated/, and refresh schema.generated.ts\n    lenses      Compile lens DSL specs into dev.panproto.schema.lens record bodies\n    list        Print every pub.layers.* NSID found on disk\n    help        Show this message\n"
     );
 }
