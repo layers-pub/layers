@@ -652,31 +652,33 @@ function getStringField(record: Record<string, unknown>, field: string): string 
 async function fetchNetworkCollections(
   filters: NetworkCollectionFilters,
 ): Promise<NetworkCollectionSearchResponse> {
-  // Build the search query, appending type filter
-  const searchQuery = filters.query.trim();
-
-  // Use the full-text search endpoint filtered to collection records
-  const { data, error } = await api.GET('/api/v1/search', {
+  // The orchestrator does not ship a federation-wide full-text search
+  // endpoint today. We page through the indexed `listCollections`
+  // surface and apply the caller's filters client-side. When a search
+  // method lands, this function rebases onto it without a caller change.
+  const { data, error } = await api.GET('/xrpc/pub.layers.resource.listCollections', {
     params: {
       query: {
-        q: searchQuery,
-        type: 'pub.layers.resource.collection',
-        limit: filters.limit ?? 12,
         cursor: filters.cursor,
+        limit: filters.limit ?? 12,
       },
     },
   });
 
   if (error || !data) {
-    throw new APIError('Failed to search network collections', undefined, '/api/v1/search');
+    throw new APIError(
+      'Failed to fetch network collections',
+      undefined,
+      '/xrpc/pub.layers.resource.listCollections',
+    );
   }
 
-  // Map search results to normalized collection objects
-  const collections: NetworkCollectionResult[] = data.results.map((result) => {
-    const record = result.record as Record<string, unknown>;
+  const needle = filters.query.trim().toLowerCase();
+  const collections: NetworkCollectionResult[] = data.records.map((row) => {
+    const record = row.value as Record<string, unknown>;
     return {
-      uri: result.uri,
-      did: result.did,
+      uri: row.uri,
+      did: row.uri.split('/')[2] ?? '',
       name: getStringField(record, 'name') ?? 'Untitled',
       description: getStringField(record, 'description'),
       language: getStringField(record, 'language'),
@@ -685,8 +687,11 @@ async function fetchNetworkCollections(
     };
   });
 
-  // Apply client-side filters that the search endpoint may not support
   const filtered = collections.filter((c) => {
+    if (needle && !c.name.toLowerCase().includes(needle)
+      && !(c.description?.toLowerCase().includes(needle) ?? false)) {
+      return false;
+    }
     if (filters.language && c.language !== filters.language) return false;
     if (filters.kind && c.kind !== filters.kind) return false;
     return true;
@@ -695,7 +700,7 @@ async function fetchNetworkCollections(
   return {
     collections: filtered,
     cursor: data.cursor,
-    total: data.total,
+    total: filtered.length,
   };
 }
 

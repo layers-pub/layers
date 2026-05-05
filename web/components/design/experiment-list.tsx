@@ -56,7 +56,7 @@ function didFromUri(uri: string): string {
 
 async function fetchExperimentDefs(repo: string): Promise<{ records: ExperimentRecord[] }> {
   const { data, error } = await api.GET('/xrpc/pub.layers.judgment.listExperimentDefs', {
-    params: { query: { repo } },
+    params: { query: { did: repo } },
   });
 
   if (error || !data) {
@@ -67,7 +67,7 @@ async function fetchExperimentDefs(repo: string): Promise<{ records: ExperimentR
     );
   }
 
-  return data as { records: ExperimentRecord[] };
+  return data as unknown as { records: ExperimentRecord[] };
 }
 
 function useProjectExperiments(repo: string) {

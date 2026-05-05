@@ -4,176 +4,6 @@
  */
 
 export interface paths {
-    "/api/v1/admin/dlq": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List DLQ entries. */
-        get: operations["adminListDLQ"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/admin/dlq/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Dismiss a DLQ entry. */
-        delete: operations["adminDismissDLQ"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/admin/dlq/{id}/replay": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Retry a DLQ entry. */
-        post: operations["adminReplayDLQ"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/admin/health": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get system health. */
-        get: operations["adminGetHealth"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/admin/queues": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get queue depths. */
-        get: operations["adminGetQueues"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/admin/reconciliation": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get reconciliation status. */
-        get: operations["adminGetReconciliationStatus"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/admin/reconciliation/run": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Trigger reconciliation. */
-        post: operations["adminRunReconciliation"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/import": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Import a file. */
-        post: operations["importFile"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/references": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get cross-references. */
-        get: operations["getReferences"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/search": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Full-text search. */
-        get: operations["search"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/xrpc/pub.layers.alignment.getAlignment": {
         parameters: {
             query?: never;
@@ -181,8 +11,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single alignment by its AT-URI. */
-        get: operations["pub.layers.alignment.getAlignment"];
+        /** pub.layers.alignment.getAlignment */
+        get: operations["get_alignment"];
         put?: never;
         post?: never;
         delete?: never;
@@ -198,8 +28,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List alignments. */
-        get: operations["pub.layers.alignment.listAlignments"];
+        /** pub.layers.alignment.listAlignments */
+        get: operations["list_alignments"];
         put?: never;
         post?: never;
         delete?: never;
@@ -215,8 +45,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single annotation layer by its AT-URI. */
-        get: operations["pub.layers.annotation.getAnnotationLayer"];
+        /** pub.layers.annotation.getAnnotationLayer */
+        get: operations["get_annotation_layer"];
         put?: never;
         post?: never;
         delete?: never;
@@ -232,8 +62,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single cluster set by its AT-URI. */
-        get: operations["pub.layers.annotation.getClusterSet"];
+        /** pub.layers.annotation.getClusterSet */
+        get: operations["get_cluster_set"];
         put?: never;
         post?: never;
         delete?: never;
@@ -249,8 +79,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List annotation layers. */
-        get: operations["pub.layers.annotation.listAnnotationLayers"];
+        /** pub.layers.annotation.listAnnotationLayers */
+        get: operations["list_annotation_layers"];
         put?: never;
         post?: never;
         delete?: never;
@@ -266,8 +96,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List cluster sets. */
-        get: operations["pub.layers.annotation.listClusterSets"];
+        /** pub.layers.annotation.listClusterSets */
+        get: operations["list_cluster_sets"];
         put?: never;
         post?: never;
         delete?: never;
@@ -283,8 +113,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single changelog entry by its AT-URI. */
-        get: operations["pub.layers.changelog.getEntry"];
+        /** pub.layers.changelog.getEntry */
+        get: operations["get_changelog_entry"];
         put?: never;
         post?: never;
         delete?: never;
@@ -300,8 +130,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List recent changelog entries across all records of a given collection type, ordered newest first. */
-        get: operations["pub.layers.changelog.listByCollection"];
+        /** pub.layers.changelog.listByCollection */
+        get: operations["list_changelog_by_collection"];
         put?: never;
         post?: never;
         delete?: never;
@@ -317,8 +147,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List changelog entries for a specific subject record, ordered newest first. */
-        get: operations["pub.layers.changelog.listEntries"];
+        /** pub.layers.changelog.listEntries */
+        get: operations["list_changelog_entries"];
         put?: never;
         post?: never;
         delete?: never;
@@ -334,8 +164,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single corpus by its AT-URI. */
-        get: operations["pub.layers.corpus.getCorpus"];
+        /** pub.layers.corpus.getCorpus */
+        get: operations["get_corpus"];
         put?: never;
         post?: never;
         delete?: never;
@@ -351,8 +181,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single membership by its AT-URI. */
-        get: operations["pub.layers.corpus.getMembership"];
+        /** pub.layers.corpus.getMembership */
+        get: operations["get_corpus_membership"];
         put?: never;
         post?: never;
         delete?: never;
@@ -368,8 +198,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List corpora. */
-        get: operations["pub.layers.corpus.listCorpora"];
+        /** pub.layers.corpus.listCorpora */
+        get: operations["list_corpora"];
         put?: never;
         post?: never;
         delete?: never;
@@ -385,8 +215,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List memberships. */
-        get: operations["pub.layers.corpus.listMemberships"];
+        /** pub.layers.corpus.listMemberships */
+        get: operations["list_corpus_memberships"];
         put?: never;
         post?: never;
         delete?: never;
@@ -402,8 +232,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single data link by its AT-URI. */
-        get: operations["pub.layers.eprint.getDataLink"];
+        /** pub.layers.eprint.getDataLink */
+        get: operations["get_data_link"];
         put?: never;
         post?: never;
         delete?: never;
@@ -419,8 +249,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single eprint by its AT-URI. */
-        get: operations["pub.layers.eprint.getEprint"];
+        /** pub.layers.eprint.getEprint */
+        get: operations["get_eprint"];
         put?: never;
         post?: never;
         delete?: never;
@@ -436,8 +266,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List data links. */
-        get: operations["pub.layers.eprint.listDataLinks"];
+        /** pub.layers.eprint.listDataLinks */
+        get: operations["list_data_links"];
         put?: never;
         post?: never;
         delete?: never;
@@ -453,8 +283,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List eprints. */
-        get: operations["pub.layers.eprint.listEprints"];
+        /** pub.layers.eprint.listEprints */
+        get: operations["list_eprints"];
         put?: never;
         post?: never;
         delete?: never;
@@ -470,8 +300,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single expression by its AT-URI. */
-        get: operations["pub.layers.expression.getExpression"];
+        /** pub.layers.expression.getExpression */
+        get: operations["get_expression"];
         put?: never;
         post?: never;
         delete?: never;
@@ -487,8 +317,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List expressions in a repository. */
-        get: operations["pub.layers.expression.listExpressions"];
+        /** pub.layers.expression.listExpressions */
+        get: operations["list_expressions"];
         put?: never;
         post?: never;
         delete?: never;
@@ -504,8 +334,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single graph edge by its AT-URI. */
-        get: operations["pub.layers.graph.getGraphEdge"];
+        /** pub.layers.graph.getGraphEdge */
+        get: operations["get_graph_edge"];
         put?: never;
         post?: never;
         delete?: never;
@@ -521,8 +351,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single graph edge set by its AT-URI. */
-        get: operations["pub.layers.graph.getGraphEdgeSet"];
+        /** pub.layers.graph.getGraphEdgeSet */
+        get: operations["get_graph_edge_set"];
         put?: never;
         post?: never;
         delete?: never;
@@ -538,8 +368,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single graph node by its AT-URI. */
-        get: operations["pub.layers.graph.getGraphNode"];
+        /** pub.layers.graph.getGraphNode */
+        get: operations["get_graph_node"];
         put?: never;
         post?: never;
         delete?: never;
@@ -555,8 +385,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List graph edge sets. */
-        get: operations["pub.layers.graph.listGraphEdgeSets"];
+        /** pub.layers.graph.listGraphEdgeSets */
+        get: operations["list_graph_edge_sets"];
         put?: never;
         post?: never;
         delete?: never;
@@ -572,8 +402,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List graph edges. */
-        get: operations["pub.layers.graph.listGraphEdges"];
+        /** pub.layers.graph.listGraphEdges */
+        get: operations["list_graph_edges"];
         put?: never;
         post?: never;
         delete?: never;
@@ -589,8 +419,25 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List graph nodes. */
-        get: operations["pub.layers.graph.listGraphNodes"];
+        /** pub.layers.graph.listGraphNodes */
+        get: operations["list_graph_nodes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/xrpc/pub.layers.integration.listExternal": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** pub.layers.integration.listExternal */
+        get: operations["list_external_records"];
         put?: never;
         post?: never;
         delete?: never;
@@ -606,8 +453,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single agreement report by its AT-URI. */
-        get: operations["pub.layers.judgment.getAgreementReport"];
+        /** pub.layers.judgment.getAgreementReport */
+        get: operations["get_agreement_report"];
         put?: never;
         post?: never;
         delete?: never;
@@ -623,8 +470,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single experiment definition by its AT-URI. */
-        get: operations["pub.layers.judgment.getExperimentDef"];
+        /** pub.layers.judgment.getExperimentDef */
+        get: operations["get_experiment_def"];
         put?: never;
         post?: never;
         delete?: never;
@@ -640,8 +487,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single judgment set by its AT-URI. */
-        get: operations["pub.layers.judgment.getJudgmentSet"];
+        /** pub.layers.judgment.getJudgmentSet */
+        get: operations["get_judgment_set"];
         put?: never;
         post?: never;
         delete?: never;
@@ -657,8 +504,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List agreement reports. */
-        get: operations["pub.layers.judgment.listAgreementReports"];
+        /** pub.layers.judgment.listAgreementReports */
+        get: operations["list_agreement_reports"];
         put?: never;
         post?: never;
         delete?: never;
@@ -674,8 +521,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List experiment definitions. */
-        get: operations["pub.layers.judgment.listExperimentDefs"];
+        /** pub.layers.judgment.listExperimentDefs */
+        get: operations["list_experiment_defs"];
         put?: never;
         post?: never;
         delete?: never;
@@ -691,8 +538,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List judgment sets. */
-        get: operations["pub.layers.judgment.listJudgmentSets"];
+        /** pub.layers.judgment.listJudgmentSets */
+        get: operations["list_judgment_sets"];
         put?: never;
         post?: never;
         delete?: never;
@@ -708,8 +555,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single media record by its AT-URI. */
-        get: operations["pub.layers.media.getMedia"];
+        /** pub.layers.media.getMedia */
+        get: operations["get_media"];
         put?: never;
         post?: never;
         delete?: never;
@@ -725,8 +572,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List media records. */
-        get: operations["pub.layers.media.listMedia"];
+        /** pub.layers.media.listMedia */
+        get: operations["list_media"];
         put?: never;
         post?: never;
         delete?: never;
@@ -742,8 +589,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single ontology by its AT-URI. */
-        get: operations["pub.layers.ontology.getOntology"];
+        /** pub.layers.ontology.getOntology */
+        get: operations["get_ontology"];
         put?: never;
         post?: never;
         delete?: never;
@@ -759,8 +606,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single type definition by its AT-URI. */
-        get: operations["pub.layers.ontology.getTypeDef"];
+        /** pub.layers.ontology.getTypeDef */
+        get: operations["get_type_def"];
         put?: never;
         post?: never;
         delete?: never;
@@ -776,8 +623,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List ontologies. */
-        get: operations["pub.layers.ontology.listOntologies"];
+        /** pub.layers.ontology.listOntologies */
+        get: operations["list_ontologies"];
         put?: never;
         post?: never;
         delete?: never;
@@ -793,8 +640,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List type definitions. */
-        get: operations["pub.layers.ontology.listTypeDefs"];
+        /** pub.layers.ontology.listTypeDefs */
+        get: operations["list_type_defs"];
         put?: never;
         post?: never;
         delete?: never;
@@ -810,8 +657,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single persona by its AT-URI. */
-        get: operations["pub.layers.persona.getPersona"];
+        /** pub.layers.persona.getPersona */
+        get: operations["get_persona"];
         put?: never;
         post?: never;
         delete?: never;
@@ -827,8 +674,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List personas. */
-        get: operations["pub.layers.persona.listPersonas"];
+        /** pub.layers.persona.listPersonas */
+        get: operations["list_personas"];
         put?: never;
         post?: never;
         delete?: never;
@@ -844,8 +691,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single resource collection by its AT-URI. */
-        get: operations["pub.layers.resource.getCollection"];
+        /** pub.layers.resource.getCollection */
+        get: operations["get_collection"];
         put?: never;
         post?: never;
         delete?: never;
@@ -861,8 +708,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single collection membership by its AT-URI. */
-        get: operations["pub.layers.resource.getCollectionMembership"];
+        /** pub.layers.resource.getCollectionMembership */
+        get: operations["get_collection_membership"];
         put?: never;
         post?: never;
         delete?: never;
@@ -878,8 +725,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single resource entry by its AT-URI. */
-        get: operations["pub.layers.resource.getEntry"];
+        /** pub.layers.resource.getEntry */
+        get: operations["get_entry"];
         put?: never;
         post?: never;
         delete?: never;
@@ -895,8 +742,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single template filling by its AT-URI. */
-        get: operations["pub.layers.resource.getFilling"];
+        /** pub.layers.resource.getFilling */
+        get: operations["get_filling"];
         put?: never;
         post?: never;
         delete?: never;
@@ -912,8 +759,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single resource template by its AT-URI. */
-        get: operations["pub.layers.resource.getTemplate"];
+        /** pub.layers.resource.getTemplate */
+        get: operations["get_template"];
         put?: never;
         post?: never;
         delete?: never;
@@ -929,8 +776,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single template composition by its AT-URI. */
-        get: operations["pub.layers.resource.getTemplateComposition"];
+        /** pub.layers.resource.getTemplateComposition */
+        get: operations["get_template_composition"];
         put?: never;
         post?: never;
         delete?: never;
@@ -946,8 +793,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List collection memberships. */
-        get: operations["pub.layers.resource.listCollectionMemberships"];
+        /** pub.layers.resource.listCollectionMemberships */
+        get: operations["list_collection_memberships"];
         put?: never;
         post?: never;
         delete?: never;
@@ -963,8 +810,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List resource collections. */
-        get: operations["pub.layers.resource.listCollections"];
+        /** pub.layers.resource.listCollections */
+        get: operations["list_collections"];
         put?: never;
         post?: never;
         delete?: never;
@@ -980,8 +827,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List resource entries. */
-        get: operations["pub.layers.resource.listEntries"];
+        /** pub.layers.resource.listEntries */
+        get: operations["list_entries"];
         put?: never;
         post?: never;
         delete?: never;
@@ -997,8 +844,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List template fillings. */
-        get: operations["pub.layers.resource.listFillings"];
+        /** pub.layers.resource.listFillings */
+        get: operations["list_fillings"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1014,8 +861,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List template compositions. */
-        get: operations["pub.layers.resource.listTemplateCompositions"];
+        /** pub.layers.resource.listTemplateCompositions */
+        get: operations["list_template_compositions"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1031,8 +878,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List resource templates. */
-        get: operations["pub.layers.resource.listTemplates"];
+        /** pub.layers.resource.listTemplates */
+        get: operations["list_templates"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1048,8 +895,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a single segmentation by its AT-URI. */
-        get: operations["pub.layers.segmentation.getSegmentation"];
+        /** pub.layers.segmentation.getSegmentation */
+        get: operations["get_segmentation"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1065,8 +912,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List segmentations. */
-        get: operations["pub.layers.segmentation.listSegmentations"];
+        /** pub.layers.segmentation.listSegmentations */
+        get: operations["list_segmentations"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1079,55 +926,49 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        AlignmentAlignmentMain: components["schemas"]["AlignmentAlignmentRecord"];
-        /** @description An alignment between two parallel sequences. The sequences can be tokenizations, annotation layers, expressions (for parallel text), or tiers. Links establish many-to-many correspondence between elements indexed by position. */
-        AlignmentAlignmentRecord: {
+        AlignmentAlignmentMain: {
+            /** Format: datetime */
+            createdAt: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description Primary expression context (for within-document alignments).
              */
             expression?: string;
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Alignment kind slug (fallback). The type of alignment. */
+            kind: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the alignment kind definition node. Community-expandable via knowledge graph.
              */
             kindUri?: string;
-            /**
-             * @description Alignment kind slug (fallback). The type of alignment.
-             * @enum {string}
-             */
-            kind: "tokenization-to-tokenization" | "interlinear" | "parallel-text" | "audio-to-text" | "layer-to-layer" | "error-to-correction" | "custom";
-            /**
-             * Format: uri
-             * @description AT-URI of the alignment subkind definition node. Community-expandable via knowledge graph.
-             */
-            subkindUri?: string;
-            /**
-             * @description Alignment subkind slug (fallback). More specific alignment type within the kind.
-             * @enum {string}
-             */
-            subkind?: "word-to-morpheme" | "word-to-word" | "sentence-to-sentence" | "phrase-to-phrase" | "morpheme-to-gloss" | "forced-alignment" | "manual-alignment" | "custom";
-            /** @description Reference to the source sequence. Use localId for within-segmentation tokenization UUID, recordRef for cross-record AT-URI (annotation layer, expression, etc.). */
-            source?: components["schemas"]["DefsObjectRef"];
-            /** @description Reference to the target sequence. Use localId for within-segmentation tokenization UUID, recordRef for cross-record AT-URI. */
-            target?: components["schemas"]["DefsObjectRef"];
-            /** @description BCP-47 language tag for the source (for parallel text alignment). */
-            sourceLang?: string;
-            /** @description BCP-47 language tag for the target. */
-            targetLang?: string;
+            /** @description Knowledge graph references for this alignment (e.g., alignment model, parallel corpus source). */
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
             /** @description The alignment links. */
             links: components["schemas"]["DefsAlignmentLink"][];
             metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            /** @description Knowledge graph references for this alignment (e.g., alignment model, parallel corpus source). */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
+            /** @description Reference to the source sequence. Use localId for within-segmentation tokenization UUID, recordRef for cross-record AT-URI (annotation layer, expression, etc.). */
+            source?: components["schemas"]["DefsObjectRef"];
+            /** @description BCP-47 language tag for the source (for parallel text alignment). */
+            sourceLang?: string;
+            /** @description Alignment subkind slug (fallback). More specific alignment type within the kind. */
+            subkind?: string;
+            /**
+             * Format: at-uri
+             * @description AT-URI of the alignment subkind definition node. Community-expandable via knowledge graph.
+             */
+            subkindUri?: string;
+            /** @description Reference to the target sequence. Use localId for within-segmentation tokenization UUID, recordRef for cross-record AT-URI. */
+            target?: components["schemas"]["DefsObjectRef"];
+            /** @description BCP-47 language tag for the target. */
+            targetLang?: string;
         };
+        AlignmentAlignmentRecord: components["schemas"]["AlignmentAlignmentMain"];
         AlignmentGetAlignmentOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["AlignmentAlignmentMain"];
         };
         AlignmentListAlignmentsOutput: {
@@ -1135,190 +976,176 @@ export interface components {
             records: components["schemas"]["AlignmentListAlignmentsRecordView"][];
         };
         AlignmentListAlignmentsRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["AlignmentAlignmentMain"];
         };
-        AnnotationAnnotationLayerMain: components["schemas"]["AnnotationAnnotationLayerRecord"];
-        /** @description A named layer of annotations over an expression. All annotation types use this single record type. The combination of kind, subkind, and formalism tells the appview how to render. Multiple layers can coexist for the same expression. */
-        AnnotationAnnotationLayerRecord: {
+        AnnotationAnnotationLayerMain: {
             /**
-             * Format: uri
-             * @description The expression this annotation layer applies to.
-             */
-            expression: string;
-            /**
-             * Format: uri
-             * @description AT-URI of the annotation kind definition node. Community-expandable via knowledge graph.
-             */
-            kindUri?: string;
-            /**
-             * @description Primary annotation kind slug (fallback when kindUri unavailable). Determines the structural interpretation of annotations in this layer.
-             * @enum {string}
-             */
-            kind: "token-tag" | "span" | "relation" | "tree" | "graph" | "tier" | "document-tag";
-            /**
-             * Format: uri
-             * @description AT-URI of the annotation subkind definition node. Community-expandable via knowledge graph.
-             */
-            subkindUri?: string;
-            /**
-             * @description Annotation subkind slug (fallback when subkindUri unavailable). The appview uses this for specialized rendering.
-             * @enum {string}
-             */
-            subkind?: "pos" | "xpos" | "ner" | "lemma" | "morph" | "supersense" | "sense" | "chunk" | "speaker" | "gloss" | "phonetic" | "prosody" | "tobi" | "language-id" | "entity-mention" | "situation-mention" | "frame" | "predicate" | "discourse-unit" | "speech-act" | "temporal-expression" | "temporal-signal" | "spatial-expression" | "spatial-signal" | "spatial-relation" | "location-mention" | "sentiment" | "emotion" | "stance" | "information-structure" | "error" | "correction" | "code-switch" | "highlight" | "comment" | "bookmark" | "temporal-value" | "temporal-vagueness" | "dependency" | "enhanced-dependency" | "constituency" | "ccg" | "coreference" | "bridging" | "temporal-relation" | "causal-relation" | "discourse-relation" | "custom";
-            /**
-             * Format: uri
-             * @description AT-URI of the formalism definition node. Community-expandable via knowledge graph.
-             */
-            formalismUri?: string;
-            /**
-             * @description Formalism slug (fallback when formalismUri unavailable). The linguistic formalism or annotation standard used.
-             * @enum {string}
-             */
-            formalism?: "universal-dependencies" | "penn-treebank" | "stanford" | "prague" | "propbank" | "framenet" | "verbnet" | "amr" | "ucca" | "rst" | "erst" | "sdrt" | "pdtb" | "timeml" | "iso-space" | "spatialml" | "conll-u" | "brat" | "elan" | "leipzig-glossing" | "ipa" | "tobi" | "bpe" | "sentencepiece" | "unimorph" | "wals" | "custom";
-            /**
-             * Format: uri
-             * @description AT-URI of the annotation source method definition node. Community-expandable via knowledge graph.
-             */
-            sourceMethodUri?: string;
-            /**
-             * @description How this annotation layer was produced (fallback when sourceMethodUri unavailable). Follows UD's per-layer annotation source tracking.
-             * @enum {string}
-             */
-            sourceMethod?: "manual-native" | "manual-corrected" | "automatic" | "automatic-corrected" | "converted" | "converted-corrected" | "crowd-sourced" | "custom";
-            /** @description Identifier for the label set used (e.g., 'universal-pos', 'ontonotes-ner', 'penn-treebank-pos'). */
-            labelSet?: string;
-            /**
-             * Format: uri
-             * @description Reference to a pub.layers.ontology defining the types used in this layer.
-             */
-            ontologyRef?: string;
-            /** @description For token-aligned layers (kind=token-tag, dependency, constituency, etc.): the tokenization these annotations are aligned to. */
-            tokenizationId?: components["schemas"]["DefsUuid"];
-            /** @description Rank among k-best alternatives (1 = best). */
-            rank?: number;
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description Reference to the top-ranked layer in a k-best group.
              */
             alternativesRef?: string;
+            /** @description The annotations in this layer. */
+            annotations: components["schemas"]["AnnotationDefsAnnotation"][];
+            /** Format: datetime */
+            createdAt: string;
             /**
-             * Format: uri
+             * Format: at-uri
+             * @description The expression this annotation layer applies to.
+             */
+            expression: string;
+            /** @description Formalism slug (fallback when formalismUri unavailable). The linguistic formalism or annotation standard used. */
+            formalism?: string;
+            /**
+             * Format: at-uri
+             * @description AT-URI of the formalism definition node. Community-expandable via knowledge graph.
+             */
+            formalismUri?: string;
+            /** @description Primary annotation kind slug (fallback when kindUri unavailable). Determines the structural interpretation of annotations in this layer. */
+            kind: string;
+            /**
+             * Format: at-uri
+             * @description AT-URI of the annotation kind definition node. Community-expandable via knowledge graph.
+             */
+            kindUri?: string;
+            /** @description Identifier for the label set used (e.g., 'universal-pos', 'ontonotes-ner', 'penn-treebank-pos'). */
+            labelSet?: string;
+            /** @description BCP-47 language tag for this annotation layer, if different from the expression's language. */
+            language?: string;
+            metadata?: components["schemas"]["DefsAnnotationMetadata"];
+            /**
+             * Format: at-uri
+             * @description Reference to a pub.layers.ontology defining the types used in this layer.
+             */
+            ontologyRef?: string;
+            /**
+             * Format: at-uri
              * @description For dependent/subordinate layers: the parent layer this one subdivides or refines. Supports ELAN-style tier dependencies, error-correction pairs, etc.
              */
             parentLayerRef?: string;
-            /** @description BCP-47 language tag for this annotation layer, if different from the expression's language. */
-            language?: string;
-            /** @description The annotations in this layer. */
-            annotations: components["schemas"]["AnnotationDefsAnnotation"][];
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            /** Format: date-time */
-            createdAt: string;
-        };
-        AnnotationClusterSetMain: components["schemas"]["AnnotationClusterSetRecord"];
-        /** @description Groups annotations into equivalence classes. Used for coreference resolution (entity clusters, situation clusters), bridging anaphora grouping, and any annotation clustering task. */
-        AnnotationClusterSetRecord: {
+            /** @description Rank among k-best alternatives (1 = best). */
+            rank?: number;
+            /** @description How this annotation layer was produced (fallback when sourceMethodUri unavailable). Follows UD's per-layer annotation source tracking. */
+            sourceMethod?: string;
             /**
-             * Format: uri
+             * Format: at-uri
+             * @description AT-URI of the annotation source method definition node. Community-expandable via knowledge graph.
+             */
+            sourceMethodUri?: string;
+            /** @description Annotation subkind slug (fallback when subkindUri unavailable). The appview uses this for specialized rendering. */
+            subkind?: string;
+            /**
+             * Format: at-uri
+             * @description AT-URI of the annotation subkind definition node. Community-expandable via knowledge graph.
+             */
+            subkindUri?: string;
+            /** @description For token-aligned layers (kind=token-tag, dependency, constituency, etc.): the tokenization these annotations are aligned to. */
+            tokenizationId?: components["schemas"]["DefsUuid"];
+        };
+        AnnotationAnnotationLayerRecord: components["schemas"]["AnnotationAnnotationLayerMain"];
+        AnnotationClusterSetMain: {
+            clusters: components["schemas"]["AnnotationDefsCluster"][];
+            /**
+             * Format: at-uri
+             * @description Corpus these clusters span (for cross-document clustering).
+             */
+            corpusRef?: string;
+            /** Format: datetime */
+            createdAt: string;
+            /**
+             * Format: at-uri
              * @description Primary expression context. Optional for cross-document clustering.
              */
             expression?: string;
             /** @description For cross-document clustering: all expressions these clusters span. */
             expressionRefs?: string[];
+            /** @description Clustering kind slug (fallback when kindUri unavailable). */
+            kind: string;
             /**
-             * Format: uri
-             * @description Corpus these clusters span (for cross-document clustering).
-             */
-            corpusRef?: string;
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the clustering kind definition node. Community-expandable via knowledge graph.
              */
             kindUri?: string;
             /**
-             * @description Clustering kind slug (fallback when kindUri unavailable).
-             * @enum {string}
-             */
-            kind: "coreference" | "situation-coreference" | "bridging" | "same-as" | "clustering" | "custom";
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description The annotation layer whose annotations these clusters group.
              */
             layerRef?: string;
-            clusters: components["schemas"]["AnnotationDefsCluster"][];
             metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            /** Format: date-time */
-            createdAt: string;
         };
+        AnnotationClusterSetRecord: components["schemas"]["AnnotationClusterSetMain"];
         /** @description A single abstract annotation. The fields populated depend on the layer's kind/subkind. For token-tags: tokenIndex + label. For spans: anchor + label. For trees: anchor + label + parentId/childIds. For relations: anchor + arguments. For graphs: anchor + arguments or headIndex/targetIndex. This single type replaces the former tag, spanAnnotation, entityMention, situationMention, dependencyArc, parseNode, etc. */
         AnnotationDefsAnnotation: {
-            uuid: components["schemas"]["DefsUuid"];
             /** @description How this annotation attaches to the source data. */
             anchor?: components["schemas"]["DefsAnchor"];
-            /** @description For token-level annotations: 0-based index into the tokenization. */
-            tokenIndex?: number;
-            /** @description The primary label (POS tag, entity type, frame name, constituent label, dependency relation, etc.). */
-            label?: string;
-            /** @description Secondary value (lemma form, gloss, normalized temporal value, etc.). */
-            value?: string;
-            /** @description Surface text of the annotated span. */
-            text?: string;
-            /** @description Parent annotation in tree structures (constituency, RST, etc.). */
-            parentId?: components["schemas"]["DefsUuid"];
-            /** @description Child annotation UUIDs in tree structures. */
-            childIds?: components["schemas"]["DefsUuid"][];
-            /** @description Head/governor token index for directed arcs (dependency parsing). -1 for root. */
-            headIndex?: number;
-            /** @description Dependent/target token index for directed arcs. */
-            targetIndex?: number;
             /** @description Role/argument fillers for predicate-argument structures (FrameNet, PropBank, AMR, etc.). Each argument references another annotation. */
             arguments?: components["schemas"]["AnnotationDefsArgumentRef"][];
+            /** @description Child annotation UUIDs in tree structures. */
+            childIds?: components["schemas"]["DefsUuid"][];
             /** @description Confidence score 0-1000. */
             confidence?: number;
+            /** @description Open-ended features. Use for domain-specific properties: phraseType, polarity, modality, tense, isEnhanced, morphological features, etc. */
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Head/governor token index for directed arcs (dependency parsing). -1 for root. */
+            headIndex?: number;
+            /** @description Links to external knowledge bases. */
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
+            /** @description The primary label (POS tag, entity type, frame name, constituent label, dependency relation, etc.). */
+            label?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description Reference to a type definition in a pub.layers.ontology.
              */
             ontologyTypeRef?: string;
-            /** @description Links to external knowledge bases. */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** @description Structured temporal annotation. For temporal-expression, temporal-value, and temporal-vagueness subkinds. Subsumes TimeML TIMEX3 and OWL-Time GeneralDateTimeDescription. */
-            temporal?: components["schemas"]["DefsTemporalExpression"];
+            /** @description Parent annotation in tree structures (constituency, RST, etc.). */
+            parentId?: components["schemas"]["DefsUuid"];
             /** @description Structured spatial annotation. For spatial-expression and location-mention subkinds. Subsumes ISO-Space place annotations (ISO 24617-7), SpatialML PLACE elements, and GeoJSON/WKT geometries. */
             spatial?: components["schemas"]["DefsSpatialExpression"];
-            /** @description Open-ended features. Use for domain-specific properties: phraseType, polarity, modality, tense, isEnhanced, morphological features, etc. */
-            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Dependent/target token index for directed arcs. */
+            targetIndex?: number;
+            /** @description Structured temporal annotation. For temporal-expression, temporal-value, and temporal-vagueness subkinds. Subsumes TimeML TIMEX3 and OWL-Time GeneralDateTimeDescription. */
+            temporal?: components["schemas"]["DefsTemporalExpression"];
+            /** @description Surface text of the annotated span. */
+            text?: string;
+            /** @description For token-level annotations: 0-based index into the tokenization. */
+            tokenIndex?: number;
+            uuid: components["schemas"]["DefsUuid"];
+            /** @description Secondary value (lemma form, gloss, normalized temporal value, etc.). */
+            value?: string;
         };
         /** @description A role/argument reference in a predicate-argument structure. Uses the composable objectRef to point to another annotation, either locally (same layer, by UUID) or remotely (cross-layer or cross-record, by AT-URI + UUID). */
         AnnotationDefsArgumentRef: {
+            features?: components["schemas"]["DefsFeatureMap"];
             /** @description The argument role label (e.g., ARG0, Agent, Theme, CAUSE, connective, etc.). */
             role: string;
             /** @description Reference to the annotation filling this role. Use localId for same-layer, recordRef+objectId for cross-layer. */
             target: components["schemas"]["DefsObjectRef"];
-            features?: components["schemas"]["DefsFeatureMap"];
         };
         /** @description A cluster of annotations (e.g., coreferent entity mentions, situation mentions referring to the same situation). */
         AnnotationDefsCluster: {
-            uuid: components["schemas"]["DefsUuid"];
             /** @description The canonical/representative label for this cluster. */
             canonicalLabel?: string;
+            features?: components["schemas"]["DefsFeatureMap"];
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
             /** @description References to the annotations in this cluster. Use localId for same-layer members, recordRef+objectId for cross-layer or cross-document coreference. */
             members: components["schemas"]["DefsObjectRef"][];
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            features?: components["schemas"]["DefsFeatureMap"];
+            uuid: components["schemas"]["DefsUuid"];
         };
         AnnotationGetAnnotationLayerOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["AnnotationAnnotationLayerMain"];
         };
         AnnotationGetClusterSetOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["AnnotationClusterSetMain"];
         };
         AnnotationListAnnotationLayersOutput: {
@@ -1326,9 +1153,10 @@ export interface components {
             records: components["schemas"]["AnnotationListAnnotationLayersRecordView"][];
         };
         AnnotationListAnnotationLayersRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["AnnotationAnnotationLayerMain"];
         };
         AnnotationListClusterSetsOutput: {
@@ -1336,36 +1164,31 @@ export interface components {
             records: components["schemas"]["AnnotationListClusterSetsRecordView"][];
         };
         AnnotationListClusterSetsRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["AnnotationClusterSetMain"];
         };
         /** @description An individual change entry. The targets field uses objectRef for machine-readable sub-record targeting, allowing a change item to point at specific objects within the subject record. */
         ChangelogDefsChangeItem: {
+            /** @description Type of change. */
+            changeType?: string;
             /** @description Description of the change. */
             description: string;
-            /**
-             * @description Type of change.
-             * @enum {string}
-             */
-            changeType?: "added" | "changed" | "removed" | "fixed" | "deprecated";
-            /** @description Specific objects that changed. Uses recordRef + objectId for sub-record targeting (e.g., a specific annotation within an annotation layer). */
-            targets?: components["schemas"]["DefsObjectRef"][];
             /** @description Path to the changed field within the target (e.g., 'annotations/3/label', 'formalism', 'annotationDesign/guidelinesRef'). */
             fieldPath?: string;
-            /** @description Previous value as a display string. */
-            previousValue?: string;
             /** @description New value as a display string. */
             newValue?: string;
+            /** @description Previous value as a display string. */
+            previousValue?: string;
+            /** @description Specific objects that changed. Uses recordRef + objectId for sub-record targeting (e.g., a specific annotation within an annotation layer). */
+            targets?: components["schemas"]["DefsObjectRef"][];
         };
         /** @description A group of changes under a single category. */
         ChangelogDefsChangeSection: {
-            /**
-             * @description Category of changes.
-             * @enum {string}
-             */
-            category: "annotations" | "segmentation" | "text" | "ontology" | "corpus" | "alignment" | "graph" | "experiment" | "resource" | "media" | "provenance" | "references" | "corrections" | "other";
+            /** @description Category of changes. */
+            category: string;
             /** @description Individual change items in this section. */
             items: components["schemas"]["ChangelogDefsChangeItem"][];
         };
@@ -1378,34 +1201,34 @@ export interface components {
             /** @description Patch version number. */
             patch: number;
         };
-        ChangelogEntryMain: components["schemas"]["ChangelogEntryRecord"];
-        /** @description A changelog entry describing changes to any Layers record. */
-        ChangelogEntryRecord: {
+        ChangelogEntryMain: {
             /**
-             * Format: uri
+             * Format: datetime
+             * @description When this changelog entry was created.
+             */
+            createdAt: string;
+            /** @description Previous semantic version. */
+            previousVersion?: components["schemas"]["ChangelogDefsSemanticVersion"];
+            /** @description Categorized change sections. */
+            sections: components["schemas"]["ChangelogDefsChangeSection"][];
+            /**
+             * Format: at-uri
              * @description AT-URI of the record this changelog describes (any pub.layers.* record).
              */
             subject: string;
             /** @description The NSID of the subject record's collection (e.g., 'pub.layers.annotation.annotationLayer'). Enables efficient filtering by record type without resolving the AT-URI. */
             subjectCollection: string;
-            /** @description Semantic version this changelog describes. */
-            version?: components["schemas"]["ChangelogDefsSemanticVersion"];
-            /** @description Previous semantic version. */
-            previousVersion?: components["schemas"]["ChangelogDefsSemanticVersion"];
             /** @description One-line summary of changes. */
             summary: string;
-            /** @description Categorized change sections. */
-            sections: components["schemas"]["ChangelogDefsChangeSection"][];
-            /**
-             * Format: date-time
-             * @description When this changelog entry was created.
-             */
-            createdAt: string;
+            /** @description Semantic version this changelog describes. */
+            version?: components["schemas"]["ChangelogDefsSemanticVersion"];
         };
+        ChangelogEntryRecord: components["schemas"]["ChangelogEntryMain"];
         ChangelogGetEntryOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["ChangelogEntryMain"];
         };
         ChangelogListByCollectionOutput: {
@@ -1413,9 +1236,10 @@ export interface components {
             entries: components["schemas"]["ChangelogListByCollectionRecordView"][];
         };
         ChangelogListByCollectionRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["ChangelogEntryMain"];
         };
         ChangelogListEntriesOutput: {
@@ -1423,137 +1247,124 @@ export interface components {
             entries: components["schemas"]["ChangelogListEntriesRecordView"][];
         };
         ChangelogListEntriesRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["ChangelogEntryMain"];
         };
-        CorpusCorpusMain: components["schemas"]["CorpusCorpusRecord"];
-        /** @description A corpus: a curated collection of expressions. */
-        CorpusCorpusRecord: {
-            /** @description Corpus name. */
-            name: string;
+        CorpusCorpusMain: {
+            /** @description Annotation project design: annotator assignment, adjudication, and quality criteria. */
+            annotationDesign?: components["schemas"]["CorpusDefsAnnotationDesign"];
+            /** Format: datetime */
+            createdAt: string;
             description?: string;
-            version?: string;
-            /** @description Primary BCP-47 language tag. */
-            language?: string;
-            /** @description All languages represented. */
-            languages?: string[];
+            /** @description Domain slug (fallback when domainUri unavailable). */
+            domain?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the domain definition node. Community-expandable via knowledge graph.
              */
             domainUri?: string;
-            /**
-             * @description Domain slug (fallback when domainUri unavailable).
-             * @enum {string}
-             */
-            domain?: "news" | "biomedical" | "legal" | "social-media" | "dialogue" | "literary" | "scientific" | "web" | "spoken" | "custom";
-            /** @description License identifier (e.g., 'CC-BY-4.0', 'LDC-User-Agreement'). */
-            license?: string;
-            /** @description Ontologies used in this corpus. */
-            ontologyRefs?: string[];
             /** @description Eprint links for this corpus. */
             eprintRefs?: string[];
             /** @description Number of expressions in the corpus. */
             expressionCount?: number;
-            /** @description Annotation project design: annotator assignment, adjudication, and quality criteria. */
-            annotationDesign?: components["schemas"]["CorpusDefsAnnotationDesign"];
             features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
+            /** @description Primary BCP-47 language tag. */
+            language?: string;
+            /** @description All languages represented. */
+            languages?: string[];
+            /** @description License identifier (e.g., 'CC-BY-4.0', 'LDC-User-Agreement'). */
+            license?: string;
+            /** @description Corpus name. */
+            name: string;
+            /** @description Ontologies used in this corpus. */
+            ontologyRefs?: string[];
+            version?: string;
         };
+        CorpusCorpusRecord: components["schemas"]["CorpusCorpusMain"];
         /** @description How disagreements between annotators are resolved into a final annotation. */
         CorpusDefsAdjudicationSpec: {
+            /** @description Agreement level (0-1000) above which adjudication is skipped. */
+            agreementThreshold?: number;
+            /** @description Whether a separate adjudicator (not one of the annotators) resolves disagreements. */
+            dedicatedAdjudicator?: boolean;
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Adjudication method (fallback when methodUri unavailable). */
+            method?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the adjudication method definition node. Community-expandable via knowledge graph.
              */
             methodUri?: string;
-            /**
-             * @description Adjudication method (fallback when methodUri unavailable).
-             * @enum {string}
-             */
-            method?: "expert" | "majority-vote" | "unanimous" | "discussion" | "dawid-skene" | "automatic-merge" | "intersection" | "union" | "none" | "custom";
-            /** @description Whether a separate adjudicator (not one of the annotators) resolves disagreements. */
-            dedicatedAdjudicator?: boolean;
-            /** @description Agreement level (0-1000) above which adjudication is skipped. */
-            agreementThreshold?: number;
-            features?: components["schemas"]["DefsFeatureMap"];
         };
         /** @description Annotation project design parameters: annotator assignment, adjudication, and quality criteria. */
         CorpusDefsAnnotationDesign: {
-            /** @description How annotators are assigned to items. */
-            redundancy?: components["schemas"]["CorpusDefsRedundancySpec"];
             /** @description How disagreements are resolved. */
             adjudication?: components["schemas"]["CorpusDefsAdjudicationSpec"];
-            /** @description Acceptance criteria for annotation quality. */
-            qualityCriteria?: components["schemas"]["CorpusDefsQualityCriterion"][];
+            /** @description Number of annotation passes in the project workflow. */
+            annotationRounds?: number;
+            features?: components["schemas"]["DefsFeatureMap"];
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the annotation guidelines document (e.g., a pub.layers.persona or external resource).
              */
             guidelinesRef?: string;
             /** @description Version identifier for the annotation guidelines. */
             guidelinesVersion?: string;
-            /** @description Number of annotation passes in the project workflow. */
-            annotationRounds?: number;
-            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Acceptance criteria for annotation quality. */
+            qualityCriteria?: components["schemas"]["CorpusDefsQualityCriterion"][];
+            /** @description How annotators are assigned to items. */
+            redundancy?: components["schemas"]["CorpusDefsRedundancySpec"];
         };
         /** @description An acceptance criterion for annotation quality. */
         CorpusDefsQualityCriterion: {
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Agreement or quality metric (fallback when metricUri unavailable). */
+            metric: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the metric definition node. Community-expandable via knowledge graph.
              */
             metricUri?: string;
+            /** @description Evaluation scope (fallback when scopeUri unavailable). */
+            scope?: string;
             /**
-             * @description Agreement or quality metric (fallback when metricUri unavailable).
-             * @enum {string}
-             */
-            metric: "cohens-kappa" | "fleiss-kappa" | "krippendorff-alpha" | "percent-agreement" | "f1" | "smatch" | "uas" | "las" | "correlation" | "custom";
-            /** @description Minimum acceptable metric value (0-1000). */
-            threshold?: number;
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the evaluation scope definition node. Community-expandable via knowledge graph.
              */
             scopeUri?: string;
-            /**
-             * @description Evaluation scope (fallback when scopeUri unavailable).
-             * @enum {string}
-             */
-            scope?: "item" | "layer" | "document" | "corpus" | "custom";
-            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Minimum acceptable metric value (0-1000). */
+            threshold?: number;
         };
         /** @description How many annotators work on each item and how they are assigned. */
         CorpusDefsRedundancySpec: {
-            /** @description Number of independent annotators per item. */
-            count?: number;
+            /** @description Total number of annotators in the project. */
+            annotatorPool?: number;
+            /** @description How annotators are assigned to items (fallback when assignmentStrategyUri unavailable). */
+            assignmentStrategy?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the assignment strategy definition node. Community-expandable via knowledge graph.
              */
             assignmentStrategyUri?: string;
-            /**
-             * @description How annotators are assigned to items (fallback when assignmentStrategyUri unavailable).
-             * @enum {string}
-             */
-            assignmentStrategy?: "random" | "round-robin" | "stratified" | "expertise-based" | "custom";
-            /** @description Total number of annotators in the project. */
-            annotatorPool?: number;
+            /** @description Number of independent annotators per item. */
+            count?: number;
             features?: components["schemas"]["DefsFeatureMap"];
         };
         CorpusGetCorpusOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["CorpusCorpusMain"];
         };
         CorpusGetMembershipOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["CorpusMembershipMain"];
         };
         CorpusListCorporaOutput: {
@@ -1561,9 +1372,10 @@ export interface components {
             records: components["schemas"]["CorpusListCorporaRecordView"][];
         };
         CorpusListCorporaRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["CorpusCorpusMain"];
         };
         CorpusListMembershipsOutput: {
@@ -1571,186 +1383,140 @@ export interface components {
             records: components["schemas"]["CorpusListMembershipsRecordView"][];
         };
         CorpusListMembershipsRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["CorpusMembershipMain"];
         };
-        /** @description A record indicating that a expression belongs to a corpus, with optional split assignment. */
         CorpusMembershipMain: {
-            /** Format: uri */
+            /** Format: at-uri */
             corpusRef: string;
-            /** Format: uri */
+            /** Format: datetime */
+            createdAt: string;
+            /** Format: at-uri */
             expressionRef: string;
+            /** @description Open-ended features for this membership (e.g., source file, import batch, quality flags). */
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Provenance: who assigned this expression to this corpus, when, with what tool. */
+            metadata?: components["schemas"]["DefsAnnotationMetadata"];
+            /** @description Ordering index within the corpus. */
+            ordinal?: number;
+            /** @description Split slug (fallback when splitUri unavailable). */
+            split?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the split definition node. Community-expandable via knowledge graph.
              */
             splitUri?: string;
-            /**
-             * @description Split slug (fallback when splitUri unavailable).
-             * @enum {string}
-             */
-            split?: "train" | "dev" | "test" | "unlabeled";
-            /** @description Ordering index within the corpus. */
-            ordinal?: number;
-            /** @description Provenance: who assigned this expression to this corpus, when, with what tool. */
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            /** @description Open-ended features for this membership (e.g., source file, import batch, quality flags). */
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
         };
-        /** @description A record indicating that a expression belongs to a corpus, with optional split assignment. */
-        CorpusMembershipRecord: {
-            /** Format: uri */
-            corpusRef: string;
-            /** Format: uri */
-            expressionRef: string;
-            /**
-             * Format: uri
-             * @description AT-URI of the split definition node. Community-expandable via knowledge graph.
-             */
-            splitUri?: string;
-            /**
-             * @description Split slug (fallback when splitUri unavailable).
-             * @enum {string}
-             */
-            split?: "train" | "dev" | "test" | "unlabeled";
-            /** @description Ordering index within the corpus. */
-            ordinal?: number;
-            /** @description Provenance: who assigned this expression to this corpus, when, with what tool. */
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            /** @description Open-ended features for this membership (e.g., source file, import batch, quality flags). */
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
-        };
-        CrossReference: {
-            uri: string;
-            sourceUri: string;
-            targetUri: string;
-            refType: string;
-            /** Format: date-time */
-            createdAt: string;
-        };
-        DLQEntry: {
-            id: string;
-            uri: string;
-            error: string;
-            failureCount: number;
-            /** Format: date-time */
-            firstFailedAt: string;
-            /** Format: date-time */
-            lastFailedAt: string;
-        };
+        CorpusMembershipRecord: components["schemas"]["CorpusMembershipMain"];
         /** @description A composable reference to any agent (human annotator, ML model, crowd worker, expert panel, etc.) that produced data. Separates the identity of the producer from the interpretive framework (persona) and the software used (tool). Consumers dispatch on which field(s) are populated: did for ATProto-native agents, id for anonymized or platform-specific identifiers, knowledgeRef for externally grounded agents (ORCID, HuggingFace model card, Wikidata). */
         DefsAgentRef: {
-            /** @description ATProto DID of the agent, if the agent has one. */
+            /**
+             * Format: did
+             * @description ATProto DID of the agent, if the agent has one.
+             */
             did?: string;
             /** @description Arbitrary string identifier (anonymized crowdworker ID, platform username, model version string, etc.). */
             id?: string;
-            /** @description Human-readable display name for the agent. */
-            name?: string;
             /** @description External knowledge graph reference for the agent (e.g., ORCID for a human, HuggingFace model card for an ML model, Wikidata for an organization). */
             knowledgeRef?: components["schemas"]["DefsKnowledgeRef"];
+            /** @description Human-readable display name for the agent. */
+            name?: string;
         };
         /** @description A single link in an alignment between two parallel sequences. Maps element(s) in a source sequence to element(s) in a target sequence. Supports many-to-many correspondence for interlinear glossing, parallel text alignment, cross-tokenization mapping, etc. */
         DefsAlignmentLink: {
+            /** @description Alignment confidence 0-1000. */
+            confidence?: number;
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Knowledge graph references for this link (e.g., bilingual dictionary entry, translation memory source). */
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
+            /** @description Optional label for the alignment link (e.g., alignment type). */
+            label?: string;
             /** @description Indices into the source sequence. */
             sourceIndices?: number[];
             /** @description Indices into the target sequence. */
             targetIndices?: number[];
-            /** @description Alignment confidence 0-1000. */
-            confidence?: number;
-            /** @description Optional label for the alignment link (e.g., alignment type). */
-            label?: string;
-            /** @description Knowledge graph references for this link (e.g., bilingual dictionary entry, translation memory source). */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            features?: components["schemas"]["DefsFeatureMap"];
         };
         /** @description Abstract anchor: how an annotation attaches to its source data. This is a polymorphic type; at least one anchoring field should be present. Consumers dispatch on which field(s) are populated. */
         DefsAnchor: {
+            /** @description External resource target (web page, document, etc.). */
+            externalTarget?: components["schemas"]["DefsExternalTarget"];
+            /** @description Page and region in a paged document. */
+            pageAnchor?: components["schemas"]["DefsPageAnchor"];
+            /** @description Spatio-temporal region in video. */
+            spatioTemporalAnchor?: components["schemas"]["DefsSpatioTemporalAnchor"];
+            /** @description Temporal span in audio/video. */
+            temporalSpan?: components["schemas"]["DefsTemporalSpan"];
             /** @description Character-offset span in the expression text. */
             textSpan?: components["schemas"]["DefsSpan"];
             /** @description Single token reference. */
             tokenRef?: components["schemas"]["DefsTokenRef"];
             /** @description Sequence of token references (possibly non-contiguous). */
             tokenRefSequence?: components["schemas"]["DefsTokenRefSequence"];
-            /** @description Temporal span in audio/video. */
-            temporalSpan?: components["schemas"]["DefsTemporalSpan"];
-            /** @description Spatio-temporal region in video. */
-            spatioTemporalAnchor?: components["schemas"]["DefsSpatioTemporalAnchor"];
-            /** @description Page and region in a paged document. */
-            pageAnchor?: components["schemas"]["DefsPageAnchor"];
-            /** @description External resource target (web page, document, etc.). */
-            externalTarget?: components["schemas"]["DefsExternalTarget"];
         };
         /** @description Metadata about who or what produced an annotation, when, and with what confidence. The three key provenance fields are: agent (who did it), personaRef (under what framework), and tool (with what software). */
         DefsAnnotationMetadata: {
             /** @description The agent (human or model) that produced this annotation. Distinct from personaRef (the interpretive framework) and tool (the software). */
             agent?: components["schemas"]["DefsAgentRef"];
-            /** @description Name or identifier of the software tool used to produce this annotation (e.g., 'spaCy 3.7', 'brat 1.3', 'ELAN 6.4'). Distinct from agent (who ran the tool). */
-            tool: string;
-            /**
-             * Format: date-time
-             * @description When the annotation was produced.
-             */
-            timestamp?: string;
             /** @description Confidence score scaled 0-1000 (to avoid floats). 1000 = maximum confidence. */
             confidence?: number;
-            /**
-             * Format: uri
-             * @description Reference to the persona/annotation framework under which this annotation was produced. Distinct from agent (who did it).
-             */
-            personaRef?: string;
             /** @description References to upstream records this annotation was derived from. */
             dependencies?: components["schemas"]["DefsObjectRef"][];
             /** @description Content hash for integrity verification. */
             digest?: string;
+            /**
+             * Format: at-uri
+             * @description Reference to the persona/annotation framework under which this annotation was produced. Distinct from agent (who did it).
+             */
+            personaRef?: string;
+            /**
+             * Format: datetime
+             * @description When the annotation was produced.
+             */
+            timestamp?: string;
+            /** @description Name or identifier of the software tool used to produce this annotation (e.g., 'spaCy 3.7', 'brat 1.3', 'ELAN 6.4'). Distinct from agent (who ran the tool). */
+            tool: string;
         };
         /** @description A spatial bounding box for image or video frame annotation. */
         DefsBoundingBox: {
+            /** @description Height in pixels. */
+            height: number;
+            /** @description Width in pixels. */
+            width: number;
             /** @description X coordinate of top-left corner in pixels. */
             x: number;
             /** @description Y coordinate of top-left corner in pixels. */
             y: number;
-            /** @description Width in pixels. */
-            width: number;
-            /** @description Height in pixels. */
-            height: number;
         };
         /** @description An abstract constraint expression. Used for type constraints on role slots, slot-level constraints in templates, cross-slot agreement constraints, and any other declarative restriction. The expression field holds a DSL string whose format is identified by expressionFormat/expressionFormatUri. */
         DefsConstraint: {
-            /** @description The constraint expression (e.g., 'self.pos == "VERB"', 'subject.features.number == verb.features.number'). */
-            expression: string;
-            /**
-             * Format: uri
-             * @description AT-URI of the expression format definition node. Community-expandable via knowledge graph.
-             */
-            expressionFormatUri?: string;
-            /**
-             * @description Expression format slug (fallback when expressionFormatUri unavailable).
-             * @enum {string}
-             */
-            expressionFormat?: "python-expr" | "json-logic" | "regex" | "sparql-filter" | "type-ref" | "custom";
-            /**
-             * Format: uri
-             * @description AT-URI of the scope definition node. Community-expandable via knowledge graph.
-             */
-            scopeUri?: string;
-            /**
-             * @description Constraint scope slug (fallback when scopeUri unavailable).
-             * @enum {string}
-             */
-            scope?: "slot" | "template" | "cross-template" | "global";
             /** @description Names of the slots or variables this constraint ranges over (for cross-slot and cross-template constraints). */
             context?: string[];
             /** @description Human-readable description of the constraint. */
             description?: string;
+            /** @description The constraint expression (e.g., 'self.pos == "VERB"', 'subject.features.number == verb.features.number'). */
+            expression: string;
+            /** @description Expression format slug (fallback when expressionFormatUri unavailable). */
+            expressionFormat?: string;
+            /**
+             * Format: at-uri
+             * @description AT-URI of the expression format definition node. Community-expandable via knowledge graph.
+             */
+            expressionFormatUri?: string;
+            /** @description Constraint scope slug (fallback when scopeUri unavailable). */
+            scope?: string;
+            /**
+             * Format: at-uri
+             * @description AT-URI of the scope definition node. Community-expandable via knowledge graph.
+             */
+            scopeUri?: string;
         };
         /** @description Target for annotating external resources (web pages, documents, etc.). Compatible with at.margin's target model and the W3C Web Annotation Data Model. */
         DefsExternalTarget: {
+            /** @description W3C selector for identifying the specific segment within the resource. */
+            selector?: components["schemas"]["DefsTextQuoteSelector"] | components["schemas"]["DefsTextPositionSelector"] | components["schemas"]["DefsFragmentSelector"];
             /**
              * Format: uri
              * @description The URI of the external resource being annotated.
@@ -1760,8 +1526,6 @@ export interface components {
             sourceHash?: string;
             /** @description Title of the resource at annotation time. */
             title?: string;
-            /** @description W3C selector for identifying the specific segment within the resource. */
-            selector?: components["schemas"]["DefsTextQuoteSelector"] | components["schemas"]["DefsTextPositionSelector"] | components["schemas"]["DefsFragmentSelector"];
         };
         /** @description A single key-value feature. */
         DefsFeature: {
@@ -1777,278 +1541,239 @@ export interface components {
         };
         /** @description W3C FragmentSelector: selects by URI fragment identifier. */
         DefsFragmentSelector: {
-            /** @description Fragment identifier value. */
-            value: string;
             /**
              * Format: uri
              * @description Specification the fragment conforms to.
              */
             conformsTo?: string;
+            /** @description Fragment identifier value. */
+            value: string;
         };
         /** @description A spatial annotation at a specific time point. */
         DefsKeyframe: {
-            /** @description Time in milliseconds. */
-            timeMs: number;
             bbox: components["schemas"]["DefsBoundingBox"];
             /** @description Per-keyframe features (e.g., visibility, occlusion percentage, confidence, pose data). */
             features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Time in milliseconds. */
+            timeMs: number;
         };
         /** @description A reference to an external knowledge base entry. Supports ATProto-native KBs (e.g., chive.pub with AT-URI nodes), external KBs (e.g., Wikidata with QIDs), and user/persona-specific KBs (AT-URIs in user PDSes). */
         DefsKnowledgeRef: {
+            /** @description The identifier within the knowledge base (e.g., Wikidata QID, chive.pub node URI, Glottolog languoid ID). */
+            identifier: string;
+            /** @description Human-readable label for the referenced entity. */
+            label?: string;
+            /** @description Knowledge base source slug (fallback when sourceUri unavailable). */
+            source: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the knowledge base type definition node. Community-expandable via knowledge graph.
              */
             sourceUri?: string;
-            /**
-             * @description Knowledge base source slug (fallback when sourceUri unavailable).
-             * @enum {string}
-             */
-            source: "chive.pub" | "wikidata" | "wordnet" | "framenet" | "propbank" | "verbnet" | "unimorph" | "glottolog" | "cldr" | "custom";
-            /** @description The identifier within the knowledge base (e.g., Wikidata QID, chive.pub node URI, Glottolog languoid ID). */
-            identifier: string;
             /**
              * Format: uri
              * @description Optional full URI for the knowledge base entry.
              */
             uri?: string;
-            /** @description Human-readable label for the referenced entity. */
-            label?: string;
         };
         /** @description A composable reference to any Layers object, whether local (same record, by UUID), remote (different record, by AT-URI + optional object UUID), or external (knowledge graph entry). This is the universal cross-referencing primitive; consumers dispatch on which field(s) are populated. Used by argumentRef, graphNode, alignment endpoints, and any other cross-object pointer. */
         DefsObjectRef: {
+            /** @description Reference to an external knowledge graph node (Wikidata, chive.pub, FrameNet, etc.). */
+            knowledgeRef?: components["schemas"]["DefsKnowledgeRef"];
             /** @description UUID of an object within the same record. */
             localId?: components["schemas"]["DefsUuid"];
+            /** @description UUID of a specific object within the record referenced by recordRef. */
+            objectId?: components["schemas"]["DefsUuid"];
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of a Layers record in another user's PDS or another record in the same PDS.
              */
             recordRef?: string;
-            /** @description UUID of a specific object within the record referenced by recordRef. */
-            objectId?: components["schemas"]["DefsUuid"];
-            /** @description Reference to an external knowledge graph node (Wikidata, chive.pub, FrameNet, etc.). */
-            knowledgeRef?: components["schemas"]["DefsKnowledgeRef"];
         };
         /** @description Anchor to a specific page and region in a paged document (PDF, etc.). Compatible with chive.pub's page-level annotation model. */
         DefsPageAnchor: {
+            boundingBox?: components["schemas"]["DefsBoundingBox"];
             /** @description 0-indexed page number. */
             page: number;
-            boundingBox?: components["schemas"]["DefsBoundingBox"];
             /** @description Character offsets within the page text. */
             textSpan?: components["schemas"]["DefsSpan"];
         };
         /** @description A contiguous span of text defined by UTF-8 byte offsets. */
         DefsSpan: {
-            /** @description Inclusive start UTF-8 byte offset (0-indexed). */
-            byteStart: number;
             /** @description Exclusive end UTF-8 byte offset. */
             byteEnd: number;
-            /** @description Inclusive start character offset. Optional; for compatibility with character-offset datasets. */
-            charStart?: number;
+            /** @description Inclusive start UTF-8 byte offset (0-indexed). */
+            byteStart: number;
             /** @description Exclusive end character offset. Optional; for compatibility with character-offset datasets. */
             charEnd?: number;
+            /** @description Inclusive start character offset. Optional; for compatibility with character-offset datasets. */
+            charStart?: number;
         };
         /** @description A normalized spatial value representing a point, region, line, or complex geometry. Parallel to temporalEntity. Subsumes GeoJSON geometry types, WKT primitives, and ISO 19107 spatial schema. Consumers dispatch on which fields are populated: bbox only (pixel bounding box), geometry+type (parsed geometry string), geometry+geometryFormat (format-specific parsing). */
         DefsSpatialEntity: {
             /** @description Structured pixel bounding box (axis-aligned rectangle). The most common case for image/video annotation. */
             bbox?: components["schemas"]["DefsBoundingBox"];
-            /** @description Geometry as a string in the format specified by geometryFormat. WKT examples: 'POINT(37.7749 -122.4194)', 'POLYGON((0 0, 100 0, 100 100, 0 100, 0 0))'. GeoJSON example: '{"type":"Point","coordinates":[-122.4194,37.7749]}'. SVG path example: 'M 10 10 L 100 10 L 100 100 Z'. Default format is WKT. */
-            geometry?: string;
+            /** @description Coordinate reference system slug (fallback when crsUri unavailable). Determines how coordinates in geometry/bbox are interpreted. */
+            crs?: string;
             /**
-             * Format: uri
-             * @description AT-URI of the geometry type definition node. Community-expandable via knowledge graph.
-             */
-            typeUri?: string;
-            /**
-             * @description Geometry type slug (fallback when typeUri unavailable). For dispatch without parsing the geometry string.
-             * @enum {string}
-             */
-            type?: "point" | "box" | "polygon" | "multi-polygon" | "line-string" | "multi-line-string" | "circle" | "ellipse" | "multi-point" | "geometry-collection" | "custom";
-            /**
-             * Format: uri
-             * @description AT-URI of the geometry format definition node. Community-expandable via knowledge graph.
-             */
-            geometryFormatUri?: string;
-            /**
-             * @description Format of the geometry string (fallback when geometryFormatUri unavailable). Default is WKT.
-             * @enum {string}
-             */
-            geometryFormat?: "wkt" | "geojson" | "svg-path" | "coco-polygon" | "coco-rle" | "custom";
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the coordinate reference system definition node. Community-expandable via knowledge graph.
              */
             crsUri?: string;
-            /**
-             * @description Coordinate reference system slug (fallback when crsUri unavailable). Determines how coordinates in geometry/bbox are interpreted.
-             * @enum {string}
-             */
-            crs?: "pixel" | "percentage" | "wgs84" | "web-mercator" | "custom";
             /** @description Number of coordinate dimensions (2 for planar, 3 for volumetric/elevation). */
             dimensions?: number;
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Geometry as a string in the format specified by geometryFormat. WKT examples: 'POINT(37.7749 -122.4194)', 'POLYGON((0 0, 100 0, 100 100, 0 100, 0 0))'. GeoJSON example: '{"type":"Point","coordinates":[-122.4194,37.7749]}'. SVG path example: 'M 10 10 L 100 10 L 100 100 Z'. Default format is WKT. */
+            geometry?: string;
+            /** @description Format of the geometry string (fallback when geometryFormatUri unavailable). Default is WKT. */
+            geometryFormat?: string;
+            /**
+             * Format: at-uri
+             * @description AT-URI of the geometry format definition node. Community-expandable via knowledge graph.
+             */
+            geometryFormatUri?: string;
+            /** @description Geometry type slug (fallback when typeUri unavailable). For dispatch without parsing the geometry string. */
+            type?: string;
+            /**
+             * Format: at-uri
+             * @description AT-URI of the geometry type definition node. Community-expandable via knowledge graph.
+             */
+            typeUri?: string;
             /** @description Spatial precision or uncertainty radius as a string with units (e.g., '50m', '10px', '0.001deg'). Units depend on the CRS. */
             uncertainty?: string;
-            features?: components["schemas"]["DefsFeatureMap"];
         };
         /** @description A complete spatial annotation packaging the expression type, normalized value, modifier, anchoring, and document function. Parallel to temporalExpression. Subsumes ISO-Space place annotations (ISO 24617-7), SpatialML PLACE elements, and general spatial semantic annotation. Attach to annotation objects via the spatial field. */
         DefsSpatialExpression: {
-            /**
-             * Format: uri
-             * @description AT-URI of the spatial expression type definition node. Community-expandable via knowledge graph.
-             */
-            typeUri?: string;
-            /**
-             * @description Spatial expression type slug (fallback when typeUri unavailable). Maps to ISO-Space spatial entity types.
-             * @enum {string}
-             */
-            type?: "location" | "region" | "path" | "direction" | "distance" | "relative" | "custom";
-            /** @description The normalized spatial value. */
-            value?: components["schemas"]["DefsSpatialEntity"];
-            /** @description Qualitative modifier (approximate, projected, interpolated, etc.). */
-            modifier?: components["schemas"]["DefsSpatialModifier"];
             /** @description What this spatial expression is relative to (e.g., a landmark annotation, a reference location, a trajector). For relative spatial expressions like 'behind the building'. */
             anchorRef?: components["schemas"]["DefsObjectRef"];
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Document function slug (fallback when functionUri unavailable). What role this place plays in the document. */
+            function?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the document function definition node. Community-expandable via knowledge graph.
              */
             functionUri?: string;
+            /** @description Qualitative modifier (approximate, projected, interpolated, etc.). */
+            modifier?: components["schemas"]["DefsSpatialModifier"];
+            /** @description Spatial expression type slug (fallback when typeUri unavailable). Maps to ISO-Space spatial entity types. */
+            type?: string;
             /**
-             * @description Document function slug (fallback when functionUri unavailable). What role this place plays in the document.
-             * @enum {string}
+             * Format: at-uri
+             * @description AT-URI of the spatial expression type definition node. Community-expandable via knowledge graph.
              */
-            function?: "document-location" | "publication-location" | "situation-location" | "origin" | "destination" | "waypoint" | "none" | "custom";
-            features?: components["schemas"]["DefsFeatureMap"];
+            typeUri?: string;
+            /** @description The normalized spatial value. */
+            value?: components["schemas"]["DefsSpatialEntity"];
         };
         /** @description Qualitative modification of a spatial value. Parallel to temporalModifier. Indicates precision, derivation method, or processing applied to a spatial entity. */
         DefsSpatialModifier: {
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Spatial modifier slug (fallback when modUri unavailable). */
+            mod?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the spatial modifier definition node. Community-expandable via knowledge graph.
              */
             modUri?: string;
-            /**
-             * @description Spatial modifier slug (fallback when modUri unavailable).
-             * @enum {string}
-             */
-            mod?: "approximate" | "projected" | "interpolated" | "estimated" | "buffered" | "simplified" | "generalized" | "custom";
-            features?: components["schemas"]["DefsFeatureMap"];
         };
         /** @description Combined spatial and temporal anchor for video annotation with keyframe-based tracking. */
         DefsSpatioTemporalAnchor: {
-            temporalSpan: components["schemas"]["DefsTemporalSpan"];
-            /** @description Keyframes defining spatial positions at specific times. */
-            keyframes?: components["schemas"]["DefsKeyframe"][];
+            /** @description Interpolation mode slug (fallback when interpolationUri unavailable). */
+            interpolation?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the interpolation mode definition node. Community-expandable via knowledge graph.
              */
             interpolationUri?: string;
-            /**
-             * @description Interpolation mode slug (fallback when interpolationUri unavailable).
-             * @enum {string}
-             */
-            interpolation?: "linear" | "step" | "cubic";
+            /** @description Keyframes defining spatial positions at specific times. */
+            keyframes?: components["schemas"]["DefsKeyframe"][];
+            temporalSpan: components["schemas"]["DefsTemporalSpan"];
         };
         /** @description A normalized temporal value representing a point, interval, duration, or uncertain range in calendar/clock time. Subsumes OWL-Time TemporalEntity (Instant, Interval, Duration) and TimeML TIMEX3 value. Consumers dispatch on which fields are populated: instant only (point), intervalStart+intervalEnd (bounded interval), duration only (pure duration), earliest+latest (uncertain bounds), recurrence (repeating pattern). */
         DefsTemporalEntity: {
-            /** @description Point in time as ISO 8601 datetime (e.g., '2024-03-15', '2024-03-15T14:30:00Z'). Maps to OWL-Time Instant. */
-            instant?: string;
-            /** @description Interval start as ISO 8601 datetime. Maps to OWL-Time hasBeginning. */
-            intervalStart?: string;
-            /** @description Interval end as ISO 8601 datetime. Maps to OWL-Time hasEnd. */
-            intervalEnd?: string;
+            /** @description Calendar system slug (fallback when calendarUri unavailable). Maps to OWL-Time TRS (Temporal Reference System). */
+            calendar?: string;
+            /**
+             * Format: at-uri
+             * @description AT-URI of the calendar system definition node. Community-expandable via knowledge graph.
+             */
+            calendarUri?: string;
             /** @description Duration as ISO 8601 duration (e.g., 'P3Y', 'PT2H30M', 'P1DT12H'). Maps to OWL-Time hasTemporalDuration. */
             duration?: string;
             /** @description Lower bound for uncertain or vague times, as ISO 8601 datetime. */
             earliest?: string;
-            /** @description Upper bound for uncertain or vague times, as ISO 8601 datetime. */
-            latest?: string;
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Temporal granularity slug (fallback when granularityUri unavailable). Maps to OWL-Time unitType. */
+            granularity?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the granularity definition node. Community-expandable via knowledge graph.
              */
             granularityUri?: string;
-            /**
-             * @description Temporal granularity slug (fallback when granularityUri unavailable). Maps to OWL-Time unitType.
-             * @enum {string}
-             */
-            granularity?: "millennium" | "century" | "decade" | "year" | "quarter" | "month" | "week" | "day" | "hour" | "minute" | "second" | "millisecond" | "custom";
-            /**
-             * Format: uri
-             * @description AT-URI of the calendar system definition node. Community-expandable via knowledge graph.
-             */
-            calendarUri?: string;
-            /**
-             * @description Calendar system slug (fallback when calendarUri unavailable). Maps to OWL-Time TRS (Temporal Reference System).
-             * @enum {string}
-             */
-            calendar?: "gregorian" | "julian" | "hijri" | "hebrew" | "iso-week" | "unix" | "japanese-imperial" | "buddhist" | "coptic" | "custom";
+            /** @description Point in time as ISO 8601 datetime (e.g., '2024-03-15', '2024-03-15T14:30:00Z'). Maps to OWL-Time Instant. */
+            instant?: string;
+            /** @description Interval end as ISO 8601 datetime. Maps to OWL-Time hasEnd. */
+            intervalEnd?: string;
+            /** @description Interval start as ISO 8601 datetime. Maps to OWL-Time hasBeginning. */
+            intervalStart?: string;
+            /** @description Upper bound for uncertain or vague times, as ISO 8601 datetime. */
+            latest?: string;
             /** @description ISO 8601 repeating interval (e.g., 'R/P1W' for weekly, 'R5/P1D' for 5 daily repetitions). */
             recurrence?: string;
-            features?: components["schemas"]["DefsFeatureMap"];
         };
         /** @description A complete temporal annotation packaging the expression type, normalized value, modifier, anchoring, and document function. Subsumes TimeML TIMEX3 and OWL-Time GeneralDateTimeDescription. Attach to annotation objects via the temporal field. */
         DefsTemporalExpression: {
-            /**
-             * Format: uri
-             * @description AT-URI of the temporal expression type definition node. Community-expandable via knowledge graph.
-             */
-            typeUri?: string;
-            /**
-             * @description Temporal expression type slug (fallback when typeUri unavailable). Maps to TimeML TIMEX3 type.
-             * @enum {string}
-             */
-            type?: "date" | "time" | "duration" | "set" | "interval" | "relative" | "custom";
-            /** @description The normalized temporal value. */
-            value?: components["schemas"]["DefsTemporalEntity"];
-            /** @description Qualitative modifier (approximate, early, late, etc.). */
-            modifier?: components["schemas"]["DefsTemporalModifier"];
             /** @description What this temporal expression is relative to (e.g., document creation time, another temporal expression, a situation). Maps to TimeML anchorTimeID. */
             anchorRef?: components["schemas"]["DefsObjectRef"];
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Document function slug (fallback when functionUri unavailable). Maps to TimeML functionInDocument. */
+            function?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the document function definition node. Community-expandable via knowledge graph.
              */
             functionUri?: string;
+            /** @description Qualitative modifier (approximate, early, late, etc.). */
+            modifier?: components["schemas"]["DefsTemporalModifier"];
+            /** @description Temporal expression type slug (fallback when typeUri unavailable). Maps to TimeML TIMEX3 type. */
+            type?: string;
             /**
-             * @description Document function slug (fallback when functionUri unavailable). Maps to TimeML functionInDocument.
-             * @enum {string}
+             * Format: at-uri
+             * @description AT-URI of the temporal expression type definition node. Community-expandable via knowledge graph.
              */
-            function?: "creation-time" | "publication-time" | "expiration-time" | "modification-time" | "release-time" | "reception-time" | "none" | "custom";
-            features?: components["schemas"]["DefsFeatureMap"];
+            typeUri?: string;
+            /** @description The normalized temporal value. */
+            value?: components["schemas"]["DefsTemporalEntity"];
         };
         /** @description Qualitative modification of a temporal value. Subsumes TimeML TIMEX3 mod attribute and OWL-Time DateTimeDescription qualifiers. */
         DefsTemporalModifier: {
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Temporal modifier slug (fallback when modUri unavailable). Maps to TimeML TIMEX3 mod. */
+            mod?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the temporal modifier definition node. Community-expandable via knowledge graph.
              */
             modUri?: string;
-            /**
-             * @description Temporal modifier slug (fallback when modUri unavailable). Maps to TimeML TIMEX3 mod.
-             * @enum {string}
-             */
-            mod?: "approximate" | "early" | "mid" | "late" | "start" | "end" | "before" | "after" | "on-or-before" | "on-or-after" | "less-than" | "more-than" | "custom";
-            features?: components["schemas"]["DefsFeatureMap"];
         };
         /** @description A temporal span within a media source, defined by start and end times in milliseconds. */
         DefsTemporalSpan: {
-            /** @description Start time in milliseconds. */
-            start: number;
             /** @description End time in milliseconds. */
             ending: number;
+            /** @description Start time in milliseconds. */
+            start: number;
         };
         /** @description W3C TextPositionSelector adapted for ATProto: selects by UTF-8 byte offsets. Semantically equivalent to pub.layers.defs#span but named for W3C compatibility with at.margin. */
         DefsTextPositionSelector: {
-            /** @description Starting UTF-8 byte position (0-indexed, inclusive). */
-            byteStart: number;
             /** @description Ending UTF-8 byte position (exclusive). */
             byteEnd: number;
-            /** @description Starting character position (0-indexed, inclusive). Optional; for compatibility with character-offset datasets. */
-            charStart?: number;
+            /** @description Starting UTF-8 byte position (0-indexed, inclusive). */
+            byteStart: number;
             /** @description Ending character position (exclusive). Optional; for compatibility with character-offset datasets. */
             charEnd?: number;
+            /** @description Starting character position (0-indexed, inclusive). Optional; for compatibility with character-offset datasets. */
+            charStart?: number;
         };
         /** @description W3C TextQuoteSelector: selects text by quoting it with surrounding context. Compatible with at.margin.annotation and the W3C Web Annotation Data Model. */
         DefsTextQuoteSelector: {
@@ -2061,62 +1786,61 @@ export interface components {
         };
         /** @description A reference to a specific token within a tokenization, by index. */
         DefsTokenRef: {
-            /** @description UUID of the tokenization containing the referenced token. */
-            tokenizationId: components["schemas"]["DefsUuid"];
             /** @description 0-based index of the token within its tokenization. */
             tokenIndex: number;
+            /** @description UUID of the tokenization containing the referenced token. */
+            tokenizationId: components["schemas"]["DefsUuid"];
         };
         /** @description A sequence of token references, possibly non-contiguous, within a single tokenization. */
         DefsTokenRefSequence: {
-            /** @description UUID of the tokenization containing the referenced tokens. */
-            tokenizationId: components["schemas"]["DefsUuid"];
-            /** @description 0-based indices of the tokens. */
-            tokenIndexes: number[];
             /** @description Optional head/anchor token index within the sequence. */
             anchorTokenIndex?: number;
+            /** @description 0-based indices of the tokens. */
+            tokenIndexes: number[];
+            /** @description UUID of the tokenization containing the referenced tokens. */
+            tokenizationId: components["schemas"]["DefsUuid"];
         };
         /** @description A universally unique identifier for cross-referencing annotation objects. */
         DefsUuid: {
             /** @description The UUID string value. */
             value: string;
         };
-        EprintDataLinkMain: components["schemas"]["EprintDataLinkRecord"];
-        /** @description A link from an eprint to the Layers data it produced or is associated with. Generalizes the former chive-specific eprintDataLink. */
-        EprintDataLinkRecord: {
+        EprintDataLinkMain: {
+            /** @description References to specific annotation records. */
+            annotationRefs?: string[];
             /**
-             * Format: uri
-             * @description AT-URI of the eprint on its publication platform.
-             */
-            eprintUri: string;
-            /** @description DID of the eprint author/owner on the publication platform. */
-            eprintDid?: string;
-            /**
-             * Format: uri
-             * @description AT-URI of the data kind definition node. Community-expandable via knowledge graph.
-             */
-            dataKindUri?: string;
-            /**
-             * @description Data kind slug (fallback when dataKindUri unavailable).
-             * @enum {string}
-             */
-            dataKind: "corpus" | "annotation-layer" | "model-output" | "gold-standard" | "evaluation-data" | "supplementary" | "replication";
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description Reference to a Layers corpus.
              */
             corpusRef?: string;
+            /** Format: datetime */
+            createdAt: string;
+            /** @description Data kind slug (fallback when dataKindUri unavailable). */
+            dataKind: string;
+            /**
+             * Format: at-uri
+             * @description AT-URI of the data kind definition node. Community-expandable via knowledge graph.
+             */
+            dataKindUri?: string;
+            description?: string;
+            /**
+             * Format: did
+             * @description DID of the eprint author/owner on the publication platform.
+             */
+            eprintDid?: string;
+            /**
+             * Format: at-uri
+             * @description AT-URI of the eprint on its publication platform.
+             */
+            eprintUri: string;
             /** @description References to specific Layers expressions. */
             expressionRefs?: string[];
-            /** @description References to specific annotation records. */
-            annotationRefs?: string[];
-            description?: string;
+            features?: components["schemas"]["DefsFeatureMap"];
             /** @description Which section of the paper this data corresponds to (e.g., 'Section 4.2', 'Table 3', 'Appendix A'). */
             paperSection?: string;
             reproducibility?: components["schemas"]["EprintDefsReproducibilityInfo"];
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
         };
+        EprintDataLinkRecord: components["schemas"]["EprintDataLinkMain"];
         /** @description Information about how to reproduce the data from the eprint. */
         EprintDefsReproducibilityInfo: {
             /**
@@ -2124,79 +1848,74 @@ export interface components {
              * @description URI of the code repository.
              */
             codeUri?: string;
-            /** @description Git commit hash for reproducibility. */
-            commitHash?: string;
             /** @description Command to reproduce the data. */
             command?: string;
+            /** @description Git commit hash for reproducibility. */
+            commitHash?: string;
             /** @description Environment specification (Docker image, conda env, etc.). */
             environment?: string;
             /** @description Random seed used. */
             randomSeed?: number;
         };
-        EprintEprintMain: components["schemas"]["EprintEprintRecord"];
-        /** @description A link between a Layers data record and an eprint. */
-        EprintEprintRecord: {
+        EprintEprintMain: {
+            /** @description References to specific annotation records linked to this eprint. */
+            annotationRefs?: string[];
+            /** @description Full citation string. */
+            citation?: string;
+            /**
+             * Format: at-uri
+             * @description Reference to a corpus record.
+             */
+            corpusRef?: string;
+            /** Format: datetime */
+            createdAt: string;
+            /** @description Description of the relationship. */
+            description?: string;
             /** @description The eprint identifier (DOI, arXiv ID, ACL Anthology ID, etc.). */
             eprintIdentifier: string;
+            /** @description Identifier type slug (fallback when eprintIdentifierTypeUri unavailable). */
+            eprintIdentifierType?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the identifier type definition node. Community-expandable via knowledge graph.
              */
             eprintIdentifierTypeUri?: string;
-            /**
-             * @description Identifier type slug (fallback when eprintIdentifierTypeUri unavailable).
-             * @enum {string}
-             */
-            eprintIdentifierType?: "doi" | "arxiv" | "acl-anthology" | "semantic-scholar" | "pubmed" | "isbn" | "url" | "at-uri" | "custom";
             /**
              * Format: uri
              * @description Full URI of the eprint.
              */
             eprintUri?: string;
+            /** @description References to Layers expressions linked to this eprint. */
+            expressionRefs?: string[];
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Knowledge graph references (e.g., Wikidata for the venue, DBLP, Semantic Scholar corpus ID). */
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
+            /** @description Link type slug (fallback when linkTypeUri unavailable). */
+            linkType: string;
             /**
-             * Format: uri
-             * @description AT-URI of the eprint record on its publication platform (e.g., chive.pub, any ATProto-native publication service).
-             */
-            platformEprintRef?: string;
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the link type definition node. Community-expandable via knowledge graph.
              */
             linkTypeUri?: string;
             /**
-             * @description Link type slug (fallback when linkTypeUri unavailable).
-             * @enum {string}
+             * Format: at-uri
+             * @description AT-URI of the eprint record on its publication platform (e.g., chive.pub, any ATProto-native publication service).
              */
-            linkType: "produced-by" | "described-in" | "evaluated-in" | "replicated-from" | "extends" | "supplements" | "cited-in" | "annotates" | "training-data-for" | "test-data-for";
-            /** @description References to Layers expressions linked to this eprint. */
-            expressionRefs?: string[];
-            /** @description References to specific annotation records linked to this eprint. */
-            annotationRefs?: string[];
-            /**
-             * Format: uri
-             * @description Reference to a corpus record.
-             */
-            corpusRef?: string;
-            /** @description Description of the relationship. */
-            description?: string;
-            /** @description Full citation string. */
-            citation?: string;
-            /** @description Knowledge graph references (e.g., Wikidata for the venue, DBLP, Semantic Scholar corpus ID). */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
+            platformEprintRef?: string;
         };
+        EprintEprintRecord: components["schemas"]["EprintEprintMain"];
         EprintGetDataLinkOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["EprintDataLinkMain"];
         };
         EprintGetEprintOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["EprintEprintMain"];
         };
         EprintListDataLinksOutput: {
@@ -2204,9 +1923,10 @@ export interface components {
             records: components["schemas"]["EprintListDataLinksRecordView"][];
         };
         EprintListDataLinksRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["EprintDataLinkMain"];
         };
         EprintListEprintsOutput: {
@@ -2214,80 +1934,84 @@ export interface components {
             records: components["schemas"]["EprintListEprintsRecordView"][];
         };
         EprintListEprintsRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["EprintEprintMain"];
         };
-        ExpressionExpressionMain: components["schemas"]["ExpressionExpressionRecord"];
-        /** @description An expression record representing a linguistic data source or unit at any granularity, from full documents down to individual morphemes. */
-        ExpressionExpressionRecord: {
+        ErrorBody: {
+            /** @description ATProto error code. */
+            error: string;
+            /** @description Human-readable message. */
+            message: string;
+        };
+        ExpressionExpressionMain: {
+            /** @description How this expression attaches to its parent (character span, temporal span, etc.). */
+            anchor?: components["schemas"]["DefsAnchor"];
+            /** Format: datetime */
+            createdAt: string;
+            /**
+             * Format: at-uri
+             * @description Reference to an eprint record that this expression is associated with.
+             */
+            eprintRef?: string;
+            /** @description Arbitrary document-level features and metadata. */
+            features?: components["schemas"]["DefsFeatureMap"];
             /** @description A corpus-level unique identifier (headline, URL, document ID, etc.). */
             id: string;
+            /** @description Expression kind slug (fallback when kindUri unavailable). */
+            kind: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the expression kind definition node. Community-expandable via knowledge graph.
              */
             kindUri?: string;
-            /**
-             * @description Expression kind slug (fallback when kindUri unavailable).
-             * @enum {string}
-             */
-            kind: "document" | "transcript" | "dialogue" | "social-media" | "email" | "article" | "recording" | "video" | "multimodal" | "code" | "section" | "paragraph" | "chapter" | "turn" | "utterance" | "heading" | "list" | "sentence" | "clause" | "phrase" | "word" | "morpheme" | "character" | "other";
-            /** @description The full raw text of the expression. All byte-offset spans reference this string. */
-            text?: string;
-            /**
-             * Format: uri
-             * @description Reference to the parent Expression this one is nested within. Absent for top-level expressions (documents, recordings, etc.).
-             */
-            parentRef?: string;
-            /** @description How this expression attaches to its parent (character span, temporal span, etc.). */
-            anchor?: components["schemas"]["DefsAnchor"];
-            /**
-             * Format: uri
-             * @description Reference to an associated media record (audio, video, image).
-             */
-            mediaRef?: string;
-            /** @description Optional inline media blob. */
-            mediaBlob?: {
-                $type?: string;
-                ref?: {
-                    $link?: string;
-                };
-                mimeType?: string;
-                size?: number;
-            };
+            /** @description References to knowledge base entries relevant to this expression. */
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
             /** @description BCP-47 language tag for the primary language. */
             language?: string;
             /** @description Additional BCP-47 tags for multilingual or code-switching expressions. */
             languages?: string[];
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            /** @description Arbitrary document-level features and metadata. */
-            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Optional inline media blob. */
+            mediaBlob?: {
+                $type?: string;
+                mimeType?: string;
+                ref?: {
+                    $link?: string;
+                };
+                size?: number;
+            };
             /**
-             * Format: uri
-             * @description URL of the external web resource this expression was derived from or annotates. The appview indexes this field to discover co-located annotations from other ATProto apps.
+             * Format: at-uri
+             * @description Reference to an associated media record (audio, video, image).
              */
-            sourceUrl?: string;
+            mediaRef?: string;
+            metadata?: components["schemas"]["DefsAnnotationMetadata"];
             /**
-             * Format: uri
+             * Format: at-uri
+             * @description Reference to the parent Expression this one is nested within. Absent for top-level expressions (documents, recordings, etc.).
+             */
+            parentRef?: string;
+            /**
+             * Format: at-uri
              * @description AT-URI of an external ATProto record this expression is derived from or annotates (e.g., a standard.site Leaflet post, a com.whtwnd blog entry, an app.bsky.feed.post, an at.margin.bookmark).
              */
             sourceRef?: string;
             /**
              * Format: uri
-             * @description Reference to an eprint record that this expression is associated with.
+             * @description URL of the external web resource this expression was derived from or annotates. The appview indexes this field to discover co-located annotations from other ATProto apps.
              */
-            eprintRef?: string;
-            /** @description References to knowledge base entries relevant to this expression. */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** Format: date-time */
-            createdAt: string;
+            sourceUrl?: string;
+            /** @description The full raw text of the expression. All byte-offset spans reference this string. */
+            text?: string;
         };
+        ExpressionExpressionRecord: components["schemas"]["ExpressionExpressionMain"];
         ExpressionGetExpressionOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["ExpressionExpressionMain"];
         };
         ExpressionListExpressionsOutput: {
@@ -2295,133 +2019,126 @@ export interface components {
             records: components["schemas"]["ExpressionListExpressionsRecordView"][];
         };
         ExpressionListExpressionsRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["ExpressionExpressionMain"];
         };
         /** @description A single directed edge entry within a graphEdgeSet. */
         GraphDefsGraphEdgeEntry: {
-            uuid: components["schemas"]["DefsUuid"];
+            confidence?: number;
+            /** @description Edge type slug. Overrides the set-level edgeType if different. */
+            edgeType: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the edge type definition node. Overrides the set-level edgeType.
              */
             edgeTypeUri?: string;
-            /** @description Edge type slug. Overrides the set-level edgeType if different. */
-            edgeType: string;
+            features?: components["schemas"]["DefsFeatureMap"];
             /** @description Source node. */
             source: components["schemas"]["DefsObjectRef"];
             /** @description Target node. */
             target: components["schemas"]["DefsObjectRef"];
-            confidence?: number;
-            features?: components["schemas"]["DefsFeatureMap"];
+            uuid: components["schemas"]["DefsUuid"];
         };
         GraphGetGraphEdgeOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["GraphGraphEdgeMain"];
         };
         GraphGetGraphEdgeSetOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["GraphGraphEdgeSetMain"];
         };
         GraphGetGraphNodeOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["GraphGraphNodeMain"];
         };
-        GraphGraphEdgeMain: components["schemas"]["GraphGraphEdgeRecord"];
-        /** @description A single directed typed edge between any two Layers objects. Supports multidigraphs and cycles. Source and target use objectRef, which can point to local UUIDs, remote AT-URIs, or external knowledge graph nodes. */
-        GraphGraphEdgeRecord: {
+        GraphGraphEdgeMain: {
+            /** @description Confidence 0-1000. */
+            confidence?: number;
+            /** Format: datetime */
+            createdAt: string;
+            /** @description Edge type slug (fallback when edgeTypeUri unavailable). */
+            edgeType: string;
+            /**
+             * Format: at-uri
+             * @description AT-URI of the edge type definition node. Community-expandable via knowledge graph.
+             */
+            edgeTypeUri?: string;
+            /** @description Optional edge label. */
+            label?: string;
+            metadata?: components["schemas"]["DefsAnnotationMetadata"];
+            /** @description Optional ordering among edges of the same type. */
+            ordinal?: number;
+            /** @description Edge properties as key-value pairs. */
+            properties?: components["schemas"]["DefsFeatureMap"];
             /** @description Source node: use localId for same-record UUID, recordRef for cross-record AT-URI, knowledgeRef for external KG. */
             source: components["schemas"]["DefsObjectRef"];
             /** @description Target node: use localId for same-record UUID, recordRef for cross-record AT-URI, knowledgeRef for external KG. */
             target: components["schemas"]["DefsObjectRef"];
+        };
+        GraphGraphEdgeRecord: components["schemas"]["GraphGraphEdgeMain"];
+        GraphGraphEdgeSetMain: {
+            /** Format: datetime */
+            createdAt: string;
+            /** @description Edge type slug shared by all edges in this set (fallback when edgeTypeUri unavailable). */
+            edgeType?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the edge type definition node. Community-expandable via knowledge graph.
              */
             edgeTypeUri?: string;
+            edges: components["schemas"]["GraphDefsGraphEdgeEntry"][];
             /**
-             * @description Edge type slug (fallback when edgeTypeUri unavailable).
-             * @enum {string}
-             */
-            edgeType: "reply-to" | "quote" | "repost" | "translation-of" | "continuation" | "summary-of" | "revision-of" | "correction-of" | "coreference" | "causal" | "part-of" | "member-of" | "type-of" | "same-as" | "related-to" | "derived-from" | "supports" | "contradicts" | "discourse" | "bridging" | "grounding" | "instance-of" | "denotes" | "describes" | "specializes" | "elaborates" | "produced-by" | "described-in" | "annotates" | "see-also" | "before" | "after" | "meets" | "met-by" | "overlaps" | "overlapped-by" | "starts" | "started-by" | "during" | "contains" | "finishes" | "finished-by" | "equals" | "simultaneous" | "initiates" | "culminates" | "terminates" | "continues" | "reinitiates" | "disconnected" | "externally-connected" | "partially-overlapping" | "tangential-proper-part" | "non-tangential-proper-part" | "tangential-proper-part-inverse" | "non-tangential-proper-part-inverse" | "spatially-equal" | "north-of" | "south-of" | "east-of" | "west-of" | "above" | "below" | "in-front-of" | "behind" | "left-of" | "right-of" | "near" | "far" | "adjacent" | "custom";
-            /** @description Optional edge label. */
-            label?: string;
-            /** @description Optional ordering among edges of the same type. */
-            ordinal?: number;
-            /** @description Confidence 0-1000. */
-            confidence?: number;
-            /** @description Edge properties as key-value pairs. */
-            properties?: components["schemas"]["DefsFeatureMap"];
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            /** Format: date-time */
-            createdAt: string;
-        };
-        GraphGraphEdgeSetMain: components["schemas"]["GraphGraphEdgeSetRecord"];
-        /** @description A batch of typed, directed edges between Layers objects. Use for bulk edge creation when many edges share the same provenance and context. */
-        GraphGraphEdgeSetRecord: {
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description Optional primary expression context.
              */
             expression?: string;
-            /**
-             * Format: uri
-             * @description AT-URI of the edge type definition node. Community-expandable via knowledge graph.
-             */
-            edgeTypeUri?: string;
-            /**
-             * @description Edge type slug shared by all edges in this set (fallback when edgeTypeUri unavailable).
-             * @enum {string}
-             */
-            edgeType?: "coreference" | "causal" | "part-of" | "member-of" | "type-of" | "same-as" | "related-to" | "derived-from" | "supports" | "contradicts" | "discourse" | "bridging" | "before" | "after" | "meets" | "met-by" | "overlaps" | "overlapped-by" | "starts" | "started-by" | "during" | "contains" | "finishes" | "finished-by" | "equals" | "simultaneous" | "initiates" | "culminates" | "terminates" | "continues" | "reinitiates" | "disconnected" | "externally-connected" | "partially-overlapping" | "tangential-proper-part" | "non-tangential-proper-part" | "tangential-proper-part-inverse" | "non-tangential-proper-part-inverse" | "spatially-equal" | "north-of" | "south-of" | "east-of" | "west-of" | "above" | "below" | "in-front-of" | "behind" | "left-of" | "right-of" | "near" | "far" | "adjacent" | "custom";
-            edges: components["schemas"]["GraphDefsGraphEdgeEntry"][];
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            /** @description Knowledge graph references for this edge set (e.g., the relation ontology it implements, source methodology). */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
             /** @description Open-ended features (e.g., extraction method, model version, confidence threshold). */
             features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
+            /** @description Knowledge graph references for this edge set (e.g., the relation ontology it implements, source methodology). */
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
+            metadata?: components["schemas"]["DefsAnnotationMetadata"];
         };
-        GraphGraphNodeMain: components["schemas"]["GraphGraphNodeRecord"];
-        /** @description A standalone node in the property graph. Represents entities, concepts, situations, claims, or any domain object that does not have another Layers record. Existing Layers records (expressions, annotations, typeDefs) are implicitly nodes via objectRef. */
-        GraphGraphNodeRecord: {
+        GraphGraphEdgeSetRecord: components["schemas"]["GraphGraphEdgeSetMain"];
+        GraphGraphNodeMain: {
+            /** Format: datetime */
+            createdAt: string;
+            /** @description Knowledge graph references grounding this node (Wikidata, chive.pub, FrameNet, etc.). */
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
+            /** @description Human-readable node label. */
+            label?: string;
+            metadata?: components["schemas"]["DefsAnnotationMetadata"];
+            /** @description Node type slug (fallback when nodeTypeUri unavailable). */
+            nodeType: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the node type definition node. Community-expandable via knowledge graph.
              */
             nodeTypeUri?: string;
-            /**
-             * @description Node type slug (fallback when nodeTypeUri unavailable).
-             * @enum {string}
-             */
-            nodeType: "entity" | "concept" | "situation" | "state" | "time" | "location" | "claim" | "proposition" | "custom";
-            /** @description Human-readable node label. */
-            label?: string;
             /** @description Node properties as key-value pairs. */
             properties?: components["schemas"]["DefsFeatureMap"];
-            /** @description Knowledge graph references grounding this node (Wikidata, chive.pub, FrameNet, etc.). */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            /** Format: date-time */
-            createdAt: string;
         };
+        GraphGraphNodeRecord: components["schemas"]["GraphGraphNodeMain"];
         GraphListGraphEdgeSetsOutput: {
             cursor?: string;
             records: components["schemas"]["GraphListGraphEdgeSetsRecordView"][];
         };
         GraphListGraphEdgeSetsRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["GraphGraphEdgeSetMain"];
         };
         GraphListGraphEdgesOutput: {
@@ -2429,9 +2146,10 @@ export interface components {
             records: components["schemas"]["GraphListGraphEdgesRecordView"][];
         };
         GraphListGraphEdgesRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["GraphGraphEdgeMain"];
         };
         GraphListGraphNodesOutput: {
@@ -2439,244 +2157,242 @@ export interface components {
             records: components["schemas"]["GraphListGraphNodesRecordView"][];
         };
         GraphListGraphNodesRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["GraphGraphNodeMain"];
         };
-        JudgmentAgreementReportMain: components["schemas"]["JudgmentAgreementReportRecord"];
-        /** @description An inter-annotator agreement report summarizing agreement metrics across judgment sets. */
-        JudgmentAgreementReportRecord: {
-            /** Format: uri */
+        IntegrationListExternalOutput: {
+            cursor?: string;
+            records: {
+                cid?: string;
+                nsid: string;
+                /** Format: at-uri */
+                uri: string;
+                /** @description Raw record body as published by the foreign appview. */
+                value: {
+                    [key: string]: unknown;
+                };
+            }[];
+        };
+        IntegrationListExternalRecordView: {
+            cid?: string;
+            nsid: string;
+            /** Format: at-uri */
+            uri: string;
+            /** @description Raw record body as published by the foreign appview. */
+            value: {
+                [key: string]: unknown;
+            };
+        };
+        JudgmentAgreementReportMain: {
+            /** Format: datetime */
+            createdAt: string;
+            /** Format: at-uri */
             experimentRef: string;
+            features?: components["schemas"]["DefsFeatureMap"];
             /** @description The judgment sets compared. */
             judgmentSetRefs?: string[];
+            /** @description Metric slug (fallback when metricUri unavailable). */
+            metric?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the metric definition node. Community-expandable via knowledge graph.
              */
             metricUri?: string;
-            /**
-             * @description Metric slug (fallback when metricUri unavailable).
-             * @enum {string}
-             */
-            metric?: "cohens-kappa" | "fleiss-kappa" | "krippendorff-alpha" | "percent-agreement" | "correlation" | "f1" | "custom";
-            /** @description Metric value scaled 0-1000. */
-            value?: number;
             numAnnotators?: number;
             numItems?: number;
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
+            /** @description Metric value scaled 0-1000. */
+            value?: number;
         };
+        JudgmentAgreementReportRecord: components["schemas"]["JudgmentAgreementReportMain"];
         /** @description Experiment design parameters for item distribution, ordering, and timing. */
         JudgmentDefsExperimentDesign: {
-            /** @description Constraints on item list construction (Latin square balancing, no-adjacent-same-condition, etc.). */
-            listConstraints?: components["schemas"]["JudgmentDefsListConstraint"][];
+            /** @description How items are distributed to annotators. */
+            distributionStrategy?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the distribution strategy definition node. Community-expandable.
              */
             distributionStrategyUri?: string;
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description How items are ordered within a list. */
+            itemOrder?: string;
             /**
-             * @description How items are distributed to annotators.
-             * @enum {string}
-             */
-            distributionStrategy?: "latin-square" | "random" | "blocked" | "stratified" | "custom";
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the item order definition node. Community-expandable.
              */
             itemOrderUri?: string;
-            /**
-             * @description How items are ordered within a list.
-             * @enum {string}
-             */
-            itemOrder?: "random-order" | "fixed-order" | "blocked" | "adaptive" | "custom";
+            /** @description Constraints on item list construction (Latin square balancing, no-adjacent-same-condition, etc.). */
+            listConstraints?: components["schemas"]["JudgmentDefsListConstraint"][];
             /** @description Target timing per item in milliseconds. */
             timingMs?: number;
-            features?: components["schemas"]["DefsFeatureMap"];
         };
         /** @description A single judgment about a linguistic item. */
         JudgmentDefsJudgment: {
-            /** @description Reference to the item being judged. Use recordRef for the communication/annotation record, objectId for a specific object within it, localId for same-record references. */
-            item: components["schemas"]["DefsObjectRef"];
+            /** @description Behavioral signals: mouse movements, keystroke patterns, eye tracking data, scroll events, etc. */
+            behavioralData?: components["schemas"]["DefsFeatureMap"];
+            /** @description Categorical judgment label. */
+            categoricalValue?: string;
+            confidence?: number;
+            features?: components["schemas"]["DefsFeatureMap"];
             /**
-             * Format: uri
+             * Format: at-uri
              * @description Reference to the pub.layers.resource#filling that generated the item being judged.
              */
             fillingRef?: string;
-            /** @description Categorical judgment label. */
-            categoricalValue?: string;
+            /** @description Free-text response. */
+            freeText?: string;
+            /** @description Reference to the item being judged. Use recordRef for the communication/annotation record, objectId for a specific object within it, localId for same-record references. */
+            item: components["schemas"]["DefsObjectRef"];
+            /** @description Response time in milliseconds. */
+            responseTimeMs?: number;
             /** @description Numeric response value (ordinal-scale rating, magnitude estimate, or rank position). */
             scalarValue?: number;
             /** @description Selected text span for span-labeling tasks. */
             textSpan?: components["schemas"]["DefsSpan"];
-            /** @description Free-text response. */
-            freeText?: string;
-            /** @description Response time in milliseconds. */
-            responseTimeMs?: number;
-            confidence?: number;
-            /** @description Behavioral signals: mouse movements, keystroke patterns, eye tracking data, scroll events, etc. */
-            behavioralData?: components["schemas"]["DefsFeatureMap"];
-            features?: components["schemas"]["DefsFeatureMap"];
         };
         /** @description A constraint on item list construction for an experiment. */
         JudgmentDefsListConstraint: {
+            /** @description Optional formal constraint expression. */
+            constraint?: components["schemas"]["DefsConstraint"];
+            /** @description Constraint kind slug. */
+            kind: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the constraint kind definition node. Community-expandable.
              */
             kindUri?: string;
-            /**
-             * @description Constraint kind slug.
-             * @enum {string}
-             */
-            kind: "latin-square" | "no-adjacent-same-condition" | "balanced-frequency" | "minimum-distance" | "custom";
-            /** @description The item property this constraint operates on (e.g., 'condition', 'templateRef'). */
-            targetProperty?: string;
             /** @description Constraint parameters (e.g., minimum distance, number of lists). */
             parameters?: components["schemas"]["DefsFeatureMap"];
-            /** @description Optional formal constraint expression. */
-            constraint?: components["schemas"]["DefsConstraint"];
+            /** @description The item property this constraint operates on (e.g., 'condition', 'templateRef'). */
+            targetProperty?: string;
         };
         /** @description How stimuli are displayed to participants. */
         JudgmentDefsPresentationSpec: {
+            /** @description How text is segmented for incremental presentation. */
+            chunkingUnit?: string;
+            /** @description Whether previous chunks remain visible during incremental presentation. */
+            cumulative?: boolean;
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Inter-stimulus interval in milliseconds. */
+            isiMs?: number;
+            /** @description Masking character for non-cumulative displays (e.g., '-', '#'). */
+            maskChar?: string;
+            /** @description Presentation method (fallback when methodUri unavailable). */
+            method?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the presentation method definition node. Community-expandable via knowledge graph.
              */
             methodUri?: string;
-            /**
-             * @description Presentation method (fallback when methodUri unavailable).
-             * @enum {string}
-             */
-            method?: "rsvp" | "self-paced" | "whole-sentence" | "auditory" | "visual-world" | "masked-priming" | "cross-modal" | "naturalistic" | "gating" | "maze" | "boundary" | "moving-window" | "custom";
-            /**
-             * @description How text is segmented for incremental presentation.
-             * @enum {string}
-             */
-            chunkingUnit?: "word" | "character" | "morpheme" | "phrase" | "sentence" | "region" | "custom";
             /** @description Per-chunk display duration in milliseconds. */
             timingMs?: number;
-            /** @description Inter-stimulus interval in milliseconds. */
-            isiMs?: number;
-            /** @description Whether previous chunks remain visible during incremental presentation. */
-            cumulative?: boolean;
-            /** @description Masking character for non-cumulative displays (e.g., '-', '#'). */
-            maskChar?: string;
-            features?: components["schemas"]["DefsFeatureMap"];
         };
         /** @description A data capture instrument used in an experiment. */
         JudgmentDefsRecordingMethod: {
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Recording method (fallback when methodUri unavailable). */
+            method: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the recording method definition node. Community-expandable via knowledge graph.
              */
             methodUri?: string;
-            /**
-             * @description Recording method (fallback when methodUri unavailable).
-             * @enum {string}
-             */
-            method: "button-box" | "keyboard" | "mouse-click" | "touchscreen" | "voice" | "eeg" | "meg" | "fmri" | "fnirs" | "eye-tracking" | "pupillometry" | "mouse-tracking" | "emg" | "skin-conductance" | "ecog" | "custom";
-            features?: components["schemas"]["DefsFeatureMap"];
         };
-        JudgmentExperimentDefMain: components["schemas"]["JudgmentExperimentDefRecord"];
-        /** @description Definition of an annotation or judgment experiment. */
-        JudgmentExperimentDefRecord: {
-            name: string;
+        JudgmentExperimentDefMain: {
+            /** @description References to pub.layers.resource#collection records providing filler pools for this experiment. */
+            collectionRefs?: string[];
+            /** Format: at-uri */
+            corpusRef?: string;
+            /** Format: datetime */
+            createdAt: string;
             description?: string;
+            /** @description Experiment design parameters: list constraints, distribution strategy, item order. */
+            design?: components["schemas"]["JudgmentDefsExperimentDesign"];
+            features?: components["schemas"]["DefsFeatureMap"];
+            guidelines?: string;
+            /** @description Knowledge graph references (e.g., theoretical framework, methodology citation, task ontology). */
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
+            /** @description Available labels for categorical judgments. */
+            labels?: string[];
+            /** @description What property or behavior is being measured (fallback when measureTypeUri unavailable). */
+            measureType?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the measure type definition node. Community-expandable via knowledge graph.
              */
             measureTypeUri?: string;
-            /**
-             * @description What property or behavior is being measured (fallback when measureTypeUri unavailable).
-             * @enum {string}
-             */
-            measureType?: "acceptability" | "inference" | "similarity" | "plausibility" | "comprehension" | "preference" | "extraction" | "reading-time" | "production" | "custom";
-            /**
-             * Format: uri
-             * @description AT-URI of the response instrument definition node. Community-expandable via knowledge graph.
-             */
-            taskTypeUri?: string;
-            /**
-             * @description Response instrument: how the response is collected (fallback when taskTypeUri unavailable).
-             * @enum {string}
-             */
-            taskType?: "forced-choice" | "multi-select" | "ordinal-scale" | "magnitude" | "binary" | "categorical" | "free-text" | "cloze" | "span-labeling" | "custom";
-            guidelines?: string;
-            /** Format: uri */
+            name: string;
+            /** Format: at-uri */
             ontologyRef?: string;
-            /** Format: uri */
+            /** Format: at-uri */
             personaRef?: string;
-            /** Format: uri */
-            corpusRef?: string;
-            /** @description References to pub.layers.resource#template records used to generate stimuli for this experiment. */
-            templateRefs?: string[];
-            /** @description References to pub.layers.resource#collection records providing filler pools for this experiment. */
-            collectionRefs?: string[];
-            /** @description Minimum scale value for ordinal-scale judgments. */
-            scaleMin?: number;
-            /** @description Maximum scale value. */
-            scaleMax?: number;
-            /** @description Available labels for categorical judgments. */
-            labels?: string[];
-            /** @description Knowledge graph references (e.g., theoretical framework, methodology citation, task ontology). */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
             /** @description How stimuli are displayed to participants. */
             presentation?: components["schemas"]["JudgmentDefsPresentationSpec"];
             /** @description Data capture instruments used in this experiment. */
             recordingMethods?: components["schemas"]["JudgmentDefsRecordingMethod"][];
-            /** @description Experiment design parameters: list constraints, distribution strategy, item order. */
-            design?: components["schemas"]["JudgmentDefsExperimentDesign"];
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
+            /** @description Maximum scale value. */
+            scaleMax?: number;
+            /** @description Minimum scale value for ordinal-scale judgments. */
+            scaleMin?: number;
+            /** @description Response instrument: how the response is collected (fallback when taskTypeUri unavailable). */
+            taskType?: string;
+            /**
+             * Format: at-uri
+             * @description AT-URI of the response instrument definition node. Community-expandable via knowledge graph.
+             */
+            taskTypeUri?: string;
+            /** @description References to pub.layers.resource#template records used to generate stimuli for this experiment. */
+            templateRefs?: string[];
         };
+        JudgmentExperimentDefRecord: components["schemas"]["JudgmentExperimentDefMain"];
         JudgmentGetAgreementReportOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["JudgmentAgreementReportMain"];
         };
         JudgmentGetExperimentDefOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["JudgmentExperimentDefMain"];
         };
         JudgmentGetJudgmentSetOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["JudgmentJudgmentSetMain"];
         };
-        JudgmentJudgmentSetMain: components["schemas"]["JudgmentJudgmentSetRecord"];
-        /** @description A set of judgments from a single annotator for an experiment. */
-        JudgmentJudgmentSetRecord: {
-            /** Format: uri */
-            experimentRef: string;
+        JudgmentJudgmentSetMain: {
             /** @description The agent (human annotator, ML model, crowd worker, etc.) who produced this judgment set. Use did for ATProto-native annotators, id for anonymized/platform-specific identifiers, knowledgeRef for ORCID or model cards. */
             agent?: components["schemas"]["DefsAgentRef"];
-            judgments: components["schemas"]["JudgmentDefsJudgment"][];
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            /** @description Knowledge graph references (e.g., crowdsourcing platform, annotator population, methodology source). */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
+            /** Format: datetime */
+            createdAt: string;
+            /** Format: at-uri */
+            experimentRef: string;
             /** @description Open-ended features (e.g., annotator demographics, session metadata, completion time, payment info). */
             features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
+            judgments: components["schemas"]["JudgmentDefsJudgment"][];
+            /** @description Knowledge graph references (e.g., crowdsourcing platform, annotator population, methodology source). */
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
+            metadata?: components["schemas"]["DefsAnnotationMetadata"];
         };
+        JudgmentJudgmentSetRecord: components["schemas"]["JudgmentJudgmentSetMain"];
         JudgmentListAgreementReportsOutput: {
             cursor?: string;
             records: components["schemas"]["JudgmentListAgreementReportsRecordView"][];
         };
         JudgmentListAgreementReportsRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["JudgmentAgreementReportMain"];
         };
         JudgmentListExperimentDefsOutput: {
@@ -2684,9 +2400,10 @@ export interface components {
             records: components["schemas"]["JudgmentListExperimentDefsRecordView"][];
         };
         JudgmentListExperimentDefsRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["JudgmentExperimentDefMain"];
         };
         JudgmentListJudgmentSetsOutput: {
@@ -2694,93 +2411,85 @@ export interface components {
             records: components["schemas"]["JudgmentListJudgmentSetsRecordView"][];
         };
         JudgmentListJudgmentSetsRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["JudgmentJudgmentSetMain"];
+        };
+        ListResponse: {
+            /** @description Opaque cursor for the next page. */
+            cursor?: string;
+            records: components["schemas"]["RecordView"][];
         };
         /** @description Composable audio metadata. Attach to any media record representing audio content: standalone audio files, audio tracks in video, etc. */
         MediaDefsAudioInfo: {
-            /** @description Audio sample rate in Hz (e.g., 8000, 16000, 22050, 44100, 48000). */
-            sampleRate?: number;
-            /** @description Number of audio channels. */
-            channels?: number;
             /** @description Audio bit depth (e.g., 16, 24, 32). */
             bitDepth?: number;
-            /** @description Audio codec identifier (e.g., 'pcm_s16le', 'aac', 'opus', 'flac'). */
-            codec?: string;
             /** @description Audio bitrate in bits per second. */
             bitRate?: number;
-            /**
-             * @description Bitrate mode.
-             * @enum {string}
-             */
-            bitRateMode?: "cbr" | "vbr";
+            /** @description Bitrate mode. */
+            bitRateMode?: string;
+            /** @description Number of audio channels. */
+            channels?: number;
+            /** @description Audio codec identifier (e.g., 'pcm_s16le', 'aac', 'opus', 'flac'). */
+            codec?: string;
             /** @description Total number of audio samples. Enables sample-accurate alignment. */
             numberOfSamples?: number;
-            /** @description Number of distinct speakers (for spoken language data). */
-            speakerCount?: number;
+            /** @description Audio sample rate in Hz (e.g., 8000, 16000, 22050, 44100, 48000). */
+            sampleRate?: number;
             /**
-             * Format: uri
-             * @description AT-URI of a pub.layers.expression containing the transcript.
-             */
-            transcriptRef?: string;
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of a pub.layers.segmentation record structuring the transcript.
              */
             segmentationRef?: string;
+            /** @description Number of distinct speakers (for spoken language data). */
+            speakerCount?: number;
+            /**
+             * Format: at-uri
+             * @description AT-URI of a pub.layers.expression containing the transcript.
+             */
+            transcriptRef?: string;
         };
         /** @description Composable document/image metadata. Attach to any media record representing scanned documents, manuscripts, printed text, or other page-based media for OCR/HTR annotation workflows. */
         MediaDefsDocumentInfo: {
+            /** @description Scan color mode. */
+            colorMode?: string;
             /** @description Scanning resolution in dots per inch (300+ recommended for OCR). */
             dpi?: number;
-            /**
-             * @description Scan color mode.
-             * @enum {string}
-             */
-            colorMode?: "color" | "grayscale" | "bitonal";
+            /** @description OCR/HTR engine identifier (e.g., 'tesseract-5.3', 'transkribus', 'abbyy', 'google-vision'). */
+            ocrEngine?: string;
             /** @description Number of pages in the document. */
             pageCount?: number;
             /** @description Writing system (ISO 15924 codes: 'Latn', 'Arab', 'Deva', 'Hans', 'Hant', 'Cyrl', 'Grek', etc.). */
             scriptSystem?: string;
-            /**
-             * @description Primary text direction.
-             * @enum {string}
-             */
-            writingDirection?: "ltr" | "rtl" | "ttb" | "btt";
-            /** @description OCR/HTR engine identifier (e.g., 'tesseract-5.3', 'transkribus', 'abbyy', 'google-vision'). */
-            ocrEngine?: string;
+            /** @description Primary text direction. */
+            writingDirection?: string;
         };
         /** @description Composable video metadata. Attach to any media record representing video content. */
         MediaDefsVideoInfo: {
-            /** @description Width in pixels. */
-            width?: number;
-            /** @description Height in pixels. */
-            height?: number;
-            /** @description Frame rate scaled by 100 (e.g., 2997 = 29.97fps). Avoids floats. */
-            frameRate?: number;
-            /** @description Video codec identifier (e.g., 'h264', 'h265', 'vp9', 'av1', 'prores'). */
-            codec?: string;
             /** @description Display aspect ratio (e.g., '16:9', '4:3', '1:1'). */
             aspectRatio?: string;
-            /**
-             * @description Color space.
-             * @enum {string}
-             */
-            colorSpace?: "rgb" | "yuv420" | "yuv422" | "yuv444" | "grayscale";
             /** @description Video bitrate in bits per second. */
             bitRate?: number;
-            /**
-             * @description Scan type. Affects frame extraction for annotation.
-             * @enum {string}
-             */
-            scanType?: "progressive" | "interlaced";
+            /** @description Video codec identifier (e.g., 'h264', 'h265', 'vp9', 'av1', 'prores'). */
+            codec?: string;
+            /** @description Color space. */
+            colorSpace?: string;
+            /** @description Frame rate scaled by 100 (e.g., 2997 = 29.97fps). Avoids floats. */
+            frameRate?: number;
+            /** @description Height in pixels. */
+            height?: number;
+            /** @description Scan type. Affects frame extraction for annotation. */
+            scanType?: string;
+            /** @description Width in pixels. */
+            width?: number;
         };
         MediaGetMediaOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["MediaMediaMain"];
         };
         MediaListMediaOutput: {
@@ -2788,157 +2497,100 @@ export interface components {
             records: components["schemas"]["MediaListMediaRecordView"][];
         };
         MediaListMediaRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["MediaMediaMain"];
         };
-        /** @description A media source record (audio, video, image, or document) that can be referenced by expressions and annotations. Modality-specific metadata lives in composable audioInfo/videoInfo/documentInfo objects. */
         MediaMediaMain: {
-            /**
-             * Format: uri
-             * @description AT-URI of the media kind definition node. Community-expandable via knowledge graph.
-             */
-            kindUri?: string;
-            /**
-             * @description Media kind slug (fallback when kindUri unavailable).
-             * @enum {string}
-             */
-            kind: "audio" | "video" | "image" | "document";
-            title?: string;
-            description?: string;
+            /** @description Audio-specific metadata. Present for audio files and videos with audio tracks. */
+            audio?: components["schemas"]["MediaDefsAudioInfo"];
             /** @description The media blob. */
             blob?: {
                 $type?: string;
+                mimeType?: string;
                 ref?: {
                     $link?: string;
                 };
-                mimeType?: string;
                 size?: number;
             };
+            /** Format: datetime */
+            createdAt: string;
+            description?: string;
+            /** @description Document-specific metadata. Present for scanned documents, manuscripts, etc. */
+            document?: components["schemas"]["MediaDefsDocumentInfo"];
+            /** @description Duration in milliseconds (for audio/video). */
+            durationMs?: number;
             /**
              * Format: uri
              * @description URI for externally hosted media.
              */
             externalUri?: string;
-            mimeType?: string;
-            /** @description Duration in milliseconds (for audio/video). */
-            durationMs?: number;
-            /** @description File size in bytes. */
-            fileSizeBytes?: number;
-            /**
-             * Format: uri
-             * @description AT-URI of the parent media record this excerpt/clip was extracted from.
-             */
-            parentMediaRef?: string;
-            /** @description Offset in milliseconds where this excerpt starts within the parent media. Used with parentMediaRef. */
-            startOffsetMs?: number;
-            /** @description Audio-specific metadata. Present for audio files and videos with audio tracks. */
-            audio?: components["schemas"]["MediaDefsAudioInfo"];
-            /** @description Video-specific metadata. Present for video files and image sequences. */
-            video?: components["schemas"]["MediaDefsVideoInfo"];
-            /** @description Document-specific metadata. Present for scanned documents, manuscripts, etc. */
-            document?: components["schemas"]["MediaDefsDocumentInfo"];
-            /** @description BCP-47 language tag. */
-            language?: string;
-            /** @description Knowledge graph references. */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** @description Provenance: who created/uploaded this media record, with what tool. */
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
             /** @description Open-ended features: recording conditions, speaker metadata, quality metrics, consent, etc. */
             features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
-        };
-        /** @description A media source record (audio, video, image, or document) that can be referenced by expressions and annotations. Modality-specific metadata lives in composable audioInfo/videoInfo/documentInfo objects. */
-        MediaMediaRecord: {
+            /** @description File size in bytes. */
+            fileSizeBytes?: number;
+            /** @description Media kind slug (fallback when kindUri unavailable). */
+            kind: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the media kind definition node. Community-expandable via knowledge graph.
              */
             kindUri?: string;
-            /**
-             * @description Media kind slug (fallback when kindUri unavailable).
-             * @enum {string}
-             */
-            kind: "audio" | "video" | "image" | "document";
-            title?: string;
-            description?: string;
-            /** @description The media blob. */
-            blob?: {
-                $type?: string;
-                ref?: {
-                    $link?: string;
-                };
-                mimeType?: string;
-                size?: number;
-            };
-            /**
-             * Format: uri
-             * @description URI for externally hosted media.
-             */
-            externalUri?: string;
+            /** @description Knowledge graph references. */
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
+            /** @description BCP-47 language tag. */
+            language?: string;
+            /** @description Provenance: who created/uploaded this media record, with what tool. */
+            metadata?: components["schemas"]["DefsAnnotationMetadata"];
             mimeType?: string;
-            /** @description Duration in milliseconds (for audio/video). */
-            durationMs?: number;
-            /** @description File size in bytes. */
-            fileSizeBytes?: number;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the parent media record this excerpt/clip was extracted from.
              */
             parentMediaRef?: string;
             /** @description Offset in milliseconds where this excerpt starts within the parent media. Used with parentMediaRef. */
             startOffsetMs?: number;
-            /** @description Audio-specific metadata. Present for audio files and videos with audio tracks. */
-            audio?: components["schemas"]["MediaDefsAudioInfo"];
+            title?: string;
             /** @description Video-specific metadata. Present for video files and image sequences. */
             video?: components["schemas"]["MediaDefsVideoInfo"];
-            /** @description Document-specific metadata. Present for scanned documents, manuscripts, etc. */
-            document?: components["schemas"]["MediaDefsDocumentInfo"];
-            /** @description BCP-47 language tag. */
-            language?: string;
-            /** @description Knowledge graph references. */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** @description Provenance: who created/uploaded this media record, with what tool. */
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            /** @description Open-ended features: recording conditions, speaker metadata, quality metrics, consent, etc. */
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
         };
+        MediaMediaRecord: components["schemas"]["MediaMediaMain"];
         /** @description A role/argument slot in a frame or situation type definition. Structurally parallel to pub.layers.resource#slot: both represent named positions with type constraints. roleSlot is ontology-level (what roles a frame type allows); resource slot is template-level (what variables a template exposes). */
         OntologyDefsRoleSlot: {
-            /** @description The role label (e.g., Agent, Patient, Theme, ARG0). */
-            roleName: string;
-            roleDescription?: string;
-            /** @description References to allowed filler types (pub.layers.ontology#typeDef AT-URIs). */
-            fillerTypeRefs?: string[];
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of a pub.layers.resource#collection constraining allowed fillers.
              */
             collectionRef?: string;
-            /** @description Whether this role is obligatory. */
-            required?: boolean;
-            /** @description Default filler value if not explicitly filled. */
-            defaultValue?: string;
             /** @description Declarative constraints on fillers of this role (e.g., selectional restrictions, agreement requirements). */
             constraints?: components["schemas"]["DefsConstraint"][];
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
+            /** @description Default filler value if not explicitly filled. */
+            defaultValue?: string;
             /** @description Open-ended features for this role slot (e.g., semantic type, animacy preference, optionality conditions). */
             features?: components["schemas"]["DefsFeatureMap"];
+            /** @description References to allowed filler types (pub.layers.ontology#typeDef AT-URIs). */
+            fillerTypeRefs?: string[];
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
+            /** @description Whether this role is obligatory. */
+            required?: boolean;
+            roleDescription?: string;
+            /** @description The role label (e.g., Agent, Patient, Theme, ARG0). */
+            roleName: string;
         };
         OntologyGetOntologyOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["OntologyOntologyMain"];
         };
         OntologyGetTypeDefOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["OntologyTypeDefMain"];
         };
         OntologyListOntologiesOutput: {
@@ -2946,9 +2598,10 @@ export interface components {
             records: components["schemas"]["OntologyListOntologiesRecordView"][];
         };
         OntologyListOntologiesRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["OntologyOntologyMain"];
         };
         OntologyListTypeDefsOutput: {
@@ -2956,153 +2609,80 @@ export interface components {
             records: components["schemas"]["OntologyListTypeDefsRecordView"][];
         };
         OntologyListTypeDefsRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["OntologyTypeDefMain"];
         };
-        /** @description An annotation ontology: a collection of typed definitions (entity types, situation types, role types, relation types) that together form a complete annotation framework. */
         OntologyOntologyMain: {
-            /** @description Human-readable name for this ontology. */
-            name: string;
+            /** Format: datetime */
+            createdAt: string;
             /** @description Detailed description of the ontology's purpose and scope. */
             description?: string;
-            /** @description Semantic version string. */
-            version?: string;
+            /** @description Domain slug (fallback when domainUri unavailable). */
+            domain?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the domain definition node. Community-expandable via knowledge graph.
              */
             domainUri?: string;
+            /** @description Knowledge graph references grounding this ontology. */
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
+            /** @description Human-readable name for this ontology. */
+            name: string;
             /**
-             * @description Domain slug (fallback when domainUri unavailable).
-             * @enum {string}
-             */
-            domain?: "general" | "biomedical" | "legal" | "financial" | "news" | "social-media" | "scientific" | "intelligence" | "dialogue" | "multimodal" | "custom";
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description Reference to a parent ontology this one extends.
              */
             parentRef?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description Reference to the persona that created/owns this ontology.
              */
             personaRef?: string;
-            /** @description Knowledge graph references grounding this ontology. */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** Format: date-time */
-            createdAt: string;
-        };
-        /** @description An annotation ontology: a collection of typed definitions (entity types, situation types, role types, relation types) that together form a complete annotation framework. */
-        OntologyOntologyRecord: {
-            /** @description Human-readable name for this ontology. */
-            name: string;
-            /** @description Detailed description of the ontology's purpose and scope. */
-            description?: string;
             /** @description Semantic version string. */
             version?: string;
-            /**
-             * Format: uri
-             * @description AT-URI of the domain definition node. Community-expandable via knowledge graph.
-             */
-            domainUri?: string;
-            /**
-             * @description Domain slug (fallback when domainUri unavailable).
-             * @enum {string}
-             */
-            domain?: "general" | "biomedical" | "legal" | "financial" | "news" | "social-media" | "scientific" | "intelligence" | "dialogue" | "multimodal" | "custom";
-            /**
-             * Format: uri
-             * @description Reference to a parent ontology this one extends.
-             */
-            parentRef?: string;
-            /**
-             * Format: uri
-             * @description Reference to the persona that created/owns this ontology.
-             */
-            personaRef?: string;
-            /** @description Knowledge graph references grounding this ontology. */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** Format: date-time */
-            createdAt: string;
         };
-        /** @description A type definition within an ontology. Covers entity types, situation types, role types, and relation types in a single unified model. */
+        OntologyOntologyRecord: components["schemas"]["OntologyOntologyMain"];
         OntologyTypeDefMain: {
-            /**
-             * Format: uri
-             * @description The ontology this type belongs to.
-             */
-            ontologyRef: string;
-            /** @description The type name/label. */
-            name: string;
-            /**
-             * Format: uri
-             * @description AT-URI of the type kind definition node. Community-expandable via knowledge graph.
-             */
-            typeKindUri?: string;
-            /**
-             * @description Type kind slug (fallback when typeKindUri unavailable).
-             * @enum {string}
-             */
-            typeKind: "entity-type" | "situation-type" | "role-type" | "relation-type" | "attribute-type";
-            /** @description Rich text definition/gloss of this type. May include references to other types and Wikidata entities, following FOVEA conventions. */
-            gloss?: string;
-            /**
-             * Format: uri
-             * @description Reference to a parent type (for type hierarchies/inheritance).
-             */
-            parentTypeRef?: string;
             /** @description For frame/situation types: the roles that can be filled. */
             allowedRoles?: components["schemas"]["OntologyDefsRoleSlot"][];
             /** @description For attribute types: enumerated allowed values. */
             allowedValues?: string[];
+            /** Format: datetime */
+            createdAt: string;
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Rich text definition/gloss of this type. May include references to other types and Wikidata entities, following FOVEA conventions. */
+            gloss?: string;
             /** @description Knowledge graph groundings (Wikidata, chive.pub, FrameNet, etc.). */
             knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
-        };
-        /** @description A type definition within an ontology. Covers entity types, situation types, role types, and relation types in a single unified model. */
-        OntologyTypeDefRecord: {
-            /**
-             * Format: uri
-             * @description The ontology this type belongs to.
-             */
-            ontologyRef: string;
             /** @description The type name/label. */
             name: string;
             /**
-             * Format: uri
-             * @description AT-URI of the type kind definition node. Community-expandable via knowledge graph.
+             * Format: at-uri
+             * @description The ontology this type belongs to.
              */
-            typeKindUri?: string;
+            ontologyRef: string;
             /**
-             * @description Type kind slug (fallback when typeKindUri unavailable).
-             * @enum {string}
-             */
-            typeKind: "entity-type" | "situation-type" | "role-type" | "relation-type" | "attribute-type";
-            /** @description Rich text definition/gloss of this type. May include references to other types and Wikidata entities, following FOVEA conventions. */
-            gloss?: string;
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description Reference to a parent type (for type hierarchies/inheritance).
              */
             parentTypeRef?: string;
-            /** @description For frame/situation types: the roles that can be filled. */
-            allowedRoles?: components["schemas"]["OntologyDefsRoleSlot"][];
-            /** @description For attribute types: enumerated allowed values. */
-            allowedValues?: string[];
-            /** @description Knowledge graph groundings (Wikidata, chive.pub, FrameNet, etc.). */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
+            /** @description Type kind slug (fallback when typeKindUri unavailable). */
+            typeKind: string;
+            /**
+             * Format: at-uri
+             * @description AT-URI of the type kind definition node. Community-expandable via knowledge graph.
+             */
+            typeKindUri?: string;
         };
+        OntologyTypeDefRecord: components["schemas"]["OntologyTypeDefMain"];
         PersonaGetPersonaOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["PersonaPersonaMain"];
         };
         PersonaListPersonasOutput: {
@@ -3110,361 +2690,292 @@ export interface components {
             records: components["schemas"]["PersonaListPersonasRecordView"][];
         };
         PersonaListPersonasRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["PersonaPersonaMain"];
         };
-        /** @description A persona representing an annotator's role, expertise, and interpretive framework. */
         PersonaPersonaMain: {
-            /** @description The persona name (e.g., 'Syntactician', 'Intelligence Analyst', 'Biomedical NER Annotator'). */
-            name: string;
+            /** Format: datetime */
+            createdAt: string;
             /** @description Description of the persona's role, expertise, and information needs. */
             description?: string;
+            /** @description Domain slug (fallback when domainUri unavailable). */
+            domain?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the domain definition node. Community-expandable via knowledge graph.
              */
             domainUri?: string;
-            /**
-             * @description Domain slug (fallback when domainUri unavailable).
-             * @enum {string}
-             */
-            domain?: "linguistics" | "nlp" | "biomedical" | "legal" | "intelligence" | "social-science" | "humanities" | "custom";
-            /**
-             * Format: uri
-             * @description AT-URI of the persona kind definition node. Community-expandable via knowledge graph.
-             */
-            kindUri?: string;
-            /**
-             * @description Persona kind slug (fallback when kindUri unavailable).
-             * @enum {string}
-             */
-            kind?: "human-annotator" | "ml-model" | "guidelines-persona" | "expert-panel" | "crowd-worker" | "custom";
-            /**
-             * Format: uri
-             * @description AT-URI of a parent persona this one specializes (e.g., 'Biomedical NER Annotator' specializes 'NER Annotator').
-             */
-            parentRef?: string;
-            /** @description Ontologies this persona uses for annotation. */
-            ontologyRefs?: string[];
+            /** @description Open-ended features: expertise level, certification, language proficiency, inter-annotator reliability, etc. */
+            features?: components["schemas"]["DefsFeatureMap"];
             /** @description Annotation guidelines text. */
             guidelines?: string;
             /** @description Annotation guidelines document. */
             guidelinesBlob?: {
                 $type?: string;
+                mimeType?: string;
                 ref?: {
                     $link?: string;
                 };
-                mimeType?: string;
                 size?: number;
             };
-            /** @description Knowledge graph references (e.g., ORCID, institutional identifiers, Wikidata for organizations). */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** @description Open-ended features: expertise level, certification, language proficiency, inter-annotator reliability, etc. */
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
-        };
-        /** @description A persona representing an annotator's role, expertise, and interpretive framework. */
-        PersonaPersonaRecord: {
-            /** @description The persona name (e.g., 'Syntactician', 'Intelligence Analyst', 'Biomedical NER Annotator'). */
-            name: string;
-            /** @description Description of the persona's role, expertise, and information needs. */
-            description?: string;
+            /** @description Persona kind slug (fallback when kindUri unavailable). */
+            kind?: string;
             /**
-             * Format: uri
-             * @description AT-URI of the domain definition node. Community-expandable via knowledge graph.
-             */
-            domainUri?: string;
-            /**
-             * @description Domain slug (fallback when domainUri unavailable).
-             * @enum {string}
-             */
-            domain?: "linguistics" | "nlp" | "biomedical" | "legal" | "intelligence" | "social-science" | "humanities" | "custom";
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the persona kind definition node. Community-expandable via knowledge graph.
              */
             kindUri?: string;
+            /** @description Knowledge graph references (e.g., ORCID, institutional identifiers, Wikidata for organizations). */
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
+            /** @description The persona name (e.g., 'Syntactician', 'Intelligence Analyst', 'Biomedical NER Annotator'). */
+            name: string;
+            /** @description Ontologies this persona uses for annotation. */
+            ontologyRefs?: string[];
             /**
-             * @description Persona kind slug (fallback when kindUri unavailable).
-             * @enum {string}
-             */
-            kind?: "human-annotator" | "ml-model" | "guidelines-persona" | "expert-panel" | "crowd-worker" | "custom";
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of a parent persona this one specializes (e.g., 'Biomedical NER Annotator' specializes 'NER Annotator').
              */
             parentRef?: string;
-            /** @description Ontologies this persona uses for annotation. */
-            ontologyRefs?: string[];
-            /** @description Annotation guidelines text. */
-            guidelines?: string;
-            /** @description Annotation guidelines document. */
-            guidelinesBlob?: {
-                $type?: string;
-                ref?: {
-                    $link?: string;
-                };
-                mimeType?: string;
-                size?: number;
-            };
-            /** @description Knowledge graph references (e.g., ORCID, institutional identifiers, Wikidata for organizations). */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** @description Open-ended features: expertise level, certification, language proficiency, inter-annotator reliability, etc. */
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
+        };
+        PersonaPersonaRecord: components["schemas"]["PersonaPersonaMain"];
+        RecordView: {
+            /** @description Content-addressed identifier. */
+            cid?: string;
+            /** @description AT-URI of the record. */
+            uri: string;
+            /** @description Full record body. */
+            value: Record<string, never>;
+        };
+        ResourceCollectionMain: {
+            /** Format: datetime */
             createdAt: string;
-        };
-        QueueDepth: {
-            name: string;
-            waiting: number;
-            active: number;
-            completed: number;
-            failed: number;
-        };
-        ReconciliationStatus: {
-            table: string;
-            pgCount: number;
-            esCount: number;
-            neo4jCount: number;
-            mismatches: number;
-        };
-        ResourceCollectionMain: components["schemas"]["ResourceCollectionRecord"];
-        ResourceCollectionMembershipMain: components["schemas"]["ResourceCollectionMembershipRecord"];
-        /** @description Links an entry to a collection. Separate record enables many-to-many relationships (an entry can belong to multiple collections) and decentralized curation (anyone can propose membership). */
-        ResourceCollectionMembershipRecord: {
-            /**
-             * Format: uri
-             * @description AT-URI of the collection.
-             */
-            collectionRef: string;
-            /**
-             * Format: uri
-             * @description AT-URI of the entry.
-             */
-            entryRef: string;
-            /** @description Optional ordering position within the collection. */
-            ordinal?: number;
-            /** @description Provenance: who added this entry to this collection, when, with what tool. */
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
-        };
-        /** @description A named collection of linguistic resource entries. Abstract enough to represent bead Lexicons, FrameNet frame inventories, PropBank frame files, WordNet synsets, morphological paradigm tables, gazetteers, stop-word lists, etc. */
-        ResourceCollectionRecord: {
-            /** @description Human-readable name for this collection. */
-            name: string;
             description?: string;
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Collection kind slug (fallback when kindUri unavailable). */
+            kind?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the collection kind definition node. Community-expandable via knowledge graph.
              */
             kindUri?: string;
-            /**
-             * @description Collection kind slug (fallback when kindUri unavailable).
-             * @enum {string}
-             */
-            kind?: "lexicon" | "frame-inventory" | "gazetteer" | "paradigm" | "stop-list" | "stimulus-pool" | "custom";
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
             /** @description BCP-47 language tag. */
             language?: string;
-            /** @description Version string (e.g., 'FrameNet 1.7', 'PropBank 3.4'). */
-            version?: string;
+            /** @description Provenance: who curated this collection, with what tool. */
+            metadata?: components["schemas"]["DefsAnnotationMetadata"];
+            /** @description Human-readable name for this collection. */
+            name: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description Reference to a pub.layers.ontology defining the type system for entries in this collection.
              */
             ontologyRef?: string;
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** @description Provenance: who curated this collection, with what tool. */
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
+            /** @description Version string (e.g., 'FrameNet 1.7', 'PropBank 3.4'). */
+            version?: string;
         };
+        ResourceCollectionMembershipMain: {
+            /**
+             * Format: at-uri
+             * @description AT-URI of the collection.
+             */
+            collectionRef: string;
+            /** Format: datetime */
+            createdAt: string;
+            /**
+             * Format: at-uri
+             * @description AT-URI of the entry.
+             */
+            entryRef: string;
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Provenance: who added this entry to this collection, when, with what tool. */
+            metadata?: components["schemas"]["DefsAnnotationMetadata"];
+            /** @description Optional ordering position within the collection. */
+            ordinal?: number;
+        };
+        ResourceCollectionMembershipRecord: components["schemas"]["ResourceCollectionMembershipMain"];
+        ResourceCollectionRecord: components["schemas"]["ResourceCollectionMain"];
         /** @description A component of a multi-word expression entry. */
         ResourceDefsMweComponent: {
+            features?: components["schemas"]["DefsFeatureMap"];
             /** @description Surface form of this component. */
             form: string;
+            /** @description Whether this component is the head of the MWE. */
+            isHead?: boolean;
             /** @description Lemma/citation form of this component. */
             lemma?: string;
             /** @description Position in the MWE (0-based). */
             position?: number;
-            /** @description Whether this component is the head of the MWE. */
-            isHead?: boolean;
-            features?: components["schemas"]["DefsFeatureMap"];
         };
         /** @description A named variable slot in a template. Generalizes bead's Slot (template variable position with constraints and defaults), ontology roleSlots (argument positions with filler type constraints), and similar parameterized positions in any structured linguistic pattern. Slots are composable: they can reference collections of allowed fillers, ontology types, or express arbitrary constraints. */
         ResourceDefsSlot: {
-            /** @description Slot name (used as placeholder key in template text, e.g., 'subject', 'verb', 'arg0'). */
-            name: string;
-            description?: string;
-            /** @description Whether this slot must be filled. */
-            required?: boolean;
-            /** @description Default filler value if not explicitly filled. */
-            defaultValue?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of a resource collection constraining allowed fillers.
              */
             collectionRef?: string;
+            /** @description Slot-level constraints (e.g., 'self.pos == "VERB"', 'self.features.number == "sg"'). */
+            constraints?: components["schemas"]["DefsConstraint"][];
+            /** @description Default filler value if not explicitly filled. */
+            defaultValue?: string;
+            description?: string;
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Multiple allowed filler type references (disjunctive constraint). */
+            fillerTypeRefs?: string[];
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
+            /** @description Slot name (used as placeholder key in template text, e.g., 'subject', 'verb', 'arg0'). */
+            name: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of a pub.layers.ontology#typeDef constraining the filler type.
              */
             ontologyTypeRef?: string;
-            /** @description Multiple allowed filler type references (disjunctive constraint). */
-            fillerTypeRefs?: string[];
-            /** @description Slot-level constraints (e.g., 'self.pos == "VERB"', 'self.features.number == "sg"'). */
-            constraints?: components["schemas"]["DefsConstraint"][];
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Whether this slot must be filled. */
+            required?: boolean;
         };
         /** @description A single slot→filler mapping in a filled template. The filler can be an entry reference (AT-URI to a resource entry), a literal value, or both (entry reference with rendered surface form). */
         ResourceDefsSlotFilling: {
-            /** @description Name of the slot being filled (must match a slot name in the template). */
-            slotName: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the resource entry filling this slot.
              */
             entryRef?: string;
+            features?: components["schemas"]["DefsFeatureMap"];
             /** @description Literal string value for this slot (used when no entry reference is needed, or as override). */
             literalValue?: string;
             /** @description The surface form as rendered in the filled text (may differ from entry form due to morphological inflection, agreement, etc.). */
             renderedForm?: string;
-            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Name of the slot being filled (must match a slot name in the template). */
+            slotName: string;
         };
         /** @description A member in a template composition. References either a template or a nested composition. */
         ResourceDefsTemplateMember: {
-            /** @description Position in the composition (0-based). */
-            ordinal: number;
             /**
-             * Format: uri
-             * @description AT-URI of a template record.
-             */
-            templateRef?: string;
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of a nested templateComposition (for tree structures).
              */
             compositionRef?: string;
+            features?: components["schemas"]["DefsFeatureMap"];
             /** @description Optional label for this member (e.g., 'context', 'target', 'filler'). */
             label?: string;
-            features?: components["schemas"]["DefsFeatureMap"];
-        };
-        ResourceEntryMain: components["schemas"]["ResourceEntryRecord"];
-        /** @description A linguistic resource entry: a lexical item, frame element filler, morphological paradigm cell, or any atomic unit in a structured linguistic collection. Abstract enough to represent bead LexicalItems, FrameNet lexical units, PropBank rolesets, WordNet synset members, morphological paradigm cells, etc. */
-        ResourceEntryRecord: {
-            /** @description Canonical/citation form. */
-            lemma?: string;
-            /** @description Surface form or string representation. */
-            form: string;
-            /** @description BCP-47 language tag. */
-            language?: string;
+            /** @description Position in the composition (0-based). */
+            ordinal: number;
             /**
-             * Format: uri
-             * @description Reference to a pub.layers.ontology#typeDef classifying this entry.
+             * Format: at-uri
+             * @description AT-URI of a template record.
              */
-            ontologyTypeRef?: string;
-            /** @description Knowledge graph groundings (WordNet synset, FrameNet lexical unit, Wikidata, etc.). */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** @description Open-ended features: pos, morphological features, frequency, register, etc. */
-            features?: components["schemas"]["DefsFeatureMap"];
+            templateRef?: string;
+        };
+        ResourceEntryMain: {
             /** @description For multi-word expressions: the component words. */
             components?: components["schemas"]["ResourceDefsMweComponent"][];
+            /** Format: datetime */
+            createdAt: string;
+            /** @description Open-ended features: pos, morphological features, frequency, register, etc. */
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Surface form or string representation. */
+            form: string;
+            /** @description Knowledge graph groundings (WordNet synset, FrameNet lexical unit, Wikidata, etc.). */
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
+            /** @description BCP-47 language tag. */
+            language?: string;
+            /** @description Canonical/citation form. */
+            lemma?: string;
+            /** @description Provenance: who created this entry, with what tool, under what persona. */
+            metadata?: components["schemas"]["DefsAnnotationMetadata"];
+            /** @description MWE kind slug (fallback when mweKindUri unavailable). */
+            mweKind?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the MWE kind definition node. Community-expandable via knowledge graph.
              */
             mweKindUri?: string;
             /**
-             * @description MWE kind slug (fallback when mweKindUri unavailable).
-             * @enum {string}
+             * Format: at-uri
+             * @description Reference to a pub.layers.ontology#typeDef classifying this entry.
              */
-            mweKind?: "compound" | "phrasal-verb" | "idiom" | "light-verb" | "named-entity" | "collocation" | "custom";
+            ontologyTypeRef?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the source record this entry was derived from (e.g., an annotation, another entry).
              */
             sourceRef?: string;
-            /** @description Provenance: who created this entry, with what tool, under what persona. */
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            /** Format: date-time */
-            createdAt: string;
         };
-        ResourceFillingMain: components["schemas"]["ResourceFillingRecord"];
-        /** @description A filled template: a template with all slots mapped to specific fillers, producing a rendered text. Generalizes bead's FilledTemplate and Item. The rendered text can optionally be materialized as a pub.layers.expression for annotation. Fillings are composable: they reference templates, entries, and communications via AT-URIs. */
-        ResourceFillingRecord: {
+        ResourceEntryRecord: components["schemas"]["ResourceEntryMain"];
+        ResourceFillingMain: {
+            /** Format: datetime */
+            createdAt: string;
             /**
-             * Format: uri
-             * @description AT-URI of the template being filled.
-             */
-            templateRef: string;
-            /** @description The slot→filler mappings. */
-            slotFillings: components["schemas"]["ResourceDefsSlotFilling"][];
-            /** @description The fully rendered text after substitution. */
-            renderedText?: string;
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the pub.layers.expression materializing this filling (for annotation).
              */
             expressionRef?: string;
+            /** @description Open-ended features: model name for MLM filling, seed for random, solver stats for CSP, etc. */
+            features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Knowledge graph references (e.g., generation model in a KB, sampling distribution, linguistic theory motivating the filling). */
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
+            /** @description Provenance: what tool/process generated this filling. */
+            metadata?: components["schemas"]["DefsAnnotationMetadata"];
+            /** @description The fully rendered text after substitution. */
+            renderedText?: string;
+            /** @description The slot→filler mappings. */
+            slotFillings: components["schemas"]["ResourceDefsSlotFilling"][];
+            /** @description Filling strategy slug (fallback when strategyUri unavailable). */
+            strategy?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the filling strategy definition node. Community-expandable via knowledge graph.
              */
             strategyUri?: string;
             /**
-             * @description Filling strategy slug (fallback when strategyUri unavailable).
-             * @enum {string}
+             * Format: at-uri
+             * @description AT-URI of the template being filled.
              */
-            strategy?: "exhaustive" | "random" | "stratified" | "mlm" | "csp" | "mixed" | "manual" | "custom";
-            /** @description Provenance: what tool/process generated this filling. */
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            /** @description Knowledge graph references (e.g., generation model in a KB, sampling distribution, linguistic theory motivating the filling). */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** @description Open-ended features: model name for MLM filling, seed for random, solver stats for CSP, etc. */
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
+            templateRef: string;
         };
+        ResourceFillingRecord: components["schemas"]["ResourceFillingMain"];
         ResourceGetCollectionMembershipOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["ResourceCollectionMembershipMain"];
         };
         ResourceGetCollectionOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["ResourceCollectionMain"];
         };
         ResourceGetEntryOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["ResourceEntryMain"];
         };
         ResourceGetFillingOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["ResourceFillingMain"];
         };
         ResourceGetTemplateCompositionOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["ResourceTemplateCompositionMain"];
         };
         ResourceGetTemplateOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["ResourceTemplateMain"];
         };
         ResourceListCollectionMembershipsOutput: {
@@ -3472,9 +2983,10 @@ export interface components {
             records: components["schemas"]["ResourceListCollectionMembershipsRecordView"][];
         };
         ResourceListCollectionMembershipsRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["ResourceCollectionMembershipMain"];
         };
         ResourceListCollectionsOutput: {
@@ -3482,9 +2994,10 @@ export interface components {
             records: components["schemas"]["ResourceListCollectionsRecordView"][];
         };
         ResourceListCollectionsRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["ResourceCollectionMain"];
         };
         ResourceListEntriesOutput: {
@@ -3492,9 +3005,10 @@ export interface components {
             records: components["schemas"]["ResourceListEntriesRecordView"][];
         };
         ResourceListEntriesRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["ResourceEntryMain"];
         };
         ResourceListFillingsOutput: {
@@ -3502,9 +3016,10 @@ export interface components {
             records: components["schemas"]["ResourceListFillingsRecordView"][];
         };
         ResourceListFillingsRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["ResourceFillingMain"];
         };
         ResourceListTemplateCompositionsOutput: {
@@ -3512,9 +3027,10 @@ export interface components {
             records: components["schemas"]["ResourceListTemplateCompositionsRecordView"][];
         };
         ResourceListTemplateCompositionsRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["ResourceTemplateCompositionMain"];
         };
         ResourceListTemplatesOutput: {
@@ -3522,165 +3038,97 @@ export interface components {
             records: components["schemas"]["ResourceListTemplatesRecordView"][];
         };
         ResourceListTemplatesRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["ResourceTemplateMain"];
         };
-        /** @description A composition of templates (sequence, tree, or other structure). Used for multi-part stimuli, template hierarchies, and complex item construction. */
         ResourceTemplateCompositionMain: {
+            /** @description Composition type slug (fallback when compositionTypeUri unavailable). */
+            compositionType: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description AT-URI of the composition type definition node. Community-expandable via knowledge graph.
              */
             compositionTypeUri?: string;
+            /** Format: datetime */
+            createdAt: string;
             /**
-             * @description Composition type slug (fallback when compositionTypeUri unavailable).
-             * @enum {string}
-             */
-            compositionType: "sequence" | "tree" | "parallel" | "alternation" | "custom";
-            /** @description Ordered members of this composition. */
-            members: components["schemas"]["ResourceDefsTemplateMember"][];
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description Reference to the experiment this composition was designed for.
              */
             experimentRef?: string;
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
             features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
-        };
-        /** @description A composition of templates (sequence, tree, or other structure). Used for multi-part stimuli, template hierarchies, and complex item construction. */
-        ResourceTemplateCompositionRecord: {
-            /**
-             * Format: uri
-             * @description AT-URI of the composition type definition node. Community-expandable via knowledge graph.
-             */
-            compositionTypeUri?: string;
-            /**
-             * @description Composition type slug (fallback when compositionTypeUri unavailable).
-             * @enum {string}
-             */
-            compositionType: "sequence" | "tree" | "parallel" | "alternation" | "custom";
             /** @description Ordered members of this composition. */
             members: components["schemas"]["ResourceDefsTemplateMember"][];
-            /**
-             * Format: uri
-             * @description Reference to the experiment this composition was designed for.
-             */
-            experimentRef?: string;
             metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
         };
-        /** @description A parameterized text template with named variable slots. Generalizes bead's Template (text pattern with {slotName} placeholders, slot definitions, and cross-slot constraints) and similar pattern structures used for stimulus generation, item construction, data augmentation, and controlled natural language. Templates are composable: they can reference ontologies, collections, and other templates. */
+        ResourceTemplateCompositionRecord: components["schemas"]["ResourceTemplateCompositionMain"];
         ResourceTemplateMain: {
-            /** @description Human-readable template name. */
-            name?: string;
-            /** @description Template text with {slotName} placeholders (e.g., '{subject} {verb} the {object}'). */
-            text: string;
-            /** @description BCP-47 language tag. */
-            language?: string;
-            /** @description The named slots in this template. */
-            slots: components["schemas"]["ResourceDefsSlot"][];
             /** @description Cross-slot constraints (e.g., agreement, semantic compatibility). These apply across multiple slots in this template. */
             constraints?: components["schemas"]["DefsConstraint"][];
+            /** Format: datetime */
+            createdAt: string;
             /**
-             * Format: uri
-             * @description Reference to the ontology defining the type system used by this template.
-             */
-            ontologyRef?: string;
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description Reference to the experiment this template was designed for.
              */
             experimentRef?: string;
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** @description Provenance: who designed this template, with what tool. */
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
             /** @description Open-ended features: measureType, taskType, category, domain, etc. */
             features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
-        };
-        /** @description A parameterized text template with named variable slots. Generalizes bead's Template (text pattern with {slotName} placeholders, slot definitions, and cross-slot constraints) and similar pattern structures used for stimulus generation, item construction, data augmentation, and controlled natural language. Templates are composable: they can reference ontologies, collections, and other templates. */
-        ResourceTemplateRecord: {
-            /** @description Human-readable template name. */
-            name?: string;
-            /** @description Template text with {slotName} placeholders (e.g., '{subject} {verb} the {object}'). */
-            text: string;
+            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
             /** @description BCP-47 language tag. */
             language?: string;
-            /** @description The named slots in this template. */
-            slots: components["schemas"]["ResourceDefsSlot"][];
-            /** @description Cross-slot constraints (e.g., agreement, semantic compatibility). These apply across multiple slots in this template. */
-            constraints?: components["schemas"]["DefsConstraint"][];
+            /** @description Provenance: who designed this template, with what tool. */
+            metadata?: components["schemas"]["DefsAnnotationMetadata"];
+            /** @description Human-readable template name. */
+            name?: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description Reference to the ontology defining the type system used by this template.
              */
             ontologyRef?: string;
-            /**
-             * Format: uri
-             * @description Reference to the experiment this template was designed for.
-             */
-            experimentRef?: string;
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** @description Provenance: who designed this template, with what tool. */
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            /** @description Open-ended features: measureType, taskType, category, domain, etc. */
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
+            /** @description The named slots in this template. */
+            slots: components["schemas"]["ResourceDefsSlot"][];
+            /** @description Template text with {slotName} placeholders (e.g., '{subject} {verb} the {object}'). */
+            text: string;
         };
-        SearchResult: {
-            uri: string;
-            collection: string;
-            did: string;
-            score: number;
-            highlights: {
-                [key: string]: string[];
-            };
-            record: Record<string, never>;
-        };
+        ResourceTemplateRecord: components["schemas"]["ResourceTemplateMain"];
         /** @description A single token within a tokenization. */
         SegmentationDefsToken: {
-            /** @description Position of this token in the tokenization (0-based). */
-            tokenIndex: number;
+            temporalSpan?: components["schemas"]["DefsTemporalSpan"];
             /** @description The surface form of the token. */
             text?: string;
             /** @description UTF-8 byte offsets into the expression text. */
             textSpan?: components["schemas"]["DefsSpan"];
-            temporalSpan?: components["schemas"]["DefsTemporalSpan"];
+            /** @description Position of this token in the tokenization (0-based). */
+            tokenIndex: number;
         };
         /** @description An ordered sequence of tokens for an expression or sub-expression. Multiple tokenizations can coexist for the same expression (e.g., whitespace vs. BPE vs. morphological), enabling interlinear glossing, alternative segmentation strategies, or multi-granularity analysis. */
         SegmentationDefsTokenization: {
-            uuid: components["schemas"]["DefsUuid"];
             /**
-             * Format: uri
-             * @description AT-URI of the tokenization kind definition node. Community-expandable via knowledge graph.
-             */
-            kindUri?: string;
-            /**
-             * @description Tokenization kind slug (fallback when kindUri unavailable).
-             * @enum {string}
-             */
-            kind: "whitespace" | "penn-treebank" | "bpe" | "sentencepiece" | "character" | "morphological" | "custom";
-            /**
-             * Format: uri
+             * Format: at-uri
              * @description Reference to the specific sub-expression this tokenization covers (e.g., a sentence-level expression). If absent, covers the entire expression referenced by the segmentation record.
              */
             expressionRef?: string;
+            /** @description Tokenization kind slug (fallback when kindUri unavailable). */
+            kind: string;
+            /**
+             * Format: at-uri
+             * @description AT-URI of the tokenization kind definition node. Community-expandable via knowledge graph.
+             */
+            kindUri?: string;
+            metadata?: components["schemas"]["DefsAnnotationMetadata"];
             /** @description The ordered token sequence. */
             tokens: components["schemas"]["SegmentationDefsToken"][];
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
+            uuid: components["schemas"]["DefsUuid"];
         };
         SegmentationGetSegmentationOutput: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["SegmentationSegmentationMain"];
         };
         SegmentationListSegmentationsOutput: {
@@ -3688,61 +3136,41 @@ export interface components {
             records: components["schemas"]["SegmentationListSegmentationsRecordView"][];
         };
         SegmentationListSegmentationsRecordView: {
-            /** Format: uri */
-            uri: string;
+            /** Format: cid */
             cid: string;
+            /** Format: at-uri */
+            uri: string;
             value: components["schemas"]["SegmentationSegmentationMain"];
         };
-        /** @description A segmentation of an expression into tokenizations. Structural hierarchy (sections, sentences, paragraphs) is expressed via expression records with parentRef; this record provides the token-level decomposition. */
         SegmentationSegmentationMain: {
+            /** Format: datetime */
+            createdAt: string;
             /**
-             * Format: uri
+             * Format: at-uri
              * @description Reference to the expression this segmentation applies to.
              */
             expression: string;
-            /** @description The tokenizations in this segmentation. Each tokenization can optionally scope to a sub-expression via expressionRef. */
-            tokenizations: components["schemas"]["SegmentationDefsTokenization"][];
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
-            /** @description Knowledge graph references (e.g., tokenizer algorithm, sentence splitting model). */
-            knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
             /** @description Open-ended features (e.g., tokenizer version, parameters, language model used). */
             features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
-        };
-        /** @description A segmentation of an expression into tokenizations. Structural hierarchy (sections, sentences, paragraphs) is expressed via expression records with parentRef; this record provides the token-level decomposition. */
-        SegmentationSegmentationRecord: {
-            /**
-             * Format: uri
-             * @description Reference to the expression this segmentation applies to.
-             */
-            expression: string;
-            /** @description The tokenizations in this segmentation. Each tokenization can optionally scope to a sub-expression via expressionRef. */
-            tokenizations: components["schemas"]["SegmentationDefsTokenization"][];
-            metadata?: components["schemas"]["DefsAnnotationMetadata"];
             /** @description Knowledge graph references (e.g., tokenizer algorithm, sentence splitting model). */
             knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
-            /** @description Open-ended features (e.g., tokenizer version, parameters, language model used). */
-            features?: components["schemas"]["DefsFeatureMap"];
-            /** Format: date-time */
-            createdAt: string;
+            metadata?: components["schemas"]["DefsAnnotationMetadata"];
+            /** @description The tokenizations in this segmentation. Each tokenization can optionally scope to a sub-expression via expressionRef. */
+            tokenizations: components["schemas"]["SegmentationDefsTokenization"][];
         };
-        SuccessResponse: {
-            success: boolean;
-        };
-        SystemHealth: {
-            apiUptime: number;
-            indexerLag: number;
-            pgPoolActive: number;
-            pgPoolIdle: number;
-            memoryUsageMb: number;
-        };
-        XRPCError: {
-            error: string;
-            message: string;
+        SegmentationSegmentationRecord: components["schemas"]["SegmentationSegmentationMain"];
+    };
+    responses: {
+        /** @description Error envelope. */
+        Error: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["ErrorBody"];
+            };
         };
     };
-    responses: never;
     parameters: never;
     requestBodies: never;
     headers: never;
@@ -3750,246 +3178,10 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    adminListDLQ: {
-        parameters: {
-            query?: {
-                cursor?: string;
-                limit?: number;
-                collection?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Success */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        entries: components["schemas"]["DLQEntry"][];
-                        total: number;
-                        cursor?: string;
-                    };
-                };
-            };
-        };
-    };
-    adminDismissDLQ: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Success */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SuccessResponse"];
-                };
-            };
-        };
-    };
-    adminReplayDLQ: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Success */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SuccessResponse"];
-                };
-            };
-        };
-    };
-    adminGetHealth: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Success */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SystemHealth"];
-                };
-            };
-        };
-    };
-    adminGetQueues: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Success */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["QueueDepth"][];
-                };
-            };
-        };
-    };
-    adminGetReconciliationStatus: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Success */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ReconciliationStatus"][];
-                };
-            };
-        };
-    };
-    adminRunReconciliation: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Success */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SuccessResponse"];
-                };
-            };
-        };
-    };
-    importFile: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "multipart/form-data": {
-                    /** Format: binary */
-                    file: string;
-                    format: string;
-                    mappings?: string;
-                };
-            };
-        };
-        responses: {
-            /** @description Success */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        jobId: string;
-                    };
-                };
-            };
-        };
-    };
-    getReferences: {
+    get_alignment: {
         parameters: {
             query: {
-                target: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Success */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        references: components["schemas"]["CrossReference"][];
-                        cursor?: string;
-                    };
-                };
-            };
-        };
-    };
-    search: {
-        parameters: {
-            query: {
-                q: string;
-                type?: string;
-                limit?: number;
-                cursor?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Success */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        results: components["schemas"]["SearchResult"][];
-                        total: number;
-                        cursor?: string;
-                    };
-                };
-            };
-        };
-    };
-    "pub.layers.alignment.getAlignment": {
-        parameters: {
-            query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -3998,7 +3190,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4007,23 +3199,23 @@ export interface operations {
                     "application/json": components["schemas"]["AlignmentGetAlignmentOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.alignment.listAlignments": {
+    list_alignments: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                source?: string;
+                target?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
-                expression: string;
-                kind?: string;
                 limit?: number;
             };
             header?: never;
@@ -4032,7 +3224,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4041,11 +3233,18 @@ export interface operations {
                     "application/json": components["schemas"]["AlignmentListAlignmentsOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.annotation.getAnnotationLayer": {
+    get_annotation_layer: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -4054,7 +3253,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4063,20 +3262,18 @@ export interface operations {
                     "application/json": components["schemas"]["AnnotationGetAnnotationLayerOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.annotation.getClusterSet": {
+    get_cluster_set: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -4085,7 +3282,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4094,25 +3291,24 @@ export interface operations {
                     "application/json": components["schemas"]["AnnotationGetClusterSetOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.annotation.listAnnotationLayers": {
+    list_annotation_layers: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                target?: string;
+                layerKind?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
-                expression: string;
-                kind?: string;
                 limit?: number;
-                subkind?: string;
             };
             header?: never;
             path?: never;
@@ -4120,7 +3316,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4129,14 +3325,21 @@ export interface operations {
                     "application/json": components["schemas"]["AnnotationListAnnotationLayersOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.annotation.listClusterSets": {
+    list_cluster_sets: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
-                expression: string;
-                kind?: string;
                 limit?: number;
             };
             header?: never;
@@ -4145,7 +3348,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4154,11 +3357,18 @@ export interface operations {
                     "application/json": components["schemas"]["AnnotationListClusterSetsOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.changelog.getEntry": {
+    get_changelog_entry: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -4167,7 +3377,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4176,22 +3386,21 @@ export interface operations {
                     "application/json": components["schemas"]["ChangelogGetEntryOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.changelog.listByCollection": {
+    list_changelog_by_collection: {
         parameters: {
-            query: {
-                /** @description The NSID of the collection to filter by (e.g., 'pub.layers.annotation.annotationLayer'). */
-                collection: string;
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                collection?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
             };
@@ -4201,7 +3410,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4210,15 +3419,23 @@ export interface operations {
                     "application/json": components["schemas"]["ChangelogListByCollectionOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.changelog.listEntries": {
+    list_changelog_entries: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                subject?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
-                /** @description AT-URI of the subject record to list changelogs for. */
-                subject: string;
             };
             header?: never;
             path?: never;
@@ -4226,7 +3443,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4235,11 +3452,18 @@ export interface operations {
                     "application/json": components["schemas"]["ChangelogListEntriesOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.corpus.getCorpus": {
+    get_corpus: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -4248,7 +3472,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4257,20 +3481,18 @@ export interface operations {
                     "application/json": components["schemas"]["CorpusGetCorpusOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.corpus.getMembership": {
+    get_corpus_membership: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -4279,7 +3501,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4288,25 +3510,22 @@ export interface operations {
                     "application/json": components["schemas"]["CorpusGetMembershipOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.corpus.listCorpora": {
+    list_corpora: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
-                domain?: string;
-                language?: string;
                 limit?: number;
-                repo: string;
             };
             header?: never;
             path?: never;
@@ -4314,7 +3533,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4323,15 +3542,23 @@ export interface operations {
                     "application/json": components["schemas"]["CorpusListCorporaOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.corpus.listMemberships": {
+    list_corpus_memberships: {
         parameters: {
-            query: {
-                corpusRef: string;
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                corpus?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
-                split?: string;
             };
             header?: never;
             path?: never;
@@ -4339,7 +3566,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4348,11 +3575,18 @@ export interface operations {
                     "application/json": components["schemas"]["CorpusListMembershipsOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.eprint.getDataLink": {
+    get_data_link: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -4361,7 +3595,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4370,20 +3604,18 @@ export interface operations {
                     "application/json": components["schemas"]["EprintGetDataLinkOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.eprint.getEprint": {
+    get_eprint: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -4392,7 +3624,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4401,23 +3633,22 @@ export interface operations {
                     "application/json": components["schemas"]["EprintGetEprintOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.eprint.listDataLinks": {
+    list_data_links: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                eprint?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
-                dataKind?: string;
-                eprintUri: string;
                 limit?: number;
             };
             header?: never;
@@ -4426,7 +3657,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4435,16 +3666,22 @@ export interface operations {
                     "application/json": components["schemas"]["EprintListDataLinksOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.eprint.listEprints": {
+    list_eprints: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
-                eprintIdentifierType?: string;
                 limit?: number;
-                linkType?: string;
-                repo: string;
             };
             header?: never;
             path?: never;
@@ -4452,7 +3689,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4461,11 +3698,18 @@ export interface operations {
                     "application/json": components["schemas"]["EprintListEprintsOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.expression.getExpression": {
+    get_expression: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -4474,7 +3718,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4483,26 +3727,22 @@ export interface operations {
                     "application/json": components["schemas"]["ExpressionGetExpressionOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.expression.listExpressions": {
+    list_expressions: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
-                kind?: string;
-                language?: string;
                 limit?: number;
-                parentRef?: string;
-                repo: string;
             };
             header?: never;
             path?: never;
@@ -4510,7 +3750,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4519,11 +3759,18 @@ export interface operations {
                     "application/json": components["schemas"]["ExpressionListExpressionsOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.graph.getGraphEdge": {
+    get_graph_edge: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -4532,7 +3779,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4541,20 +3788,18 @@ export interface operations {
                     "application/json": components["schemas"]["GraphGetGraphEdgeOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.graph.getGraphEdgeSet": {
+    get_graph_edge_set: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -4563,7 +3808,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4572,20 +3817,18 @@ export interface operations {
                     "application/json": components["schemas"]["GraphGetGraphEdgeSetOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.graph.getGraphNode": {
+    get_graph_node: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -4594,7 +3837,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4603,25 +3846,22 @@ export interface operations {
                     "application/json": components["schemas"]["GraphGetGraphNodeOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.graph.listGraphEdgeSets": {
+    list_graph_edge_sets: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
-                edgeType?: string;
-                expression?: string;
                 limit?: number;
-                repo: string;
             };
             header?: never;
             path?: never;
@@ -4629,7 +3869,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4638,17 +3878,24 @@ export interface operations {
                     "application/json": components["schemas"]["GraphListGraphEdgeSetsOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.graph.listGraphEdges": {
+    list_graph_edges: {
         parameters: {
-            query: {
-                cursor?: string;
-                edgeType?: string;
-                limit?: number;
-                repo: string;
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
                 source?: string;
                 target?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
+                cursor?: string;
+                limit?: number;
             };
             header?: never;
             path?: never;
@@ -4656,7 +3903,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4665,15 +3912,22 @@ export interface operations {
                     "application/json": components["schemas"]["GraphListGraphEdgesOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.graph.listGraphNodes": {
+    list_graph_nodes: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
-                nodeType?: string;
-                repo: string;
             };
             header?: never;
             path?: never;
@@ -4681,7 +3935,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4690,11 +3944,52 @@ export interface operations {
                     "application/json": components["schemas"]["GraphListGraphNodesOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.judgment.getAgreementReport": {
+    list_external_records: {
+        parameters: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                nsid?: string;
+                nsidPrefix?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
+                cursor?: string;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IntegrationListExternalOutput"];
+                };
+            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
+        };
+    };
+    get_agreement_report: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -4703,7 +3998,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4712,20 +4007,18 @@ export interface operations {
                     "application/json": components["schemas"]["JudgmentGetAgreementReportOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.judgment.getExperimentDef": {
+    get_experiment_def: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -4734,7 +4027,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4743,20 +4036,18 @@ export interface operations {
                     "application/json": components["schemas"]["JudgmentGetExperimentDefOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.judgment.getJudgmentSet": {
+    get_judgment_set: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -4765,7 +4056,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4774,24 +4065,23 @@ export interface operations {
                     "application/json": components["schemas"]["JudgmentGetJudgmentSetOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.judgment.listAgreementReports": {
+    list_agreement_reports: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                experiment?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
-                experimentRef: string;
                 limit?: number;
-                metric?: string;
             };
             header?: never;
             path?: never;
@@ -4799,7 +4089,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4808,16 +4098,22 @@ export interface operations {
                     "application/json": components["schemas"]["JudgmentListAgreementReportsOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.judgment.listExperimentDefs": {
+    list_experiment_defs: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
-                measureType?: string;
-                repo: string;
-                taskType?: string;
             };
             header?: never;
             path?: never;
@@ -4825,7 +4121,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4834,13 +4130,22 @@ export interface operations {
                     "application/json": components["schemas"]["JudgmentListExperimentDefsOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.judgment.listJudgmentSets": {
+    list_judgment_sets: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                experiment?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
-                experimentRef: string;
                 limit?: number;
             };
             header?: never;
@@ -4849,7 +4154,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4858,11 +4163,18 @@ export interface operations {
                     "application/json": components["schemas"]["JudgmentListJudgmentSetsOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.media.getMedia": {
+    get_media: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -4871,7 +4183,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4880,24 +4192,23 @@ export interface operations {
                     "application/json": components["schemas"]["MediaGetMediaOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.media.listMedia": {
+    list_media: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                mimeType?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
-                kind?: string;
                 limit?: number;
-                repo: string;
             };
             header?: never;
             path?: never;
@@ -4905,7 +4216,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4914,11 +4225,18 @@ export interface operations {
                     "application/json": components["schemas"]["MediaListMediaOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.ontology.getOntology": {
+    get_ontology: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -4927,7 +4245,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4936,20 +4254,18 @@ export interface operations {
                     "application/json": components["schemas"]["OntologyGetOntologyOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.ontology.getTypeDef": {
+    get_type_def: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -4958,7 +4274,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4967,24 +4283,22 @@ export interface operations {
                     "application/json": components["schemas"]["OntologyGetTypeDefOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.ontology.listOntologies": {
+    list_ontologies: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
-                domain?: string;
                 limit?: number;
-                repo: string;
             };
             header?: never;
             path?: never;
@@ -4992,7 +4306,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5001,15 +4315,23 @@ export interface operations {
                     "application/json": components["schemas"]["OntologyListOntologiesOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.ontology.listTypeDefs": {
+    list_type_defs: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                ontology?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
-                ontologyRef: string;
-                typeKind?: string;
             };
             header?: never;
             path?: never;
@@ -5017,7 +4339,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5026,11 +4348,18 @@ export interface operations {
                     "application/json": components["schemas"]["OntologyListTypeDefsOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.persona.getPersona": {
+    get_persona: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -5039,7 +4368,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5048,25 +4377,22 @@ export interface operations {
                     "application/json": components["schemas"]["PersonaGetPersonaOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.persona.listPersonas": {
+    list_personas: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
-                domain?: string;
-                kind?: string;
                 limit?: number;
-                repo: string;
             };
             header?: never;
             path?: never;
@@ -5074,7 +4400,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5083,11 +4409,18 @@ export interface operations {
                     "application/json": components["schemas"]["PersonaListPersonasOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.resource.getCollection": {
+    get_collection: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -5096,7 +4429,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5105,20 +4438,18 @@ export interface operations {
                     "application/json": components["schemas"]["ResourceGetCollectionOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.resource.getCollectionMembership": {
+    get_collection_membership: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -5127,7 +4458,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5136,20 +4467,18 @@ export interface operations {
                     "application/json": components["schemas"]["ResourceGetCollectionMembershipOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.resource.getEntry": {
+    get_entry: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -5158,7 +4487,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5167,20 +4496,18 @@ export interface operations {
                     "application/json": components["schemas"]["ResourceGetEntryOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.resource.getFilling": {
+    get_filling: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -5189,7 +4516,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5198,20 +4525,18 @@ export interface operations {
                     "application/json": components["schemas"]["ResourceGetFillingOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.resource.getTemplate": {
+    get_template: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -5220,7 +4545,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5229,20 +4554,18 @@ export interface operations {
                     "application/json": components["schemas"]["ResourceGetTemplateOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.resource.getTemplateComposition": {
+    get_template_composition: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -5251,7 +4574,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5260,21 +4583,21 @@ export interface operations {
                     "application/json": components["schemas"]["ResourceGetTemplateCompositionOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.resource.listCollectionMemberships": {
+    list_collection_memberships: {
         parameters: {
-            query: {
-                collectionRef: string;
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                collection?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
             };
@@ -5284,7 +4607,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5293,16 +4616,22 @@ export interface operations {
                     "application/json": components["schemas"]["ResourceListCollectionMembershipsOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.resource.listCollections": {
+    list_collections: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
-                kind?: string;
-                language?: string;
                 limit?: number;
-                repo: string;
             };
             header?: never;
             path?: never;
@@ -5310,7 +4639,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5319,15 +4648,23 @@ export interface operations {
                     "application/json": components["schemas"]["ResourceListCollectionsOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.resource.listEntries": {
+    list_entries: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                collection?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
-                language?: string;
                 limit?: number;
-                repo: string;
             };
             header?: never;
             path?: never;
@@ -5335,7 +4672,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5344,15 +4681,23 @@ export interface operations {
                     "application/json": components["schemas"]["ResourceListEntriesOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.resource.listFillings": {
+    list_fillings: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                template?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
-                strategy?: string;
-                templateRef: string;
             };
             header?: never;
             path?: never;
@@ -5360,7 +4705,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5369,15 +4714,23 @@ export interface operations {
                     "application/json": components["schemas"]["ResourceListFillingsOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.resource.listTemplateCompositions": {
+    list_template_compositions: {
         parameters: {
-            query: {
-                compositionType?: string;
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                template?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
-                repo: string;
             };
             header?: never;
             path?: never;
@@ -5385,7 +4738,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5394,15 +4747,22 @@ export interface operations {
                     "application/json": components["schemas"]["ResourceListTemplateCompositionsOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.resource.listTemplates": {
+    list_templates: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
-                language?: string;
                 limit?: number;
-                repo: string;
             };
             header?: never;
             path?: never;
@@ -5410,7 +4770,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5419,11 +4779,18 @@ export interface operations {
                     "application/json": components["schemas"]["ResourceListTemplatesOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.segmentation.getSegmentation": {
+    get_segmentation: {
         parameters: {
             query: {
+                /** @description AT-URI of the record to fetch. */
                 uri: string;
             };
             header?: never;
@@ -5432,7 +4799,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5441,22 +4808,22 @@ export interface operations {
                     "application/json": components["schemas"]["SegmentationGetSegmentationOutput"];
                 };
             };
-            /** @description Bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["XRPCError"];
-                };
-            };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
-    "pub.layers.segmentation.listSegmentations": {
+    list_segmentations: {
         parameters: {
-            query: {
+            query?: {
+                /** @description Optional `did` filter applied to the record's owning repo. */
+                did?: string;
+                target?: string;
+                /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
-                expression: string;
                 limit?: number;
             };
             header?: never;
@@ -5465,7 +4832,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Success */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5474,6 +4841,12 @@ export interface operations {
                     "application/json": components["schemas"]["SegmentationListSegmentationsOutput"];
                 };
             };
+            400: components["responses"]["Error"];
+            401: components["responses"]["Error"];
+            403: components["responses"]["Error"];
+            404: components["responses"]["Error"];
+            429: components["responses"]["Error"];
+            500: components["responses"]["Error"];
         };
     };
 }

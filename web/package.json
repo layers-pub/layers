@@ -17,7 +17,9 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "lexicons:generate": "./scripts/generate-lexicons.sh",
-    "openapi:generate": "node scripts/generate-openapi.mjs && openapi-typescript ./lib/api/openapi.json -o ./lib/api/schema.generated.ts"
+    "openapi:source": "(cd .. && cargo run -p layers-codegen -- openapi)",
+    "openapi:types": "openapi-typescript ./lib/api/openapi.json -o ./lib/api/schema.generated.ts",
+    "openapi:generate": "pnpm openapi:source && pnpm openapi:types"
   },
   "dependencies": {
     "@atproto/api": "^0.18.3",

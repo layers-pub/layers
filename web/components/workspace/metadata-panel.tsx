@@ -16,7 +16,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { CrossReferenceList } from '@/components/records/cross-reference-list';
 
 import { LayerToggleSidebar } from '../annotations/composition/layer-toggle-sidebar';
 import type { AnnotationLayerData } from '../annotations/types';
@@ -223,13 +222,6 @@ function MetadataPanel({
 
             <Separator />
 
-            {/* Cross-references */}
-            <section>
-              <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
-                Cross-References
-              </h4>
-              <CrossReferenceList targetUri={expressionUri} />
-            </section>
           </div>
         </ScrollArea>
       </CardContent>

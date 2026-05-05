@@ -37,7 +37,19 @@ type SegmentationRecordView = components['schemas']['SegmentationListSegmentatio
 type Tokenization = components['schemas']['SegmentationDefsTokenization'];
 type TokenDef = components['schemas']['SegmentationDefsToken'];
 
-type SearchResult = components['schemas']['SearchResult'];
+/**
+ * Frontend-local search-result shape. The orchestrator does not ship
+ * a search XRPC method today; once one lands, this type moves into the
+ * lexicon set and becomes a generated component.
+ */
+interface SearchResult {
+  uri: string;
+  collection: string;
+  did: string;
+  score: number;
+  highlights?: Record<string, string[]>;
+  record?: Record<string, unknown>;
+}
 
 // =============================================================================
 // UI types (not in the OpenAPI schema; used by frontend components)

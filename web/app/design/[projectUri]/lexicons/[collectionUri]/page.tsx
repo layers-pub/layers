@@ -9,21 +9,18 @@
 import { use } from 'react';
 
 import { DesignErrorBoundary } from '@/components/design/design-error-boundary';
-import { LexiconEditor } from '@/components/design/lexicon-editor';
+import { LexiconEditor } from '@/components/design/lexicon/lexicon-editor';
 
 interface LexiconEditorPageProps {
   params: Promise<{ projectUri: string; collectionUri: string }>;
 }
 
 export default function LexiconEditorPage({ params }: LexiconEditorPageProps) {
-  const { projectUri, collectionUri } = use(params);
+  const { collectionUri } = use(params);
 
   return (
     <DesignErrorBoundary name="LexiconEditor">
-      <LexiconEditor
-        projectUri={decodeURIComponent(projectUri)}
-        collectionUri={decodeURIComponent(collectionUri)}
-      />
+      <LexiconEditor collectionUri={decodeURIComponent(collectionUri)} />
     </DesignErrorBoundary>
   );
 }

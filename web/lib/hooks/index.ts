@@ -46,9 +46,6 @@ export { useCorpus, useCorpora } from './use-corpora';
 export type { Ontology, OntologyListResponse } from './use-ontologies';
 export { useOntology, useOntologies } from './use-ontologies';
 
-export type { SearchResult, SearchResponse } from './use-search';
-export { useSearch } from './use-search';
-
 export type { AnnotationLayer, AnnotationLayerListResponse } from './use-annotation-layers';
 export {
   useAnnotationLayer,
@@ -63,29 +60,8 @@ export {
   useSegmentationsByExpression,
 } from './use-segmentations';
 
-export type { CrossReference, CrossReferenceListResponse } from './use-cross-references';
-export { useCrossReferences } from './use-cross-references';
-
 export type { ChangelogEntry, ChangelogListResponse, ChangelogFilters } from './use-changelog';
 export { useChangelog, useChangelogBySubject } from './use-changelog';
-
-export type {
-  DLQEntry,
-  DLQListResponse,
-  ReconciliationStatus,
-  SystemHealth,
-  QueueDepth,
-} from './use-admin';
-export {
-  adminKeys,
-  useDLQEntries,
-  useRetryDLQEntry,
-  useDismissDLQEntry,
-  useReconciliationStatus,
-  useRunReconciliation,
-  useSystemHealth,
-  useQueueDepths,
-} from './use-admin';
 
 export type {
   ExperimentDef,
