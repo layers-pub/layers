@@ -1,0 +1,11 @@
+collection: pub.layers.ontology.ontology
+record:
+  $type: pub.layers.ontology.ontology
+  name: Universal Dependencies syntactic relations v2
+  description: Thirty-seven universal dependency relations from UD v2. Cross-language;
+    language-specific subtypes (nsubj:pass, obl:agent, etc.) are documented in the
+    language-specific UD treebanks rather than this universal inventory.
+  domain: general
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: Universal Dependencies syntactic relations v2'

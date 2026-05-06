@@ -1,0 +1,55 @@
+# Span labelling (NER-style).
+#
+# CoNLL-2003 (Tjong Kim Sang & De Meulder 2003) defined the
+# four-class English NER convention: Person, Organization,
+# Location, Miscellaneous. OntoNotes 5.0 (Pradhan et al. 2013)
+# extended to 18 fine-grained types.
+collection: pub.layers.resource.template
+record:
+  $type: pub.layers.resource.template
+  text: |
+    Highlight every span in the passage that refers to a Person,
+    Organization, Location, or Date. Click and drag to select a span;
+    click the tag dropdown to assign a category. Skip ambiguous spans
+    rather than guessing.
+
+    Passage: {passage}
+
+    Annotated spans: {response}
+  name: "Span labelling (NER-style)"
+  slots:
+    - name: passage
+      description: "Text the participant annotates."
+      required: true
+    - name: response
+      description: "Array of {start, end, label} objects (label ∈ {PER, ORG, LOC, DATE})."
+      required: true
+  description: |
+    Span-level entity labelling task. The instruction restricts the
+    label inventory to a four-class subset of the CoNLL-2003 schema
+    plus DATE (commonly added when reporting OntoNotes-style entity
+    annotations) for clarity. Used both as a direct annotation task and
+    as a model-evaluation surface (gold spans graded against system
+    output via per-span F1 with strict span-and-label match).
+
+    The "skip ambiguous spans" instruction is from the OntoNotes
+    annotation guidelines: low-recall correctness beats high-recall
+    guessing for inter-annotator reliability.
+
+    Stimulus example (CoNLL-2003 newswire style):
+
+      "Last Tuesday in Geneva, the World Health Organization announced..."
+        spans: [
+          {start: 5, end: 12, label: "DATE"},
+          {start: 16, end: 22, label: "LOC"},
+          {start: 28, end: 53, label: "ORG"}
+        ]
+
+    References:
+      Tjong Kim Sang, Erik F. & Fien De Meulder. 2003. Introduction to the
+        CoNLL-2003 shared task: Language-independent named entity recognition.
+      Pradhan, Sameer et al. 2013. Towards robust linguistic analysis using
+        OntoNotes. CoNLL.
+  createdAt: "2026-05-06T00:00:00Z"
+changelog:
+  summary: "Initial publish of NER-style span-labelling template"

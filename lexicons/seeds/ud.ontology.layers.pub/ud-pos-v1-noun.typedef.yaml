@@ -1,0 +1,10 @@
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-pos-v1
+  name: Noun
+  typeKind: attribute-type
+  description: 'UD v1 POS: NOUN. Denotes a person, place, thing, animal, or idea.'
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: Noun'

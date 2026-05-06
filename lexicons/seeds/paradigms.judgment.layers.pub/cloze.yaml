@@ -1,0 +1,17 @@
+collection: pub.layers.judgment.experimentDef
+record:
+  $type: pub.layers.judgment.experimentDef
+  name: Cloze
+  description: experimentDef wrapping the cloze template; see template description
+    for full citation.
+  measureType: production
+  taskType: cloze
+  presentationMethod: whole-sentence
+  recordingMethod: keyboard
+  templateRefs:
+  - at://paradigms.resource.layers.pub/pub.layers.resource.template/cloze
+  taskConfig:
+    templateText: '[provided per-trial]'
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: Initial experiment-def for cloze

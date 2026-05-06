@@ -1,0 +1,17 @@
+collection: pub.layers.judgment.experimentDef
+record:
+  $type: pub.layers.judgment.experimentDef
+  name: Magnitude Estimation
+  description: experimentDef wrapping the magnitude-estimation template; see template
+    description for full citation.
+  measureType: acceptability
+  taskType: magnitude
+  presentationMethod: whole-sentence
+  recordingMethod: keyboard
+  templateRefs:
+  - at://paradigms.resource.layers.pub/pub.layers.resource.template/magnitude-estimation
+  taskConfig:
+    bounded: false
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: Initial experiment-def for magnitude-estimation

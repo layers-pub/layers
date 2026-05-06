@@ -1,0 +1,10 @@
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  name: Adverbial clause modifier
+  typeKind: relation-type
+  description: 'UD v2 syntactic relation: advcl. Adverbial clause modifier.'
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: Adverbial clause modifier'

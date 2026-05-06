@@ -1,0 +1,51 @@
+# Plausibility rating, 7-point Likert.
+#
+# McRae and colleagues (Bicknell, Elman, Hare, McRae & Kutas 2010)
+# established the modern plausibility-rating norm for sentence
+# processing work. Pickering & Traxler (1998) ran the canonical
+# plausibility manipulation in eye-tracking.
+collection: pub.layers.resource.template
+record:
+  $type: pub.layers.resource.template
+  text: |
+    Please rate how plausible the event below is on a scale from 1 to 7,
+    where 1 means "highly implausible" (very unlikely to happen in the
+    real world) and 7 means "highly plausible" (very likely to happen).
+
+    Event: {scenario}
+
+    Rating (1-7): {response}
+  name: "Plausibility rating (Likert 1-7)"
+  slots:
+    - name: scenario
+      description: "Event description, typically a sentence or short scenario."
+      required: true
+    - name: response
+      description: "1-7 plausibility rating."
+      required: true
+  constraints:
+    - expression: "response in [1, 2, 3, 4, 5, 6, 7]"
+      expressionFormat: "ascii-arithmetic"
+  description: |
+    Plausibility rating using a 7-point Likert scale. Used to validate
+    stimuli for psycholinguistic experiments testing world-knowledge
+    integration, semantic violation, and event-prediction effects.
+
+    Stimulus pairs follow the McRae paradigm:
+
+      The mailman delivered the letter.   (high plausibility ≈ 7)
+      The mailman delivered the iceberg.  (low plausibility ≈ 1-2)
+
+    Often deployed before SPR or eye-tracking to ensure plausibility
+    norms reflect intended manipulations.
+
+    References:
+      Pickering, Martin J. & Matthew J. Traxler. 1998. Plausibility and recovery from
+        garden paths: An eye-tracking study. Journal of Experimental Psychology:
+        Learning, Memory, and Cognition 24:940-961.
+      Bicknell, Klinton, Jeffrey L. Elman, Mary Hare, Ken McRae & Marta Kutas. 2010.
+        Effects of event knowledge in processing verbal arguments. Journal of Memory
+        and Language 63:489-505.
+  createdAt: "2026-05-06T00:00:00Z"
+changelog:
+  summary: "Initial publish of plausibility-rating template"

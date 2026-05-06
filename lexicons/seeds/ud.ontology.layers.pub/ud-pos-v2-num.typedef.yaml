@@ -1,0 +1,11 @@
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-pos-v2
+  name: Numeral
+  typeKind: attribute-type
+  description: 'UD v2 POS: NUM. Word, functioning as a noun, adjective, pronoun, or
+    adverb, that expresses a number.'
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: Numeral'

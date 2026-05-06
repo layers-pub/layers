@@ -1,0 +1,11 @@
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-pos-v2
+  name: Coordinating conjunction
+  typeKind: attribute-type
+  description: 'UD v2 POS: CCONJ. Word that links words or larger constituents without
+    subordinating one to the other (e.g. and, or, but).'
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: Coordinating conjunction'

@@ -1,0 +1,50 @@
+# Free-production / open-elicitation.
+#
+# Garrod & Pickering (2004) and Levelt (1989) underpin
+# psycholinguistic production theory; the elicitation paradigm
+# itself is much older (Bock 1986 picture-description, Brown
+# 1973 child language).
+collection: pub.layers.resource.template
+record:
+  $type: pub.layers.resource.template
+  text: |
+    In your own words, describe the scene/event below. There is no
+    correct answer; write what feels most natural. Aim for one or two
+    sentences.
+
+    Prompt: {prompt}
+
+    Description: {response}
+  name: "Free-production elicitation"
+  slots:
+    - name: prompt
+      description: "Picture, video, scenario description, or other elicitation cue."
+      required: true
+    - name: response
+      description: "Free-text production."
+      required: true
+  description: |
+    Open-elicitation task. Used wherever production data is the
+    dependent measure: structural priming (Bock 1986), referential
+    description (Krauss & Glucksberg 1969 referential communication),
+    event description for thematic-role probing (Bock & Levelt 1994),
+    or contemporary multimodal description benchmarks.
+
+    Example prompt classes:
+
+      Referential:    "A black cat sits on a red mat."  (controlled scene)
+      Caused-motion:  short video of a person sliding a book across a table
+      Event-cause:    "Why did the glass break?"
+
+    Output is free-text; downstream coding for any specific construct
+    (passive use, mention order, lexical choice) is per-experiment.
+
+    References:
+      Bock, J. Kathryn. 1986. Syntactic persistence in language production.
+        Cognitive Psychology 18:355-387.
+      Levelt, Willem J. M. 1989. Speaking: From Intention to Articulation.
+      Garrod, Simon & Martin J. Pickering. 2004. Why is conversation so easy?
+        Trends in Cognitive Sciences 8:8-11.
+  createdAt: "2026-05-06T00:00:00Z"
+changelog:
+  summary: "Initial publish of free-production elicitation template"

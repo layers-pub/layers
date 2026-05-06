@@ -1,0 +1,58 @@
+# Three-way natural language inference (NLI / RTE).
+#
+# SNLI (Bowman, Angeli, Potts & Manning 2015) defines the standard
+# three-way labelling; MultiNLI (Williams, Nangia & Bowman 2018)
+# extends to multi-genre text.
+collection: pub.layers.resource.template
+record:
+  $type: pub.layers.resource.template
+  text: |
+    Read the two sentences below. Decide whether sentence 2 is
+    definitely true given sentence 1 (Entailment), definitely false
+    (Contradiction), or maybe true / maybe false (Neutral).
+
+    Sentence 1 (premise):    {premise}
+    Sentence 2 (hypothesis): {hypothesis}
+
+    Choice: {response}     (E = Entailment, C = Contradiction, N = Neutral)
+  name: "Natural language inference (3-way)"
+  slots:
+    - name: premise
+      description: "Premise sentence."
+      required: true
+    - name: hypothesis
+      description: "Hypothesis sentence."
+      required: true
+    - name: response
+      description: "E, C, or N."
+      required: true
+  constraints:
+    - expression: "response in ['E', 'C', 'N']"
+      expressionFormat: "ascii-arithmetic"
+  description: |
+    Three-way NLI / RTE labelling. The Stanford Natural Language
+    Inference benchmark (Bowman, Angeli, Potts & Manning 2015) is the
+    canonical task definition; MultiNLI (Williams et al. 2018) extends
+    it to multi-genre English. Most contemporary entailment work
+    treats the three-way version as the standard.
+
+    Standard SNLI examples illustrating the three labels:
+
+      P: A man inspects the uniform of a figure in some East Asian country.
+      H: The man is sleeping.                                  → Contradiction
+
+      P: A soccer game with multiple males playing.
+      H: Some men are playing a sport.                         → Entailment
+
+      P: An older and younger man smiling.
+      H: Two men are smiling and laughing at the cats playing on the floor.
+                                                                → Neutral
+
+    References:
+      Bowman, Samuel R., Gabor Angeli, Christopher Potts & Christopher D. Manning. 2015.
+        A large annotated corpus for learning natural language inference. EMNLP.
+      Williams, Adina, Nikita Nangia & Samuel R. Bowman. 2018.
+        A broad-coverage challenge corpus for sentence understanding through inference. NAACL.
+  createdAt: "2026-05-06T00:00:00Z"
+changelog:
+  summary: "Initial publish of three-way NLI template"

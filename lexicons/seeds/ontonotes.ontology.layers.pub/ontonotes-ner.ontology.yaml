@@ -1,0 +1,12 @@
+collection: pub.layers.ontology.ontology
+record:
+  $type: pub.layers.ontology.ontology
+  name: OntoNotes 5.0 named-entity types
+  description: Eighteen-class named-entity inventory from OntoNotes 5.0 (Pradhan et
+    al. 2013; LDC2013T19). Field-default for English NER systems trained on multi-genre
+    newswire-plus-broadcast data. Often paired with a coarser CoNLL-2003 four-class
+    projection for comparability across systems.
+  domain: news
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: OntoNotes 5.0 NER ontology'

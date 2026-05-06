@@ -1,0 +1,10 @@
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ontonotes.ontology.layers.pub/pub.layers.ontology.ontology/ontonotes-ner
+  name: Work of art
+  typeKind: entity-type
+  description: 'WORK_OF_ART: Titles of books, songs, films, etc.'
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: OntoNotes WORK_OF_ART'

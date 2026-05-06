@@ -1,0 +1,17 @@
+collection: pub.layers.judgment.experimentDef
+record:
+  $type: pub.layers.judgment.experimentDef
+  name: "Acceptability rating (Likert 1-7)"
+  description: "Whole-sentence presentation, ordinal-scale judgement, keyboard recording. Schütze (1996); Cowart (1997); Sprouse & Almeida (2017)."
+  measureType: "acceptability"
+  taskType: "ordinal-scale"
+  presentationMethod: "whole-sentence"
+  recordingMethod: "keyboard"
+  templateRefs:
+    - "at://paradigms.resource.layers.pub/pub.layers.resource.template/acceptability-likert"
+  taskConfig:
+    scaleMin: 1
+    scaleMax: 7
+  createdAt: "2026-05-06T00:00:00Z"
+changelog:
+  summary: "Initial experiment-def for 7-point Likert acceptability"

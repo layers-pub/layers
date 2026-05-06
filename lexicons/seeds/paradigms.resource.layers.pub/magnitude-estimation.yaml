@@ -1,0 +1,58 @@
+# Magnitude estimation, anchored against a reference baseline.
+#
+# Wording adapts Bard, Robertson & Sorace (1996) "Magnitude
+# estimation of linguistic acceptability" — the methodological
+# foundation. Featherston (2005) "Universals and grammaticality:
+# wh-constraints in German and English" is the contemporary
+# reference for ME-based acceptability work in syntax.
+collection: pub.layers.resource.template
+record:
+  $type: pub.layers.resource.template
+  text: |
+    You will see a reference sentence first, with the value 100. For each
+    sentence after, assign a number that reflects how acceptable it seems
+    *compared to the reference*. Twice as acceptable: 200. Half as
+    acceptable: 50. Use any positive number; there is no upper or lower
+    limit other than zero.
+
+    Reference sentence (value 100): {referenceSentence}
+
+    Target sentence: {stimulus}
+
+    Magnitude: {response}
+  name: "Magnitude estimation acceptability"
+  slots:
+    - name: referenceSentence
+      description: "Anchor sentence with the constant value 100."
+      required: true
+    - name: stimulus
+      description: "The sentence to be magnitude-rated against the reference."
+      required: true
+    - name: response
+      description: "Open-ended positive number reflecting relative acceptability."
+      required: true
+  constraints:
+    - expression: "response > 0"
+      expressionFormat: "ascii-arithmetic"
+      description: "Magnitude must be strictly positive."
+  description: |
+    Magnitude-estimation task as introduced for linguistic acceptability
+    by Bard, Robertson & Sorace (1996). Each participant first rates a
+    designated reference sentence assigned the value 100, then assigns
+    every subsequent sentence a number relative to that anchor. ME yields
+    ratio-level data and is preferred for fine-grained comparisons of
+    near-acceptable contrasts.
+
+    A natural reference baseline pairs with the islands data from the
+    Likert template above. Featherston (2005) recommends a clearly
+    well-formed everyday sentence (`The cat sat on the mat`) to
+    minimise ceiling effects.
+
+    References:
+      Bard, Ellen Gurman, Dan Robertson & Antonella Sorace. 1996.
+        Magnitude estimation of linguistic acceptability. Language 72(1):32-68.
+      Featherston, Sam. 2005. Universals and grammaticality: wh-constraints
+        in German and English. Linguistics 43(4):667-711.
+  createdAt: "2026-05-06T00:00:00Z"
+changelog:
+  summary: "Initial publish of magnitude-estimation template"

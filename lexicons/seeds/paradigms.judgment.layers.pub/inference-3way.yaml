@@ -1,0 +1,20 @@
+collection: pub.layers.judgment.experimentDef
+record:
+  $type: pub.layers.judgment.experimentDef
+  name: Inference 3Way
+  description: experimentDef wrapping the inference-3way template; see template description
+    for full citation.
+  measureType: inference
+  taskType: forced-choice
+  presentationMethod: whole-sentence
+  recordingMethod: keyboard
+  templateRefs:
+  - at://paradigms.resource.layers.pub/pub.layers.resource.template/inference-3way
+  taskConfig:
+    labels:
+    - E
+    - C
+    - N
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: Initial experiment-def for inference-3way

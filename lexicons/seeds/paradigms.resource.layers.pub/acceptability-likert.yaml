@@ -1,0 +1,50 @@
+# Acceptability rating, 7-point Likert.
+#
+# Wording follows the methodological convention established by
+# Schütze (1996) "The Empirical Base of Linguistics", refined by
+# Cowart (1997) "Experimental Syntax", and standardised in
+# Sprouse & Almeida (2017) "Design sensitivity and statistical
+# power in acceptability judgment experiments". The 1-7 anchored
+# scale is the field default for syntactic acceptability work.
+collection: pub.layers.resource.template
+record:
+  $type: pub.layers.resource.template
+  text: |
+    Please rate the naturalness of the sentence below on a scale from 1 to 7,
+    where 1 means "completely unnatural" and 7 means "completely natural".
+    Trust your gut reaction; there are no right answers.
+
+    Sentence: {stimulus}
+
+    Rating (1-7): {response}
+  name: "Acceptability rating (Likert 1-7)"
+  slots:
+    - name: stimulus
+      description: "The sentence to be rated."
+      required: true
+    - name: response
+      description: "The participant's 1-7 rating."
+      required: true
+  constraints:
+    - expression: "response in [1, 2, 3, 4, 5, 6, 7]"
+      expressionFormat: "ascii-arithmetic"
+      description: "Response must be a discrete integer on the Likert scale."
+  description: |
+    Acceptability judgement task using the 7-point Likert scale that
+    has become field convention in syntactic methodology since
+    Schütze (1996) and Cowart (1997). Sprouse & Almeida (2017) is the
+    standard contemporary methodological reference for design + power.
+    Classic stimuli illustrating island-violation paradigms used by
+    Sprouse, Wagers & Phillips (2012):
+
+      *What did you wonder whether John saw?       (extraction from CNPC)
+      Who did you say John saw?                    (no-island baseline)
+
+    References:
+      Schütze, Carson T. 1996. The Empirical Base of Linguistics.
+      Cowart, Wayne. 1997. Experimental Syntax: Applying Objective Methods to Sentence Judgments.
+      Sprouse, Jon & Diogo Almeida. 2017. Design sensitivity and statistical power in acceptability judgment experiments.
+        Glossa 2(1):14.
+  createdAt: "2026-05-06T00:00:00Z"
+changelog:
+  summary: "Initial publish of 7-point Likert acceptability template"

@@ -33,3 +33,5 @@ thiserror  = { workspace = true }
 sha2       = "0.10"
 rmp-serde  = "1"
 base64     = "0.22"
+reqwest    = { workspace = true, features = ["json", "rustls-tls"], default-features = false }
+tokio      = { workspace = true, features = ["macros", "rt-multi-thread"] }

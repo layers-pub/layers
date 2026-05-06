@@ -1,0 +1,60 @@
+# Lexical decision: real-word vs non-word judgement with RT.
+#
+# Original paradigm: Meyer & Schvaneveldt (1971). Stimulus norms
+# come from the English Lexicon Project (Balota et al. 2007), the
+# field-standard reference for word-level RT and accuracy data.
+collection: pub.layers.resource.template
+record:
+  $type: pub.layers.resource.template
+  text: |
+    On each trial a string of letters appears. If it is a real English
+    word, press the F key. If it is not, press the J key. Respond as
+    quickly as you can while staying accurate.
+
+    Stimulus: {stimulus}
+
+    Response: {response}    (F=word, J=non-word)
+    Reaction time (ms): {rtMs}
+  name: "Lexical decision (binary)"
+  slots:
+    - name: stimulus
+      description: "Letter string. May be a real English word or a pronounceable non-word."
+      required: true
+    - name: response
+      description: "F (word) or J (non-word)."
+      required: true
+    - name: rtMs
+      description: "Reaction time in milliseconds from stimulus onset to keypress."
+      required: true
+  constraints:
+    - expression: "response in ['F', 'J']"
+      expressionFormat: "ascii-arithmetic"
+    - expression: "rtMs > 0 and rtMs < 5000"
+      expressionFormat: "ascii-arithmetic"
+      description: "Trim trials below 0 or above 5s as outliers."
+  description: |
+    Lexical decision task as introduced by Meyer & Schvaneveldt (1971).
+    Two-alternative forced choice on whether a letter string forms a
+    real English word, with reaction time as the dependent measure.
+    Used as a building block for semantic priming, masked priming,
+    and word-recognition studies generally.
+
+    Stimuli should pair real words against pronounceable non-words
+    matched on length, neighbourhood density, and orthotactic
+    plausibility (Balota et al. 2007 supply ELP norms for real words;
+    the ARC Nonword Database, Rastle, Harrington & Coltheart 2002, for
+    non-words). Example pair:
+
+      tractor       (real, monomorphemic, frequency band 4)
+      glompy        (non-word, pronounceable, plausible orthotactics)
+
+    References:
+      Meyer, David E. & Roger W. Schvaneveldt. 1971. Facilitation in recognising
+        pairs of words: Evidence of a dependence between retrieval operations.
+        Journal of Experimental Psychology 90(2):227-234.
+      Balota, David A. et al. 2007. The English Lexicon Project. Behavior Research Methods 39:445-459.
+      Rastle, Kathleen, Jonathan Harrington & Max Coltheart. 2002. 358,534 nonwords: The ARC Nonword Database.
+        Quarterly Journal of Experimental Psychology 55A:1339-1362.
+  createdAt: "2026-05-06T00:00:00Z"
+changelog:
+  summary: "Initial publish of lexical-decision template"

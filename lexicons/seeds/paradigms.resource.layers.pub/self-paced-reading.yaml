@@ -1,0 +1,58 @@
+# Self-paced reading, moving-window display.
+#
+# Just, Carpenter & Woolley (1982) introduced SPR; Mitchell (1984)
+# established the moving-window variant that became dominant.
+# Jegerski (2013) is the modern methodological reference.
+collection: pub.layers.resource.template
+record:
+  $type: pub.layers.resource.template
+  text: |
+    You will read sentences one word at a time. Each press of the
+    spacebar reveals the next word and hides the previous. Please read
+    at a comfortable pace for understanding. Some sentences will be
+    followed by a yes/no comprehension question — answer Y for yes or
+    N for no.
+
+    Sentence (regions): {regions}
+
+    Reading times per region (ms): {readingTimesMs}
+  name: "Self-paced reading (moving window)"
+  slots:
+    - name: regions
+      description: "Pre-segmented regions (typically words, sometimes phrasal regions for region-level analyses)."
+      required: true
+    - name: readingTimesMs
+      description: "Per-region reading time in ms (one entry per region in `regions`)."
+      required: true
+  constraints:
+    - expression: "len(readingTimesMs) == len(regions)"
+      expressionFormat: "ascii-arithmetic"
+      description: "One reading time per region."
+  description: |
+    Moving-window self-paced reading task (Just, Carpenter & Woolley 1982;
+    Mitchell 1984). Words are presented one at a time replacing the
+    previous word; the participant advances at their own pace, and the
+    inter-key interval per region is the dependent measure.
+
+    Garden-path sentences are the canonical illustrating stimulus class:
+
+      The horse raced past the barn fell.   (Bever 1970)
+      While Anna dressed the baby cried.    (Frazier & Rayner 1982)
+
+    Both produce a reliable reading-time spike at the disambiguating
+    region, used to track parser commitments and reanalysis. SPR is
+    typically paired with a yes/no comprehension probe on a subset of
+    trials to enforce attention.
+
+    References:
+      Just, Marcel A., Patricia A. Carpenter & Jacqueline D. Woolley. 1982.
+        Paradigms and processes in reading comprehension. Journal of
+        Experimental Psychology: General 111:228-238.
+      Mitchell, Don C. 1984. An evaluation of subject-paced reading tasks
+        and other methods for investigating immediate processes in reading.
+        In New Methods in Reading Comprehension Research.
+      Jegerski, Jill. 2013. Self-paced reading. In Research Methods in
+        Second Language Psycholinguistics.
+  createdAt: "2026-05-06T00:00:00Z"
+changelog:
+  summary: "Initial publish of self-paced reading template"

@@ -1,0 +1,18 @@
+collection: pub.layers.judgment.experimentDef
+record:
+  $type: pub.layers.judgment.experimentDef
+  name: Plausibility Likert
+  description: experimentDef wrapping the plausibility-likert template; see template
+    description for full citation.
+  measureType: plausibility
+  taskType: ordinal-scale
+  presentationMethod: whole-sentence
+  recordingMethod: keyboard
+  templateRefs:
+  - at://paradigms.resource.layers.pub/pub.layers.resource.template/plausibility-likert
+  taskConfig:
+    scaleMin: 1
+    scaleMax: 7
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: Initial experiment-def for plausibility-likert

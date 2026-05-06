@@ -15,8 +15,10 @@ use std::process::ExitCode;
 
 use anyhow::{Context, Result};
 
+pub mod client;
 pub mod fingerprint;
 pub mod model;
+pub mod publish;
 
 /// Dispatch entry point invoked by `main.rs`.
 pub fn run(repo_root: &Path, args: &[String]) -> Result<ExitCode> {
@@ -27,10 +29,7 @@ pub fn run(repo_root: &Path, args: &[String]) -> Result<ExitCode> {
             eprintln!("seed plan not yet implemented; falling back to list");
             list(repo_root)
         }
-        "publish" => {
-            eprintln!("seed publish not yet implemented; pipeline scaffold lands first");
-            Ok(ExitCode::from(2))
-        }
+        "publish" => publish::run(repo_root, &args[1..]),
         "check" => {
             eprintln!("seed check not yet implemented");
             Ok(ExitCode::from(2))

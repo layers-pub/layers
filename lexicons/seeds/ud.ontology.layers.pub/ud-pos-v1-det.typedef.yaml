@@ -1,0 +1,11 @@
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-pos-v1
+  name: Determiner
+  typeKind: attribute-type
+  description: 'UD v1 POS: DET. Words that modify nouns or noun phrases and express
+    the reference of the NP in context.'
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: Determiner'

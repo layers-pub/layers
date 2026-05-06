@@ -1,0 +1,53 @@
+# Forced-choice grammaticality judgement.
+#
+# Wording adapts the methodological recommendations of Schütze &
+# Sprouse (2014). Stimulus set draws from the Benchmark of
+# Linguistic Minimal Pairs (BLiMP, Warstadt et al. 2020), which
+# packages 67 minimal-pair tasks across 12 grammatical phenomena.
+collection: pub.layers.resource.template
+record:
+  $type: pub.layers.resource.template
+  text: |
+    Below are two versions of a sentence. Click the one that sounds more
+    natural to you in everyday English. There is no right answer; we want
+    your first instinct.
+
+    A. {leftSentence}
+    B. {rightSentence}
+
+    Choice: {response}
+  name: "Forced-choice grammaticality (binary)"
+  slots:
+    - name: leftSentence
+      description: "First (left/A) sentence in the minimal pair."
+      required: true
+    - name: rightSentence
+      description: "Second (right/B) sentence in the minimal pair."
+      required: true
+    - name: response
+      description: "Either 'A' or 'B'."
+      required: true
+  constraints:
+    - expression: "response in ['A', 'B']"
+      expressionFormat: "ascii-arithmetic"
+      description: "Response must select A or B."
+  description: |
+    Forced-choice grammaticality task with binary minimal pairs. Schütze
+    & Sprouse (2014) review the methodology and discuss when forced
+    choice is preferable to scale-based judgements (it isolates the
+    contrast under test, suppresses individual scaling biases, and
+    increases statistical power for small effects).
+
+    Standard stimuli come from BLiMP (Warstadt et al. 2020):
+
+      The cat scratches itself.       (well-formed)
+     *The cat scratch itself.         (subject-verb number agreement violation)
+
+    References:
+      Schütze, Carson T. & Jon Sprouse. 2014. Judgment data. In Research Methods in Linguistics.
+      Warstadt, Alex, Alicia Parrish, Haokun Liu, Anhad Mohananey, Wei Peng, Sheng-Fu Wang &
+        Samuel R. Bowman. 2020. BLiMP: The Benchmark of Linguistic Minimal Pairs for English.
+        Transactions of the ACL 8:377-392.
+  createdAt: "2026-05-06T00:00:00Z"
+changelog:
+  summary: "Initial publish of binary forced-choice template"

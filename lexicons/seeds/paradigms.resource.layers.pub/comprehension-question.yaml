@@ -1,0 +1,52 @@
+# Yes/No comprehension question.
+#
+# Used as an attention-check probe in self-paced reading and
+# eye-tracking studies (DeKeyser 1989; Roberts & Felser 2011).
+collection: pub.layers.resource.template
+record:
+  $type: pub.layers.resource.template
+  text: |
+    Based on what you just read, answer the following question:
+
+    {question}
+
+    Press Y for yes, N for no.
+
+    Response: {response}
+  name: "Yes/No comprehension question"
+  slots:
+    - name: question
+      description: "The comprehension probe phrased as a polar question."
+      required: true
+    - name: response
+      description: "Y or N."
+      required: true
+  constraints:
+    - expression: "response in ['Y', 'N']"
+      expressionFormat: "ascii-arithmetic"
+  description: |
+    Polar comprehension probe paired with a preceding stimulus
+    (typically the sentence the participant just read in SPR or
+    eye-tracking). Two purposes:
+
+      1. Attention check — discard trials with implausible RTs from
+         participants who chronically miss the question.
+      2. Comprehension dependent measure — test whether a manipulation
+         affects what readers extract from the sentence.
+
+    Roberts & Felser (2011) discuss the reliability tradeoffs.
+    DeKeyser (1989) reviews the use of comprehension questions as
+    indirect grammaticality probes.
+
+    Convention: at least one true and one false probe per stimulus
+    set, balanced for response side.
+
+    References:
+      DeKeyser, Robert M. 1989. The use of yes-no questions in measuring
+        comprehension. Studies in Second Language Acquisition 11:283-306.
+      Roberts, Leah & Claudia Felser. 2011. Plausibility and recovery from
+        garden paths in second-language sentence processing. Applied
+        Psycholinguistics 32:299-331.
+  createdAt: "2026-05-06T00:00:00Z"
+changelog:
+  summary: "Initial publish of yes/no comprehension-probe template"

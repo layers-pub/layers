@@ -1,0 +1,10 @@
+collection: pub.layers.ontology.ontology
+record:
+  $type: pub.layers.ontology.ontology
+  name: Universal Dependencies POS v2
+  description: Seventeen-tag universal POS inventory from the UD v2 release (Nivre
+    et al. 2020). v2 splits v1's CONJ into CCONJ (coordinating) and SCONJ (subordinating).
+  domain: general
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: Universal Dependencies POS v2'

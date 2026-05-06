@@ -1,0 +1,11 @@
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ontonotes.ontology.layers.pub/pub.layers.ontology.ontology/ontonotes-ner
+  name: Geo-political entity
+  typeKind: entity-type
+  description: 'GPE: Countries, cities, states, including the people associated with
+    them as a polity.'
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: OntoNotes GPE'

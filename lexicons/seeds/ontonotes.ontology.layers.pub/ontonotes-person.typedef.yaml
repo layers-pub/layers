@@ -1,0 +1,10 @@
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ontonotes.ontology.layers.pub/pub.layers.ontology.ontology/ontonotes-ner
+  name: Person
+  typeKind: entity-type
+  description: 'PERSON: People, including fictional.'
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: OntoNotes PERSON'

@@ -1,0 +1,10 @@
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-pos-v2
+  name: Interjection
+  typeKind: attribute-type
+  description: 'UD v2 POS: INTJ. Word that is used most often as an exclamation.'
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: Interjection'

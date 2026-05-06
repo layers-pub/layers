@@ -1,0 +1,49 @@
+# Cloze completion (fill in the blank).
+#
+# Original paradigm: Taylor (1953). Modern psycholinguistic
+# applications follow Federmeier & Kutas (1999) on cloze
+# probabilities as predictors of N400 amplitude.
+collection: pub.layers.resource.template
+record:
+  $type: pub.layers.resource.template
+  text: |
+    Read the sentence below and fill in the blank with the first word
+    that comes to mind. Don't overthink it; write what feels most
+    natural.
+
+    {context} ___ {continuation}
+
+    Word: {response}
+  name: "Cloze completion"
+  slots:
+    - name: context
+      description: "Sentence prefix preceding the blank."
+      required: true
+    - name: continuation
+      description: "Optional sentence continuation following the blank (empty for sentence-final cloze)."
+      required: false
+      defaultValue: ""
+    - name: response
+      description: "Single word the participant produced."
+      required: true
+  description: |
+    Cloze procedure (Taylor 1953). Given a sentence with one word
+    elided, the participant supplies the most natural completion. Cloze
+    probability — the proportion of participants producing a given
+    target word — is the standard predictor of expectation-based
+    measures (N400 amplitude, reading time, gaze duration).
+
+    Federmeier & Kutas (1999) is the canonical demonstration of cloze
+    probability driving N400. Their stimuli pair high-cloze contexts
+    (`He spread butter on his ___` → bread) against low-cloze contexts
+    (`She asked the librarian for a ___` → variable).
+
+    References:
+      Taylor, Wilson L. 1953. "Cloze procedure": A new tool for measuring
+        readability. Journalism Bulletin 30:415-433.
+      Federmeier, Kara D. & Marta Kutas. 1999. A rose by any other name:
+        Long-term memory structure and sentence processing. Journal of
+        Memory and Language 41:469-495.
+  createdAt: "2026-05-06T00:00:00Z"
+changelog:
+  summary: "Initial publish of cloze-completion template"

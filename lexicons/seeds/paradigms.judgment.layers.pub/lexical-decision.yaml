@@ -1,0 +1,18 @@
+collection: pub.layers.judgment.experimentDef
+record:
+  $type: pub.layers.judgment.experimentDef
+  name: Lexical Decision
+  description: experimentDef wrapping the lexical-decision template; see template
+    description for full citation.
+  measureType: comprehension
+  taskType: binary
+  presentationMethod: rsvp
+  recordingMethod: keyboard
+  templateRefs:
+  - at://paradigms.resource.layers.pub/pub.layers.resource.template/lexical-decision
+  taskConfig:
+    labelTrue: word
+    labelFalse: non-word
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: Initial experiment-def for lexical-decision

@@ -1,0 +1,11 @@
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-pos-v1
+  name: Adjective
+  typeKind: attribute-type
+  description: 'UD v1 POS: ADJ. Words that typically modify nouns and specify their
+    properties or attributes.'
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: Adjective'

@@ -1,0 +1,11 @@
+collection: pub.layers.ontology.ontology
+record:
+  $type: pub.layers.ontology.ontology
+  name: Universal Dependencies POS v1
+  description: Sixteen-tag universal POS inventory from the UD v1 release (Nivre et
+    al. 2016). Notably collapses coordinating and subordinating conjunctions under
+    a single CONJ tag.
+  domain: general
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: Universal Dependencies POS v1'

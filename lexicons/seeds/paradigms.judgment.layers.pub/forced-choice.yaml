@@ -1,0 +1,19 @@
+collection: pub.layers.judgment.experimentDef
+record:
+  $type: pub.layers.judgment.experimentDef
+  name: Forced Choice
+  description: experimentDef wrapping the forced-choice template; see template description
+    for full citation.
+  measureType: acceptability
+  taskType: forced-choice
+  presentationMethod: whole-sentence
+  recordingMethod: keyboard
+  templateRefs:
+  - at://paradigms.resource.layers.pub/pub.layers.resource.template/forced-choice
+  taskConfig:
+    labels:
+    - A
+    - B
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: Initial experiment-def for forced-choice

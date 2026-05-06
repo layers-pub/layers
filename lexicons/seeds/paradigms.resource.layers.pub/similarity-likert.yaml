@@ -1,0 +1,57 @@
+# Pairwise similarity judgement, 7-point Likert.
+#
+# Miller & Charles (1991) is the classical reference; SimLex-999
+# (Hill, Reichart & Korhonen 2015) is the contemporary benchmark
+# for English noun-pair similarity.
+collection: pub.layers.resource.template
+record:
+  $type: pub.layers.resource.template
+  text: |
+    Judge how similar in meaning the two words below are, from 1
+    (completely different) to 7 (identical in meaning). Don't confuse
+    similarity with relatedness — `cup` and `coffee` are related but
+    not similar in meaning; `cup` and `mug` are similar.
+
+    Word 1: {wordA}
+    Word 2: {wordB}
+
+    Rating (1-7): {response}
+  name: "Similarity judgement (Likert 1-7)"
+  slots:
+    - name: wordA
+      description: "First word in the pair."
+      required: true
+    - name: wordB
+      description: "Second word in the pair."
+      required: true
+    - name: response
+      description: "1-7 similarity rating."
+      required: true
+  constraints:
+    - expression: "response in [1, 2, 3, 4, 5, 6, 7]"
+      expressionFormat: "ascii-arithmetic"
+  description: |
+    Pairwise word-similarity rating. The instruction explicitly
+    distinguishes similarity (concept overlap) from relatedness
+    (associative co-occurrence) following Hill, Reichart & Korhonen
+    (2015), who demonstrated that earlier benchmarks like WordSim-353
+    conflate the two.
+
+    Standard Miller & Charles (1991) pairs span the rating space:
+
+      car-automobile    (high similarity, high relatedness)
+      magician-wizard   (high similarity)
+      gem-jewel         (high similarity)
+      noon-string       (low similarity, low relatedness)
+
+    References:
+      Miller, George A. & Walter G. Charles. 1991. Contextual correlates of
+        semantic similarity. Language and Cognitive Processes 6:1-28.
+      Rubenstein, Herbert & John B. Goodenough. 1965. Contextual correlates
+        of synonymy. Communications of the ACM 8:627-633.
+      Hill, Felix, Roi Reichart & Anna Korhonen. 2015. SimLex-999: Evaluating
+        semantic models with (genuine) similarity estimation. Computational
+        Linguistics 41:665-695.
+  createdAt: "2026-05-06T00:00:00Z"
+changelog:
+  summary: "Initial publish of similarity-judgement template"

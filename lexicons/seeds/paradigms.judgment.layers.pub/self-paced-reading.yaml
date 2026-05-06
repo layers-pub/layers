@@ -1,0 +1,17 @@
+collection: pub.layers.judgment.experimentDef
+record:
+  $type: pub.layers.judgment.experimentDef
+  name: Self Paced Reading
+  description: experimentDef wrapping the self-paced-reading template; see template
+    description for full citation.
+  measureType: reading-time
+  taskType: free-text
+  presentationMethod: self-paced
+  recordingMethod: keyboard
+  templateRefs:
+  - at://paradigms.resource.layers.pub/pub.layers.resource.template/self-paced-reading
+  taskConfig:
+    chunkingUnit: word
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: Initial experiment-def for self-paced-reading
