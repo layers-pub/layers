@@ -1,0 +1,320 @@
+collection: pub.layers.ontology.ontology
+record:
+  $type: pub.layers.ontology.ontology
+  name: GoEmotions (28 categories)
+  description: 'Fine-grained emotion taxonomy from Demszky et al. 2020 (ACL). 27 emotion
+    categories grouped into positive/negative/ambiguous sentiment macro-classes plus
+    a neutral catch-all. Citation: https://github.com/google-research/google-research/tree/master/goemotions'
+  domain: social-media
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: GoEmotions taxonomy'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Positive sentiment macro-class
+  typeKind: attribute-type
+  description: Macro-class for positive-valence emotion categories from GoEmotions.
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Negative sentiment macro-class
+  typeKind: attribute-type
+  description: Macro-class for negative-valence emotion categories from GoEmotions.
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Ambiguous sentiment macro-class
+  typeKind: attribute-type
+  description: Macro-class for ambiguous-valence emotion categories from GoEmotions.
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Neutral sentiment macro-class
+  typeKind: attribute-type
+  description: Macro-class for neutral-valence emotion categories from GoEmotions.
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Admiration
+  typeKind: attribute-type
+  description: 'GoEmotions /admiration (positive): Finding something impressive or
+    worthy of respect.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Amusement
+  typeKind: attribute-type
+  description: 'GoEmotions /amusement (positive): Finding something funny or being
+    entertained.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Approval
+  typeKind: attribute-type
+  description: 'GoEmotions /approval (positive): Having or expressing a favorable
+    opinion.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Caring
+  typeKind: attribute-type
+  description: 'GoEmotions /caring (positive): Displaying kindness and concern for
+    others.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Desire
+  typeKind: attribute-type
+  description: 'GoEmotions /desire (positive): A strong feeling of wanting something
+    or wishing for something to happen.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Excitement
+  typeKind: attribute-type
+  description: 'GoEmotions /excitement (positive): Feeling of great enthusiasm and
+    eagerness.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Gratitude
+  typeKind: attribute-type
+  description: 'GoEmotions /gratitude (positive): A feeling of thankfulness and appreciation.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Joy
+  typeKind: attribute-type
+  description: 'GoEmotions /joy (positive): A feeling of pleasure and happiness.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Love
+  typeKind: attribute-type
+  description: 'GoEmotions /love (positive): A strong positive emotion of regard and
+    affection.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Optimism
+  typeKind: attribute-type
+  description: 'GoEmotions /optimism (positive): Hopefulness and confidence about
+    the future or the success of something.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Pride
+  typeKind: attribute-type
+  description: 'GoEmotions /pride (positive): Pleasure or satisfaction due to one''s
+    own achievements or those of close associates.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Relief
+  typeKind: attribute-type
+  description: 'GoEmotions /relief (positive): Reassurance and relaxation following
+    release from anxiety or distress.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Anger
+  typeKind: attribute-type
+  description: 'GoEmotions /anger (negative): A strong feeling of displeasure or antagonism.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Annoyance
+  typeKind: attribute-type
+  description: 'GoEmotions /annoyance (negative): Mild anger; irritation.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Disappointment
+  typeKind: attribute-type
+  description: 'GoEmotions /disappointment (negative): Sadness or displeasure caused
+    by the non-fulfilment of one''s hopes or expectations.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Disapproval
+  typeKind: attribute-type
+  description: 'GoEmotions /disapproval (negative): Having or expressing an unfavorable
+    opinion.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Disgust
+  typeKind: attribute-type
+  description: 'GoEmotions /disgust (negative): Revulsion or strong disapproval aroused
+    by something unpleasant or offensive.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Embarrassment
+  typeKind: attribute-type
+  description: 'GoEmotions /embarrassment (negative): Self-consciousness, shame, or
+    awkwardness.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Fear
+  typeKind: attribute-type
+  description: 'GoEmotions /fear (negative): An unpleasant emotion caused by the threat
+    of danger, pain, or harm.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Grief
+  typeKind: attribute-type
+  description: 'GoEmotions /grief (negative): Intense sorrow, especially caused by
+    someone''s death.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Nervousness
+  typeKind: attribute-type
+  description: 'GoEmotions /nervousness (negative): Apprehension, worry, anxiety.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Remorse
+  typeKind: attribute-type
+  description: 'GoEmotions /remorse (negative): Regret or guilty feeling.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Sadness
+  typeKind: attribute-type
+  description: 'GoEmotions /sadness (negative): Emotional pain, sorrow.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Confusion
+  typeKind: attribute-type
+  description: 'GoEmotions /confusion (ambiguous): Lack of understanding; uncertainty.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Curiosity
+  typeKind: attribute-type
+  description: 'GoEmotions /curiosity (ambiguous): A strong desire to know or learn
+    something.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Realization
+  typeKind: attribute-type
+  description: 'GoEmotions /realization (ambiguous): Becoming aware of something.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Surprise
+  typeKind: attribute-type
+  description: 'GoEmotions /surprise (ambiguous): Feeling astonished, startled by
+    something unexpected.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://goemotions.ontology.layers.pub/pub.layers.ontology.ontology/goemotions
+  name: Neutral
+  typeKind: attribute-type
+  description: 'GoEmotions /neutral (neutral): No emotion expressed; default category
+    for non-emotional utterances.'
+  createdAt: '2026-05-06T00:00:00Z'

@@ -1,0 +1,68 @@
+collection: pub.layers.ontology.ontology
+record:
+  $type: pub.layers.ontology.ontology
+  name: Ekman basic emotions (6)
+  description: Ekman's six basic emotions (Ekman 1992; Ekman & Friesen 1971). Cross-culturally
+    universal facial-expression categories. Used as the canonical coarse-grained emotion
+    taxonomy in affect computing.
+  domain: general
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: Ekman 6'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ekman.ontology.layers.pub/pub.layers.ontology.ontology/ekman-basic
+  name: Anger
+  typeKind: attribute-type
+  description: Hostility in response to perceived injustice or violation.
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ekman.ontology.layers.pub/pub.layers.ontology.ontology/ekman-basic
+  name: Disgust
+  typeKind: attribute-type
+  description: Revulsion to offensive stimuli.
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ekman.ontology.layers.pub/pub.layers.ontology.ontology/ekman-basic
+  name: Fear
+  typeKind: attribute-type
+  description: Response to perceived threat or danger.
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ekman.ontology.layers.pub/pub.layers.ontology.ontology/ekman-basic
+  name: Happiness
+  typeKind: attribute-type
+  description: Positive emotional state of pleasure or contentment. (Ekman's original
+    `joy`.)
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ekman.ontology.layers.pub/pub.layers.ontology.ontology/ekman-basic
+  name: Sadness
+  typeKind: attribute-type
+  description: Sorrow, grief, or loss.
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ekman.ontology.layers.pub/pub.layers.ontology.ontology/ekman-basic
+  name: Surprise
+  typeKind: attribute-type
+  description: Brief response to the unexpected.
+  createdAt: '2026-05-06T00:00:00Z'

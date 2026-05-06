@@ -1,0 +1,101 @@
+name: Registry proposal
+description: Propose a new record set for inclusion in the canonical Layers registry
+title: "[registry] <short title>"
+labels: ["registry-proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to propose a new record set for the
+        canonical Layers registry. Before filling in the form, please
+        read the four-test rubric: <https://layers.pub/about/registry#rubric>.
+        Proposals that do not pass all four tests are routed to the
+        user-PDS publish path instead.
+
+  - type: input
+    id: name
+    attributes:
+      label: Record-set name
+      description: Short, kebab-case identifier (e.g. `claws-c5`, `pdtb-v3`, `cmn-unimorph`).
+      placeholder: my-record-set
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Canonical source
+      description: URL of the upstream specification or release.
+      placeholder: https://example.org/spec.html
+    validations:
+      required: true
+
+  - type: input
+    id: license
+    attributes:
+      label: License (SPDX identifier)
+      description: Must permit redistribution with attribution.
+      placeholder: CC-BY-4.0
+    validations:
+      required: true
+
+  - type: input
+    id: handle
+    attributes:
+      label: Target subaccount handle
+      description: "Format: <record-set>.<namespace>.layers.pub. Pick the Layers namespace that matches the records (`ontology`, `corpus`, `resource`, `graph`, etc.)."
+      placeholder: my-record-set.ontology.layers.pub
+    validations:
+      required: true
+
+  - type: textarea
+    id: rubric-universal
+    attributes:
+      label: "Rubric 1: Universal scope"
+      description: Why is this record meaningful to every Layers user as a reference, not just to a specific lab/project/community?
+    validations:
+      required: true
+
+  - type: textarea
+    id: rubric-stable
+    attributes:
+      label: "Rubric 2: Stable identity"
+      description: Why would independent users want to reference the same AT-URI without coordinating? What does the field already agree on?
+    validations:
+      required: true
+
+  - type: textarea
+    id: rubric-operator
+    attributes:
+      label: "Rubric 3: Operator-authorable"
+      description: Why can the appview operator author or republish this without speaking on behalf of any specific community?
+    validations:
+      required: true
+
+  - type: textarea
+    id: rubric-forkable
+    attributes:
+      label: "Rubric 4: Forkable"
+      description: How would a user fork this into their own PDS to specialise? What's the fork tree?
+    validations:
+      required: true
+
+  - type: textarea
+    id: seed-yamls
+    attributes:
+      label: Seed YAMLs (or converter pointer)
+      description: Either inline the YAML record bodies, link a public gist/repo, or describe the converter script that emits them.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmations
+      options:
+        - label: I've read the four-test rubric and confirmed each test passes.
+          required: true
+        - label: The license is compatible with redistribution from the registry.
+          required: true
+        - label: I'm not the only intended consumer of this record (Universal scope test).
+          required: true

@@ -1,0 +1,94 @@
+collection: pub.layers.ontology.ontology
+record:
+  $type: pub.layers.ontology.ontology
+  name: Plutchik primary emotions (8)
+  description: 'The eight primary emotions of Plutchik''s psychoevolutionary wheel
+    (Plutchik 1980, 2001). Arranged in four opposing pairs: joy↔sadness, trust↔disgust,
+    fear↔anger, surprise↔anticipation. Often used as a coarse-grained alternative
+    to GoEmotions for psychological-model-aligned annotation.'
+  domain: general
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: Plutchik primary emotions'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://plutchik.ontology.layers.pub/pub.layers.ontology.ontology/plutchik-primary
+  name: Joy
+  typeKind: attribute-type
+  description: 'Positive valence, high arousal: pleasure, happiness. Plutchik wheel
+    opposite: sadness.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://plutchik.ontology.layers.pub/pub.layers.ontology.ontology/plutchik-primary
+  name: Trust
+  typeKind: attribute-type
+  description: 'Positive valence, low arousal: acceptance, confidence in another.
+    Plutchik wheel opposite: disgust.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://plutchik.ontology.layers.pub/pub.layers.ontology.ontology/plutchik-primary
+  name: Fear
+  typeKind: attribute-type
+  description: 'Negative valence, high arousal: response to perceived threat. Plutchik
+    wheel opposite: anger.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://plutchik.ontology.layers.pub/pub.layers.ontology.ontology/plutchik-primary
+  name: Surprise
+  typeKind: attribute-type
+  description: 'Neutral valence, high arousal: response to the unexpected. Plutchik
+    wheel opposite: anticipation.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://plutchik.ontology.layers.pub/pub.layers.ontology.ontology/plutchik-primary
+  name: Sadness
+  typeKind: attribute-type
+  description: 'Negative valence, low arousal: sorrow, grief. Plutchik wheel opposite:
+    joy.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://plutchik.ontology.layers.pub/pub.layers.ontology.ontology/plutchik-primary
+  name: Disgust
+  typeKind: attribute-type
+  description: 'Negative valence, moderate arousal: rejection, repulsion. Plutchik
+    wheel opposite: trust.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://plutchik.ontology.layers.pub/pub.layers.ontology.ontology/plutchik-primary
+  name: Anger
+  typeKind: attribute-type
+  description: 'Negative valence, high arousal: hostility in response to perceived
+    violation. Plutchik wheel opposite: fear.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://plutchik.ontology.layers.pub/pub.layers.ontology.ontology/plutchik-primary
+  name: Anticipation
+  typeKind: attribute-type
+  description: 'Positive valence, moderate arousal: looking forward to. Plutchik wheel
+    opposite: surprise.'
+  createdAt: '2026-05-06T00:00:00Z'

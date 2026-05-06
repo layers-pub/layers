@@ -1,0 +1,190 @@
+collection: pub.layers.ontology.ontology
+record:
+  $type: pub.layers.ontology.ontology
+  name: ISO-TimeML temporal annotation
+  description: 'Tag inventory of ISO-TimeML (ISO 24617-1:2012; Pustejovsky et al.
+    2003). Used for temporal-relation annotation in TimeBank, TempEval shared tasks,
+    and downstream temporal-reasoning work. Reference: http://www.timeml.org/'
+  domain: general
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: ISO-TimeML'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: Temporal expression
+  typeKind: entity-type
+  description: 'ISO-TimeML <TIMEX3>: Markable temporal expressions: dates, times,
+    durations, and sets. ISO 24617-1 §6.1.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: Event
+  typeKind: entity-type
+  description: 'ISO-TimeML <EVENT>: Markable expressions denoting events, states,
+    or processes. ISO 24617-1 §6.2.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: Signal
+  typeKind: entity-type
+  description: 'ISO-TimeML <SIGNAL>: Function words that indicate the temporal relation
+    between EVENT/TIMEX3 elements (when, before, while). ISO 24617-1 §6.3.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: Temporal link
+  typeKind: relation-type
+  description: 'ISO-TimeML <TLINK>: Directed link between two EVENT/TIMEX3 elements
+    indicating their temporal relation. Allen-style relations: BEFORE, AFTER, INCLUDES,
+    IS_INCLUDED, DURING, SIMULTANEOUS, IAFTER, IBEFORE, IDENTITY, BEGINS, ENDS, BEGUN_BY,
+    ENDED_BY. ISO 24617-1 §7.1.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: Aspectual link
+  typeKind: relation-type
+  description: 'ISO-TimeML <ALINK>: Aspectual relation between an aspectual EVENT
+    and its argument EVENT (INITIATES, CULMINATES, TERMINATES, CONTINUES, REINITIATES).
+    ISO 24617-1 §7.2.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: Subordination link
+  typeKind: relation-type
+  description: 'ISO-TimeML <SLINK>: Relation between two EVENTs where the first introduces
+    the second''s truth value (MODAL, EVIDENTIAL, NEG_EVIDENTIAL, FACTIVE, COUNTER_FACTIVE,
+    CONDITIONAL). ISO 24617-1 §7.3.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: Event instance
+  typeKind: relation-type
+  description: 'ISO-TimeML <MAKEINSTANCE>: Indicates that an EVENT has been instantiated;
+    carries tense, aspect, modality, polarity attributes. (TimeML; not retained in
+    ISO 24617-1''s stand-off serialisation.)'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: 'TIMEX3 type: Date'
+  typeKind: attribute-type
+  description: 'TIMEX3@type="DATE": Calendar dates: ''yesterday'', ''23 May 2026''.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: 'TIMEX3 type: Time'
+  typeKind: attribute-type
+  description: 'TIMEX3@type="TIME": Times of day: ''3 pm'', ''noon''.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: 'TIMEX3 type: Duration'
+  typeKind: attribute-type
+  description: 'TIMEX3@type="DURATION": Time spans: ''two hours'', ''a week''.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: 'TIMEX3 type: Set'
+  typeKind: attribute-type
+  description: 'TIMEX3@type="SET": Recurring or distributive temporal expressions:
+    ''every Tuesday'', ''twice a year''.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: 'EVENT class: Occurrence'
+  typeKind: attribute-type
+  description: 'EVENT@class="OCCURRENCE": Eventualities describing things that happen
+    or occur.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: 'EVENT class: State'
+  typeKind: attribute-type
+  description: 'EVENT@class="STATE": Eventualities describing circumstances that hold.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: 'EVENT class: Reporting'
+  typeKind: attribute-type
+  description: 'EVENT@class="REPORTING": Verbs of communication: say, tell, announce.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: 'EVENT class: Intensional action'
+  typeKind: attribute-type
+  description: 'EVENT@class="I_ACTION": Verbs of intensional action: try, attempt,
+    fail.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: 'EVENT class: Intensional state'
+  typeKind: attribute-type
+  description: 'EVENT@class="I_STATE": Mental-state verbs: believe, want, think.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: 'EVENT class: Aspectual'
+  typeKind: attribute-type
+  description: 'EVENT@class="ASPECTUAL": Aspectual verbs: begin, continue, finish.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://iso-timeml.ontology.layers.pub/pub.layers.ontology.ontology/iso-timeml
+  name: 'EVENT class: Perception'
+  typeKind: attribute-type
+  description: 'EVENT@class="PERCEPTION": Perception verbs: see, hear, watch.'
+  createdAt: '2026-05-06T00:00:00Z'

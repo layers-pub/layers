@@ -1,0 +1,151 @@
+collection: pub.layers.ontology.ontology
+record:
+  $type: pub.layers.ontology.ontology
+  name: UCCA Foundational Layer
+  description: 'Universal Conceptual Cognitive Annotation foundational-layer categorial
+    labels (Abend & Rappoport 2013). Cross-lingual, semantics-first decomposition
+    organised around Scenes (Process/State + Participants + Adverbials) and non-Scene
+    units (Center + Elaborator + Connector). Reference: https://github.com/UniversalConceptualCognitiveAnnotation/docs'
+  domain: general
+  languages: []
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: UCCA foundational layer'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ucca.ontology.layers.pub/pub.layers.ontology.ontology/ucca-foundational
+  name: Process (P)
+  typeKind: relation-type
+  description: 'UCCA category P: The main relation of a Scene, evolving in time. Typically
+    a verb of dynamic semantics.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ucca.ontology.layers.pub/pub.layers.ontology.ontology/ucca-foundational
+  name: State (S)
+  typeKind: relation-type
+  description: 'UCCA category S: The main relation of a Scene that holds without evolution.
+    Typically a stative predicate.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ucca.ontology.layers.pub/pub.layers.ontology.ontology/ucca-foundational
+  name: Participant (A)
+  typeKind: relation-type
+  description: 'UCCA category A: An entity (or non-entity) that participates in a
+    Scene; semantic argument.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ucca.ontology.layers.pub/pub.layers.ontology.ontology/ucca-foundational
+  name: Adverbial (D)
+  typeKind: relation-type
+  description: 'UCCA category D: A property modifying the main relation of a Scene
+    (manner, temporal, locative).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ucca.ontology.layers.pub/pub.layers.ontology.ontology/ucca-foundational
+  name: Time (T)
+  typeKind: relation-type
+  description: 'UCCA category T: A temporal description not directly serving as a
+    Scene argument.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ucca.ontology.layers.pub/pub.layers.ontology.ontology/ucca-foundational
+  name: Center (C)
+  typeKind: relation-type
+  description: 'UCCA category C: The semantic head of a non-Scene unit; dominant element
+    of a phrase.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ucca.ontology.layers.pub/pub.layers.ontology.ontology/ucca-foundational
+  name: Elaborator (E)
+  typeKind: relation-type
+  description: 'UCCA category E: A non-Scene element modifying a Center (typically
+    attributive adjectives, possessives, determiners).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ucca.ontology.layers.pub/pub.layers.ontology.ontology/ucca-foundational
+  name: Connector (N)
+  typeKind: relation-type
+  description: 'UCCA category N: A connective relating multiple Centers (and, or).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ucca.ontology.layers.pub/pub.layers.ontology.ontology/ucca-foundational
+  name: Linker (L)
+  typeKind: relation-type
+  description: 'UCCA category L: A unit linking parallel Scenes at the discourse level
+    (because, although).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ucca.ontology.layers.pub/pub.layers.ontology.ontology/ucca-foundational
+  name: Parallel scene (H)
+  typeKind: relation-type
+  description: 'UCCA category H: A Scene that is part of a larger discourse-level
+    unit.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ucca.ontology.layers.pub/pub.layers.ontology.ontology/ucca-foundational
+  name: Function (F)
+  typeKind: relation-type
+  description: 'UCCA category F: A unit with no semantic content of its own; e.g.
+    infinitival to, copulas without aspectual content.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ucca.ontology.layers.pub/pub.layers.ontology.ontology/ucca-foundational
+  name: Ground (G)
+  typeKind: relation-type
+  description: 'UCCA category G: Speaker/hearer-anchored element that situates the
+    utterance (vocatives, ground elements).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ucca.ontology.layers.pub/pub.layers.ontology.ontology/ucca-foundational
+  name: Relator (R)
+  typeKind: relation-type
+  description: 'UCCA category R: A relational element that connects a Center to its
+    dependents (prepositions, possessive markers).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ucca.ontology.layers.pub/pub.layers.ontology.ontology/ucca-foundational
+  name: Punctuation (U)
+  typeKind: relation-type
+  description: 'UCCA category U: Punctuation marks.'
+  createdAt: '2026-05-06T00:00:00Z'

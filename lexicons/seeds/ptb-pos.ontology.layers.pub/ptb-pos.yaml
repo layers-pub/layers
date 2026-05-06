@@ -1,0 +1,344 @@
+collection: pub.layers.ontology.ontology
+record:
+  $type: pub.layers.ontology.ontology
+  name: Penn Treebank POS tagset (English, 36 tags)
+  description: 'Penn Treebank POS tagset for English from Santorini (1990) and Marcus,
+    Santorini & Marcinkiewicz (1993). De-facto baseline for English POS tagging; consumed
+    by the WSJ corpus, Brown corpus PTB-style retags, and the bulk of contemporary
+    tagger evaluation. Citation: https://catalog.ldc.upenn.edu/docs/LDC95T7/cl93.html'
+  domain: general
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: PTB POS tagset'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Coordinating conjunction
+  typeKind: attribute-type
+  description: 'PTB POS tag CC: and, but, or, nor.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Cardinal number
+  typeKind: attribute-type
+  description: 'PTB POS tag CD: Numerical quantities expressed as digits or words.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Determiner
+  typeKind: attribute-type
+  description: 'PTB POS tag DT: Articles (a, the), demonstratives (this, those), and
+    indefinite determiners (every, no).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Existential there
+  typeKind: attribute-type
+  description: 'PTB POS tag EX: The existential `there` as in ''there is/are''.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Foreign word
+  typeKind: attribute-type
+  description: 'PTB POS tag FW: Word from a language other than English appearing
+    in the text.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Preposition or subordinating conjunction
+  typeKind: attribute-type
+  description: 'PTB POS tag IN: Includes prepositions (of, in) and subordinating conjunctions
+    (because, although, while).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Adjective
+  typeKind: attribute-type
+  description: 'PTB POS tag JJ: Hot, cold, blue.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Adjective, comparative
+  typeKind: attribute-type
+  description: 'PTB POS tag JJR: Hotter, colder, bluer.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Adjective, superlative
+  typeKind: attribute-type
+  description: 'PTB POS tag JJS: Hottest, coldest, bluest.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: List item marker
+  typeKind: attribute-type
+  description: 'PTB POS tag LS: Markers introducing items in a numbered or bulleted
+    list.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Modal
+  typeKind: attribute-type
+  description: 'PTB POS tag MD: can, could, will, would, may, might, must, shall,
+    should.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Noun, singular or mass
+  typeKind: attribute-type
+  description: 'PTB POS tag NN: dog, water, idea.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Noun, plural
+  typeKind: attribute-type
+  description: 'PTB POS tag NNS: dogs, ideas.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Proper noun, singular
+  typeKind: attribute-type
+  description: 'PTB POS tag NNP: John, London, IBM.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Proper noun, plural
+  typeKind: attribute-type
+  description: 'PTB POS tag NNPS: Johns, Londons, IBMs.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Predeterminer
+  typeKind: attribute-type
+  description: 'PTB POS tag PDT: all, both, half, when occurring before a determiner
+    (all the books).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Possessive ending
+  typeKind: attribute-type
+  description: 'PTB POS tag POS: ''s as in ''John''s book''.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Personal pronoun
+  typeKind: attribute-type
+  description: 'PTB POS tag PRP: I, you, he, she, it, we, they.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Possessive pronoun
+  typeKind: attribute-type
+  description: 'PTB POS tag PRP$: my, your, his, her, its, our, their.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Adverb
+  typeKind: attribute-type
+  description: 'PTB POS tag RB: quickly, very, never.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Adverb, comparative
+  typeKind: attribute-type
+  description: 'PTB POS tag RBR: faster, sooner.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Adverb, superlative
+  typeKind: attribute-type
+  description: 'PTB POS tag RBS: fastest, soonest.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Particle
+  typeKind: attribute-type
+  description: 'PTB POS tag RP: Particles in phrasal verbs (give up, take off).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Symbol
+  typeKind: attribute-type
+  description: 'PTB POS tag SYM: Mathematical or scientific symbols (=, +, %).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: to
+  typeKind: attribute-type
+  description: 'PTB POS tag TO: Infinitival to and the preposition to.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Interjection
+  typeKind: attribute-type
+  description: 'PTB POS tag UH: oh, well, ah.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Verb, base form
+  typeKind: attribute-type
+  description: 'PTB POS tag VB: go, write, eat.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Verb, past tense
+  typeKind: attribute-type
+  description: 'PTB POS tag VBD: went, wrote, ate.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Verb, gerund or present participle
+  typeKind: attribute-type
+  description: 'PTB POS tag VBG: going, writing, eating.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Verb, past participle
+  typeKind: attribute-type
+  description: 'PTB POS tag VBN: gone, written, eaten.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Verb, non-3rd person singular present
+  typeKind: attribute-type
+  description: 'PTB POS tag VBP: go, write, eat (with I/you/we/they).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Verb, 3rd person singular present
+  typeKind: attribute-type
+  description: 'PTB POS tag VBZ: goes, writes, eats.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Wh-determiner
+  typeKind: attribute-type
+  description: 'PTB POS tag WDT: which, what (as determiners).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Wh-pronoun
+  typeKind: attribute-type
+  description: 'PTB POS tag WP: who, whom, what (as pronouns).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Possessive wh-pronoun
+  typeKind: attribute-type
+  description: 'PTB POS tag WP$: whose.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://ptb-pos.ontology.layers.pub/pub.layers.ontology.ontology/ptb-pos
+  name: Wh-adverb
+  typeKind: attribute-type
+  description: 'PTB POS tag WRB: where, when, why, how.'
+  createdAt: '2026-05-06T00:00:00Z'

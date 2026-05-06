@@ -1,0 +1,345 @@
+collection: pub.layers.ontology.ontology
+record:
+  $type: pub.layers.ontology.ontology
+  name: ConceptNet 5 relations
+  description: 'Directed-relation vocabulary of ConceptNet 5.5/5.7 (Speer, Chin &
+    Havasi 2017). Used as the edgeType vocabulary for commonsense knowledge-graph
+    annotations on Layers. Citation: https://github.com/commonsense/conceptnet5/wiki/Relations'
+  domain: general
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: ConceptNet 5 relations'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Related to
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/RelatedTo: The most general relation. The two
+    terms are positively associated; the strongest, most-used relation.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Form of
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/FormOf: A is an inflected form of B; B is the
+    canonical form (lemma) of A.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Is a
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/IsA: A is a subtype or specific instance of
+    B (taxonomic inheritance).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Part of
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/PartOf: A is a part of B.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Has a
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/HasA: B belongs to A as a part or possession;
+    converse of PartOf.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Used for
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/UsedFor: A is used for B; the typical purpose
+    of A.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Capable of
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/CapableOf: Something that A can typically do.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: At location
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/AtLocation: A is a typical location for B.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Causes
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/Causes: A is the cause of B; A typically results
+    in B.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Has subevent
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/HasSubevent: A and B are events; B happens
+    as a sub-event of A.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Has first subevent
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/HasFirstSubevent: B is the typical first sub-event
+    of event A.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Has last subevent
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/HasLastSubevent: B is the typical last sub-event
+    of event A.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Has prerequisite
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/HasPrerequisite: Event A presupposes event
+    B (B happens before A and is necessary for A).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Has property
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/HasProperty: A has property B; A can be described
+    as B.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Motivated by goal
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/MotivatedByGoal: Someone does A because they
+    want result B.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Obstructed by
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/ObstructedBy: Goal A is prevented by obstacle
+    B.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Desires
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/Desires: A is a conscious entity that typically
+    wants B.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Created by
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/CreatedBy: B is the agent that creates A.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Synonym
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/Synonym: A and B have very similar meanings;
+    closely related to RelatedTo + similar surface form.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Antonym
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/Antonym: A and B are opposites along some salient
+    dimension.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Distinct from
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/DistinctFrom: A and B are different members
+    of the same conceptual category and cannot identify each other.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Derived from
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/DerivedFrom: A is morphologically derived from
+    B (often a stem or root).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Symbol of
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/SymbolOf: A symbolically represents B; A stands
+    for B (e.g. heart, love).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Defined as
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/DefinedAs: A and B overlap in meaning; B helps
+    define A.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Manner of
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/MannerOf: A is a specific way of doing B; A
+    is a sub-type of action B.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Located near
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/LocatedNear: A is typically found near B.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Has context
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/HasContext: A is typically used in context
+    B (a domain, jargon, or activity).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Similar to
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/SimilarTo: A is similar to B in some sense
+    (less restrictive than Synonym).'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Etymologically related to
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/EtymologicallyRelatedTo: A and B share a common
+    etymological origin.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Etymologically derived from
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/EtymologicallyDerivedFrom: A''s etymology traces
+    back to B.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Causes desire
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/CausesDesire: A causes a desire for B.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Made of
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/MadeOf: A is constituted out of material B.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: Receives action
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/ReceivesAction: B can typically be done to
+    A.'
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.ontology.typeDef
+record:
+  $type: pub.layers.ontology.typeDef
+  ontologyRef: at://conceptnet.ontology.layers.pub/pub.layers.ontology.ontology/conceptnet-relations
+  name: External URL
+  typeKind: relation-type
+  description: 'ConceptNet relation /r/ExternalURL: A links to an external URL B (provenance).'
+  createdAt: '2026-05-06T00:00:00Z'
