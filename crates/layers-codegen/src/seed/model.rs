@@ -38,6 +38,10 @@ use std::path::{Path, PathBuf};
 use anyhow::{Context, Result, anyhow};
 use serde::Deserialize;
 use serde_json::Value;
+// `Deserialize::deserialize(deserializer)` is required to drive
+// serde_yaml's per-document iterator; the generic-fn import below
+// brings the trait into scope for the call site in walk_account.
+use serde::Deserialize as _;
 
 /// One seed file, parsed.
 #[derive(Debug, Clone)]
@@ -211,19 +215,45 @@ fn walk_account(
         }
         let raw = std::fs::read_to_string(&path)
             .with_context(|| format!("reading {}", path.display()))?;
-        let parsed: RawSeed = serde_yaml::from_str(&raw)
-            .with_context(|| format!("parsing {} as seed YAML", path.display()))?;
+        if raw.trim().is_empty() {
+            // Empty batched file (e.g. converter ran with a limit
+            // that yielded zero records of a particular kind);
+            // skip silently.
+            continue;
+        }
         let relpath = path
             .strip_prefix(seeds_root)
             .map_err(|_| anyhow!("{} not under {}", path.display(), seeds_root.display()))?
             .to_path_buf();
-        out.push(SeedEntry {
-            account: account.to_owned(),
-            relpath,
-            collection: parsed.collection,
-            body: parsed.record,
-            changelog_summary: parsed.changelog.and_then(|c| c.summary),
-        });
+        // Multi-document YAML stream: one record per `---`-separated
+        // document. Single-record files (no `---` separator) parse
+        // as one document with the same code path. Used by the
+        // glazing-driven converter to ship hundreds of thousands of
+        // records as one batched file per (handle, kind) instead of
+        // one file per record.
+        for (i, doc) in serde_yaml::Deserializer::from_str(&raw).enumerate() {
+            let value = serde_yaml::Value::deserialize(doc).with_context(|| {
+                format!("parsing document #{i} of {} as YAML", path.display())
+            })?;
+            if value.is_null() {
+                // A trailing `---\n` produces a final null document
+                // — skip rather than fail.
+                continue;
+            }
+            let parsed: RawSeed = serde_yaml::from_value(value).with_context(|| {
+                format!(
+                    "interpreting document #{i} of {} as seed YAML",
+                    path.display()
+                )
+            })?;
+            out.push(SeedEntry {
+                account: account.to_owned(),
+                relpath: relpath.clone(),
+                collection: parsed.collection,
+                body: parsed.record,
+                changelog_summary: parsed.changelog.and_then(|c| c.summary),
+            });
+        }
     }
     Ok(())
 }
