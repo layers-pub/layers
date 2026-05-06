@@ -59,8 +59,15 @@ import argparse
 import json
 import pathlib
 import sys
-from collections.abc import Iterator
+from collections.abc import Iterable, Iterator
 from typing import Any
+
+# Make the repo's `lexicons/upstream/` Python package importable so
+# the convert_* functions can route through the panproto-lens-shaped
+# theory + lens modules instead of hand-rolling projection here.
+_REPO_LAYERS = pathlib.Path(__file__).resolve().parent.parent
+if str(_REPO_LAYERS) not in sys.path:
+    sys.path.insert(0, str(_REPO_LAYERS))
 
 # === Resource bring-up date is constant per converter run ============
 CREATED_AT = "2026-05-06T00:00:00Z"
@@ -134,6 +141,39 @@ def jsonl(path: pathlib.Path, limit: int | None = None) -> Iterator[dict[str, An
 
 def at_uri(handle: str, collection: str, rkey: str) -> str:
     return f"at://{handle}/{collection}/{rkey}"
+
+
+def _drain_seed_records(
+    records: Iterable[Any],
+    output_dir: pathlib.Path,
+    label: str,
+) -> dict[tuple[str, str], int]:
+    """Stream `SeedRecord` objects from a didactic lens into the
+    on-disk YAML sink.
+
+    Each record carries `(handle, kind, collection, body, summary)`.
+    We bucket by `(handle, kind)` and reuse `StreamWriter` so the
+    output mirrors the rest of this script's emission shape.
+    """
+    writers: dict[tuple[str, str], StreamWriter] = {}
+    counts: dict[tuple[str, str], int] = {}
+    for record in records:
+        handle = record.handle
+        kind = record.kind
+        key = (handle, kind)
+        writer = writers.get(key)
+        if writer is None:
+            writer = StreamWriter(output_dir, handle, kind)
+            writers[key] = writer
+        writer.emit(record.collection, dict(record.body), record.summary or None)
+        counts[key] = counts.get(key, 0) + 1
+    for writer in writers.values():
+        writer.close()
+    summary = ", ".join(
+        f"{n} {handle}:{kind}" for (handle, kind), n in sorted(counts.items())
+    )
+    print(f"  {label}: {summary or 'no records emitted'}")
+    return counts
 
 
 def _fn_definition_text(definition: Any) -> str:
@@ -914,255 +954,52 @@ def convert_uds(
 ) -> None:
     """Convert UDS 2.0 (Universal Decompositional Semantics) into Layers.
 
-    Source of truth:
+    Routes through the didactic theory + lens at
+    `lexicons/upstream/uds/`. The lens is a hand-authored
+    `dx.Mapping[UDSSplit, list[SeedRecord]]`, faithful to the
+    decomp data-model docs (`decomp/docs/source/data/*.rst`).
+    Provenance:
+
       decomp toolkit: github.com/decompositional-semantics-initiative/decomp
-      UDS 2.0 dataset: bundled at decomp/decomp/data/2.0/normalized/
-      License: CC BY-SA 4.0 (per decomp/decomp/data/LICENSE)
-      Citation: White, Aaron Steven et al. 2020. The Universal Decompositional
-        Semantics Dataset and Decomp Toolkit. LREC.
-
-    UDS sentences are NetworkX-style graph dumps with mixed
-    syntax-domain nodes (UD tokens) and semantics-domain nodes
-    (predicates, arguments) plus inter-domain edges. Each sentence
-    has six attribute layers: factuality, time, wordsense, genericity,
-    protoroles, event_structure.
-
-    Layers shapes:
-      * `ewt.eng.uds.corpus.layers.pub` — one corpus per UDS split (train/dev/test) + memberships
-      * `ewt.eng.uds.expression.layers.pub` — one expression per sentence (text reconstructed from syntax-domain `form` attrs)
-      * `ewt.eng.uds.segmentation.layers.pub` — token segmentation from UD-syntax nodes
-      * `ewt.eng.uds.annotation.layers.pub` — six annotation layers per sentence (factuality / time / wordsense / genericity / protoroles / event-structure)
-      * `ewt.eng.uds.graph.layers.pub` — semantic-graph edges (predicate→argument, head, etc.)
+      UDS 2.0 dataset: bundled at decomp/data/2.0/normalized/
+      License: CC BY-SA 4.0 (per decomp/data/LICENSE)
+      Citation: White, Aaron Steven et al. 2020. The Universal
+        Decompositional Semantics Dataset and Decomp Toolkit. LREC.
     """
-    bundle = decomp_dir / "decomp" / "data" / "2.0" / "normalized" / "sentence"
-    if not bundle.exists():
-        print(f"  uds: skipping (no decomp bundle at {bundle})")
+    bundle_dir = decomp_dir / "decomp" / "data" / "2.0" / "normalized" / "sentence"
+    if not bundle_dir.exists():
+        print(f"  uds: skipping (no decomp bundle at {bundle_dir})")
         return
 
-    handle_corpus = "ewt.eng.uds.corpus.layers.pub"
-    handle_expr = "ewt.eng.uds.expression.layers.pub"
-    handle_seg = "ewt.eng.uds.segmentation.layers.pub"
-    handle_ann = "ewt.eng.uds.annotation.layers.pub"
-    handle_graph = "ewt.eng.uds.graph.layers.pub"
+    from lexicons.upstream.uds.theory import UDSSplit
+    from lexicons.upstream.uds.lens import UDSToLayers
 
-    corpus_w = StreamWriter(output_dir, handle_corpus, "corpora")
-    membership_w = StreamWriter(output_dir, handle_corpus, "memberships")
-    expr_w = StreamWriter(output_dir, handle_expr, "expressions")
-    seg_w = StreamWriter(output_dir, handle_seg, "segmentations")
-    ann_w = StreamWriter(output_dir, handle_ann, "layers")
-    graph_w = StreamWriter(output_dir, handle_graph, "edges")
-
-    counts = {
-        "corpora": 0,
-        "memberships": 0,
-        "expressions": 0,
-        "segmentations": 0,
-        "annotation_layers": 0,
-        "graph_edges": 0,
-    }
-
-    UDS_LAYERS = ["factuality", "time", "wordsense", "genericity", "protoroles", "event_structure"]
-    splits = [("train", "uds-ewt-sentences-train-normalized.json"),
-              ("dev", "uds-ewt-sentences-dev-normalized.json"),
-              ("test", "uds-ewt-sentences-test-normalized.json")]
-
+    splits = [
+        ("train", "uds-ewt-sentences-train-normalized.json"),
+        ("dev", "uds-ewt-sentences-dev-normalized.json"),
+        ("test", "uds-ewt-sentences-test-normalized.json"),
+    ]
+    lens = UDSToLayers()
     n_processed = 0
+    all_records: list[Any] = []
     for split_name, fname in splits:
-        path = bundle / fname
+        path = bundle_dir / fname
         if not path.exists():
             print(f"  uds: skipping {split_name} ({path} not found)")
             continue
         with path.open("r", encoding="utf-8") as fp:
-            split_data = json.load(fp)
-
-        # One corpus per split, with the cited UDS provenance.
-        corpus_rkey = f"uds-ewt-{split_name}"
-        corpus_uri = at_uri(handle_corpus, "pub.layers.corpus.corpus", corpus_rkey)
-        corpus_w.emit(
-            "pub.layers.corpus.corpus",
-            {
-                "name": f"UDS 2.0 / UD-EWT — {split_name}",
-                "description": (
-                    f"Universal Decompositional Semantics 2.0 (normalized) over the "
-                    f"UD English Web Treebank, {split_name} split. Six UDS attribute "
-                    f"layers (factuality, time, wordsense, genericity, protoroles, "
-                    f"event_structure) over UD syntax. License: CC BY-SA 4.0. "
-                    f"Citation: White et al. 2020 LREC. http://decomp.io"
-                ),
-                "languages": [DEFAULT_LANGUAGE],
-                "license": "CC-BY-SA-4.0",
-            },
-            f"Initial publish: UDS 2.0 / UD-EWT {split_name}",
-        )
-        counts["corpora"] += 1
-
-        for sentence_id, graph in split_data.get("data", {}).items():
-            if limit is not None and n_processed >= limit:
-                break
-            n_processed += 1
-            nodes = graph.get("nodes", [])
-            # Filter syntax-domain nodes for the surface tokens. Sort
-            # by `position` so token order is stable.
-            syntax_nodes = sorted(
-                (n for n in nodes if n.get("domain") == "syntax" and n.get("type") == "token"),
-                key=lambda n: n.get("position", 0),
-            )
-            if not syntax_nodes:
-                continue
-            text = " ".join(n.get("form", "") for n in syntax_nodes)
-            expr_rkey = f"uds-{sentence_id}"
-            expr_uri = at_uri(handle_expr, "pub.layers.expression.expression", expr_rkey)
-
-            expr_w.emit(
-                "pub.layers.expression.expression",
-                {
-                    "id": sentence_id,
-                    "kind": "sentence",
-                    "text": text,
-                    "languages": [DEFAULT_LANGUAGE],
-                },
-                None,
-            )
-            counts["expressions"] += 1
-
-            # Token segmentation from syntax nodes.
-            tokens = []
-            offset = 0
-            for n in syntax_nodes:
-                form = n.get("form", "")
-                tokens.append({
-                    "text": form,
-                    "byteStart": offset,
-                    "byteEnd": offset + len(form.encode("utf-8")),
-                })
-                offset += len(form.encode("utf-8")) + 1
-            seg_rkey = f"uds-seg-{sentence_id}"
-            seg_uri = at_uri(handle_seg, "pub.layers.segmentation.segmentation", seg_rkey)
-            seg_w.emit(
-                "pub.layers.segmentation.segmentation",
-                {
-                    "expression": expr_uri,
-                    "tokenizations": [{"tokenizer": "ud-syntax", "tokens": tokens}],
-                    "languages": [DEFAULT_LANGUAGE],
-                },
-                None,
-            )
-            counts["segmentations"] += 1
-
-            # One annotation layer per UDS attribute layer, anchored
-            # on the relevant nodes.
-            for layer_name in UDS_LAYERS:
-                layer_annotations = []
-                for n in nodes:
-                    layer_attrs = n.get(layer_name)
-                    if not layer_attrs:
-                        continue
-                    # The position field is on syntax nodes; semantics
-                    # nodes carry a `frompredpatt` reference back to
-                    # their syntax node by position.
-                    pos = n.get("position")
-                    if pos is None:
-                        # Fall back to the first syntax token of the
-                        # semantics node's argument span if unavailable.
-                        pos = 0
-                    layer_annotations.append({
-                        "anchor": {
-                            "$type": "pub.layers.defs#tokenRef",
-                            "segmentation": seg_uri,
-                            "tokenization": 0,
-                            "token": max(0, int(pos) - 1),
-                        },
-                        "predicate": layer_name,
-                        "value": _serialise_uds_attrs(layer_attrs),
-                    })
-                if not layer_annotations:
-                    continue
-                ann_w.emit(
-                    "pub.layers.annotation.annotationLayer",
-                    {
-                        "expression": expr_uri,
-                        "kind": "token-tag",
-                        "subkind": layer_name,
-                        "formalism": f"uds-{layer_name}",
-                        "annotations": layer_annotations,
-                        "languages": [DEFAULT_LANGUAGE],
-                    },
-                    None,
-                )
-                counts["annotation_layers"] += 1
-
-            # Semantic-graph edges. The adjacency list contains the
-            # full directed graph; emit only the inter-domain
-            # predicate→argument edges (the meaningful semantic
-            # structure).
-            adjacency = graph.get("adjacency", [])
-            node_lookup = {idx: n for idx, n in enumerate(nodes)}
-            for src_idx, edges in enumerate(adjacency):
-                src = node_lookup.get(src_idx)
-                if not src:
-                    continue
-                src_id = src.get("id")
-                for edge in edges:
-                    tgt_idx = edge.get("id") if isinstance(edge, dict) else edge
-                    if not isinstance(tgt_idx, int):
-                        continue
-                    tgt = node_lookup.get(tgt_idx)
-                    if not tgt:
-                        continue
-                    tgt_id = tgt.get("id")
-                    src_domain = src.get("domain")
-                    tgt_domain = tgt.get("domain")
-                    if src_domain != "semantics" or tgt_domain != "semantics":
-                        continue
-                    edge_role = edge.get("frompredpatt") if isinstance(edge, dict) else None
-                    graph_w.emit(
-                        "pub.layers.graph.graphEdge",
-                        {
-                            "source": {
-                                "recordRef": expr_uri,
-                                "objectId": src_id,
-                            },
-                            "target": {
-                                "recordRef": expr_uri,
-                                "objectId": tgt_id,
-                            },
-                            "edgeType": "see-also",
-                            "label": str(edge_role) if edge_role else "uds-edge",
-                            "properties": {
-                                "entries": [
-                                    {"key": "uds_split", "value": split_name},
-                                    {"key": "uds_sentence", "value": sentence_id},
-                                ]
-                            },
-                        },
-                        None,
-                    )
-                    counts["graph_edges"] += 1
-
-            membership_w.emit(
-                "pub.layers.corpus.membership",
-                {"corpus": corpus_uri, "expression": expr_uri},
-                None,
-            )
-            counts["memberships"] += 1
-
+            raw = json.load(fp)
+        data = raw.get("data", {})
+        if limit is not None:
+            remaining = max(0, limit - n_processed)
+            data = dict(list(data.items())[:remaining])
+            n_processed += len(data)
+        split = UDSSplit(name=split_name, metadata=raw.get("metadata", {}), data=data)
+        all_records.extend(lens.forward(split))
         if limit is not None and n_processed >= limit:
             break
 
-    corpus_w.close()
-    membership_w.close()
-    expr_w.close()
-    seg_w.close()
-    ann_w.close()
-    graph_w.close()
-    print(f"  uds: {counts}")
-
-
-def _serialise_uds_attrs(attrs: Any) -> str:
-    """UDS layer attributes are nested dicts of {value, confidence}
-    triples. Serialise to a compact JSON string for the predicate
-    `value` field; the registry browser can re-parse on display."""
-    return json.dumps(attrs, sort_keys=True, separators=(",", ":"))
+    _drain_seed_records(all_records, output_dir, "uds")
 
 
 # ---------------------------------------------------------------------
@@ -1175,42 +1012,18 @@ def convert_childes(
     output_dir: pathlib.Path,
     limit: int | None,
 ) -> None:
-    """Convert CHILDES CHAT-format corpora into Layers.
+    """Convert CHILDES CHAT-format corpora into Layers via the
+    didactic theory + lens at `lexicons/upstream/childes/`.
 
-    Source of truth:
-      TalkBank: https://childes.talkbank.org/
-      Format: CHAT (TalkBank specification)
-      Parser: pylangacq (https://pylangacq.org/)
-      License: per-corpus; TalkBank Ground Rules require attribution
-        and disallow commercial redistribution by default. Most CHILDES
-        corpora ship under CC BY-NC-SA 3.0. The converter checks each
-        corpus's 0met.cdc metadata file and skips corpora whose license
-        forbids registry republishing.
+    `--childes-dir` points at a `<lang-iso639-3>/<corpus>/` tree of
+    CHAT files plus per-corpus `0met.cdc` metadata. Each corpus
+    directory becomes one `CHILDESCorpus` instance fed to the lens;
+    the lens emits per-corpus seed records on the
+    `<corpus>.<lang>.childes.<namespace>.layers.pub` family.
 
-    Filesystem layout the converter expects under `--childes-dir`:
-
-        <childes-dir>/
-          <lang-iso639-3>/
-            <corpus>/
-              0met.cdc            # CHILDES metadata (license, citation)
-              <session>.cha       # one CHAT transcript
-              <session>.cha
-              ...
-
-    Per corpus:
-      * one `<corpus>.<lang>.childes.corpus.layers.pub` account holding
-        the corpus + memberships;
-      * `<corpus>.<lang>.childes.expression.layers.pub` for utterances;
-      * `<corpus>.<lang>.childes.segmentation.layers.pub` for
-        whitespace + %xtokens-derived tokenisations;
-      * `<corpus>.<lang>.childes.annotation.layers.pub` for POS (%mor
-        tier) and dep (%gra tier) layers;
-      * `<corpus>.<lang>.childes.persona.layers.pub` for speakers
-        (Father, Mother, Child, Investigator) referenced by every
-        utterance via personaRef.
-
-    Volume: hundreds of corpora across ~30 languages, totalling several
-    million utterances. Run with `--limit N` for smoke testing.
+    The pylangacq parser turns each `.cha` file into a `CHATSession`;
+    per-corpus license is read from `0met.cdc` and gated against
+    `_license_compatible` before invoking the lens.
     """
     try:
         import pylangacq  # type: ignore[import-not-found]
@@ -1225,62 +1038,28 @@ def convert_childes(
         print(f"  childes: skipping (no input at {childes_dir})")
         return
 
-    counts = {
-        "corpora": 0,
-        "skipped_license": 0,
-        "memberships": 0,
-        "expressions": 0,
-        "segmentations": 0,
-        "annotation_layers": 0,
-        "personas": 0,
-    }
+    from lexicons.upstream.childes.theory import (
+        CHATSession,
+        CHATToken,
+        CHATUtterance,
+        CHILDESCorpus,
+    )
+    from lexicons.upstream.childes.lens import CHILDESToLayers
 
-    # Iterate <lang>/<corpus>/.
+    lens = CHILDESToLayers()
     n_processed = 0
-    for lang_dir in sorted(childes_dir.iterdir()):
-        if not lang_dir.is_dir():
-            continue
+    skipped_license = 0
+    all_records: list[Any] = []
+
+    for lang_dir in sorted(p for p in childes_dir.iterdir() if p.is_dir()):
         lang = lang_dir.name  # ISO 639-3 by convention
-        for corpus_dir in sorted(lang_dir.iterdir()):
-            if not corpus_dir.is_dir():
-                continue
-            corpus_slug = _slugify(corpus_dir.name)
+        for corpus_dir in sorted(p for p in lang_dir.iterdir() if p.is_dir()):
             license_text = _read_childes_license(corpus_dir)
             if not _license_compatible(license_text):
-                counts["skipped_license"] += 1
+                skipped_license += 1
                 continue
-
-            handle_prefix = f"{corpus_slug}.{lang}.childes"
-            corpus_w = StreamWriter(output_dir, f"{handle_prefix}.corpus.layers.pub", "corpus")
-            membership_w = StreamWriter(output_dir, f"{handle_prefix}.corpus.layers.pub", "memberships")
-            expr_w = StreamWriter(output_dir, f"{handle_prefix}.expression.layers.pub", "expressions")
-            seg_w = StreamWriter(output_dir, f"{handle_prefix}.segmentation.layers.pub", "segmentations")
-            ann_w = StreamWriter(output_dir, f"{handle_prefix}.annotation.layers.pub", "layers")
-            persona_w = StreamWriter(output_dir, f"{handle_prefix}.persona.layers.pub", "personas")
-
-            corpus_rkey = corpus_slug
-            corpus_uri = at_uri(
-                f"{handle_prefix}.corpus.layers.pub",
-                "pub.layers.corpus.corpus",
-                corpus_rkey,
-            )
-            corpus_w.emit(
-                "pub.layers.corpus.corpus",
-                {
-                    "name": f"CHILDES — {corpus_dir.name} ({lang})",
-                    "description": (
-                        f"CHILDES {corpus_dir.name} corpus ({lang}). License: "
-                        f"{license_text or 'TalkBank Ground Rules'}. Citation: see "
-                        f"corpus 0met.cdc."
-                    ),
-                    "languages": [lang],
-                    "license": license_text or "TalkBank-Ground-Rules",
-                },
-                f"Initial publish: CHILDES {corpus_dir.name} ({lang})",
-            )
-            counts["corpora"] += 1
-
-            seen_speakers: set[str] = set()
+            sessions: list[CHATSession] = []
+            participants_global: dict[str, str] = {}
             for cha_path in sorted(corpus_dir.glob("**/*.cha")):
                 if limit is not None and n_processed >= limit:
                     break
@@ -1289,109 +1068,58 @@ def convert_childes(
                 except Exception as exc:  # pylangacq raises a variety of parse errors
                     print(f"  childes: skip {cha_path.name} ({exc})")
                     continue
+                # pylangacq exposes utterances + per-utterance tokens.
+                utt_objs = reader.utterances()
                 tokens_per_utt = reader.tokens(by_files=False, by_utterances=True)
-                utt_strs = reader.utterances()  # list[Utterance]
-                for utt_idx, utt in enumerate(utt_strs):
+                participants = {
+                    code: info.get("name", code)
+                    for code, info in (reader.headers() or {}).get("Participants", {}).items()
+                } if hasattr(reader, "headers") else {}
+                participants_global.update(participants)
+                utterances: list[CHATUtterance] = []
+                for utt_idx, utt in enumerate(utt_objs):
                     if limit is not None and n_processed >= limit:
                         break
                     n_processed += 1
                     text = utt.tiers.get("CHAT", "") if hasattr(utt, "tiers") else str(utt)
                     speaker = getattr(utt, "participant", None) or "UNK"
-                    expr_rkey = f"{corpus_slug}-{cha_path.stem}-{utt_idx}"
-                    expr_uri = at_uri(
-                        f"{handle_prefix}.expression.layers.pub",
-                        "pub.layers.expression.expression",
-                        expr_rkey,
-                    )
-                    expr_w.emit(
-                        "pub.layers.expression.expression",
-                        {
-                            "id": expr_rkey,
-                            "kind": "utterance",
-                            "text": text,
-                            "languages": [lang],
-                        },
-                        None,
-                    )
-                    counts["expressions"] += 1
-
-                    if speaker not in seen_speakers:
-                        seen_speakers.add(speaker)
-                        persona_w.emit(
-                            "pub.layers.persona.persona",
-                            {
-                                "name": speaker,
-                                "languages": [lang],
-                                "description": f"CHILDES participant role {speaker} from {corpus_dir.name}.",
-                            },
-                            None,
-                        )
-                        counts["personas"] += 1
-
-                    # Tokenisation: whitespace from the cleaned %tok or
-                    # the bare utterance text.
                     raw_tokens = tokens_per_utt[utt_idx] if utt_idx < len(tokens_per_utt) else []
+                    chat_tokens: list[CHATToken] = []
                     if isinstance(raw_tokens, list):
-                        tokens = []
-                        offset = 0
                         for tok in raw_tokens:
-                            if not isinstance(tok, str):
-                                tok = getattr(tok, "word", str(tok))
-                            tokens.append({
-                                "text": tok,
-                                "byteStart": offset,
-                                "byteEnd": offset + len(tok.encode("utf-8")),
-                            })
-                            offset += len(tok.encode("utf-8")) + 1
-                        if tokens:
-                            seg_w.emit(
-                                "pub.layers.segmentation.segmentation",
-                                {
-                                    "expression": expr_uri,
-                                    "tokenizations": [{"tokenizer": "chat-%tok", "tokens": tokens}],
-                                    "languages": [lang],
-                                },
-                                None,
-                            )
-                            counts["segmentations"] += 1
-
-                    membership_w.emit(
-                        "pub.layers.corpus.membership",
-                        {"corpus": corpus_uri, "expression": expr_uri},
-                        None,
-                    )
-                    counts["memberships"] += 1
-
-                if limit is not None and n_processed >= limit:
-                    break
-
-            corpus_w.close()
-            membership_w.close()
-            expr_w.close()
-            seg_w.close()
-            ann_w.close()
-            persona_w.close()
-
+                            word = tok if isinstance(tok, str) else getattr(tok, "word", str(tok))
+                            chat_tokens.append(CHATToken(word=word))
+                    utterances.append(CHATUtterance(
+                        participant=speaker,
+                        text=text,
+                        tokens=tuple(chat_tokens),
+                        tiers=dict(getattr(utt, "tiers", {}) or {}),
+                    ))
+                sessions.append(CHATSession(
+                    path=str(cha_path.relative_to(childes_dir)),
+                    languages=(lang,),
+                    participants=participants,
+                    utterances=tuple(utterances),
+                    headers={},
+                ))
+            if not sessions:
+                continue
+            corpus = CHILDESCorpus(
+                name=corpus_dir.name,
+                language=lang,
+                license=license_text or "TalkBank-Ground-Rules",
+                sessions=tuple(sessions),
+                metadata={},
+            )
+            all_records.extend(lens.forward(corpus))
             if limit is not None and n_processed >= limit:
                 break
         if limit is not None and n_processed >= limit:
             break
 
-    print(f"  childes: {counts}")
-
-
-def _slugify(name: str) -> str:
-    """CHILDES corpus directory names → DNS-safe leaf slugs."""
-    out = []
-    for ch in name.lower():
-        if ch.isalnum():
-            out.append(ch)
-        elif ch in "-_ ":
-            out.append("-")
-    slug = "".join(out).strip("-")
-    while "--" in slug:
-        slug = slug.replace("--", "-")
-    return slug or "corpus"
+    if skipped_license:
+        print(f"  childes: skipped {skipped_license} corpora on license gate")
+    _drain_seed_records(all_records, output_dir, "childes")
 
 
 def _read_childes_license(corpus_dir: pathlib.Path) -> str:
@@ -1431,6 +1159,154 @@ def _license_compatible(license_text: str) -> bool:
     return not any(k in lowered for k in bad_keywords)
 
 
+# ---------------------------------------------------------------------
+# AMR / UCCA / PMB / UMR conversion
+#
+# Each of these resources has a hand-authored didactic theory + lens
+# at `lexicons/upstream/<name>/`. The theory faithfully encodes the
+# upstream community's published data model; the lens is the
+# Mapping that emits Layers SeedRecords. The *parser* from each
+# resource's on-disk file format (PENMAN for AMR, XML for UCCA,
+# CLF/sbn for PMB, formatted-text for UMR) into the typed bundle
+# is the open piece — those parsers consume LDC release tarballs
+# whose access requires LDC credentials. Operators with the
+# release tarball plug in a parser that returns the typed bundle
+# and the lens handles the rest.
+# ---------------------------------------------------------------------
+
+
+def convert_amr(
+    amr_dir: pathlib.Path | None,
+    output_dir: pathlib.Path,
+    limit: int | None,
+) -> None:
+    """Convert AMR (1.0 / 2.0 / 3.0) into Layers via the lens at
+    `lexicons/upstream/amr/`. PENMAN parsing reads `.txt` AMR files
+    in the LDC release format; PropBank frameset concepts surface
+    as `same-as` cross-reference edges on `semlink.graph.layers.pub`.
+    """
+    if amr_dir is None or not amr_dir.exists():
+        print("  amr: skipping (pass --amr-dir <LDC release tree> to convert)")
+        return
+
+    try:
+        import penman  # type: ignore[import-not-found]
+    except ImportError:
+        print("  amr: skipping — install `penman` to enable AMR conversion: pip install penman")
+        return
+
+    from lexicons.upstream.amr.theory import AMRBundle, AMREdge, AMRGraph, AMRNode
+    from lexicons.upstream.amr.lens import AMRToLayers, PROPBANK_FRAMESET_RE
+
+    release_marker = amr_dir / "release.txt"
+    release = release_marker.read_text(encoding="utf-8").strip() if release_marker.exists() else "amr-3.0"
+    graphs: list[AMRGraph] = []
+    n = 0
+    for txt in sorted(amr_dir.glob("**/*.txt")):
+        for graph in penman.iterdecode(txt.read_text(encoding="utf-8")):
+            if limit is not None and n >= limit:
+                break
+            n += 1
+            nodes = [
+                AMRNode(
+                    variable=v,
+                    concept=str(c),
+                    is_constant=False,
+                    is_frameset=bool(PROPBANK_FRAMESET_RE.match(str(c))),
+                )
+                for v, _, c in graph.instances()
+            ]
+            edges = [
+                AMREdge(source_variable=src, role=role, target_variable=tgt)
+                for src, role, tgt in graph.edges()
+            ]
+            edges += [
+                AMREdge(source_variable=src, role=role, target_constant=str(tgt))
+                for src, role, tgt in graph.attributes()
+            ]
+            graphs.append(AMRGraph(
+                id=str(graph.metadata.get("id", f"amr-{n}")),
+                snt=graph.metadata.get("snt", ""),
+                nodes=tuple(nodes),
+                edges=tuple(edges),
+                root_variable=graph.top,
+                metadata=dict(graph.metadata),
+            ))
+        if limit is not None and n >= limit:
+            break
+
+    bundle = AMRBundle(
+        release=release,  # type: ignore[arg-type]
+        citation="Banarescu et al. 2013. Abstract Meaning Representation for Sembanking. LAW 7.",
+        graphs=tuple(graphs),
+    )
+    _drain_seed_records(AMRToLayers().forward(bundle), output_dir, "amr")
+
+
+def convert_ucca(
+    ucca_dir: pathlib.Path | None,
+    output_dir: pathlib.Path,
+    limit: int | None,
+) -> None:
+    """Convert UCCA passages into Layers via the lens at
+    `lexicons/upstream/ucca/`. UCCA distributes XML passages
+    organised by distribution (english-wiki, english-20k, french-20k,
+    german-20k); the lens handles per-distribution handle splaying.
+    """
+    if ucca_dir is None or not ucca_dir.exists():
+        print("  ucca: skipping (pass --ucca-dir <UCCA release tree> to convert)")
+        return
+    print(
+        "  ucca: lens ready at lexicons/upstream/ucca/lens.py; XML "
+        "parser → UCCABundle is the operator-side piece. Implement "
+        "the parser and feed UCCABundle to UCCAToLayers().forward(...) "
+        "to emit seeds."
+    )
+
+
+def convert_pmb(
+    pmb_dir: pathlib.Path | None,
+    output_dir: pathlib.Path,
+    limit: int | None,
+) -> None:
+    """Convert PMB (Parallel Meaning Bank) into Layers via the lens
+    at `lexicons/upstream/pmb/`. PMB distributes per-tier (gold /
+    silver / bronze) per-language CLF (clausal-form DRS) files;
+    English Concept-clauses linked to WordNet senses surface as
+    cross-references on `semlink.graph.layers.pub`.
+    """
+    if pmb_dir is None or not pmb_dir.exists():
+        print("  pmb: skipping (pass --pmb-dir <PMB release tree> to convert)")
+        return
+    print(
+        "  pmb: lens ready at lexicons/upstream/pmb/lens.py; CLF "
+        "parser → PMBBundle is the operator-side piece. Implement "
+        "the parser (one document = one .sbn or .clf file) and feed "
+        "PMBBundle to PMBToLayers().forward(...) to emit seeds."
+    )
+
+
+def convert_umr(
+    umr_dir: pathlib.Path | None,
+    output_dir: pathlib.Path,
+    limit: int | None,
+) -> None:
+    """Convert UMR (Uniform Meaning Representation) into Layers via
+    the lens at `lexicons/upstream/umr/`. UMR distributes per-language
+    sentence-and-document files; English bundles' frameset concepts
+    surface as `same-as` cross-references to PropBank, mirroring AMR.
+    """
+    if umr_dir is None or not umr_dir.exists():
+        print("  umr: skipping (pass --umr-dir <UMR release tree> to convert)")
+        return
+    print(
+        "  umr: lens ready at lexicons/upstream/umr/lens.py; UMR "
+        "release-format parser → UMRBundle is the operator-side "
+        "piece. Implement the parser and feed UMRBundle to "
+        "UMRToLayers().forward(...) to emit seeds."
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -1443,6 +1319,10 @@ def main() -> int:
             "semlink",
             "uds",
             "childes",
+            "amr",
+            "ucca",
+            "pmb",
+            "umr",
             "all",
         ),
         default="all",
@@ -1463,6 +1343,30 @@ def main() -> int:
         type=pathlib.Path,
         default=None,
         help="Path to a local mirror of CHILDES CHAT-format data, organised as <lang>/<corpus>/. Required for the childes resource.",
+    )
+    parser.add_argument(
+        "--amr-dir",
+        type=pathlib.Path,
+        default=None,
+        help="Path to an LDC AMR release tree (LDC2014T12 / LDC2017T10 / LDC2020T02). Required for the amr resource.",
+    )
+    parser.add_argument(
+        "--ucca-dir",
+        type=pathlib.Path,
+        default=None,
+        help="Path to a UCCA release tree (english-wiki / english-20k / french-20k / german-20k). Required for the ucca resource.",
+    )
+    parser.add_argument(
+        "--pmb-dir",
+        type=pathlib.Path,
+        default=None,
+        help="Path to a PMB (Parallel Meaning Bank) release tree organised by language + tier. Required for the pmb resource.",
+    )
+    parser.add_argument(
+        "--umr-dir",
+        type=pathlib.Path,
+        default=None,
+        help="Path to a UMR (Uniform Meaning Representation) release tree. Required for the umr resource.",
     )
     parser.add_argument(
         "--output-dir",
@@ -1487,19 +1391,25 @@ def main() -> int:
         print(f"  (limit={args.limit} records per resource)")
 
     resources = (
-        ["propbank", "verbnet", "framenet", "wordnet", "semlink", "uds", "childes"]
+        [
+            "propbank", "verbnet", "framenet", "wordnet", "semlink",
+            "uds", "childes", "amr", "ucca", "pmb", "umr",
+        ]
         if args.resource == "all"
         else [args.resource]
     )
+    operator_dirs = {
+        "uds": args.decomp_dir,
+        "childes": args.childes_dir,
+        "amr": args.amr_dir,
+        "ucca": args.ucca_dir,
+        "pmb": args.pmb_dir,
+        "umr": args.umr_dir,
+    }
     for r in resources:
         fn = globals()[f"convert_{r}"]
-        if r == "uds":
-            fn(args.decomp_dir, args.output_dir, args.limit)
-        elif r == "childes":
-            if args.childes_dir is None:
-                print("  childes: skipping (pass --childes-dir to convert)")
-                continue
-            fn(args.childes_dir, args.output_dir, args.limit)
+        if r in operator_dirs:
+            fn(operator_dirs[r], args.output_dir, args.limit)
         else:
             fn(args.input_dir, args.output_dir, args.limit)
 
