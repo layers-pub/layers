@@ -27,6 +27,7 @@ use serde_json::Value;
 mod frontend;
 mod lenses;
 mod lexicon_jsonschema;
+mod seed;
 
 fn to_camel(snake: &str) -> String {
     let mut out = String::with_capacity(snake.len());
@@ -102,6 +103,7 @@ fn run() -> Result<ExitCode> {
         "openapi" => cmd_openapi(&routes_spec, &openapi_out, false),
         "frontend" => frontend::cmd_frontend(&repo_root, false),
         "lenses" => lenses::cmd_lenses(&repo_root, false),
+        "seed" => seed::run(&repo_root, &args[1..]),
         "list" => {
             list_lexicons(&lexicons_dir)?;
             Ok(ExitCode::SUCCESS)
@@ -763,6 +765,6 @@ fn print_help() {
     eprintln!(
         "layers-codegen — emit Rust + TypeScript bindings for pub.layers.* lexicons\n\n\
          USAGE:\n    layers-codegen <SUBCOMMAND>\n\n\
-         SUBCOMMANDS:\n    generate    Emit every codegen artefact (records + schema + routes + openapi + frontend)\n    check       Drift gate (non-zero exit if disk differs)\n    routes      Emit just the orchestrator route table\n    openapi     Emit just web/lib/api/openapi.json\n    frontend    Emit web/lib/api/generated/queries/, web/lib/lenses/generated/, and refresh schema.generated.ts\n    lenses      Compile lens DSL specs into dev.panproto.schema.lens record bodies\n    list        Print every pub.layers.* NSID found on disk\n    help        Show this message\n"
+         SUBCOMMANDS:\n    generate    Emit every codegen artefact (records + schema + routes + openapi + frontend)\n    check       Drift gate (non-zero exit if disk differs)\n    routes      Emit just the orchestrator route table\n    openapi     Emit just web/lib/api/openapi.json\n    frontend    Emit web/lib/api/generated/queries/, web/lib/lenses/generated/, and refresh schema.generated.ts\n    lenses      Compile lens DSL specs into dev.panproto.schema.lens record bodies\n    seed        Manage canonical-content seeds for the registry PDS (`seed help` for subcommands)\n    list        Print every pub.layers.* NSID found on disk\n    help        Show this message\n"
     );
 }
