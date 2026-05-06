@@ -675,11 +675,216 @@ def convert_wordnet(
 # ---------------------------------------------------------------------
 
 
+def convert_semlink(
+    input_dir: pathlib.Path,
+    output_dir: pathlib.Path,
+    limit: int | None,
+) -> None:
+    """Convert glazing's xref index into SemLink-derived graphEdges.
+
+    The xref index lives at `~/.cache/glazing/xrefs/xref_index.json`
+    (different from the converted JSONL cache; same parent though).
+    Two link kinds make up the bulk:
+
+    * PropBank rolelinks — per-roleset role-level mapping into
+      VerbNet thematic roles + FrameNet frame elements.
+    * PropBank lexlinks — per-roleset class-level mapping into
+      VerbNet classes + FrameNet frames + WordNet senses, with
+      confidence scores + provenance src.
+    * VerbNet wn_mappings — VerbNet member → WordNet sense.
+
+    All edges land on `semlink.graph.layers.pub`. AT-URIs target
+    typeDefs / lemma entries on the matching dataset's per-namespace
+    subaccount.
+    """
+    # glazing keeps the xref index under ~/.cache/glazing/xrefs/
+    # while the converted JSONL lives under
+    # ~/.local/share/glazing/converted/. Check both locations.
+    candidates = [
+        input_dir.parent / "xrefs" / "xref_index.json",
+        input_dir / "xrefs" / "xref_index.json",
+        pathlib.Path.home() / ".cache" / "glazing" / "xrefs" / "xref_index.json",
+    ]
+    xref_path = next((c for c in candidates if c.exists()), candidates[0])
+    if not xref_path.exists():
+        print(f"  semlink: skipping (no xref_index.json under {xref_path.parent})")
+        return
+
+    with xref_path.open("r", encoding="utf-8") as fp:
+        xref = json.load(fp)
+
+    edge_handle = "semlink.graph.layers.pub"
+    edge_collection = "pub.layers.graph.graphEdge"
+    edge_w = StreamWriter(output_dir, edge_handle, "edges")
+
+    # AT-URI builders for sibling subaccount typeDefs/entries.
+    def vn_class_uri(class_id: str) -> str:
+        return at_uri(
+            "verbnet.ontology.layers.pub",
+            "pub.layers.ontology.typeDef",
+            f"class-{class_id}".replace(".", "-"),
+        )
+
+    def fn_frame_uri_by_name(frame_name: str) -> str:
+        # FrameNet frames are keyed by integer id in the converter,
+        # but xref_index references by name. Cross-resource consumers
+        # resolve via a property lookup since we don't have the
+        # frame-name → frame-id map here without re-loading framenet.
+        # Carry the name as `properties.framenet_frame_name`; the
+        # registry browser does the lookup at query time.
+        return at_uri(
+            "framenet.ontology.layers.pub",
+            "pub.layers.ontology.typeDef",
+            f"frame-by-name:{frame_name}",
+        )
+
+    def pb_roleset_uri(rs_id: str) -> str:
+        return at_uri(
+            "propbank.ontology.layers.pub",
+            "pub.layers.ontology.typeDef",
+            f"roleset-{rs_id}".replace(".", "-"),
+        )
+
+    def wn_sense_uri(sense_key: str) -> str:
+        return at_uri(
+            "pwn.eng.wordnet.resource.layers.pub",
+            "pub.layers.resource.entry",
+            f"sense-{sense_key}".replace(":", "-").replace("%", "-"),
+        )
+
+    edges = 0
+    # PropBank rolelinks: PB role → VN/FN role.
+    for rs_id, ref in (xref.get("propbank_refs") or {}).items():
+        for link in ref.get("rolelinks", []):
+            if limit is not None and edges >= limit:
+                break
+            resource = link.get("resource", "")
+            class_name = link.get("class_name", "")
+            role = link.get("role", "")
+            if not class_name or not role:
+                continue
+            if resource == "VerbNet":
+                target = vn_class_uri(class_name)
+                edge_type = "see-also"
+                label = f"role={role}"
+            elif resource == "FrameNet":
+                target = fn_frame_uri_by_name(class_name)
+                edge_type = "see-also"
+                label = f"fe={role}"
+            else:
+                continue
+            edge_w.emit(
+                edge_collection,
+                {
+                    "source": {"recordRef": pb_roleset_uri(rs_id)},
+                    "target": {"recordRef": target},
+                    "edgeType": edge_type,
+                    "label": label,
+                    "properties": {
+                        "entries": [
+                            {"key": "src_resource", "value": "PropBank"},
+                            {"key": "src_kind", "value": "rolelink"},
+                            {"key": "tgt_resource", "value": resource},
+                            {"key": "tgt_role", "value": role},
+                            {"key": "tgt_version", "value": link.get("version", "")},
+                        ]
+                    },
+                },
+                None,
+            )
+            edges += 1
+        if limit is not None and edges >= limit:
+            break
+
+    # PropBank lexlinks: PB roleset → VN class / FN frame / WN sense.
+    for rs_id, ref in (xref.get("propbank_refs") or {}).items():
+        for link in ref.get("lexlinks", []):
+            if limit is not None and edges >= limit:
+                break
+            resource = link.get("resource", "")
+            class_name = link.get("class_name", "")
+            confidence = link.get("confidence")
+            src = link.get("src", "")
+            if not class_name:
+                continue
+            if resource == "VerbNet":
+                target = vn_class_uri(class_name)
+            elif resource == "FrameNet":
+                target = fn_frame_uri_by_name(class_name)
+            elif resource == "WordNet":
+                target = wn_sense_uri(class_name)
+            else:
+                continue
+            confidence_int = (
+                int(round(confidence * 1000)) if isinstance(confidence, (int, float)) else None
+            )
+            body = {
+                "source": {"recordRef": pb_roleset_uri(rs_id)},
+                "target": {"recordRef": target},
+                "edgeType": "same-as",
+                "properties": {
+                    "entries": [
+                        {"key": "src_resource", "value": "PropBank"},
+                        {"key": "src_kind", "value": "lexlink"},
+                        {"key": "tgt_resource", "value": resource},
+                        {"key": "provenance", "value": src},
+                        {"key": "tgt_version", "value": link.get("version", "")},
+                    ]
+                },
+            }
+            if confidence_int is not None:
+                body["confidence"] = confidence_int
+            edge_w.emit(edge_collection, body, None)
+            edges += 1
+        if limit is not None and edges >= limit:
+            break
+
+    # VerbNet → WordNet sense links.
+    def vn_member_uri(class_id: str, lemma: str) -> str:
+        return at_uri(
+            "verbnet.resource.layers.pub",
+            "pub.layers.resource.entry",
+            f"member-{class_id}-{lemma}".replace(".", "-"),
+        )
+
+    for vn_key, ref in (xref.get("verbnet_refs") or {}).items():
+        if limit is not None and edges >= limit:
+            break
+        class_id = ref.get("class_id") or ""
+        lemma = ref.get("lemma") or ""
+        for wn in ref.get("wn_mappings", []):
+            if limit is not None and edges >= limit:
+                break
+            sense_key = wn.get("sense_key")
+            if not sense_key:
+                continue
+            edge_w.emit(
+                edge_collection,
+                {
+                    "source": {"recordRef": vn_member_uri(class_id, lemma)},
+                    "target": {"recordRef": wn_sense_uri(sense_key)},
+                    "edgeType": "same-as",
+                    "properties": {
+                        "entries": [
+                            {"key": "src_resource", "value": "VerbNet"},
+                            {"key": "src_kind", "value": "wn_mapping"},
+                            {"key": "tgt_resource", "value": "WordNet"},
+                            {"key": "tgt_pos", "value": wn.get("pos", "")},
+                        ]
+                    },
+                },
+                None,
+            )
+            edges += 1
+
+    print(f"  semlink: {{'edges': {edge_w.close()}}}")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--resource",
-        choices=("propbank", "verbnet", "framenet", "wordnet", "all"),
+        choices=("propbank", "verbnet", "framenet", "wordnet", "semlink", "all"),
         default="all",
     )
     parser.add_argument(
@@ -710,7 +915,7 @@ def main() -> int:
         print(f"  (limit={args.limit} records per resource)")
 
     resources = (
-        ["propbank", "verbnet", "framenet", "wordnet"]
+        ["propbank", "verbnet", "framenet", "wordnet", "semlink"]
         if args.resource == "all"
         else [args.resource]
     )

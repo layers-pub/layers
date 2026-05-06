@@ -1,0 +1,499 @@
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s01
+  kind: sentence
+  text: The horse raced past the barn fell .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s02
+  kind: sentence
+  text: While Anna dressed the baby cried .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s03
+  kind: sentence
+  text: Colorless green ideas sleep furiously .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s04
+  kind: sentence
+  text: I saw the man with the telescope .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s05
+  kind: sentence
+  text: Time flies like an arrow .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s06
+  kind: sentence
+  text: Buffalo buffalo Buffalo buffalo buffalo buffalo Buffalo buffalo .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s07
+  kind: sentence
+  text: Every farmer who owns a donkey beats it .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s08
+  kind: sentence
+  text: John seems to like Mary .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s09
+  kind: sentence
+  text: It is easy to please John .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s10
+  kind: sentence
+  text: The book that John read was interesting .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s11
+  kind: sentence
+  text: We had a great time at the conference yesterday .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s12
+  kind: sentence
+  text: Please send me the file when you have a moment .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s13
+  kind: sentence
+  text: Thanks for sharing the article ; I found it very helpful .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s14
+  kind: sentence
+  text: The new restaurant downtown serves excellent pasta .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s15
+  kind: sentence
+  text: She finished her PhD in computational linguistics last month .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s16
+  kind: sentence
+  text: Can you recommend a good textbook on syntax ?
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s17
+  kind: sentence
+  text: The package arrived earlier than expected .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s18
+  kind: sentence
+  text: It seems like the meeting was rescheduled to Thursday .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s19
+  kind: sentence
+  text: His comments at the panel raised some interesting questions .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s20
+  kind: sentence
+  text: The data clearly support our original hypothesis .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s21
+  kind: sentence
+  text: I' ll be out of town from Friday through Sunday .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s22
+  kind: sentence
+  text: We need to clarify the requirements before continuing .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s23
+  kind: sentence
+  text: The team has been working on this feature for weeks .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s24
+  kind: sentence
+  text: Did you watch the lecture recording from last week ?
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s25
+  kind: sentence
+  text: The proposal addresses several long-standing concerns .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s26
+  kind: sentence
+  text: Most participants reported high satisfaction with the experiment .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s27
+  kind: sentence
+  text: She presented her findings at the workshop on Tuesday .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s28
+  kind: sentence
+  text: The agreement scores were higher than the baseline by a wide margin .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s29
+  kind: sentence
+  text: Several reviewers requested additional clarifications .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s30
+  kind: sentence
+  text: The corpus contains roughly two million tokens of news text .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s31
+  kind: sentence
+  text: We collected ratings from 240 native English speakers .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s32
+  kind: sentence
+  text: His paper proposes a novel decoding strategy for transformer models .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s33
+  kind: sentence
+  text: Could you double-check the citation on page seven ?
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s34
+  kind: sentence
+  text: The annotation guidelines are available on the project website .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s35
+  kind: sentence
+  text: This dataset has been used in dozens of subsequent studies .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s36
+  kind: sentence
+  text: Their replication failed to confirm the original effect .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s37
+  kind: sentence
+  text: We' re looking for reviewers familiar with formal semantics .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s38
+  kind: sentence
+  text: The conference will take place online next March .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s39
+  kind: sentence
+  text: It depends on whether the budget gets approved this quarter .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s40
+  kind: sentence
+  text: She defended her thesis with distinction last week .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s41
+  kind: sentence
+  text: The recording quality was unfortunately quite poor .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s42
+  kind: sentence
+  text: Most of the disagreements concerned tokenisation choices .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s43
+  kind: sentence
+  text: Your point about polysemy is well-taken .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s44
+  kind: sentence
+  text: The argument hinges on a controversial assumption .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s45
+  kind: sentence
+  text: Many of these constructions are absent from the training data .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s46
+  kind: sentence
+  text: The third reviewer recommended major revisions .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s47
+  kind: sentence
+  text: We reran the analysis with the updated annotations .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s48
+  kind: sentence
+  text: Please cite the original paper as well .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s49
+  kind: sentence
+  text: The talk lasted longer than scheduled but was excellent .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.expression.expression
+record:
+  $type: pub.layers.expression.expression
+  id: s50
+  kind: sentence
+  text: Our results align with previous findings in the literature .
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'

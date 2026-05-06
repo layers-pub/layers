@@ -30,10 +30,7 @@ pub fn run(repo_root: &Path, args: &[String]) -> Result<ExitCode> {
             list(repo_root)
         }
         "publish" => publish::run(repo_root, &args[1..]),
-        "check" => {
-            eprintln!("seed check not yet implemented");
-            Ok(ExitCode::from(2))
-        }
+        "check" => publish::check(repo_root, &args[1..]),
         "help" | "--help" | "-h" => {
             help();
             Ok(ExitCode::SUCCESS)

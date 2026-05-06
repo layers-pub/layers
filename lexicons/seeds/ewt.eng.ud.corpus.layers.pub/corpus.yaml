@@ -1,0 +1,14 @@
+collection: pub.layers.corpus.corpus
+record:
+  $type: pub.layers.corpus.corpus
+  name: UD English Web Treebank — Layers demo (50 sentences)
+  description: Curated 50-sentence demo corpus combining ten canonical linguistic-example
+    sentences (garden paths, structural ambiguity, scope, presupposition) with forty
+    short EWT-genre sentences. POS + dep annotations follow UD v2. Authored as the
+    registry's getting-started corpus; users fork into their own PDS to start a project.
+  languages:
+  - eng
+  license: CC-BY-SA-4.0
+  createdAt: '2026-05-06T00:00:00Z'
+changelog:
+  summary: 'Initial publish: UD-EWT 50-sentence demo corpus'

@@ -1,0 +1,4649 @@
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s01
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s01
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: det
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-det
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s01
+      tokenization: 0
+      tokens:
+      - 1
+      - 6
+    predicate: nsubj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-nsubj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s01
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: acl
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-acl
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s01
+      tokenization: 0
+      tokens:
+      - 3
+      - 5
+    predicate: case
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-case
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s01
+      tokenization: 0
+      tokens:
+      - 4
+      - 5
+    predicate: det
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-det
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s01
+      tokenization: 0
+      tokens:
+      - 5
+      - 2
+    predicate: obl
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-obl
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s01
+      tokenization: 0
+      tokens:
+      - 6
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s01
+      tokenization: 0
+      tokens:
+      - 7
+      - 6
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s02
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s02
+      tokenization: 0
+      tokens:
+      - 0
+      - 2
+    predicate: mark
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-mark
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s02
+      tokenization: 0
+      tokens:
+      - 1
+      - 2
+    predicate: nsubj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-nsubj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s02
+      tokenization: 0
+      tokens:
+      - 2
+      - 5
+    predicate: advcl
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-advcl
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s02
+      tokenization: 0
+      tokens:
+      - 3
+      - 4
+    predicate: det
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-det
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s02
+      tokenization: 0
+      tokens:
+      - 4
+      - 5
+    predicate: nsubj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-nsubj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s02
+      tokenization: 0
+      tokens:
+      - 5
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s02
+      tokenization: 0
+      tokens:
+      - 6
+      - 5
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s03
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s03
+      tokenization: 0
+      tokens:
+      - 0
+      - 2
+    predicate: amod
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-amod
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s03
+      tokenization: 0
+      tokens:
+      - 1
+      - 2
+    predicate: amod
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-amod
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s03
+      tokenization: 0
+      tokens:
+      - 2
+      - 3
+    predicate: nsubj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-nsubj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s03
+      tokenization: 0
+      tokens:
+      - 3
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s03
+      tokenization: 0
+      tokens:
+      - 4
+      - 3
+    predicate: advmod
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-advmod
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s03
+      tokenization: 0
+      tokens:
+      - 5
+      - 3
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s04
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s04
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: nsubj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-nsubj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s04
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s04
+      tokenization: 0
+      tokens:
+      - 2
+      - 3
+    predicate: det
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-det
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s04
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: obj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-obj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s04
+      tokenization: 0
+      tokens:
+      - 4
+      - 6
+    predicate: case
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-case
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s04
+      tokenization: 0
+      tokens:
+      - 5
+      - 6
+    predicate: det
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-det
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s04
+      tokenization: 0
+      tokens:
+      - 6
+      - 3
+    predicate: nmod
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-nmod
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s04
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s05
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s05
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: nsubj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-nsubj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s05
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s05
+      tokenization: 0
+      tokens:
+      - 2
+      - 4
+    predicate: case
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-case
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s05
+      tokenization: 0
+      tokens:
+      - 3
+      - 4
+    predicate: det
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-det
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s05
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: obl
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-obl
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s05
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s06
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: compound
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-compound
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
+      tokenization: 0
+      tokens:
+      - 1
+      - 4
+    predicate: nsubj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-nsubj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
+      tokenization: 0
+      tokens:
+      - 2
+      - 3
+    predicate: compound
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-compound
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: acl:relcl
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-acl-relcl
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
+      tokenization: 0
+      tokens:
+      - 4
+      - 3
+    predicate: acl:relcl
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-acl-relcl
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
+      tokenization: 0
+      tokens:
+      - 5
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
+      tokenization: 0
+      tokens:
+      - 6
+      - 7
+    predicate: compound
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-compound
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
+      tokenization: 0
+      tokens:
+      - 7
+      - 5
+    predicate: obj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-obj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
+      tokenization: 0
+      tokens:
+      - 8
+      - 5
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s07
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: det
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-det
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
+      tokenization: 0
+      tokens:
+      - 1
+      - 6
+    predicate: nsubj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-nsubj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
+      tokenization: 0
+      tokens:
+      - 2
+      - 3
+    predicate: nsubj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-nsubj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: acl:relcl
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-acl-relcl
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
+      tokenization: 0
+      tokens:
+      - 4
+      - 5
+    predicate: det
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-det
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
+      tokenization: 0
+      tokens:
+      - 5
+      - 3
+    predicate: obj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-obj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
+      tokenization: 0
+      tokens:
+      - 6
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
+      tokenization: 0
+      tokens:
+      - 7
+      - 6
+    predicate: obj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-obj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
+      tokenization: 0
+      tokens:
+      - 8
+      - 6
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s08
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s08
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: nsubj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-nsubj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s08
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s08
+      tokenization: 0
+      tokens:
+      - 2
+      - 3
+    predicate: mark
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-mark
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s08
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: xcomp
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-xcomp
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s08
+      tokenization: 0
+      tokens:
+      - 4
+      - 3
+    predicate: obj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-obj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s08
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s09
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s09
+      tokenization: 0
+      tokens:
+      - 0
+      - 2
+    predicate: nsubj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-nsubj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s09
+      tokenization: 0
+      tokens:
+      - 1
+      - 2
+    predicate: cop
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-cop
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s09
+      tokenization: 0
+      tokens:
+      - 2
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s09
+      tokenization: 0
+      tokens:
+      - 3
+      - 4
+    predicate: mark
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-mark
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s09
+      tokenization: 0
+      tokens:
+      - 4
+      - 2
+    predicate: csubj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-csubj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s09
+      tokenization: 0
+      tokens:
+      - 5
+      - 4
+    predicate: obj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-obj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s09
+      tokenization: 0
+      tokens:
+      - 6
+      - 2
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s10
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s10
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: det
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-det
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s10
+      tokenization: 0
+      tokens:
+      - 1
+      - 6
+    predicate: nsubj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-nsubj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s10
+      tokenization: 0
+      tokens:
+      - 2
+      - 4
+    predicate: obj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-obj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s10
+      tokenization: 0
+      tokens:
+      - 3
+      - 4
+    predicate: nsubj
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-nsubj
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s10
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: acl:relcl
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-acl-relcl
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s10
+      tokenization: 0
+      tokens:
+      - 5
+      - 6
+    predicate: cop
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-cop
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s10
+      tokenization: 0
+      tokens:
+      - 6
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s10
+      tokenization: 0
+      tokens:
+      - 7
+      - 6
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s11
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s12
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
+      tokenization: 0
+      tokens:
+      - 10
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s13
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
+      tokenization: 0
+      tokens:
+      - 10
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
+      tokenization: 0
+      tokens:
+      - 11
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s14
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s14
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s14
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s14
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s14
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s14
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s14
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s14
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s14
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s15
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s16
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s17
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s17
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s17
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s17
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s17
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s17
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s17
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s17
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s18
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s19
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s20
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s20
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s20
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s20
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s20
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s20
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s20
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s20
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s20
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s21
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
+      tokenization: 0
+      tokens:
+      - 10
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s22
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s23
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
+      tokenization: 0
+      tokens:
+      - 10
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s24
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s25
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s25
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s25
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s25
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s25
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s25
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s25
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s25
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s26
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s27
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s28
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
+      tokenization: 0
+      tokens:
+      - 10
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
+      tokenization: 0
+      tokens:
+      - 11
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
+      tokenization: 0
+      tokens:
+      - 12
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s29
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s29
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s29
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s29
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s29
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s29
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s29
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s30
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
+      tokenization: 0
+      tokens:
+      - 10
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s31
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s32
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
+      tokenization: 0
+      tokens:
+      - 10
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s33
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s34
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s35
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
+      tokenization: 0
+      tokens:
+      - 10
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s36
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s37
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s38
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s39
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
+      tokenization: 0
+      tokens:
+      - 10
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s40
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s41
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s41
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s41
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s41
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s41
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s41
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s41
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s41
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s41
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s42
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s42
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s42
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s42
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s42
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s42
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s42
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s42
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s42
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s43
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s43
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s43
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s43
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s43
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s43
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s43
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s43
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s44
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s44
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s44
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s44
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s44
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s44
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s44
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s44
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s44
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s45
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
+      tokenization: 0
+      tokens:
+      - 10
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s46
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s46
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s46
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s46
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s46
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s46
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s46
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s46
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s47
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s48
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s48
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s48
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s48
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s48
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s48
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s48
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s48
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s48
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s49
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.annotation.annotationLayer
+record:
+  $type: pub.layers.annotation.annotationLayer
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s50
+  kind: relation
+  subkind: dependency
+  formalism: ud-rel-v2
+  ontologyRef: at://ud.ontology.layers.pub/pub.layers.ontology.ontology/ud-rel-v2
+  annotations:
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
+      tokenization: 0
+      tokens:
+      - 0
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
+      tokenization: 0
+      tokens:
+      - 1
+    predicate: root
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-root
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
+      tokenization: 0
+      tokens:
+      - 2
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
+      tokenization: 0
+      tokens:
+      - 3
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
+      tokenization: 0
+      tokens:
+      - 4
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
+      tokenization: 0
+      tokens:
+      - 5
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
+      tokenization: 0
+      tokens:
+      - 6
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
+      tokenization: 0
+      tokens:
+      - 7
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
+      tokenization: 0
+      tokens:
+      - 8
+      - 1
+    predicate: dep
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-dep
+  - anchor:
+      $type: pub.layers.defs#tokenRefSequence
+      segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
+      tokenization: 0
+      tokens:
+      - 9
+      - 1
+    predicate: punct
+    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-rel-v2-punct
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'

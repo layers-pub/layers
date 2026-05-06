@@ -1,0 +1,1899 @@
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s01
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: The
+      byteStart: 0
+      byteEnd: 3
+    - text: horse
+      byteStart: 4
+      byteEnd: 9
+    - text: raced
+      byteStart: 10
+      byteEnd: 15
+    - text: past
+      byteStart: 16
+      byteEnd: 20
+    - text: the
+      byteStart: 21
+      byteEnd: 24
+    - text: barn
+      byteStart: 25
+      byteEnd: 29
+    - text: fell
+      byteStart: 30
+      byteEnd: 34
+    - text: .
+      byteStart: 35
+      byteEnd: 36
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s02
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: While
+      byteStart: 0
+      byteEnd: 5
+    - text: Anna
+      byteStart: 6
+      byteEnd: 10
+    - text: dressed
+      byteStart: 11
+      byteEnd: 18
+    - text: the
+      byteStart: 19
+      byteEnd: 22
+    - text: baby
+      byteStart: 23
+      byteEnd: 27
+    - text: cried
+      byteStart: 28
+      byteEnd: 33
+    - text: .
+      byteStart: 34
+      byteEnd: 35
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s03
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: Colorless
+      byteStart: 0
+      byteEnd: 9
+    - text: green
+      byteStart: 10
+      byteEnd: 15
+    - text: ideas
+      byteStart: 16
+      byteEnd: 21
+    - text: sleep
+      byteStart: 22
+      byteEnd: 27
+    - text: furiously
+      byteStart: 28
+      byteEnd: 37
+    - text: .
+      byteStart: 38
+      byteEnd: 39
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s04
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: I
+      byteStart: 0
+      byteEnd: 1
+    - text: saw
+      byteStart: 2
+      byteEnd: 5
+    - text: the
+      byteStart: 6
+      byteEnd: 9
+    - text: man
+      byteStart: 10
+      byteEnd: 13
+    - text: with
+      byteStart: 14
+      byteEnd: 18
+    - text: the
+      byteStart: 19
+      byteEnd: 22
+    - text: telescope
+      byteStart: 23
+      byteEnd: 32
+    - text: .
+      byteStart: 33
+      byteEnd: 34
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s05
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: Time
+      byteStart: 0
+      byteEnd: 4
+    - text: flies
+      byteStart: 5
+      byteEnd: 10
+    - text: like
+      byteStart: 11
+      byteEnd: 15
+    - text: an
+      byteStart: 16
+      byteEnd: 18
+    - text: arrow
+      byteStart: 19
+      byteEnd: 24
+    - text: .
+      byteStart: 25
+      byteEnd: 26
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s06
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: Buffalo
+      byteStart: 0
+      byteEnd: 7
+    - text: buffalo
+      byteStart: 8
+      byteEnd: 15
+    - text: Buffalo
+      byteStart: 16
+      byteEnd: 23
+    - text: buffalo
+      byteStart: 24
+      byteEnd: 31
+    - text: buffalo
+      byteStart: 32
+      byteEnd: 39
+    - text: buffalo
+      byteStart: 40
+      byteEnd: 47
+    - text: Buffalo
+      byteStart: 48
+      byteEnd: 55
+    - text: buffalo
+      byteStart: 56
+      byteEnd: 63
+    - text: .
+      byteStart: 64
+      byteEnd: 65
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s07
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: Every
+      byteStart: 0
+      byteEnd: 5
+    - text: farmer
+      byteStart: 6
+      byteEnd: 12
+    - text: who
+      byteStart: 13
+      byteEnd: 16
+    - text: owns
+      byteStart: 17
+      byteEnd: 21
+    - text: a
+      byteStart: 22
+      byteEnd: 23
+    - text: donkey
+      byteStart: 24
+      byteEnd: 30
+    - text: beats
+      byteStart: 31
+      byteEnd: 36
+    - text: it
+      byteStart: 37
+      byteEnd: 39
+    - text: .
+      byteStart: 40
+      byteEnd: 41
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s08
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: John
+      byteStart: 0
+      byteEnd: 4
+    - text: seems
+      byteStart: 5
+      byteEnd: 10
+    - text: to
+      byteStart: 11
+      byteEnd: 13
+    - text: like
+      byteStart: 14
+      byteEnd: 18
+    - text: Mary
+      byteStart: 19
+      byteEnd: 23
+    - text: .
+      byteStart: 24
+      byteEnd: 25
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s09
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: It
+      byteStart: 0
+      byteEnd: 2
+    - text: is
+      byteStart: 3
+      byteEnd: 5
+    - text: easy
+      byteStart: 6
+      byteEnd: 10
+    - text: to
+      byteStart: 11
+      byteEnd: 13
+    - text: please
+      byteStart: 14
+      byteEnd: 20
+    - text: John
+      byteStart: 21
+      byteEnd: 25
+    - text: .
+      byteStart: 26
+      byteEnd: 27
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s10
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: The
+      byteStart: 0
+      byteEnd: 3
+    - text: book
+      byteStart: 4
+      byteEnd: 8
+    - text: that
+      byteStart: 9
+      byteEnd: 13
+    - text: John
+      byteStart: 14
+      byteEnd: 18
+    - text: read
+      byteStart: 19
+      byteEnd: 23
+    - text: was
+      byteStart: 24
+      byteEnd: 27
+    - text: interesting
+      byteStart: 28
+      byteEnd: 39
+    - text: .
+      byteStart: 40
+      byteEnd: 41
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s11
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: We
+      byteStart: 0
+      byteEnd: 2
+    - text: had
+      byteStart: 3
+      byteEnd: 6
+    - text: a
+      byteStart: 7
+      byteEnd: 8
+    - text: great
+      byteStart: 9
+      byteEnd: 14
+    - text: time
+      byteStart: 15
+      byteEnd: 19
+    - text: at
+      byteStart: 20
+      byteEnd: 22
+    - text: the
+      byteStart: 23
+      byteEnd: 26
+    - text: conference
+      byteStart: 27
+      byteEnd: 37
+    - text: yesterday
+      byteStart: 38
+      byteEnd: 47
+    - text: .
+      byteStart: 48
+      byteEnd: 49
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s12
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: Please
+      byteStart: 0
+      byteEnd: 6
+    - text: send
+      byteStart: 7
+      byteEnd: 11
+    - text: me
+      byteStart: 12
+      byteEnd: 14
+    - text: the
+      byteStart: 15
+      byteEnd: 18
+    - text: file
+      byteStart: 19
+      byteEnd: 23
+    - text: when
+      byteStart: 24
+      byteEnd: 28
+    - text: you
+      byteStart: 29
+      byteEnd: 32
+    - text: have
+      byteStart: 33
+      byteEnd: 37
+    - text: a
+      byteStart: 38
+      byteEnd: 39
+    - text: moment
+      byteStart: 40
+      byteEnd: 46
+    - text: .
+      byteStart: 47
+      byteEnd: 48
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s13
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: Thanks
+      byteStart: 0
+      byteEnd: 6
+    - text: for
+      byteStart: 7
+      byteEnd: 10
+    - text: sharing
+      byteStart: 11
+      byteEnd: 18
+    - text: the
+      byteStart: 19
+      byteEnd: 22
+    - text: article
+      byteStart: 23
+      byteEnd: 30
+    - text: ;
+      byteStart: 31
+      byteEnd: 32
+    - text: I
+      byteStart: 33
+      byteEnd: 34
+    - text: found
+      byteStart: 35
+      byteEnd: 40
+    - text: it
+      byteStart: 41
+      byteEnd: 43
+    - text: very
+      byteStart: 44
+      byteEnd: 48
+    - text: helpful
+      byteStart: 49
+      byteEnd: 56
+    - text: .
+      byteStart: 57
+      byteEnd: 58
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s14
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: The
+      byteStart: 0
+      byteEnd: 3
+    - text: new
+      byteStart: 4
+      byteEnd: 7
+    - text: restaurant
+      byteStart: 8
+      byteEnd: 18
+    - text: downtown
+      byteStart: 19
+      byteEnd: 27
+    - text: serves
+      byteStart: 28
+      byteEnd: 34
+    - text: excellent
+      byteStart: 35
+      byteEnd: 44
+    - text: pasta
+      byteStart: 45
+      byteEnd: 50
+    - text: .
+      byteStart: 51
+      byteEnd: 52
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s15
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: She
+      byteStart: 0
+      byteEnd: 3
+    - text: finished
+      byteStart: 4
+      byteEnd: 12
+    - text: her
+      byteStart: 13
+      byteEnd: 16
+    - text: PhD
+      byteStart: 17
+      byteEnd: 20
+    - text: in
+      byteStart: 21
+      byteEnd: 23
+    - text: computational
+      byteStart: 24
+      byteEnd: 37
+    - text: linguistics
+      byteStart: 38
+      byteEnd: 49
+    - text: last
+      byteStart: 50
+      byteEnd: 54
+    - text: month
+      byteStart: 55
+      byteEnd: 60
+    - text: .
+      byteStart: 61
+      byteEnd: 62
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s16
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: Can
+      byteStart: 0
+      byteEnd: 3
+    - text: you
+      byteStart: 4
+      byteEnd: 7
+    - text: recommend
+      byteStart: 8
+      byteEnd: 17
+    - text: a
+      byteStart: 18
+      byteEnd: 19
+    - text: good
+      byteStart: 20
+      byteEnd: 24
+    - text: textbook
+      byteStart: 25
+      byteEnd: 33
+    - text: 'on'
+      byteStart: 34
+      byteEnd: 36
+    - text: syntax
+      byteStart: 37
+      byteEnd: 43
+    - text: '?'
+      byteStart: 44
+      byteEnd: 45
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s17
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: The
+      byteStart: 0
+      byteEnd: 3
+    - text: package
+      byteStart: 4
+      byteEnd: 11
+    - text: arrived
+      byteStart: 12
+      byteEnd: 19
+    - text: earlier
+      byteStart: 20
+      byteEnd: 27
+    - text: than
+      byteStart: 28
+      byteEnd: 32
+    - text: expected
+      byteStart: 33
+      byteEnd: 41
+    - text: .
+      byteStart: 42
+      byteEnd: 43
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s18
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: It
+      byteStart: 0
+      byteEnd: 2
+    - text: seems
+      byteStart: 3
+      byteEnd: 8
+    - text: like
+      byteStart: 9
+      byteEnd: 13
+    - text: the
+      byteStart: 14
+      byteEnd: 17
+    - text: meeting
+      byteStart: 18
+      byteEnd: 25
+    - text: was
+      byteStart: 26
+      byteEnd: 29
+    - text: rescheduled
+      byteStart: 30
+      byteEnd: 41
+    - text: to
+      byteStart: 42
+      byteEnd: 44
+    - text: Thursday
+      byteStart: 45
+      byteEnd: 53
+    - text: .
+      byteStart: 54
+      byteEnd: 55
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s19
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: His
+      byteStart: 0
+      byteEnd: 3
+    - text: comments
+      byteStart: 4
+      byteEnd: 12
+    - text: at
+      byteStart: 13
+      byteEnd: 15
+    - text: the
+      byteStart: 16
+      byteEnd: 19
+    - text: panel
+      byteStart: 20
+      byteEnd: 25
+    - text: raised
+      byteStart: 26
+      byteEnd: 32
+    - text: some
+      byteStart: 33
+      byteEnd: 37
+    - text: interesting
+      byteStart: 38
+      byteEnd: 49
+    - text: questions
+      byteStart: 50
+      byteEnd: 59
+    - text: .
+      byteStart: 60
+      byteEnd: 61
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s20
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: The
+      byteStart: 0
+      byteEnd: 3
+    - text: data
+      byteStart: 4
+      byteEnd: 8
+    - text: clearly
+      byteStart: 9
+      byteEnd: 16
+    - text: support
+      byteStart: 17
+      byteEnd: 24
+    - text: our
+      byteStart: 25
+      byteEnd: 28
+    - text: original
+      byteStart: 29
+      byteEnd: 37
+    - text: hypothesis
+      byteStart: 38
+      byteEnd: 48
+    - text: .
+      byteStart: 49
+      byteEnd: 50
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s21
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: I'
+      byteStart: 0
+      byteEnd: 2
+    - text: ll
+      byteStart: 3
+      byteEnd: 5
+    - text: be
+      byteStart: 6
+      byteEnd: 8
+    - text: out
+      byteStart: 9
+      byteEnd: 12
+    - text: of
+      byteStart: 13
+      byteEnd: 15
+    - text: town
+      byteStart: 16
+      byteEnd: 20
+    - text: from
+      byteStart: 21
+      byteEnd: 25
+    - text: Friday
+      byteStart: 26
+      byteEnd: 32
+    - text: through
+      byteStart: 33
+      byteEnd: 40
+    - text: Sunday
+      byteStart: 41
+      byteEnd: 47
+    - text: .
+      byteStart: 48
+      byteEnd: 49
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s22
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: We
+      byteStart: 0
+      byteEnd: 2
+    - text: need
+      byteStart: 3
+      byteEnd: 7
+    - text: to
+      byteStart: 8
+      byteEnd: 10
+    - text: clarify
+      byteStart: 11
+      byteEnd: 18
+    - text: the
+      byteStart: 19
+      byteEnd: 22
+    - text: requirements
+      byteStart: 23
+      byteEnd: 35
+    - text: before
+      byteStart: 36
+      byteEnd: 42
+    - text: continuing
+      byteStart: 43
+      byteEnd: 53
+    - text: .
+      byteStart: 54
+      byteEnd: 55
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s23
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: The
+      byteStart: 0
+      byteEnd: 3
+    - text: team
+      byteStart: 4
+      byteEnd: 8
+    - text: has
+      byteStart: 9
+      byteEnd: 12
+    - text: been
+      byteStart: 13
+      byteEnd: 17
+    - text: working
+      byteStart: 18
+      byteEnd: 25
+    - text: 'on'
+      byteStart: 26
+      byteEnd: 28
+    - text: this
+      byteStart: 29
+      byteEnd: 33
+    - text: feature
+      byteStart: 34
+      byteEnd: 41
+    - text: for
+      byteStart: 42
+      byteEnd: 45
+    - text: weeks
+      byteStart: 46
+      byteEnd: 51
+    - text: .
+      byteStart: 52
+      byteEnd: 53
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s24
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: Did
+      byteStart: 0
+      byteEnd: 3
+    - text: you
+      byteStart: 4
+      byteEnd: 7
+    - text: watch
+      byteStart: 8
+      byteEnd: 13
+    - text: the
+      byteStart: 14
+      byteEnd: 17
+    - text: lecture
+      byteStart: 18
+      byteEnd: 25
+    - text: recording
+      byteStart: 26
+      byteEnd: 35
+    - text: from
+      byteStart: 36
+      byteEnd: 40
+    - text: last
+      byteStart: 41
+      byteEnd: 45
+    - text: week
+      byteStart: 46
+      byteEnd: 50
+    - text: '?'
+      byteStart: 51
+      byteEnd: 52
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s25
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: The
+      byteStart: 0
+      byteEnd: 3
+    - text: proposal
+      byteStart: 4
+      byteEnd: 12
+    - text: addresses
+      byteStart: 13
+      byteEnd: 22
+    - text: several
+      byteStart: 23
+      byteEnd: 30
+    - text: long-standing
+      byteStart: 31
+      byteEnd: 44
+    - text: concerns
+      byteStart: 45
+      byteEnd: 53
+    - text: .
+      byteStart: 54
+      byteEnd: 55
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s26
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: Most
+      byteStart: 0
+      byteEnd: 4
+    - text: participants
+      byteStart: 5
+      byteEnd: 17
+    - text: reported
+      byteStart: 18
+      byteEnd: 26
+    - text: high
+      byteStart: 27
+      byteEnd: 31
+    - text: satisfaction
+      byteStart: 32
+      byteEnd: 44
+    - text: with
+      byteStart: 45
+      byteEnd: 49
+    - text: the
+      byteStart: 50
+      byteEnd: 53
+    - text: experiment
+      byteStart: 54
+      byteEnd: 64
+    - text: .
+      byteStart: 65
+      byteEnd: 66
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s27
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: She
+      byteStart: 0
+      byteEnd: 3
+    - text: presented
+      byteStart: 4
+      byteEnd: 13
+    - text: her
+      byteStart: 14
+      byteEnd: 17
+    - text: findings
+      byteStart: 18
+      byteEnd: 26
+    - text: at
+      byteStart: 27
+      byteEnd: 29
+    - text: the
+      byteStart: 30
+      byteEnd: 33
+    - text: workshop
+      byteStart: 34
+      byteEnd: 42
+    - text: 'on'
+      byteStart: 43
+      byteEnd: 45
+    - text: Tuesday
+      byteStart: 46
+      byteEnd: 53
+    - text: .
+      byteStart: 54
+      byteEnd: 55
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s28
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: The
+      byteStart: 0
+      byteEnd: 3
+    - text: agreement
+      byteStart: 4
+      byteEnd: 13
+    - text: scores
+      byteStart: 14
+      byteEnd: 20
+    - text: were
+      byteStart: 21
+      byteEnd: 25
+    - text: higher
+      byteStart: 26
+      byteEnd: 32
+    - text: than
+      byteStart: 33
+      byteEnd: 37
+    - text: the
+      byteStart: 38
+      byteEnd: 41
+    - text: baseline
+      byteStart: 42
+      byteEnd: 50
+    - text: by
+      byteStart: 51
+      byteEnd: 53
+    - text: a
+      byteStart: 54
+      byteEnd: 55
+    - text: wide
+      byteStart: 56
+      byteEnd: 60
+    - text: margin
+      byteStart: 61
+      byteEnd: 67
+    - text: .
+      byteStart: 68
+      byteEnd: 69
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s29
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: Several
+      byteStart: 0
+      byteEnd: 7
+    - text: reviewers
+      byteStart: 8
+      byteEnd: 17
+    - text: requested
+      byteStart: 18
+      byteEnd: 27
+    - text: additional
+      byteStart: 28
+      byteEnd: 38
+    - text: clarifications
+      byteStart: 39
+      byteEnd: 53
+    - text: .
+      byteStart: 54
+      byteEnd: 55
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s30
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: The
+      byteStart: 0
+      byteEnd: 3
+    - text: corpus
+      byteStart: 4
+      byteEnd: 10
+    - text: contains
+      byteStart: 11
+      byteEnd: 19
+    - text: roughly
+      byteStart: 20
+      byteEnd: 27
+    - text: two
+      byteStart: 28
+      byteEnd: 31
+    - text: million
+      byteStart: 32
+      byteEnd: 39
+    - text: tokens
+      byteStart: 40
+      byteEnd: 46
+    - text: of
+      byteStart: 47
+      byteEnd: 49
+    - text: news
+      byteStart: 50
+      byteEnd: 54
+    - text: text
+      byteStart: 55
+      byteEnd: 59
+    - text: .
+      byteStart: 60
+      byteEnd: 61
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s31
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: We
+      byteStart: 0
+      byteEnd: 2
+    - text: collected
+      byteStart: 3
+      byteEnd: 12
+    - text: ratings
+      byteStart: 13
+      byteEnd: 20
+    - text: from
+      byteStart: 21
+      byteEnd: 25
+    - text: '240'
+      byteStart: 26
+      byteEnd: 29
+    - text: native
+      byteStart: 30
+      byteEnd: 36
+    - text: English
+      byteStart: 37
+      byteEnd: 44
+    - text: speakers
+      byteStart: 45
+      byteEnd: 53
+    - text: .
+      byteStart: 54
+      byteEnd: 55
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s32
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: His
+      byteStart: 0
+      byteEnd: 3
+    - text: paper
+      byteStart: 4
+      byteEnd: 9
+    - text: proposes
+      byteStart: 10
+      byteEnd: 18
+    - text: a
+      byteStart: 19
+      byteEnd: 20
+    - text: novel
+      byteStart: 21
+      byteEnd: 26
+    - text: decoding
+      byteStart: 27
+      byteEnd: 35
+    - text: strategy
+      byteStart: 36
+      byteEnd: 44
+    - text: for
+      byteStart: 45
+      byteEnd: 48
+    - text: transformer
+      byteStart: 49
+      byteEnd: 60
+    - text: models
+      byteStart: 61
+      byteEnd: 67
+    - text: .
+      byteStart: 68
+      byteEnd: 69
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s33
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: Could
+      byteStart: 0
+      byteEnd: 5
+    - text: you
+      byteStart: 6
+      byteEnd: 9
+    - text: double-check
+      byteStart: 10
+      byteEnd: 22
+    - text: the
+      byteStart: 23
+      byteEnd: 26
+    - text: citation
+      byteStart: 27
+      byteEnd: 35
+    - text: 'on'
+      byteStart: 36
+      byteEnd: 38
+    - text: page
+      byteStart: 39
+      byteEnd: 43
+    - text: seven
+      byteStart: 44
+      byteEnd: 49
+    - text: '?'
+      byteStart: 50
+      byteEnd: 51
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s34
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: The
+      byteStart: 0
+      byteEnd: 3
+    - text: annotation
+      byteStart: 4
+      byteEnd: 14
+    - text: guidelines
+      byteStart: 15
+      byteEnd: 25
+    - text: are
+      byteStart: 26
+      byteEnd: 29
+    - text: available
+      byteStart: 30
+      byteEnd: 39
+    - text: 'on'
+      byteStart: 40
+      byteEnd: 42
+    - text: the
+      byteStart: 43
+      byteEnd: 46
+    - text: project
+      byteStart: 47
+      byteEnd: 54
+    - text: website
+      byteStart: 55
+      byteEnd: 62
+    - text: .
+      byteStart: 63
+      byteEnd: 64
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s35
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: This
+      byteStart: 0
+      byteEnd: 4
+    - text: dataset
+      byteStart: 5
+      byteEnd: 12
+    - text: has
+      byteStart: 13
+      byteEnd: 16
+    - text: been
+      byteStart: 17
+      byteEnd: 21
+    - text: used
+      byteStart: 22
+      byteEnd: 26
+    - text: in
+      byteStart: 27
+      byteEnd: 29
+    - text: dozens
+      byteStart: 30
+      byteEnd: 36
+    - text: of
+      byteStart: 37
+      byteEnd: 39
+    - text: subsequent
+      byteStart: 40
+      byteEnd: 50
+    - text: studies
+      byteStart: 51
+      byteEnd: 58
+    - text: .
+      byteStart: 59
+      byteEnd: 60
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s36
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: Their
+      byteStart: 0
+      byteEnd: 5
+    - text: replication
+      byteStart: 6
+      byteEnd: 17
+    - text: failed
+      byteStart: 18
+      byteEnd: 24
+    - text: to
+      byteStart: 25
+      byteEnd: 27
+    - text: confirm
+      byteStart: 28
+      byteEnd: 35
+    - text: the
+      byteStart: 36
+      byteEnd: 39
+    - text: original
+      byteStart: 40
+      byteEnd: 48
+    - text: effect
+      byteStart: 49
+      byteEnd: 55
+    - text: .
+      byteStart: 56
+      byteEnd: 57
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s37
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: We'
+      byteStart: 0
+      byteEnd: 3
+    - text: re
+      byteStart: 4
+      byteEnd: 6
+    - text: looking
+      byteStart: 7
+      byteEnd: 14
+    - text: for
+      byteStart: 15
+      byteEnd: 18
+    - text: reviewers
+      byteStart: 19
+      byteEnd: 28
+    - text: familiar
+      byteStart: 29
+      byteEnd: 37
+    - text: with
+      byteStart: 38
+      byteEnd: 42
+    - text: formal
+      byteStart: 43
+      byteEnd: 49
+    - text: semantics
+      byteStart: 50
+      byteEnd: 59
+    - text: .
+      byteStart: 60
+      byteEnd: 61
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s38
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: The
+      byteStart: 0
+      byteEnd: 3
+    - text: conference
+      byteStart: 4
+      byteEnd: 14
+    - text: will
+      byteStart: 15
+      byteEnd: 19
+    - text: take
+      byteStart: 20
+      byteEnd: 24
+    - text: place
+      byteStart: 25
+      byteEnd: 30
+    - text: online
+      byteStart: 31
+      byteEnd: 37
+    - text: next
+      byteStart: 38
+      byteEnd: 42
+    - text: March
+      byteStart: 43
+      byteEnd: 48
+    - text: .
+      byteStart: 49
+      byteEnd: 50
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s39
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: It
+      byteStart: 0
+      byteEnd: 2
+    - text: depends
+      byteStart: 3
+      byteEnd: 10
+    - text: 'on'
+      byteStart: 11
+      byteEnd: 13
+    - text: whether
+      byteStart: 14
+      byteEnd: 21
+    - text: the
+      byteStart: 22
+      byteEnd: 25
+    - text: budget
+      byteStart: 26
+      byteEnd: 32
+    - text: gets
+      byteStart: 33
+      byteEnd: 37
+    - text: approved
+      byteStart: 38
+      byteEnd: 46
+    - text: this
+      byteStart: 47
+      byteEnd: 51
+    - text: quarter
+      byteStart: 52
+      byteEnd: 59
+    - text: .
+      byteStart: 60
+      byteEnd: 61
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s40
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: She
+      byteStart: 0
+      byteEnd: 3
+    - text: defended
+      byteStart: 4
+      byteEnd: 12
+    - text: her
+      byteStart: 13
+      byteEnd: 16
+    - text: thesis
+      byteStart: 17
+      byteEnd: 23
+    - text: with
+      byteStart: 24
+      byteEnd: 28
+    - text: distinction
+      byteStart: 29
+      byteEnd: 40
+    - text: last
+      byteStart: 41
+      byteEnd: 45
+    - text: week
+      byteStart: 46
+      byteEnd: 50
+    - text: .
+      byteStart: 51
+      byteEnd: 52
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s41
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: The
+      byteStart: 0
+      byteEnd: 3
+    - text: recording
+      byteStart: 4
+      byteEnd: 13
+    - text: quality
+      byteStart: 14
+      byteEnd: 21
+    - text: was
+      byteStart: 22
+      byteEnd: 25
+    - text: unfortunately
+      byteStart: 26
+      byteEnd: 39
+    - text: quite
+      byteStart: 40
+      byteEnd: 45
+    - text: poor
+      byteStart: 46
+      byteEnd: 50
+    - text: .
+      byteStart: 51
+      byteEnd: 52
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s42
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: Most
+      byteStart: 0
+      byteEnd: 4
+    - text: of
+      byteStart: 5
+      byteEnd: 7
+    - text: the
+      byteStart: 8
+      byteEnd: 11
+    - text: disagreements
+      byteStart: 12
+      byteEnd: 25
+    - text: concerned
+      byteStart: 26
+      byteEnd: 35
+    - text: tokenisation
+      byteStart: 36
+      byteEnd: 48
+    - text: choices
+      byteStart: 49
+      byteEnd: 56
+    - text: .
+      byteStart: 57
+      byteEnd: 58
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s43
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: Your
+      byteStart: 0
+      byteEnd: 4
+    - text: point
+      byteStart: 5
+      byteEnd: 10
+    - text: about
+      byteStart: 11
+      byteEnd: 16
+    - text: polysemy
+      byteStart: 17
+      byteEnd: 25
+    - text: is
+      byteStart: 26
+      byteEnd: 28
+    - text: well-taken
+      byteStart: 29
+      byteEnd: 39
+    - text: .
+      byteStart: 40
+      byteEnd: 41
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s44
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: The
+      byteStart: 0
+      byteEnd: 3
+    - text: argument
+      byteStart: 4
+      byteEnd: 12
+    - text: hinges
+      byteStart: 13
+      byteEnd: 19
+    - text: 'on'
+      byteStart: 20
+      byteEnd: 22
+    - text: a
+      byteStart: 23
+      byteEnd: 24
+    - text: controversial
+      byteStart: 25
+      byteEnd: 38
+    - text: assumption
+      byteStart: 39
+      byteEnd: 49
+    - text: .
+      byteStart: 50
+      byteEnd: 51
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s45
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: Many
+      byteStart: 0
+      byteEnd: 4
+    - text: of
+      byteStart: 5
+      byteEnd: 7
+    - text: these
+      byteStart: 8
+      byteEnd: 13
+    - text: constructions
+      byteStart: 14
+      byteEnd: 27
+    - text: are
+      byteStart: 28
+      byteEnd: 31
+    - text: absent
+      byteStart: 32
+      byteEnd: 38
+    - text: from
+      byteStart: 39
+      byteEnd: 43
+    - text: the
+      byteStart: 44
+      byteEnd: 47
+    - text: training
+      byteStart: 48
+      byteEnd: 56
+    - text: data
+      byteStart: 57
+      byteEnd: 61
+    - text: .
+      byteStart: 62
+      byteEnd: 63
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s46
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: The
+      byteStart: 0
+      byteEnd: 3
+    - text: third
+      byteStart: 4
+      byteEnd: 9
+    - text: reviewer
+      byteStart: 10
+      byteEnd: 18
+    - text: recommended
+      byteStart: 19
+      byteEnd: 30
+    - text: major
+      byteStart: 31
+      byteEnd: 36
+    - text: revisions
+      byteStart: 37
+      byteEnd: 46
+    - text: .
+      byteStart: 47
+      byteEnd: 48
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s47
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: We
+      byteStart: 0
+      byteEnd: 2
+    - text: reran
+      byteStart: 3
+      byteEnd: 8
+    - text: the
+      byteStart: 9
+      byteEnd: 12
+    - text: analysis
+      byteStart: 13
+      byteEnd: 21
+    - text: with
+      byteStart: 22
+      byteEnd: 26
+    - text: the
+      byteStart: 27
+      byteEnd: 30
+    - text: updated
+      byteStart: 31
+      byteEnd: 38
+    - text: annotations
+      byteStart: 39
+      byteEnd: 50
+    - text: .
+      byteStart: 51
+      byteEnd: 52
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s48
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: Please
+      byteStart: 0
+      byteEnd: 6
+    - text: cite
+      byteStart: 7
+      byteEnd: 11
+    - text: the
+      byteStart: 12
+      byteEnd: 15
+    - text: original
+      byteStart: 16
+      byteEnd: 24
+    - text: paper
+      byteStart: 25
+      byteEnd: 30
+    - text: as
+      byteStart: 31
+      byteEnd: 33
+    - text: well
+      byteStart: 34
+      byteEnd: 38
+    - text: .
+      byteStart: 39
+      byteEnd: 40
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s49
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: The
+      byteStart: 0
+      byteEnd: 3
+    - text: talk
+      byteStart: 4
+      byteEnd: 8
+    - text: lasted
+      byteStart: 9
+      byteEnd: 15
+    - text: longer
+      byteStart: 16
+      byteEnd: 22
+    - text: than
+      byteStart: 23
+      byteEnd: 27
+    - text: scheduled
+      byteStart: 28
+      byteEnd: 37
+    - text: but
+      byteStart: 38
+      byteEnd: 41
+    - text: was
+      byteStart: 42
+      byteEnd: 45
+    - text: excellent
+      byteStart: 46
+      byteEnd: 55
+    - text: .
+      byteStart: 56
+      byteEnd: 57
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.segmentation.segmentation
+record:
+  $type: pub.layers.segmentation.segmentation
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s50
+  tokenizations:
+  - tokenizer: whitespace
+    tokens:
+    - text: Our
+      byteStart: 0
+      byteEnd: 3
+    - text: results
+      byteStart: 4
+      byteEnd: 11
+    - text: align
+      byteStart: 12
+      byteEnd: 17
+    - text: with
+      byteStart: 18
+      byteEnd: 22
+    - text: previous
+      byteStart: 23
+      byteEnd: 31
+    - text: findings
+      byteStart: 32
+      byteEnd: 40
+    - text: in
+      byteStart: 41
+      byteEnd: 43
+    - text: the
+      byteStart: 44
+      byteEnd: 47
+    - text: literature
+      byteStart: 48
+      byteEnd: 58
+    - text: .
+      byteStart: 59
+      byteEnd: 60
+  languages:
+  - eng
+  createdAt: '2026-05-06T00:00:00Z'

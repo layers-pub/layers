@@ -1,0 +1,349 @@
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s01
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s02
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s03
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s04
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s05
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s06
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s07
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s08
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s09
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s10
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s11
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s12
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s13
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s14
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s15
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s16
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s17
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s18
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s19
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s20
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s21
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s22
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s23
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s24
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s25
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s26
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s27
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s28
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s29
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s30
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s31
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s32
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s33
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s34
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s35
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s36
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s37
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s38
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s39
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s40
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s41
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s42
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s43
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s44
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s45
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s46
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s47
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s48
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s49
+  createdAt: '2026-05-06T00:00:00Z'
+---
+collection: pub.layers.corpus.membership
+record:
+  $type: pub.layers.corpus.membership
+  corpus: at://ewt.eng.ud.corpus.layers.pub/pub.layers.corpus.corpus/ewt-demo-50
+  expression: at://ewt.eng.ud.expression.layers.pub/pub.layers.expression.expression/expr-s50
+  createdAt: '2026-05-06T00:00:00Z'

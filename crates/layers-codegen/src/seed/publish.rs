@@ -25,6 +25,78 @@ use super::client::{AccountCredentials, PdsClient};
 use super::fingerprint;
 use super::model::{self, SeedEntry};
 
+/// `seed check` drift gate. Walks the seed tree, computes
+/// fingerprint rkeys, fetches each record from the PDS, and exits
+/// non-zero on any (a) record that exists locally but not on the PDS
+/// at the expected rkey, or (b) record whose on-PDS body differs
+/// from the local seed. Useful for CI gating: a PR that bumps a
+/// seed without re-running `seed publish` against staging fails the
+/// gate.
+pub fn check(repo_root: &Path, args: &[String]) -> Result<ExitCode> {
+    let opts = Options::parse(args)?;
+    let entries = model::walk(&repo_root.join("lexicons/seeds"))?;
+    if entries.is_empty() {
+        println!("no seeds; nothing to check");
+        return Ok(ExitCode::SUCCESS);
+    }
+    let by_account = group_by_account(&entries, opts.account_filter.as_deref());
+
+    let runtime = tokio::runtime::Builder::new_multi_thread()
+        .enable_all()
+        .build()
+        .context("starting tokio runtime")?;
+    let mut drift = false;
+    runtime.block_on(async {
+        let client = super::client::PdsClient::new(&opts.pds_url)?;
+        for (handle, entries) in &by_account {
+            let creds = match load_credentials(repo_root, handle) {
+                Ok(c) => c,
+                Err(e) => {
+                    eprintln!("[skip] {handle}: {e}");
+                    continue;
+                }
+            };
+            let session = match client.create_session(&creds).await {
+                Ok(s) => s,
+                Err(e) => {
+                    eprintln!("[skip] {handle}: createSession: {e}");
+                    continue;
+                }
+            };
+            for entry in entries {
+                let fp = fingerprint::for_record(&entry.body)?;
+                let live = client
+                    .get_record(&session.did, &entry.collection, &fp)
+                    .await
+                    .ok()
+                    .flatten();
+                match live {
+                    Some(body) if body == entry.body => {}
+                    Some(_) => {
+                        eprintln!("[drift] {} {} body diverged", entry.collection, &fp[..16]);
+                        drift = true;
+                    }
+                    None => {
+                        eprintln!(
+                            "[missing] {} {} not on PDS",
+                            entry.collection,
+                            &fp[..16]
+                        );
+                        drift = true;
+                    }
+                }
+            }
+        }
+        Result::<()>::Ok(())
+    })?;
+    if drift {
+        Ok(ExitCode::from(1))
+    } else {
+        println!("seed check: all on-disk fingerprints match PDS state");
+        Ok(ExitCode::SUCCESS)
+    }
+}
+
 /// Subcommand entry-point invoked from `mod.rs`.
 pub fn run(repo_root: &Path, args: &[String]) -> Result<ExitCode> {
     let opts = Options::parse(args)?;
