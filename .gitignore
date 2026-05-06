@@ -67,3 +67,9 @@ lexicons/seeds/pwn.eng.wordnet.*.layers.pub/
 lexicons/seeds/semlink.*.layers.pub/
 
 lexicons/seeds/semlink.graph.layers.pub/
+
+# UDS + CHILDES converter outputs are regenerated at PDS bring-up
+# time from upstream sources, not committed.
+lexicons/seeds/ewt.eng.uds.*.layers.pub/
+lexicons/seeds/*.childes.*.layers.pub/
+

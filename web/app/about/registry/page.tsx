@@ -127,6 +127,26 @@ const CATALOGUE = [
     ],
   },
   {
+    section: 'UDS 2.0 (decomp.io)',
+    accounts: [
+      'ewt.eng.uds.corpus.layers.pub',
+      'ewt.eng.uds.expression.layers.pub',
+      'ewt.eng.uds.segmentation.layers.pub',
+      'ewt.eng.uds.annotation.layers.pub',
+      'ewt.eng.uds.graph.layers.pub',
+    ],
+  },
+  {
+    section: 'CHILDES (per-corpus)',
+    accounts: [
+      '<corpus>.<lang>.childes.corpus.layers.pub',
+      '<corpus>.<lang>.childes.expression.layers.pub',
+      '<corpus>.<lang>.childes.segmentation.layers.pub',
+      '<corpus>.<lang>.childes.annotation.layers.pub',
+      '<corpus>.<lang>.childes.persona.layers.pub',
+    ],
+  },
+  {
     section: 'Operator',
     accounts: ['operator.changelog.layers.pub'],
   },
