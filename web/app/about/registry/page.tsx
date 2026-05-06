@@ -147,6 +147,44 @@ const CATALOGUE = [
     ],
   },
   {
+    section: 'AMR (Abstract Meaning Representation)',
+    accounts: [
+      '<release>.eng.amr.corpus.layers.pub',
+      '<release>.eng.amr.expression.layers.pub',
+      '<release>.eng.amr.annotation.layers.pub',
+      '<release>.eng.amr.graph.layers.pub',
+    ],
+  },
+  {
+    section: 'UCCA (per distribution)',
+    accounts: [
+      '<distribution>.<lang>.ucca.corpus.layers.pub',
+      '<distribution>.<lang>.ucca.expression.layers.pub',
+      '<distribution>.<lang>.ucca.segmentation.layers.pub',
+      '<distribution>.<lang>.ucca.annotation.layers.pub',
+      '<distribution>.<lang>.ucca.graph.layers.pub',
+    ],
+  },
+  {
+    section: 'PMB (Parallel Meaning Bank, per release/tier/lang)',
+    accounts: [
+      '<release>-<tier>.<lang>.pmb.corpus.layers.pub',
+      '<release>-<tier>.<lang>.pmb.expression.layers.pub',
+      '<release>-<tier>.<lang>.pmb.segmentation.layers.pub',
+      '<release>-<tier>.<lang>.pmb.annotation.layers.pub',
+      '<release>-<tier>.<lang>.pmb.graph.layers.pub',
+    ],
+  },
+  {
+    section: 'UMR (Uniform Meaning Representation, per release/lang)',
+    accounts: [
+      '<release>.<lang>.umr.corpus.layers.pub',
+      '<release>.<lang>.umr.expression.layers.pub',
+      '<release>.<lang>.umr.annotation.layers.pub',
+      '<release>.<lang>.umr.graph.layers.pub',
+    ],
+  },
+  {
     section: 'Operator',
     accounts: ['operator.changelog.layers.pub'],
   },
