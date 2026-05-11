@@ -104,8 +104,7 @@ def _project_passage(
             size = len(t.text.encode("utf-8"))
             tokens.append({
                 "text": t.text,
-                "byteStart": offset,
-                "byteEnd": offset + size,
+                "textSpan": {"byteStart": offset, "byteEnd": offset + size},
             })
             offset += size + 1
         seg_rkey = f"ucca-seg-{passage.id}".replace(".", "-")
@@ -116,7 +115,7 @@ def _project_passage(
             collection="pub.layers.segmentation.segmentation",
             body={
                 "expression": expr_uri,
-                "tokenizations": [{"tokenizer": "ucca-l0", "tokens": tokens}],
+                "tokenizations": [{"kind": "whitespace", "tokens": tokens}],
                 "languages": [lang],
             },
         )

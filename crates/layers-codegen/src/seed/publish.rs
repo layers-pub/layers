@@ -24,6 +24,8 @@ use anyhow::{Context, Result, anyhow};
 use super::client::{AccountCredentials, PdsClient};
 use super::fingerprint;
 use super::model::{self, SeedEntry};
+use super::resolve::{HandleDidMap, rewrite_body};
+use super::stamp::stamp_uuids;
 
 /// `seed check` drift gate. Walks the seed tree, computes
 /// fingerprint rkeys, fetches each record from the PDS, and exits
@@ -191,8 +193,31 @@ async fn publish_async(
         if opts.dry_run { "  (dry-run)" } else { "" }
     );
 
+    // Pass 1: provision a session per account so we know its DID
+    // before rewriting any body. Cross-seed references in account A
+    // may point at account B's records by handle, so we must
+    // resolve every handle in scope before publishing any record.
+    // Dry-run skips the network entirely; the rewrite pass below
+    // is reused but seeded with a synthetic map for plan output.
+    let mut handle_did = HandleDidMap::new();
+    let mut sessions: BTreeMap<String, super::client::Session> = BTreeMap::new();
+    if !opts.dry_run {
+        println!("\nresolving {} handle(s) → DIDs", by_account.len());
+        for handle in by_account.keys() {
+            let creds = load_credentials(repo_root, handle)?;
+            let session = client
+                .create_session(&creds)
+                .await
+                .with_context(|| format!("createSession for {handle}"))?;
+            handle_did.insert(handle.clone(), session.did.clone());
+            println!("  {handle}  →  {}", session.did);
+            sessions.insert(handle.clone(), session);
+        }
+    }
+
     let mut total_published = 0usize;
     let mut total_skipped = 0usize;
+    let mut total_unresolved = 0usize;
     for (handle, entries) in by_account {
         println!("\n=== {} ({} records) ===", handle, entries.len());
         if opts.dry_run {
@@ -208,26 +233,43 @@ async fn publish_async(
             }
             continue;
         }
-        let creds = load_credentials(repo_root, handle)?;
-        let session = client.create_session(&creds).await?;
+        let session = sessions
+            .get(handle)
+            .ok_or_else(|| anyhow!("no session for {handle} after handle-DID pass"))?;
         for entry in entries {
-            let fp = fingerprint::for_record(&entry.body)?;
+            // Resolve handle-form AT-URIs in the body to DID-form
+            // before fingerprinting + publish. The fingerprint
+            // therefore covers the *wire* shape; re-running with a
+            // new PDS allocation (different DIDs) would produce
+            // different rkeys, which is intentional: changing the
+            // DID a handle resolves to changes record identity.
+            let mut body = entry.body.clone();
+            let report = rewrite_body(&mut body, &handle_did);
+            if report.unresolved > 0 {
+                eprintln!(
+                    "  [warn] {} has {} unresolved AT-URI(s) (handles outside the publish set)",
+                    entry.relpath.display(),
+                    report.unresolved
+                );
+                total_unresolved += report.unresolved;
+            }
+            stamp_uuids(&mut body, &entry.collection);
+            let fp = fingerprint::for_record(&body)?;
             let rkey = fp.clone();
-            // Skip on existing-identical content: getRecord then compare.
             let existing = client
                 .get_record(&session.did, &entry.collection, &rkey)
                 .await
                 .ok()
                 .flatten();
             if let Some(prev) = existing {
-                if prev == entry.body {
+                if prev == body {
                     println!("  skip {}/{} (unchanged)", entry.collection, &rkey[..16]);
                     total_skipped += 1;
                     continue;
                 }
             }
             let result = client
-                .put_record(&session, &entry.collection, &rkey, &entry.body)
+                .put_record(session, &entry.collection, &rkey, &body)
                 .await
                 .with_context(|| format!("putRecord {} {}", entry.collection, rkey))?;
             println!("  put  {} → {}", entry.relpath.display(), result.uri);
@@ -235,8 +277,7 @@ async fn publish_async(
         }
     }
     println!(
-        "\ndone: {} published, {} unchanged",
-        total_published, total_skipped
+        "\ndone: {total_published} published, {total_skipped} unchanged, {total_unresolved} unresolved AT-URI(s)",
     );
     Ok(ExitCode::SUCCESS)
 }

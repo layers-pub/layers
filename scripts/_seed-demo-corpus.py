@@ -268,8 +268,10 @@ def main() -> int:
         for tok, _ in pos:
             tokens.append({
                 "text": tok,
-                "byteStart": offset,
-                "byteEnd": offset + len(tok.encode("utf-8")),
+                "textSpan": {
+                    "byteStart": offset,
+                    "byteEnd": offset + len(tok.encode("utf-8")),
+                },
             })
             offset += len(tok.encode("utf-8")) + 1  # +1 for space separator
         segmentation_docs.append({
@@ -278,7 +280,7 @@ def main() -> int:
                 "$type": "pub.layers.segmentation.segmentation",
                 "expression": at_uri(EXPR_HANDLE, "pub.layers.expression.expression", expr_rkey),
                 "tokenizations": [{
-                    "tokenizer": "whitespace",
+                    "kind": "whitespace",
                     "tokens": tokens,
                 }],
                 "languages": [LANGUAGE],

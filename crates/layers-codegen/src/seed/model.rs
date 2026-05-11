@@ -261,41 +261,123 @@ fn walk_account(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::seed::resolve::{HandleDidMap, rewrite_body};
+    use crate::seed::stamp::stamp_uuids;
+    use layers_records::generated::r#pub::layers::annotation::annotation_layer::AnnotationLayer;
     use layers_records::generated::r#pub::layers::corpus::corpus::Corpus;
+    use layers_records::generated::r#pub::layers::expression::expression::Expression;
+    use layers_records::generated::r#pub::layers::graph::graph_edge::GraphEdge;
+    use layers_records::generated::r#pub::layers::graph::graph_node::GraphNode;
+    use layers_records::generated::r#pub::layers::ontology::ontology::Ontology;
+    use layers_records::generated::r#pub::layers::ontology::type_def::TypeDef;
+    use layers_records::generated::r#pub::layers::segmentation::segmentation::Segmentation;
+    use serde_json::Value;
+    use std::collections::BTreeSet;
 
-    /// Round-trips a representative slice of typed seed bodies that
-    /// don't contain `at://handle/...` references through the
-    /// generated structs. The broader sweep (annotation, graph,
-    /// segmentation) is gated on idiolect's `AtUri` accepting handle
-    /// authorities; the registry's seed AT-URIs use handles
-    /// (`ud.ontology.layers.pub`) by design, but
-    /// `idiolect_records::AtUri::parse` currently insists on DID
-    /// authorities. Until that loosens, this test guards the field-
-    /// name invariant on the AtUri-free corner of the record graph.
-    #[test]
-    fn corpus_seed_bodies_round_trip_through_generated_struct() {
+    fn seeds_dir() -> std::path::PathBuf {
         let manifest = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        let layers_root = manifest
+        manifest
             .parent()
             .expect("crates dir")
             .parent()
-            .expect("layers dir");
-        let seeds = layers_root.join("lexicons/seeds");
-        let entries = walk(&seeds).expect("walk seeds");
+            .expect("layers dir")
+            .join("lexicons/seeds")
+    }
+
+    /// Build a synthetic handle→DID map from every account named
+    /// in the seed tree. Used by the typed round-trip test below
+    /// to simulate the resolution pass the publisher does at
+    /// `seed publish` time.
+    fn synthesise_did_map(entries: &[SeedEntry]) -> HandleDidMap {
+        let mut handles: BTreeSet<String> = BTreeSet::new();
+        for e in entries {
+            handles.insert(e.account.clone());
+        }
+        // Also pick up handles that appear as AT-URI authorities in
+        // bodies but whose own seeds may not yet exist (e.g. the
+        // cross-resource SemLink edges into PropBank handles that
+        // ship in a different account's seed set).
+        for e in entries {
+            collect_at_uri_handles(&e.body, &mut handles);
+        }
+        let mut m = HandleDidMap::new();
+        for (i, h) in handles.iter().enumerate() {
+            m.insert(h.clone(), format!("did:plc:fake{i:04}"));
+        }
+        m
+    }
+
+    fn collect_at_uri_handles(value: &Value, out: &mut BTreeSet<String>) {
+        match value {
+            Value::String(s) => {
+                if let Some(rest) = s.strip_prefix("at://") {
+                    if let Some((auth, _)) = rest.split_once('/') {
+                        if !auth.starts_with("did:") && auth.contains('.') {
+                            out.insert(auth.to_owned());
+                        }
+                    }
+                }
+            }
+            Value::Array(items) => {
+                for item in items {
+                    collect_at_uri_handles(item, out);
+                }
+            }
+            Value::Object(fields) => {
+                for v in fields.values() {
+                    collect_at_uri_handles(v, out);
+                }
+            }
+            _ => {}
+        }
+    }
+
+    fn deserialise<T: serde::de::DeserializeOwned>(entry: &SeedEntry, body: Value) {
+        serde_json::from_value::<T>(body).unwrap_or_else(|e| {
+            panic!(
+                "{} ({}) failed typed deserialisation: {e}",
+                entry.relpath.display(),
+                entry.collection,
+            );
+        });
+    }
+
+    /// Round-trip every seed body through its generated record
+    /// struct after applying the same handle→DID resolution the
+    /// publisher applies at `seed publish` time. Guards three
+    /// invariants in one shot:
+    ///   * field names match the lexicon (the `predicate` vs
+    ///     `label` regression class);
+    ///   * AT-URI authorities resolve cleanly to DID-form;
+    ///   * the generated types accept the post-resolution body.
+    #[test]
+    fn every_typed_seed_body_round_trips_after_handle_resolution() {
+        let entries = walk(&seeds_dir()).expect("walk seeds");
+        assert!(!entries.is_empty(), "no seed entries found");
+        let map = synthesise_did_map(&entries);
+
         let mut checked = 0usize;
         for entry in &entries {
-            if entry.collection != "pub.layers.corpus.corpus" {
-                continue;
+            let mut body = entry.body.clone();
+            rewrite_body(&mut body, &map);
+            stamp_uuids(&mut body, &entry.collection);
+            match entry.collection.as_str() {
+                "pub.layers.annotation.annotationLayer" => {
+                    deserialise::<AnnotationLayer>(entry, body);
+                }
+                "pub.layers.corpus.corpus" => deserialise::<Corpus>(entry, body),
+                "pub.layers.expression.expression" => deserialise::<Expression>(entry, body),
+                "pub.layers.segmentation.segmentation" => {
+                    deserialise::<Segmentation>(entry, body);
+                }
+                "pub.layers.graph.graphEdge" => deserialise::<GraphEdge>(entry, body),
+                "pub.layers.graph.graphNode" => deserialise::<GraphNode>(entry, body),
+                "pub.layers.ontology.ontology" => deserialise::<Ontology>(entry, body),
+                "pub.layers.ontology.typeDef" => deserialise::<TypeDef>(entry, body),
+                _ => continue,
             }
-            serde_json::from_value::<Corpus>(entry.body.clone()).unwrap_or_else(|e| {
-                panic!(
-                    "{} ({}) failed to deserialise as Corpus: {e}",
-                    entry.relpath.display(),
-                    entry.collection,
-                );
-            });
             checked += 1;
         }
-        assert!(checked > 0, "no Corpus seeds checked");
+        assert!(checked > 0, "no typed seed bodies checked");
     }
 }

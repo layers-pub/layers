@@ -19,6 +19,8 @@ pub mod client;
 pub mod fingerprint;
 pub mod model;
 pub mod publish;
+pub mod resolve;
+pub mod stamp;
 
 /// Dispatch entry point invoked by `main.rs`.
 pub fn run(repo_root: &Path, args: &[String]) -> Result<ExitCode> {

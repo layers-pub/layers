@@ -132,7 +132,7 @@ def _project_document(
         offset = 0
         for t in doc.tokens:
             size = len(t.text.encode("utf-8"))
-            tokens.append({"text": t.text, "byteStart": offset, "byteEnd": offset + size})
+            tokens.append({"text": t.text, "textSpan": {"byteStart": offset, "byteEnd": offset + size}})
             offset += size + 1
         seg_rkey = f"pmb-seg-{doc.id}".replace("/", "-").replace(".", "-")
         seg_uri = _at_uri(h_seg, "pub.layers.segmentation.segmentation", seg_rkey)
@@ -142,7 +142,7 @@ def _project_document(
             collection="pub.layers.segmentation.segmentation",
             body={
                 "expression": expr_uri,
-                "tokenizations": [{"tokenizer": "pmb-tok", "tokens": tokens}],
+                "tokenizations": [{"kind": "custom", "tokens": tokens}],
                 "languages": [lang],
             },
         )

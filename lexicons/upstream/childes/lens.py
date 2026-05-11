@@ -127,14 +127,13 @@ def _project_session(
         )
 
         if utt.tokens:
-            tokens: list[dict[str, int | str]] = []
+            tokens: list[dict[str, object]] = []
             offset = 0
             for t in utt.tokens:
                 size = len(t.word.encode("utf-8"))
                 tokens.append({
                     "text": t.word,
-                    "byteStart": offset,
-                    "byteEnd": offset + size,
+                    "textSpan": {"byteStart": offset, "byteEnd": offset + size},
                 })
                 offset += size + 1
             seg_rkey = f"{slug}-{session_stem}-{utt_idx}"
@@ -145,7 +144,7 @@ def _project_session(
                 collection="pub.layers.segmentation.segmentation",
                 body={
                     "expression": expr_uri,
-                    "tokenizations": [{"tokenizer": "chat-%tok", "tokens": tokens}],
+                    "tokenizations": [{"kind": "custom", "tokens": tokens}],
                     "languages": [lang],
                 },
             )

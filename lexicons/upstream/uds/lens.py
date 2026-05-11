@@ -116,7 +116,7 @@ def _project_sentence(
     for n in syntax_nodes:
         form = n.form or ""
         size = len(form.encode("utf-8"))
-        tokens.append({"text": form, "byteStart": offset, "byteEnd": offset + size})
+        tokens.append({"text": form, "textSpan": {"byteStart": offset, "byteEnd": offset + size}})
         offset += size + 1
     seg_rkey = f"uds-seg-{sentence_id}"
     seg_uri = _at_uri(H_SEG, "pub.layers.segmentation.segmentation", seg_rkey)
@@ -126,7 +126,7 @@ def _project_sentence(
         collection="pub.layers.segmentation.segmentation",
         body={
             "expression": expr_uri,
-            "tokenizations": [{"tokenizer": "ud-syntax", "tokens": tokens}],
+            "tokenizations": [{"kind": "whitespace", "tokens": tokens}],
             "languages": [LANGUAGE],
         },
     )
