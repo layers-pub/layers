@@ -220,6 +220,56 @@ def _project_sentence(
             },
         )
 
+    # UD-POS + PTB-POS tag layers. Each syntax-domain token
+    # carries both `upos` (UD universal POS) and `xpos` (PTB POS
+    # in UD-EWT). Surface each as its own token-tag annotation
+    # layer so consumers picking either ontology hit the right
+    # subkind/formalism shape.
+    upos_anns: list[dict[str, Any]] = []
+    xpos_anns: list[dict[str, Any]] = []
+    for idx, n in enumerate(syntax_nodes):
+        if n.upos:
+            upos_anns.append({
+                "anchor": {
+                    "$type": "pub.layers.defs#tokenRef",
+                    "segmentation": seg_uri,
+                    "tokenization": 0,
+                    "token": idx,
+                },
+                "predicate": "upos",
+                "value": n.upos,
+            })
+        if n.xpos:
+            xpos_anns.append({
+                "anchor": {
+                    "$type": "pub.layers.defs#tokenRef",
+                    "segmentation": seg_uri,
+                    "tokenization": 0,
+                    "token": idx,
+                },
+                "predicate": "xpos",
+                "value": n.xpos,
+            })
+    for anns, subkind, formalism in (
+        (upos_anns, "pos", "ud-pos"),
+        (xpos_anns, "pos", "ptb-pos"),
+    ):
+        if not anns:
+            continue
+        yield SeedRecord(
+            handle=H_ANN,
+            kind="layers",
+            collection="pub.layers.annotation.annotationLayer",
+            body={
+                "expression": expr_uri,
+                "kind": "token-tag",
+                "subkind": subkind,
+                "formalism": formalism,
+                "annotations": anns,
+                "languages": [LANGUAGE],
+            },
+        )
+
     # UD-syntax dependency arcs: emit one relation-kind
     # annotation layer per sentence carrying `(head, dependent,
     # deprel)` triples. The arcs live in the same UDS graph as
