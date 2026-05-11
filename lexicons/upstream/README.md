@@ -11,12 +11,28 @@ reusable.
 
 ### `theory.py` — what the upstream format actually is
 
-Pydantic v2 `BaseModel`s that mirror the upstream format's
+`dx.Model` subclasses (from
+[didactic](https://github.com/panproto/didactic), the Python
+toolkit for panproto theories) that mirror the upstream format's
 structure. Every field, every nested record, every enum that the
-converter touches has an explicit type. Validation happens when the
-converter parses raw upstream data into a theory instance: malformed
-input fails fast at the upstream boundary, not somewhere inside the
-record-emission code.
+lens reads has an explicit type. Validation runs at theory
+construction: malformed upstream input fails fast at the boundary,
+not somewhere inside record emission. Models declare
+`extra="ignore"` via the class header so upstream-only fields the
+lens does not consume pass through silently.
+
+```python
+import didactic.api as dx
+
+class UDSNode(dx.Model, extra="ignore"):
+    id: str
+    domain: NodeDomain
+    type: NodeType | None = None
+    # …
+```
+
+Nested models are referenced by bare type (didactic v0.7+ bare-
+Model field types — no `dx.Embed[T]` wrappers needed).
 
 The theory is intentionally *isomorphic to the source format*, not
 to Layers' lexicons. AMR's PENMAN graph, CHILDES's CHAT utterance,
@@ -26,61 +42,66 @@ unified at this layer.
 
 ### `lens.py` — how the upstream maps to Layers
 
-A pure function `project(theory_instance) -> list[SeedRecord]` that
-returns Layers seed records. One theory instance may produce many
-records of different collections (a UDS sentence becomes one
+A `dx.Mapping[<TheoryRoot>, list]` whose `forward()` returns Layers
+`SeedRecord` instances. One theory instance may produce many
+records of different collections (one UDS sentence → one
 expression + one segmentation + six annotation layers + N graph
-edges). The function is the *only* place the upstream-to-Layers
-mapping logic lives; the converter at
-`scripts/convert-external-resources.py` is a thin loop that calls
-the lens and emits its output.
+edges + one membership). The lens is the *only* place upstream-to-
+Layers mapping logic lives; the converter at
+`scripts/convert-external-resources.py` is a thin loop that
+instantiates the theory, runs the lens, and writes the output.
 
-## Why this is not a panproto-DSL lens
+## Why a didactic Mapping rather than a panproto-lens-dsl blob
 
 panproto-lens-dsl currently supports field-level renames + injects
-on a single source/target pair (see `crates/layers-codegen/src/lenses.rs`
-and the 36 existing foreign-NSID lenses). That covers the
-single-record cases (margin → annotation, leaflet → expression).
-It does not cover the one-to-many record-type fanout these formats
-need (one AMR graph → expression + annotation layer + many edges).
-Until panproto's DSL grows multi-target primitives, the projection
-lives as Python in `lens.py` rather than as a compiled
-`dev.panproto.schema.lens` blob.
+on a single source/target NSID pair (see
+`crates/layers-codegen/src/lenses.rs` and the 36 existing foreign-
+NSID lenses). That covers the single-record cases (margin →
+annotation, leaflet → expression). It does not cover the one-to-
+many record-type fanout these formats need (one AMR graph →
+expression + annotation layer + many graphNodes + many
+graphEdges + cross-references into PropBank).
 
-The interface contract is the same — a typed projection from a
-named source theory to typed target records — so the file naming
-and structure mirror the panproto convention. A future revision can
-swap individual lenses to compiled blobs without changing the
-converter API.
+Until panproto's DSL grows multi-target primitives, the projection
+lives as a `dx.Mapping` in `lens.py`. didactic *is* panproto's
+Python toolkit, so the file naming and the Mapping contract are
+already the panproto convention; a future revision can swap
+individual lenses to compiled `dev.panproto.schema.lens` blobs
+without changing the converter API.
 
 ## Convention for `lens.py`
 
 ```python
 from collections.abc import Iterator
-from dataclasses import dataclass
-from typing import Any
+from .. import SeedRecord, dx
 from .theory import <SourceTheoryRoot>
 
 
-@dataclass(frozen=True, slots=True)
-class SeedRecord:
-    """One record the lens emits, parameterised on its target account."""
+class <Source>ToLayers(dx.Mapping[<SourceTheoryRoot>, list]):
+    """didactic Mapping: one upstream-theory instance → list[SeedRecord]."""
+
+    def forward(self, source: <SourceTheoryRoot>) -> list:
+        return list(_project(source))
+
+
+def _project(source: <SourceTheoryRoot>) -> Iterator[SeedRecord]:
+    # yield SeedRecord(handle=…, kind=…, collection=…, body=…, summary=…)
+    ...
+
+
+project = <Source>ToLayers()  # convenience for converter
+```
+
+`SeedRecord` (defined in `lexicons/upstream/__init__.py`) carries:
+
+```python
+class SeedRecord(dx.Model, extra="ignore"):
     handle: str           # e.g. "ewt.eng.uds.expression.layers.pub"
     kind: str             # batched-file leaf name (e.g. "expressions")
     collection: str       # NSID (e.g. "pub.layers.expression.expression")
-    body: dict[str, Any]  # record body (without $type or createdAt; the
-                          # converter adds those)
+    body: JsonObject      # record body (the converter adds $type +
+                          # createdAt).
     summary: str | None   # optional changelog summary
-
-
-def project(source: <SourceTheoryRoot>) -> Iterator[SeedRecord]:
-    """Lens from `source` (one upstream-theory instance) to Layers.
-
-    Each yielded SeedRecord is one record on one PDS account. The
-    converter writes each to `lexicons/seeds/<handle>/<kind>.yaml`
-    as one document in a multi-document YAML stream.
-    """
-    ...
 ```
 
 ## Adding a new upstream format
@@ -104,7 +125,8 @@ def project(source: <SourceTheoryRoot>) -> Iterator[SeedRecord]:
 | Source | Theory module | Lens | Smoke status |
 |---|---|---|---|
 | UDS 2.0 | `uds/theory.py` | `uds/lens.py` | locally testable via `~/Projects/decomp` |
-| CHILDES | `childes/theory.py` | `childes/lens.py` | requires `--childes-dir` |
-| AMR | `amr/theory.py` | `amr/lens.py` | requires `--amr-dir` |
-| UCCA | `ucca/theory.py` | `ucca/lens.py` | requires `--ucca-dir` |
-| PMB | `pmb/theory.py` | `pmb/lens.py` | requires `--pmb-dir`; covers gold + silver + bronze across all PMB languages |
+| CHILDES | `childes/theory.py` | `childes/lens.py` | requires `--childes-dir`; pylangacq parser → `CHILDESCorpus` wired |
+| AMR | `amr/theory.py` | `amr/lens.py` | requires `--amr-dir`; PENMAN parser wired; English framesets emit `same-as` edges to `propbank.ontology.layers.pub` via `semlink.graph.layers.pub` |
+| UCCA | `ucca/theory.py` | `ucca/lens.py` | requires `--ucca-dir`; XML → `UCCABundle` parser still operator-side |
+| PMB | `pmb/theory.py` | `pmb/lens.py` | requires `--pmb-dir`; CLF → `PMBBundle` parser still operator-side; English Concept-clauses emit `same-as` edges to `pwn.eng.wordnet.resource.layers.pub` via `semlink.graph.layers.pub` |
+| UMR | `umr/theory.py` | `umr/lens.py` | requires `--umr-dir`; release-format → `UMRBundle` parser still operator-side; English framesets emit `same-as` edges to `propbank.ontology.layers.pub` via `semlink.graph.layers.pub` |
