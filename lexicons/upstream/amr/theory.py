@@ -77,8 +77,8 @@ class AMRGraph(dx.Model, extra="ignore"):
     """One AMR-annotated sentence."""
     id: str = dx.field(description="Sentence-level identifier from the LDC release (e.g. `nw.eng_dz_0001.0`).")
     snt: str = dx.field(description="The surface sentence the graph annotates.")
-    nodes: tuple[dx.Embed[AMRNode], ...] = dx.field(default_factory=tuple)
-    edges: tuple[dx.Embed[AMREdge], ...] = dx.field(default_factory=tuple)
+    nodes: tuple[AMRNode, ...] = dx.field(default_factory=tuple)
+    edges: tuple[AMREdge, ...] = dx.field(default_factory=tuple)
     root_variable: str = dx.field(description="Variable name of the graph's root concept.")
     metadata: dict[str, str] = dx.field(
         default_factory=dict,
@@ -94,7 +94,7 @@ class AMRBundle(dx.Model, extra="ignore"):
     release: AMRRelease
     license: str = dx.field(default="LDC User Agreement; redistribution restricted.")
     citation: str
-    graphs: tuple[dx.Embed[AMRGraph], ...] = dx.field(default_factory=tuple)
+    graphs: tuple[AMRGraph, ...] = dx.field(default_factory=tuple)
 
 
 __all__ = ["AMRNode", "AMREdge", "AMRGraph", "AMRBundle", "AMRRelease"]

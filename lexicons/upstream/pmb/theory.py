@@ -73,8 +73,8 @@ class PMBDocument(dx.Model, extra="ignore"):
     language: str = dx.field(description="ISO 639-3 language code (eng, nld, deu, ita).")
     tier: PMBTier
     raw_text: str = dx.field(description="Surface text reconstructed from the .raw file.")
-    tokens: tuple[dx.Embed[PMBToken], ...] = dx.field(default_factory=tuple)
-    clauses: tuple[dx.Embed[DRSClause], ...] = dx.field(default_factory=tuple)
+    tokens: tuple[PMBToken, ...] = dx.field(default_factory=tuple)
+    clauses: tuple[DRSClause, ...] = dx.field(default_factory=tuple)
 
 
 class PMBBundle(dx.Model, extra="ignore"):
@@ -92,7 +92,7 @@ class PMBBundle(dx.Model, extra="ignore"):
         description="PMB releases are CC BY-SA 4.0; 1.0.0 was CC BY-NC 4.0 — check release notes.",
     )
     citation: str = "Abzianidze et al. 2017 EACL."
-    documents: tuple[dx.Embed[PMBDocument], ...] = dx.field(default_factory=tuple)
+    documents: tuple[PMBDocument, ...] = dx.field(default_factory=tuple)
 
 
 __all__ = [

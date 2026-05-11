@@ -125,15 +125,15 @@ class UDSSentenceGraph(dx.Model, extra="ignore"):
     directed: bool = True
     multigraph: bool = True
     graph: tuple[JsonValue, ...] = dx.field(default_factory=tuple)
-    nodes: tuple[dx.Embed[UDSNode], ...]
-    adjacency: tuple[tuple[dx.Embed[UDSEdge], ...], ...] = dx.field(default_factory=tuple)
+    nodes: tuple[UDSNode, ...]
+    adjacency: tuple[tuple[UDSEdge, ...], ...] = dx.field(default_factory=tuple)
 
 
 class UDSSplit(dx.Model, extra="ignore"):
     """One split (train/dev/test) of UDS over the UD-EWT bundle."""
     name: Literal["train", "dev", "test"]
     metadata: JsonObject = dx.field(default_factory=dict)
-    data: dict[str, dx.Embed[UDSSentenceGraph]] = dx.field(default_factory=dict)
+    data: dict[str, UDSSentenceGraph] = dx.field(default_factory=dict)
 
 
 __all__ = [

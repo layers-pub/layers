@@ -83,9 +83,9 @@ class UCCAPassage(dx.Model, extra="ignore"):
     id: str = dx.field(description="Passage id from the upstream release (e.g. `wiki-100023`).")
     text: str = dx.field(description="Surface text reconstructed from terminals.")
     language: str = dx.field(description="ISO 639-3 code (eng, fra, deu).")
-    terminals: tuple[dx.Embed[UCCATerminal], ...] = dx.field(default_factory=tuple)
-    units: tuple[dx.Embed[UCCAUnit], ...] = dx.field(default_factory=tuple)
-    edges: tuple[dx.Embed[UCCAEdge], ...] = dx.field(default_factory=tuple)
+    terminals: tuple[UCCATerminal, ...] = dx.field(default_factory=tuple)
+    units: tuple[UCCAUnit, ...] = dx.field(default_factory=tuple)
+    edges: tuple[UCCAEdge, ...] = dx.field(default_factory=tuple)
     title: str | None = None
     source: str | None = dx.field(default=None, description="Upstream release identifier (English-Wiki, English-20K, French-20K, German-20K).")
 
@@ -97,7 +97,7 @@ class UCCABundle(dx.Model, extra="ignore"):
     language: str
     license: str = dx.field(default="GNU GPL v3.0 (UCCA toolkit) + CC BY 4.0 (UCCA corpora).")
     citation: str = "Abend & Rappoport 2013 ACL."
-    passages: tuple[dx.Embed[UCCAPassage], ...] = dx.field(default_factory=tuple)
+    passages: tuple[UCCAPassage, ...] = dx.field(default_factory=tuple)
 
 
 __all__ = [

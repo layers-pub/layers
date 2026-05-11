@@ -68,8 +68,8 @@ class UMRSentenceGraph(dx.Model, extra="ignore"):
     """Sentence-level UMR (extends AMR)."""
     id: str
     snt: str
-    nodes: tuple[dx.Embed[UMRNode], ...] = dx.field(default_factory=tuple)
-    edges: tuple[dx.Embed[UMREdge], ...] = dx.field(default_factory=tuple)
+    nodes: tuple[UMRNode, ...] = dx.field(default_factory=tuple)
+    edges: tuple[UMREdge, ...] = dx.field(default_factory=tuple)
     root_variable: str
     metadata: dict[str, str] = dx.field(default_factory=dict)
     alignments: tuple[tuple[str, int, ...]] = dx.field(
@@ -101,8 +101,8 @@ class UMRDocumentEdge(dx.Model, extra="ignore"):
 class UMRDocument(dx.Model, extra="ignore"):
     """One UMR document: a contiguous span of sentences sharing a doc-level layer."""
     id: str
-    sentences: tuple[dx.Embed[UMRSentenceGraph], ...] = dx.field(default_factory=tuple)
-    document_edges: tuple[dx.Embed[UMRDocumentEdge], ...] = dx.field(default_factory=tuple)
+    sentences: tuple[UMRSentenceGraph, ...] = dx.field(default_factory=tuple)
+    document_edges: tuple[UMRDocumentEdge, ...] = dx.field(default_factory=tuple)
 
 
 class UMRBundle(dx.Model, extra="ignore"):
@@ -111,7 +111,7 @@ class UMRBundle(dx.Model, extra="ignore"):
     language: str = dx.field(description="ISO 639-3 language code.")
     license: str = dx.field(default="CC BY-SA 4.0; per-language permissions vary.")
     citation: str = "Van Gysel et al. 2021 KI."
-    documents: tuple[dx.Embed[UMRDocument], ...] = dx.field(default_factory=tuple)
+    documents: tuple[UMRDocument, ...] = dx.field(default_factory=tuple)
 
 
 __all__ = [

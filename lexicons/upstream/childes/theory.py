@@ -47,7 +47,7 @@ class CHATUtterance(dx.Model, extra="ignore"):
     """One utterance line from a CHAT file."""
     participant: str = dx.field(description="Speaker code (CHI, MOT, FAT, INV, …).")
     text: str = dx.field(description="The full surface utterance, untokenised.")
-    tokens: tuple[dx.Embed[CHATToken], ...] = dx.field(default_factory=tuple)
+    tokens: tuple[CHATToken, ...] = dx.field(default_factory=tuple)
     # Metadata tiers we don't typecheck but want to preserve.
     tiers: dict[str, str] = dx.field(default_factory=dict)
 
@@ -65,7 +65,7 @@ class CHATSession(dx.Model, extra="ignore"):
         default_factory=dict,
         description="Speaker-code → full role label (e.g. `MOT` → `Mother`).",
     )
-    utterances: tuple[dx.Embed[CHATUtterance], ...] = dx.field(default_factory=tuple)
+    utterances: tuple[CHATUtterance, ...] = dx.field(default_factory=tuple)
     headers: dict[str, str] = dx.field(default_factory=dict)
 
 
@@ -76,7 +76,7 @@ class CHILDESCorpus(dx.Model, extra="ignore"):
     name: str
     language: str = dx.field(description="ISO 639-3 language code (eng, deu, jpn, …).")
     license: str | None = None
-    sessions: tuple[dx.Embed[CHATSession], ...] = dx.field(default_factory=tuple)
+    sessions: tuple[CHATSession, ...] = dx.field(default_factory=tuple)
     metadata: JsonObject = dx.field(default_factory=dict)
 
 
