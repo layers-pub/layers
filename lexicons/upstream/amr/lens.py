@@ -250,7 +250,7 @@ def _project_graph(
             "annotations": [
                 {
                     "anchor": {"$type": "pub.layers.defs#documentAnchor"},
-                    "predicate": "amr",
+                    "label": "amr",
                     "value": graph.id,
                 }
             ],

@@ -163,7 +163,8 @@ def _project_session(
                             "tokenization": 0,
                             "token": tok_idx,
                         },
-                        "predicate": t.pos,
+                        "tokenIndex": tok_idx,
+                        "label": t.pos,
                         "value": t.mor or t.pos,
                     })
                 if pos_anns:
@@ -194,7 +195,9 @@ def _project_session(
                             "tokenization": 0,
                             "tokens": [tok_idx, max(0, t.gra_head - 1)] if t.gra_head > 0 else [tok_idx],
                         },
-                        "predicate": t.gra_rel or "dep",
+                        "label": t.gra_rel or "dep",
+                        "headIndex": (t.gra_head - 1) if t.gra_head and t.gra_head > 0 else -1,
+                        "targetIndex": tok_idx,
                     })
                 if dep_anns:
                     yield SeedRecord(

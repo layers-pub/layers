@@ -177,7 +177,7 @@ def _project_passage(
             "annotations": [
                 {
                     "anchor": {"$type": "pub.layers.defs#documentAnchor"},
-                    "predicate": "ucca",
+                    "label": "ucca",
                     "value": passage.id,
                 }
             ],

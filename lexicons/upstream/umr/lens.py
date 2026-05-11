@@ -315,7 +315,7 @@ def _project_sentence(
             "annotations": [
                 {
                     "anchor": {"$type": "pub.layers.defs#documentAnchor"},
-                    "predicate": "umr-sentence",
+                    "label": "umr-sentence",
                     "value": sentence.id,
                 }
             ],

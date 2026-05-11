@@ -172,8 +172,13 @@ def _project_sentence(
                 continue
             layer_anns[layer].append({
                 "anchor": _anchor_for_semantics_node(n.id),
-                "predicate": layer,
+                "label": layer,
                 "value": _serialise_attrs(attrs),
+                "features": {
+                    "entries": [
+                        {"key": "uds_node", "value": n.id},
+                    ],
+                },
             })
 
     nodes_by_index = list(graph.nodes)
@@ -193,9 +198,9 @@ def _project_sentence(
                 # the layer scores.
                 layer_anns[layer].append({
                     "anchor": _anchor_for_semantics_node(edge.id),
-                    "predicate": layer,
+                    "label": layer,
                     "value": _serialise_attrs(attrs),
-                    "properties": {
+                    "features": {
                         "entries": [
                             {"key": "uds_edge_source", "value": src.id},
                             {"key": "uds_edge_target", "value": edge.id},
@@ -236,8 +241,8 @@ def _project_sentence(
                     "tokenization": 0,
                     "token": idx,
                 },
-                "predicate": "upos",
-                "value": n.upos,
+                "tokenIndex": idx,
+                "label": n.upos,
             })
         if n.xpos:
             xpos_anns.append({
@@ -247,8 +252,8 @@ def _project_sentence(
                     "tokenization": 0,
                     "token": idx,
                 },
-                "predicate": "xpos",
-                "value": n.xpos,
+                "tokenIndex": idx,
+                "label": n.xpos,
             })
     for anns, subkind, formalism in (
         (upos_anns, "pos", "ud-pos"),
@@ -300,12 +305,13 @@ def _project_sentence(
                     "tokenization": 0,
                     "token": dep_pos - 1,
                 },
-                "predicate": "deprel",
-                "value": edge.deprel or "dep",
-                "properties": {
+                "label": edge.deprel or "dep",
+                "headIndex": max(-1, head_pos - 1) if head_pos > 0 else -1,
+                "targetIndex": dep_pos - 1,
+                "features": {
                     "entries": [
-                        {"key": "head_token", "value": str(max(0, head_pos - 1))},
                         {"key": "head_id", "value": src.id},
+                        {"key": "dep_id", "value": tgt.id},
                     ],
                 },
             })

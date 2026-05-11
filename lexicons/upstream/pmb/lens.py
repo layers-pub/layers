@@ -288,7 +288,7 @@ def _project_document(
             "annotations": [
                 {
                     "anchor": {"$type": "pub.layers.defs#documentAnchor"},
-                    "predicate": "drs",
+                    "label": "drs",
                     "value": doc.id,
                 }
             ],
