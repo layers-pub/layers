@@ -45,9 +45,21 @@ fn every_path_references_a_known_component_or_baked_response() {
         let response = item["get"]["responses"]["200"]["content"]["application/json"]["schema"]
             .as_object()
             .unwrap_or_else(|| panic!("{path} missing 200 response schema"));
-        let reference = response["$ref"]
-            .as_str()
-            .unwrap_or_else(|| panic!("{path} 200 response is not a $ref"));
+        // The "baked response" case: the schema is inlined (typed
+        // object with properties) rather than referencing a named
+        // component. Inline schemas are valid OpenAPI; they just
+        // bypass the component-reference check.
+        let Some(reference) = response.get("$ref").and_then(|v| v.as_str()) else {
+            assert!(
+                response.contains_key("type")
+                    || response.contains_key("properties")
+                    || response.contains_key("oneOf")
+                    || response.contains_key("anyOf")
+                    || response.contains_key("allOf"),
+                "{path} 200 response is neither a $ref nor an inline schema"
+            );
+            continue;
+        };
         let name = reference
             .strip_prefix("#/components/schemas/")
             .unwrap_or_else(|| panic!("{path} response $ref is not local"));
