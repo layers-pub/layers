@@ -257,3 +257,45 @@ fn walk_account(
     }
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use layers_records::generated::r#pub::layers::corpus::corpus::Corpus;
+
+    /// Round-trips a representative slice of typed seed bodies that
+    /// don't contain `at://handle/...` references through the
+    /// generated structs. The broader sweep (annotation, graph,
+    /// segmentation) is gated on idiolect's `AtUri` accepting handle
+    /// authorities; the registry's seed AT-URIs use handles
+    /// (`ud.ontology.layers.pub`) by design, but
+    /// `idiolect_records::AtUri::parse` currently insists on DID
+    /// authorities. Until that loosens, this test guards the field-
+    /// name invariant on the AtUri-free corner of the record graph.
+    #[test]
+    fn corpus_seed_bodies_round_trip_through_generated_struct() {
+        let manifest = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let layers_root = manifest
+            .parent()
+            .expect("crates dir")
+            .parent()
+            .expect("layers dir");
+        let seeds = layers_root.join("lexicons/seeds");
+        let entries = walk(&seeds).expect("walk seeds");
+        let mut checked = 0usize;
+        for entry in &entries {
+            if entry.collection != "pub.layers.corpus.corpus" {
+                continue;
+            }
+            serde_json::from_value::<Corpus>(entry.body.clone()).unwrap_or_else(|e| {
+                panic!(
+                    "{} ({}) failed to deserialise as Corpus: {e}",
+                    entry.relpath.display(),
+                    entry.collection,
+                );
+            });
+            checked += 1;
+        }
+        assert!(checked > 0, "no Corpus seeds checked");
+    }
+}
