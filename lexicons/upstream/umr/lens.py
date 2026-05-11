@@ -35,10 +35,21 @@ from collections.abc import Iterator
 from .. import SeedRecord, dx
 from .theory import UMRBundle, UMRDocument, UMRSentenceGraph
 
-PROPBANK_FRAMESET_RE = re.compile(r"^([a-z][a-z0-9_-]*)\.([0-9]{2,})$")
+# UMR concepts serialise PropBank framesets with a hyphen, like
+# AMR (`give-01`); the cross-reference target on
+# `propbank.ontology.layers.pub` uses the canonical period form
+# (`roleset-give.01`).
+PROPBANK_FRAMESET_RE = re.compile(r"^([a-z][a-z0-9_]*)-([0-9]{2,})$")
 PROPBANK_HANDLE = "propbank.ontology.layers.pub"
 PROPBANK_COLLECTION = "pub.layers.ontology.typeDef"
 SEMLINK_HANDLE = "semlink.graph.layers.pub"
+
+
+def _propbank_rkey_for(concept: str) -> str:
+    """Match the dash-only rkey form `convert_propbank` emits."""
+    m = PROPBANK_FRAMESET_RE.match(concept)
+    assert m is not None
+    return f"roleset-{m.group(1)}-{m.group(2)}"
 
 # UMR aspect typeDef account (canonical UMR-aspect ontology lives
 # in the small-canon ontologies family if/when published; until
@@ -229,8 +240,9 @@ def _project_sentence(
 
         # PropBank cross-reference is English-only.
         if lang == "eng" and PROPBANK_FRAMESET_RE.match(node.concept):
-            pb_rkey = f"roleset-{node.concept}".replace(".", "-")
-            pb_uri = _at_uri(PROPBANK_HANDLE, PROPBANK_COLLECTION, pb_rkey)
+            pb_uri = _at_uri(
+                PROPBANK_HANDLE, PROPBANK_COLLECTION, _propbank_rkey_for(node.concept)
+            )
             yield SeedRecord(
                 handle=SEMLINK_HANDLE,
                 kind="umr-propbank",

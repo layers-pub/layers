@@ -41,7 +41,27 @@ from .theory import AMRBundle, AMRGraph
 
 LANGUAGE = "eng"
 
-PROPBANK_FRAMESET_RE = re.compile(r"^([a-z][a-z0-9_-]*)\.([0-9]{2,})$")
+# AMR PENMAN concepts serialise PropBank rolesets with a hyphen
+# separator (`want-01`, `give-01`), where the upstream PropBank
+# release stores the same roleset with a period (`want.01`).
+# The regex matches the AMR form so the lens recognises framesets
+# in PENMAN-serialised AMR; `_propbank_rkey_for` projects back to
+# the canonical period-form rkey when emitting cross-reference
+# edges to the PropBank account.
+PROPBANK_FRAMESET_RE = re.compile(r"^([a-z][a-z0-9_]*)-([0-9]{2,})$")
+
+
+def _propbank_rkey_for(amr_concept: str) -> str:
+    """Project an AMR concept like `want-01` to the PropBank typeDef
+    rkey used on `propbank.ontology.layers.pub`. The PropBank
+    converter (`convert_propbank` in
+    `scripts/convert-external-resources.py`) emits rolesets with rkey
+    `roleset-{lemma}-{NN}` (dashes, never dots — DNS-safe), so the
+    AMR → PropBank target must match that form exactly.
+    """
+    m = PROPBANK_FRAMESET_RE.match(amr_concept)
+    assert m is not None
+    return f"roleset-{m.group(1)}-{m.group(2)}"
 PROPBANK_HANDLE = "propbank.ontology.layers.pub"
 PROPBANK_COLLECTION = "pub.layers.ontology.typeDef"
 SEMLINK_HANDLE = "semlink.graph.layers.pub"
@@ -157,8 +177,9 @@ def _project_graph(
 
         # Cross-reference into PropBank when concept is a frameset.
         if PROPBANK_FRAMESET_RE.match(node.concept):
-            pb_rkey = f"roleset-{node.concept}".replace(".", "-")
-            pb_uri = _at_uri(PROPBANK_HANDLE, PROPBANK_COLLECTION, pb_rkey)
+            pb_uri = _at_uri(
+                PROPBANK_HANDLE, PROPBANK_COLLECTION, _propbank_rkey_for(node.concept)
+            )
             yield SeedRecord(
                 handle=SEMLINK_HANDLE,
                 kind="amr-propbank",
