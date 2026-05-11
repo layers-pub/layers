@@ -1001,6 +1001,55 @@ def convert_uds(
 
     _drain_seed_records(all_records, output_dir, "uds")
 
+    # Raw UDS (per-annotator) lives alongside normalized in the
+    # decomp release. When present, route every phenomenon file
+    # through `UDSRawToLayers` so each (sentence, phenomenon)
+    # tuple emits a `subkind=<name>-raw` annotation layer in
+    # parallel to the normalized aggregate. Both forms share the
+    # same handles + expression refs; consumers filter by
+    # `formalism` to pick which view they want.
+    raw_root = decomp_dir / "decomp" / "data" / "2.0" / "raw"
+    if raw_root.exists():
+        from lexicons.upstream.uds.theory import (
+            UDSRawDataset,
+            UDSRawLayer,
+            UDS_RAW_SENTENCE_LAYERS,
+            UDS_RAW_DOCUMENT_LAYERS,
+        )
+        from lexicons.upstream.uds.lens_raw import UDSRawToLayers
+
+        layers: list[UDSRawLayer] = []
+        for scope_dir, scope_layers in (
+            ("sentence", UDS_RAW_SENTENCE_LAYERS),
+            ("document", UDS_RAW_DOCUMENT_LAYERS),
+        ):
+            ann_dir = raw_root / scope_dir / "annotations"
+            if not ann_dir.exists():
+                continue
+            for name in scope_layers:
+                p = ann_dir / f"{name}.json"
+                if not p.exists():
+                    print(f"  uds-raw: skipping {scope_dir}/{name} ({p} not found)")
+                    continue
+                with p.open("r", encoding="utf-8") as fp:
+                    raw_blob = json.load(fp)
+                data = raw_blob.get("data", {})
+                if limit is not None:
+                    data = dict(list(data.items())[:limit])
+                layers.append(UDSRawLayer(
+                    name=name,  # type: ignore[arg-type]
+                    scope=scope_dir,  # type: ignore[arg-type]
+                    metadata=raw_blob.get("metadata", {}),
+                    data=data,
+                ))
+        if layers:
+            dataset = UDSRawDataset(layers=tuple(layers))
+            _drain_seed_records(UDSRawToLayers().forward(dataset), output_dir, "uds-raw")
+        else:
+            print("  uds-raw: no raw layer files found under data/2.0/raw")
+    else:
+        print(f"  uds-raw: skipping (no raw bundle at {raw_root})")
+
 
 # ---------------------------------------------------------------------
 # CHILDES conversion (TalkBank child-language corpora)

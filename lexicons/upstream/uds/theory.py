@@ -136,12 +136,116 @@ class UDSSplit(dx.Model, extra="ignore"):
     data: dict[str, UDSSentenceGraph] = dx.field(default_factory=dict)
 
 
+# ---------------------------------------------------------------------
+# Raw UDS (per-annotator) shape
+#
+# Normalized UDS aggregates each (sentence, entity, property) tuple
+# into a single `{value, confidence}` pair (decomp's
+# `UDSAnnotation.normalize`). Raw UDS keeps every annotator's
+# response. `decomp/data/2.0/raw/{sentence,document}/annotations/
+# <phenomenon>.json` is the on-disk form.
+#
+# Wire shape (per phenomenon file):
+#
+#     {
+#       "metadata": {
+#         "<phenomenon>": {
+#           "<property>": {
+#             "value":      {"datatype": "int", "categories": [...], "ordered": bool},
+#             "confidence": {"datatype": "int", "categories": [...], "ordered": bool},
+#             "annotators": ["<phenomenon>-annotator-0", ...]
+#           },
+#           ...
+#         }
+#       },
+#       "data": {
+#         "<sentence-id>": {
+#           "<entity-key>": {
+#             "<phenomenon>": {
+#               "<property>": {
+#                 "value":      {"<annotator-id>": <int>, ...},
+#                 "confidence": {"<annotator-id>": <int>, ...}
+#               },
+#               ...
+#             }
+#           },
+#           ...
+#         },
+#         ...
+#       }
+#     }
+#
+# `<entity-key>` is either a single node id (for node-borne
+# phenomena like factuality) or `<src>%%<tgt>` (for edge-borne
+# phenomena like protoroles). The doc-level files use
+# document/sentence ids in the same shape.
+# ---------------------------------------------------------------------
+
+
+# Raw-UDS sentence-level layers, drawn from decomp/data/2.0/raw/
+# sentence/annotations/*.json. Mirrors the normalized layer set
+# except that decomp ships event_structure as two separate raw
+# files (distributivity + natural_parts) that get fused when
+# normalized.
+UDS_RAW_SENTENCE_LAYERS: tuple[str, ...] = (
+    "factuality",
+    "genericity",
+    "wordsense",
+    "time",
+    "event_structure_distributivity",
+    "event_structure_natural_parts",
+    "protoroles",
+)
+
+# Raw-UDS document-level layers under decomp/data/2.0/raw/document/.
+UDS_RAW_DOCUMENT_LAYERS: tuple[str, ...] = (
+    "time",
+    "event_structure_mereology",
+)
+
+
+class UDSRawLayer(dx.Model, extra="ignore"):
+    """One raw-UDS phenomenon file (e.g. factuality.json).
+
+    `data` keys are sentence ids (or document ids for doc-level
+    layers). Each value maps `<entity-key>` (a node id, or a
+    `<src>%%<tgt>` edge key) to a property → annotator map.
+    """
+
+    name: Literal[
+        "factuality",
+        "genericity",
+        "wordsense",
+        "time",
+        "event_structure_distributivity",
+        "event_structure_natural_parts",
+        "protoroles",
+        "event_structure_mereology",
+    ] = dx.field(description="UDS phenomenon name; matches the source filename stem.")
+    scope: Literal["sentence", "document"] = "sentence"
+    metadata: JsonObject = dx.field(default_factory=dict)
+    data: dict[str, JsonObject] = dx.field(
+        default_factory=dict,
+        description="Sentence-or-document id → entity-key → property-and-annotator nested dict.",
+    )
+
+
+class UDSRawDataset(dx.Model, extra="ignore"):
+    """A bundle of raw-UDS phenomenon files, sentence + document scope."""
+
+    layers: tuple[UDSRawLayer, ...] = dx.field(default_factory=tuple)
+
+
 __all__ = [
     "UDSNode",
     "UDSEdge",
     "UDSSentenceGraph",
     "UDSSplit",
+    "UDSRawLayer",
+    "UDSRawDataset",
     "UDS_ATTRIBUTE_LAYERS",
+    "UDS_RAW_SENTENCE_LAYERS",
+    "UDS_RAW_DOCUMENT_LAYERS",
     "NodeDomain",
     "EdgeDomain",
     "NodeType",

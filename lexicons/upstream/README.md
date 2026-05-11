@@ -124,7 +124,8 @@ class SeedRecord(dx.Model, extra="ignore"):
 
 | Source | Theory module | Lens | Smoke status |
 |---|---|---|---|
-| UDS 2.0 | `uds/theory.py` | `uds/lens.py` | locally testable via `~/Projects/decomp` |
+| UDS 2.0 (normalized) | `uds/theory.py` | `uds/lens.py` | locally testable via `~/Projects/decomp` |
+| UDS 2.0 (raw, per-annotator) | `uds/theory.py` (`UDSRawDataset`) | `uds/lens_raw.py` | locally testable via `~/Projects/decomp` `data/2.0/raw/`; emits `subkind=<name>-raw` annotation layers alongside the normalized aggregates |
 | CHILDES | `childes/theory.py` | `childes/lens.py` | requires `--childes-dir`; pylangacq parser → `CHILDESCorpus` wired |
 | AMR | `amr/theory.py` | `amr/lens.py` | requires `--amr-dir`; PENMAN parser wired; English framesets emit `same-as` edges to `propbank.ontology.layers.pub` via `semlink.graph.layers.pub` |
 | UCCA | `ucca/theory.py` | `ucca/lens.py` | requires `--ucca-dir`; XML → `UCCABundle` parser still operator-side |
