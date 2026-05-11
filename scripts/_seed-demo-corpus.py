@@ -298,8 +298,9 @@ def main() -> int:
                     "tokenization": 0,
                     "token": token_idx,
                 },
-                "predicateRef": tag_uri,
-                "predicate": tag,
+                "tokenIndex": token_idx,
+                "ontologyTypeRef": tag_uri,
+                "label": tag,
             })
         annotation_pos_docs.append({
             "collection": "pub.layers.annotation.annotationLayer",
@@ -329,8 +330,10 @@ def main() -> int:
             }
             dep_anns.append({
                 "anchor": anchor,
-                "predicate": deprel,
-                "predicateRef": at_uri(
+                "label": deprel,
+                "headIndex": head_idx if head_idx is not None else -1,
+                "targetIndex": child_idx,
+                "ontologyTypeRef": at_uri(
                     UD_HANDLE,
                     UD_TYPEDEF,
                     f"ud-rel-v2-{deprel.replace(':', '-')}",

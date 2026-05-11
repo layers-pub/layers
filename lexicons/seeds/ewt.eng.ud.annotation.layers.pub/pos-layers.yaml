@@ -12,57 +12,65 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s01
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s01
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s01
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s01
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adp
-    predicate: ADP
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adp
+    label: ADP
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s01
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s01
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s01
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s01
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -81,50 +89,57 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s02
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-sconj
-    predicate: SCONJ
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-sconj
+    label: SCONJ
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s02
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
-    predicate: PROPN
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
+    label: PROPN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s02
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s02
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s02
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s02
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s02
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -143,43 +158,49 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s03
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adj
-    predicate: ADJ
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adj
+    label: ADJ
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s03
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adj
-    predicate: ADJ
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adj
+    label: ADJ
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s03
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s03
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s03
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adv
-    predicate: ADV
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adv
+    label: ADV
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s03
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -198,57 +219,65 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s04
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s04
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s04
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s04
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s04
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adp
-    predicate: ADP
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adp
+    label: ADP
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s04
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s04
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s04
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -267,43 +296,49 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s05
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s05
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s05
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adp
-    predicate: ADP
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adp
+    label: ADP
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s05
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s05
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s05
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -322,64 +357,73 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
-    predicate: PROPN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
+    label: PROPN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
-    predicate: PROPN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
+    label: PROPN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
-    predicate: PROPN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
+    label: PROPN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s06
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -398,64 +442,73 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s07
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -474,43 +527,49 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s08
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
-    predicate: PROPN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
+    label: PROPN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s08
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s08
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-part
-    predicate: PART
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-part
+    label: PART
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s08
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s08
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
-    predicate: PROPN
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
+    label: PROPN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s08
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -529,50 +588,57 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s09
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s09
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s09
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adj
-    predicate: ADJ
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adj
+    label: ADJ
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s09
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-part
-    predicate: PART
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-part
+    label: PART
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s09
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s09
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
-    predicate: PROPN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
+    label: PROPN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s09
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -591,57 +657,65 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s10
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s10
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s10
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s10
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
-    predicate: PROPN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
+    label: PROPN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s10
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s10
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s10
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adj
-    predicate: ADJ
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adj
+    label: ADJ
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s10
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -660,71 +734,81 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s11
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -743,78 +827,89 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s12
       tokenization: 0
       token: 10
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 10
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -833,85 +928,97 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
       tokenization: 0
       token: 10
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 10
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s13
       tokenization: 0
       token: 11
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 11
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -930,57 +1037,65 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s14
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s14
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s14
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s14
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s14
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s14
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s14
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s14
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -999,71 +1114,81 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
-    predicate: PROPN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
+    label: PROPN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s15
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -1082,64 +1207,73 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s16
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -1158,50 +1292,57 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s17
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s17
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s17
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s17
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s17
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s17
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s17
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -1220,71 +1361,81 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
-    predicate: PROPN
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
+    label: PROPN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s18
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -1303,71 +1454,81 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s19
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -1386,57 +1547,65 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s20
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s20
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s20
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adv
-    predicate: ADV
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adv
+    label: ADV
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s20
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s20
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s20
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s20
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s20
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -1455,78 +1624,89 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
-    predicate: PROPN
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
+    label: PROPN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
-    predicate: PROPN
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
+    label: PROPN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s21
       tokenization: 0
       token: 10
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 10
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -1545,64 +1725,73 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s22
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -1621,78 +1810,89 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s23
       tokenization: 0
       token: 10
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 10
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -1711,71 +1911,81 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s24
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -1794,50 +2004,57 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s25
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s25
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s25
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s25
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s25
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s25
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s25
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -1856,64 +2073,73 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s26
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -1932,71 +2158,81 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
-    predicate: PROPN
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
+    label: PROPN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s27
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -2015,92 +2251,105 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
       tokenization: 0
       token: 10
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 10
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
       tokenization: 0
       token: 11
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 11
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s28
       tokenization: 0
       token: 12
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 12
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -2119,43 +2368,49 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s29
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s29
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s29
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s29
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s29
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s29
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -2174,78 +2429,89 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adv
-    predicate: ADV
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adv
+    label: ADV
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s30
       tokenization: 0
       token: 10
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 10
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -2264,64 +2530,73 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
-    predicate: PROPN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
+    label: PROPN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s31
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -2340,78 +2615,89 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s32
       tokenization: 0
       token: 10
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 10
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -2430,64 +2716,73 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s33
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -2506,71 +2801,81 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s34
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -2589,78 +2894,89 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s35
       tokenization: 0
       token: 10
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 10
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -2679,64 +2995,73 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s36
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -2755,71 +3080,81 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s37
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -2838,64 +3173,73 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
-    predicate: PROPN
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-propn
+    label: PROPN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s38
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -2914,78 +3258,89 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-sconj
-    predicate: SCONJ
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-sconj
+    label: SCONJ
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s39
       tokenization: 0
       token: 10
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 10
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -3004,64 +3359,73 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s40
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -3080,57 +3444,65 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s41
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s41
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s41
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s41
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s41
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adv
-    predicate: ADV
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-adv
+    label: ADV
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s41
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s41
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s41
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -3149,57 +3521,65 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s42
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s42
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s42
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s42
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s42
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s42
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s42
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s42
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -3218,50 +3598,57 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s43
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s43
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s43
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s43
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s43
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s43
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s43
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -3280,57 +3667,65 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s44
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s44
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s44
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s44
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s44
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s44
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s44
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s44
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -3349,78 +3744,89 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s45
       tokenization: 0
       token: 10
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 10
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -3439,50 +3845,57 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s46
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s46
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s46
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s46
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s46
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s46
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s46
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -3501,64 +3914,73 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s47
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -3577,57 +3999,65 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s48
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s48
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s48
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s48
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s48
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s48
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s48
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s48
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -3646,71 +4076,81 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-cconj
-    predicate: CCONJ
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-cconj
+    label: CCONJ
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
-    predicate: AUX
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-aux
+    label: AUX
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s49
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
@@ -3729,71 +4169,81 @@ record:
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
       tokenization: 0
       token: 0
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
-    predicate: PRON
+    tokenIndex: 0
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-pron
+    label: PRON
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
       tokenization: 0
       token: 1
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 1
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
       tokenization: 0
       token: 2
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 2
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
       tokenization: 0
       token: 3
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 3
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
       tokenization: 0
       token: 4
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
-    predicate: VERB
+    tokenIndex: 4
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-verb
+    label: VERB
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
       tokenization: 0
       token: 5
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 5
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
       tokenization: 0
       token: 6
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 6
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
       tokenization: 0
       token: 7
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
-    predicate: DET
+    tokenIndex: 7
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-det
+    label: DET
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
       tokenization: 0
       token: 8
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
-    predicate: NOUN
+    tokenIndex: 8
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-noun
+    label: NOUN
   - anchor:
       $type: pub.layers.defs#tokenRef
       segmentation: at://ewt.eng.ud.segmentation.layers.pub/pub.layers.segmentation.segmentation/seg-s50
       tokenization: 0
       token: 9
-    predicateRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
-    predicate: PUNCT
+    tokenIndex: 9
+    ontologyTypeRef: at://ud.ontology.layers.pub/pub.layers.ontology.typeDef/ud-pos-v2-punct
+    label: PUNCT
   languages:
   - eng
   createdAt: '2026-05-06T00:00:00Z'
