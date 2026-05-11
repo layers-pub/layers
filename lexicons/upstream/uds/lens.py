@@ -220,6 +220,60 @@ def _project_sentence(
             },
         )
 
+    # UD-syntax dependency arcs: emit one relation-kind
+    # annotation layer per sentence carrying `(head, dependent,
+    # deprel)` triples. The arcs live in the same UDS graph as
+    # the semantics; surfacing them as a typed annotation layer
+    # lets consumers query "give me the dependency parse" without
+    # walking the graphEdge collection.
+    deprel_anns: list[dict[str, Any]] = []
+    for src_idx, edges in enumerate(graph.adjacency):
+        if src_idx >= len(nodes_by_index):
+            continue
+        src = nodes_by_index[src_idx]
+        if src.domain != "syntax":
+            continue
+        for edge in edges:
+            if edge.domain != "syntax" or edge.type != "dependency":
+                continue
+            tgt = nodes_by_id.get(edge.id)
+            if tgt is None or tgt.domain != "syntax":
+                continue
+            head_pos = src.position or 0
+            dep_pos = tgt.position or 0
+            if dep_pos <= 0:
+                continue
+            deprel_anns.append({
+                "anchor": {
+                    "$type": "pub.layers.defs#tokenRef",
+                    "segmentation": seg_uri,
+                    "tokenization": 0,
+                    "token": dep_pos - 1,
+                },
+                "predicate": "deprel",
+                "value": edge.deprel or "dep",
+                "properties": {
+                    "entries": [
+                        {"key": "head_token", "value": str(max(0, head_pos - 1))},
+                        {"key": "head_id", "value": src.id},
+                    ],
+                },
+            })
+    if deprel_anns:
+        yield SeedRecord(
+            handle=H_ANN,
+            kind="layers",
+            collection="pub.layers.annotation.annotationLayer",
+            body={
+                "expression": expr_uri,
+                "kind": "relation",
+                "subkind": "dependency",
+                "formalism": "ud-deprel",
+                "annotations": deprel_anns,
+                "languages": [LANGUAGE],
+            },
+        )
+
     # Predicate→argument and clausal-subordination edges in the
     # semantics domain, plus the interface edges that link
     # semantics nodes back to their syntactic heads. Surface all
@@ -230,8 +284,6 @@ def _project_sentence(
             continue
         src = nodes_by_index[src_idx]
         if src.domain == "syntax":
-            # Skip pure UD syntactic edges; the segmentation +
-            # the UD treebank publish path covers those.
             continue
         for edge in edges:
             tgt = nodes_by_id.get(edge.id)
