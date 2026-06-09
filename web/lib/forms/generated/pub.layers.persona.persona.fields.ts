@@ -85,6 +85,15 @@ export const fields: readonly FormField[] = [
     required: false,
   },
   {
+    name: 'guidelinesFormat',
+    kind: 'enum',
+    label: 'Guidelines Format',
+    description: 'Format of the guidelines text, so consumers can render it safely without sniffing. Defaults to plain when omitted.',
+    required: false,
+    knownValues: ['plain', 'html', 'markdown'],
+    maxLength: 32,
+  },
+  {
     name: 'kind',
     kind: 'enum',
     label: 'Kind',

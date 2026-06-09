@@ -35,6 +35,10 @@ export interface Persona {
   */
   guidelinesBlob?: unknown;
   /**
+  * Format of the guidelines text, so consumers can render it safely without sniffing. Defaults to plain when omitted.
+  */
+  guidelinesFormat?: PersonaGuidelinesFormat;
+  /**
   * Persona kind slug (fallback when kindUri unavailable).
   */
   kind?: PersonaKind;
@@ -61,5 +65,7 @@ export interface Persona {
 }
 
 export type PersonaDomain = "linguistics" | "nlp" | "biomedical" | "legal" | "intelligence" | "social-science" | "humanities" | "custom" | string & {};
+
+export type PersonaGuidelinesFormat = "plain" | "html" | "markdown" | string & {};
 
 export type PersonaKind = "human-annotator" | "ml-model" | "guidelines-persona" | "expert-panel" | "crowd-worker" | "custom" | string & {};

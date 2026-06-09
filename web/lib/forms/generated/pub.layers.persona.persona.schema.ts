@@ -14,6 +14,7 @@ export const schema = z.object({
   features: z.unknown().optional(),
   guidelines: z.string().max(100000).optional(),
   guidelinesBlob: z.unknown().optional(),
+  guidelinesFormat: z.union([z.enum(['plain', 'html', 'markdown']), z.string()]).optional(),
   kind: z.union([z.enum(['human-annotator', 'ml-model', 'guidelines-persona', 'expert-panel', 'crowd-worker', 'custom']), z.string()]).optional(),
   kindUri: z.string().regex(/^at:\/\//, 'must start with at://').optional(),
   knowledgeRefs: z.array(z.unknown()).max(32).optional(),

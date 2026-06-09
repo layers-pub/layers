@@ -78,8 +78,18 @@ export const fields: readonly FormField[] = [
     name: 'guidelines',
     kind: 'string',
     label: 'Guidelines',
+    description: 'Instructions or guidelines text shown to participants.',
     required: false,
     maxLength: 100000,
+  },
+  {
+    name: 'guidelinesFormat',
+    kind: 'enum',
+    label: 'Guidelines Format',
+    description: 'Format of the guidelines text, so consumers can render it safely without sniffing. Defaults to plain when omitted.',
+    required: false,
+    knownValues: ['plain', 'html', 'markdown'],
+    maxLength: 32,
   },
   {
     name: 'knowledgeRefs',

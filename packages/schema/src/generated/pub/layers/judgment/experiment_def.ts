@@ -20,7 +20,14 @@ export interface ExperimentDef {
   */
   design?: ExperimentDesign;
   features?: FeatureMap;
+  /**
+  * Instructions or guidelines text shown to participants.
+  */
   guidelines?: string;
+  /**
+  * Format of the guidelines text, so consumers can render it safely without sniffing. Defaults to plain when omitted.
+  */
+  guidelinesFormat?: ExperimentDefGuidelinesFormat;
   /**
   * Knowledge graph references (e.g., theoretical framework, methodology citation, task ontology).
   */
@@ -69,6 +76,8 @@ export interface ExperimentDef {
   */
   templateRefs?: string[];
 }
+
+export type ExperimentDefGuidelinesFormat = "plain" | "html" | "markdown" | string & {};
 
 export type ExperimentDefMeasureType = "acceptability" | "inference" | "similarity" | "plausibility" | "comprehension" | "preference" | "extraction" | "reading-time" | "production" | "custom" | string & {};
 

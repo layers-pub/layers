@@ -93,7 +93,7 @@ pub struct AnnotationMetadata {
     /// References to upstream records this annotation was derived from.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub dependencies: Option<Vec<ObjectRef>>,
-    /// Content hash for integrity verification.
+    /// Content hash for integrity verification, in '<algorithm>:<lowercase-hex>' form (e.g. 'sha256:9f86d081...'). sha256 is recommended; verifiers dispatch on the algorithm prefix and should treat digests without a recognized prefix as opaque.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub digest: Option<String>,
     /// Reference to the persona/annotation framework under which this annotation was produced. Distinct from agent (who did it).

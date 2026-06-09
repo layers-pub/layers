@@ -14,6 +14,7 @@ export const schema = z.object({
   design: z.unknown().optional(),
   features: z.unknown().optional(),
   guidelines: z.string().max(100000).optional(),
+  guidelinesFormat: z.union([z.enum(['plain', 'html', 'markdown']), z.string()]).optional(),
   knowledgeRefs: z.array(z.unknown()).max(32).optional(),
   labels: z.array(z.string().max(512)).max(256).optional(),
   measureType: z.union([z.enum(['acceptability', 'inference', 'similarity', 'plausibility', 'comprehension', 'preference', 'extraction', 'reading-time', 'production', 'custom']), z.string()]).optional(),

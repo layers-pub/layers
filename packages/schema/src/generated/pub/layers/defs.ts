@@ -103,7 +103,7 @@ export interface AnnotationMetadata {
   */
   dependencies?: ObjectRef[];
   /**
-  * Content hash for integrity verification.
+  * Content hash for integrity verification, in '<algorithm>:<lowercase-hex>' form (e.g. 'sha256:9f86d081...'). sha256 is recommended; verifiers dispatch on the algorithm prefix and should treat digests without a recognized prefix as opaque.
   */
   digest?: string;
   /**

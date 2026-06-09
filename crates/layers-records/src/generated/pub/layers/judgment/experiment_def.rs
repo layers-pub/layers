@@ -29,8 +29,12 @@ pub struct ExperimentDef {
     pub design: Option<crate::generated::r#pub::layers::judgment::defs::ExperimentDesign>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub features: Option<crate::generated::r#pub::layers::defs::FeatureMap>,
+    /// Instructions or guidelines text shown to participants.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub guidelines: Option<String>,
+    /// Format of the guidelines text, so consumers can render it safely without sniffing. Defaults to plain when omitted.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub guidelines_format: Option<ExperimentDefGuidelinesFormat>,
     /// Knowledge graph references (e.g., theoretical framework, methodology citation, task ontology).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub knowledge_refs: Option<Vec<crate::generated::r#pub::layers::defs::KnowledgeRef>>,
@@ -74,6 +78,115 @@ pub struct ExperimentDef {
 
 impl crate::Record for ExperimentDef {
     const NSID: &'static str = "pub.layers.judgment.experimentDef";
+}
+
+/// ExperimentDefGuidelinesFormat. Open-enum slug; known values are kebab-cased; community-extended values pass through as `Other(String)`.
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum ExperimentDefGuidelinesFormat {
+    Plain,
+    Html,
+    Markdown,
+    /// Community-extended slug not present in the lexicon's
+    /// `knownValues`. Resolves through the sibling
+    /// `*Vocab` field on the containing record.
+    Other(String),
+}
+impl ExperimentDefGuidelinesFormat {
+    /// Wire-form slug for this value. Known variants render
+    /// kebab-case; the fallback variant passes through verbatim.
+    #[must_use]
+    pub fn as_str(&self) -> &str {
+        match self {
+            Self::Plain => "plain",
+            Self::Html => "html",
+            Self::Markdown => "markdown",
+            Self::Other(s) => s.as_str(),
+        }
+    }
+    /// Whether this slug is subsumed by `ancestor` under the
+    /// `subsumed_by` relation in the supplied vocab. Reflexive:
+    /// every slug is subsumed by itself.
+    #[must_use]
+    pub fn is_subsumed_by(
+        &self,
+        vocab: &idiolect_records::vocab::VocabGraph,
+        ancestor: &str,
+    ) -> bool {
+        vocab.is_subsumed_by(self.as_str(), ancestor)
+    }
+    /// Whether this slug satisfies a requirement of `target`
+    /// under the named `relation` in the supplied vocab.
+    /// Generalises `is_subsumed_by` to any directed relation
+    /// (e.g. `stronger_than`, `provides_at_least`,
+    /// `equivalent_to`). Reflexive: a slug satisfies itself.
+    #[must_use]
+    pub fn satisfies(
+        &self,
+        vocab: &idiolect_records::vocab::VocabGraph,
+        relation: &str,
+        target: &str,
+    ) -> bool {
+        if self.as_str() == target {
+            return true;
+        }
+        vocab
+            .walk_relation(self.as_str(), relation, false)
+            .iter()
+            .any(|n| n == target)
+    }
+    /// Translate this slug across vocabularies via
+    /// `equivalent_to` edges. Returns the translated slug as
+    /// a target enum value when a translation exists, `None`
+    /// when no path is found (callers fall back to passing
+    /// the slug through verbatim, which is wire-compatible).
+    #[must_use]
+    pub fn translate_to<T: From<String>>(
+        &self,
+        src_vocab_uri: &str,
+        tgt_vocab_uri: &str,
+        registry: &idiolect_records::vocab::VocabRegistry,
+    ) -> Option<T> {
+        registry
+            .translate(src_vocab_uri, tgt_vocab_uri, self.as_str())
+            .map(T::from)
+    }
+}
+impl From<String> for ExperimentDefGuidelinesFormat {
+    fn from(s: String) -> Self {
+        match s.as_str() {
+            "plain" => Self::Plain,
+            "html" => Self::Html,
+            "markdown" => Self::Markdown,
+            _ => Self::Other(s),
+        }
+    }
+}
+impl From<&str> for ExperimentDefGuidelinesFormat {
+    fn from(s: &str) -> Self {
+        match s {
+            "plain" => Self::Plain,
+            "html" => Self::Html,
+            "markdown" => Self::Markdown,
+            _ => Self::Other(s.to_owned()),
+        }
+    }
+}
+impl serde::Serialize for ExperimentDefGuidelinesFormat {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serializer.serialize_str(self.as_str())
+    }
+}
+impl<'de> serde::Deserialize<'de> for ExperimentDefGuidelinesFormat {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let s = String::deserialize(deserializer)?;
+        Ok(Self::from(s))
+    }
 }
 
 /// ExperimentDefMeasureType. Open-enum slug; known values are kebab-cased; community-extended values pass through as `Other(String)`.
