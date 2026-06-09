@@ -33,6 +33,18 @@ multiple_crate_versions = "allow"
 significant_drop_tightening = "allow"
 future_not_send = "allow"
 items_after_statements = "allow"
+# Numeric-cast pedantic lints are noisy and context-dependent here: the casts
+# are bounded timing values (i64 nanoseconds), coverage ratios for display, and
+# row counts/indices that fit their targets. Opt out project-wide rather than
+# scatter per-cast allows.
+cast_possible_truncation = "allow"
+cast_possible_wrap = "allow"
+cast_sign_loss = "allow"
+cast_precision_loss = "allow"
+# `# Errors` / `# Panics` doc sections are not required project-wide; error
+# types are explicit in signatures and the boundary docs cover behaviour.
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
 too_long_first_doc_paragraph = "allow"
 
 [workspace.dependencies]
@@ -51,12 +63,12 @@ idiolect-oauth        = { path = "../../idiolect/crates/idiolect-oauth" }
 idiolect-codegen      = { path = "../../idiolect/crates/idiolect-codegen" }
 
 # panproto: must match the version idiolect pins. keep in lockstep.
-panproto-schema    = { git = "https://github.com/panproto/panproto.git", tag = "v0.39.0" }
-panproto-lens-dsl  = { git = "https://github.com/panproto/panproto.git", tag = "v0.39.0" }
-panproto-protocols = { git = "https://github.com/panproto/panproto.git", tag = "v0.39.0" }
-panproto-check     = { git = "https://github.com/panproto/panproto.git", tag = "v0.39.0" }
-panproto-lens      = { git = "https://github.com/panproto/panproto.git", tag = "v0.39.0" }
-panproto-inst      = { git = "https://github.com/panproto/panproto.git", tag = "v0.39.0" }
+panproto-schema    = { git = "https://github.com/panproto/panproto.git", tag = "v0.52.0" }
+panproto-lens-dsl  = { git = "https://github.com/panproto/panproto.git", tag = "v0.52.0" }
+panproto-protocols = { git = "https://github.com/panproto/panproto.git", tag = "v0.52.0" }
+panproto-check     = { git = "https://github.com/panproto/panproto.git", tag = "v0.52.0" }
+panproto-lens      = { git = "https://github.com/panproto/panproto.git", tag = "v0.52.0" }
+panproto-inst      = { git = "https://github.com/panproto/panproto.git", tag = "v0.52.0" }
 
 serde      = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.149"
