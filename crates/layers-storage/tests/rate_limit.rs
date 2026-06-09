@@ -16,7 +16,10 @@ use layers_storage::rate_limit::{RateLimitError, SlidingWindow};
 use testcontainers::runners::AsyncRunner;
 use testcontainers_modules::redis::Redis;
 
-async fn boot_redis() -> (testcontainers::ContainerAsync<Redis>, redis::aio::ConnectionManager) {
+async fn boot_redis() -> (
+    testcontainers::ContainerAsync<Redis>,
+    redis::aio::ConnectionManager,
+) {
     let container = Redis::default()
         .start()
         .await
@@ -35,7 +38,7 @@ async fn boot_redis() -> (testcontainers::ContainerAsync<Redis>, redis::aio::Con
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn allows_under_limit_then_denies_excess() {
     let (_container, conn) = boot_redis().await;
-    let limiter = SlidingWindow::new(conn, 3, Duration::from_secs(60));
+    let limiter = SlidingWindow::new(conn, 3, Duration::from_mins(1));
 
     let used1 = limiter.check("did:plc:alice").await.expect("1st ok");
     assert_eq!(used1, 1);
@@ -46,19 +49,23 @@ async fn allows_under_limit_then_denies_excess() {
 
     let err = limiter.check("did:plc:alice").await.unwrap_err();
     match err {
-        RateLimitError::Exceeded { used, limit, window_seconds } => {
+        RateLimitError::Exceeded {
+            used,
+            limit,
+            window_seconds,
+        } => {
             assert_eq!(used, 4);
             assert_eq!(limit, 3);
             assert_eq!(window_seconds, 60);
         }
-        other => panic!("expected Exceeded, got {other:?}"),
+        RateLimitError::Redis(e) => panic!("expected Exceeded, got Redis error: {e}"),
     }
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn identities_have_independent_budgets() {
     let (_container, conn) = boot_redis().await;
-    let limiter = SlidingWindow::new(conn, 2, Duration::from_secs(60));
+    let limiter = SlidingWindow::new(conn, 2, Duration::from_mins(1));
 
     limiter.check("did:plc:alice").await.expect("alice 1");
     limiter.check("did:plc:alice").await.expect("alice 2");
@@ -89,6 +96,9 @@ async fn window_refills_after_expiry() {
     ));
 
     tokio::time::sleep(Duration::from_millis(700)).await;
-    let used_after = limiter.check("did:plc:carol").await.expect("post-window ok");
+    let used_after = limiter
+        .check("did:plc:carol")
+        .await
+        .expect("post-window ok");
     assert_eq!(used_after, 1, "budget should refill after window expiry");
 }

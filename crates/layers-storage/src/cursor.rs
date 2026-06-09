@@ -53,25 +53,19 @@ mod pg {
 
     impl CursorStore for PostgresCursorStore {
         async fn load(&self, subscription_id: &str) -> Result<Option<u64>, IndexerError> {
-            let row: Option<(i64,)> = sqlx::query_as(
-                "SELECT seq FROM firehose_cursors WHERE subscription_id = $1",
-            )
-            .bind(subscription_id)
-            .fetch_optional(&self.pool)
-            .await
-            .map_err(|e| IndexerError::Cursor(format!("load cursor: {e}")))?;
+            let row: Option<(i64,)> =
+                sqlx::query_as("SELECT seq FROM firehose_cursors WHERE subscription_id = $1")
+                    .bind(subscription_id)
+                    .fetch_optional(&self.pool)
+                    .await
+                    .map_err(|e| IndexerError::Cursor(format!("load cursor: {e}")))?;
 
             Ok(row.map(|(s,)| u64::try_from(s).unwrap_or(0)))
         }
 
-        async fn commit(
-            &self,
-            subscription_id: &str,
-            seq: u64,
-        ) -> Result<(), IndexerError> {
-            let seq_i = i64::try_from(seq).map_err(|_| {
-                IndexerError::Cursor(format!("seq {seq} does not fit in i64"))
-            })?;
+        async fn commit(&self, subscription_id: &str, seq: u64) -> Result<(), IndexerError> {
+            let seq_i = i64::try_from(seq)
+                .map_err(|_| IndexerError::Cursor(format!("seq {seq} does not fit in i64")))?;
             sqlx::query(
                 "INSERT INTO firehose_cursors (subscription_id, seq, updated_at)
                  VALUES ($1, $2, NOW())

@@ -103,7 +103,9 @@ impl PostgresExternalSink {
     /// Returns the underlying sqlx error.
     pub async fn ensure_table(&self) -> Result<(), sqlx::Error> {
         let sql = include_str!("../../../migrations/0003_external_records.sql");
-        sqlx::query(sql).execute(&self.pool).await?;
+        // The migration is multi-statement (table + indexes); the prepared
+        // protocol rejects that, so run it through the simple query protocol.
+        sqlx::raw_sql(sql).execute(&self.pool).await?;
         Ok(())
     }
 }

@@ -6,8 +6,8 @@
 //! updates is the orchestrator's job (it knows which queries the
 //! mutation invalidates).
 
-use redis::aio::ConnectionManager;
 use redis::Client;
+use redis::aio::ConnectionManager;
 
 /// Build a `ConnectionManager` from a Redis URL.
 ///

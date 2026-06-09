@@ -39,6 +39,7 @@ impl ServicePdsConfig {
     /// Read configuration from `LAYERS_SERVICE_PDS_URL` and
     /// `LAYERS_SERVICE_PDS_HANDLE`. Falls back to the production
     /// defaults so dev environments work without explicit wiring.
+    #[must_use]
     pub fn from_env() -> Self {
         let base_url = std::env::var("LAYERS_SERVICE_PDS_URL")
             .unwrap_or_else(|_| "https://lexicons.layers.pub".to_owned());
@@ -60,8 +61,11 @@ pub enum ServicePdsError {
     /// The PDS returned a non-2xx status.
     #[error("service-pds {endpoint} returned {status}: {body}")]
     Status {
+        /// XRPC endpoint that was called.
         endpoint: &'static str,
+        /// HTTP status code returned.
         status: u16,
+        /// Response body (for diagnostics).
         body: String,
     },
     /// The response body could not be parsed as JSON of the expected shape.
@@ -94,6 +98,7 @@ pub struct ServicePdsClient {
 impl ServicePdsClient {
     /// Build a client with sensible defaults (5s connect timeout,
     /// 15s overall timeout).
+    #[must_use]
     pub fn new(config: ServicePdsConfig) -> Self {
         let http = Client::builder()
             .connect_timeout(Duration::from_secs(5))
@@ -154,11 +159,7 @@ impl ServicePdsClient {
     /// # Errors
     /// Returns transport, status, or decode errors; missing records
     /// surface as `Status { status: 404, .. }`.
-    pub async fn get_record(
-        &self,
-        nsid: &str,
-        rkey: &str,
-    ) -> Result<RecordView, ServicePdsError> {
+    pub async fn get_record(&self, nsid: &str, rkey: &str) -> Result<RecordView, ServicePdsError> {
         let did = self.canonical_did().await?.to_owned();
         let url = format!(
             "{}/xrpc/com.atproto.repo.getRecord?repo={}&collection={}&rkey={}",
@@ -181,10 +182,7 @@ impl ServicePdsClient {
     /// rkey is the lexicon NSID by convention (matches the publish
     /// script's `rkey: lex.id` choice). Returns the full record
     /// body — caller deserialises into the lexicon shape they want.
-    pub async fn permission_set(
-        &self,
-        nsid: &str,
-    ) -> Result<RecordView, ServicePdsError> {
+    pub async fn permission_set(&self, nsid: &str) -> Result<RecordView, ServicePdsError> {
         self.get_record("com.atproto.lexicon.schema", nsid).await
     }
 }

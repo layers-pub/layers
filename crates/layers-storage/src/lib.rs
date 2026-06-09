@@ -1,6 +1,6 @@
 //! Storage adapters for the Layers appview.
 //!
-//! Four backends: PostgreSQL is the source of truth (mirrors the firehose),
+//! Four backends: `PostgreSQL` is the source of truth (mirrors the firehose),
 //! Elasticsearch powers search, Neo4j holds the cross-record relation graph,
 //! Redis backs caching + rate limiting + OAuth sessions. Each adapter sits
 //! behind a generic [`RecordStore`] trait parameterised by record type so

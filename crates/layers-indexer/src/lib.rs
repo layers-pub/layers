@@ -13,6 +13,6 @@ pub mod handler;
 pub mod health;
 
 pub use handler::LayersRecordHandler;
-pub use layers_storage::RecordSink;
 pub use idiolect_indexer::{IndexerAction, IndexerConfig, IndexerError, drive_indexer};
 pub use layers_records::LayersFamily;
+pub use layers_storage::RecordSink;

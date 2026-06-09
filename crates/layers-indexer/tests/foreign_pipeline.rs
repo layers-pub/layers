@@ -3,7 +3,7 @@
 //! foreign frames through `drive_external` and verifies the rows land
 //! in `external_records`.
 
-use idiolect_indexer::{IndexerAction, InMemoryEventStream, RawEvent};
+use idiolect_indexer::{InMemoryEventStream, IndexerAction, RawEvent};
 use layers_indexer::foreign::drive_external;
 use layers_records::Nsid;
 use layers_storage::external::PostgresExternalSink;
@@ -30,7 +30,14 @@ async fn boot_postgres() -> (testcontainers::ContainerAsync<Postgres>, PgPool) {
     (container, pool)
 }
 
-fn frame(seq: u64, action: IndexerAction, did: &str, nsid: &str, rkey: &str, body: serde_json::Value) -> RawEvent {
+fn frame(
+    seq: u64,
+    action: IndexerAction,
+    did: &str,
+    nsid: &str,
+    rkey: &str,
+    body: serde_json::Value,
+) -> RawEvent {
     RawEvent {
         seq,
         live: true,
@@ -88,13 +95,16 @@ async fn foreign_records_land_in_external_table() {
         .await
         .expect("drive");
 
-    let rows: Vec<(String, String)> = sqlx::query_as(
-        "SELECT uri, nsid FROM external_records ORDER BY uri",
-    )
-    .fetch_all(&pool)
-    .await
-    .expect("fetch");
-    assert_eq!(rows.len(), 1, "expected the surviving idiolect community row");
+    let rows: Vec<(String, String)> =
+        sqlx::query_as("SELECT uri, nsid FROM external_records ORDER BY uri")
+            .fetch_all(&pool)
+            .await
+            .expect("fetch");
+    assert_eq!(
+        rows.len(),
+        1,
+        "expected the surviving idiolect community row"
+    );
     assert_eq!(rows[0].0, "at://did:plc:alice/dev.idiolect.community/rk1");
     assert_eq!(rows[0].1, "dev.idiolect.community");
 
@@ -140,11 +150,10 @@ async fn idempotent_upsert_overwrites_in_place() {
         .expect("count");
     assert_eq!(count, 1);
 
-    let body: sqlx::types::Json<serde_json::Value> = sqlx::query_scalar(
-        "SELECT record FROM external_records WHERE rkey = 'rk1'",
-    )
-    .fetch_one(&pool)
-    .await
-    .expect("fetch body");
+    let body: sqlx::types::Json<serde_json::Value> =
+        sqlx::query_scalar("SELECT record FROM external_records WHERE rkey = 'rk1'")
+            .fetch_one(&pool)
+            .await
+            .expect("fetch body");
     assert_eq!(body.0["name"], "v2");
 }

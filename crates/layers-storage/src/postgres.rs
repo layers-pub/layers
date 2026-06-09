@@ -1,4 +1,4 @@
-//! PostgreSQL connection helpers shared across the storage layer.
+//! `PostgreSQL` connection helpers shared across the storage layer.
 
 use sqlx::PgPool;
 use sqlx::postgres::PgPoolOptions;

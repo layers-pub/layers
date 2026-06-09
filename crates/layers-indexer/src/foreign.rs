@@ -68,7 +68,7 @@ async fn apply<T: ExternalRecordSink + ?Sized>(
             let body = event
                 .body
                 .clone()
-                .unwrap_or_else(|| serde_json::Value::Object(Default::default()));
+                .unwrap_or_else(|| serde_json::Value::Object(serde_json::Map::new()));
             sink.put_external_record(did, nsid, rkey, event.cid.as_deref(), &body)
                 .await
         }
@@ -78,8 +78,8 @@ async fn apply<T: ExternalRecordSink + ?Sized>(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::sync::{Arc, Mutex};
     use layers_records::Nsid;
+    use std::sync::{Arc, Mutex};
 
     #[derive(Default)]
     struct CaptureSink {
@@ -140,8 +140,20 @@ mod tests {
         // Pop is LIFO so insert in reverse to get chronological order.
         let mut stream = VecStream {
             events: vec![
-                event(2, IndexerAction::Delete, "did:plc:b", "dev.idiolect.community", "rk2"),
-                event(1, IndexerAction::Create, "did:plc:a", "dev.idiolect.community", "rk1"),
+                event(
+                    2,
+                    IndexerAction::Delete,
+                    "did:plc:b",
+                    "dev.idiolect.community",
+                    "rk2",
+                ),
+                event(
+                    1,
+                    IndexerAction::Create,
+                    "did:plc:a",
+                    "dev.idiolect.community",
+                    "rk1",
+                ),
             ],
         };
         drive_external(&mut stream, &*sink, &["dev.idiolect."])
@@ -152,7 +164,11 @@ mod tests {
         assert_eq!(puts.len(), 1);
         assert_eq!(
             puts[0],
-            ("did:plc:a".into(), "dev.idiolect.community".into(), "rk1".into())
+            (
+                "did:plc:a".into(),
+                "dev.idiolect.community".into(),
+                "rk1".into()
+            )
         );
         let deletes = sink.deletes.lock().unwrap();
         assert_eq!(deletes.len(), 1);
@@ -163,9 +179,13 @@ mod tests {
     async fn skips_events_outside_wanted_prefixes() {
         let sink = Arc::new(CaptureSink::default());
         let mut stream = VecStream {
-            events: vec![
-                event(1, IndexerAction::Create, "did:plc:a", "app.bsky.feed.post", "rk"),
-            ],
+            events: vec![event(
+                1,
+                IndexerAction::Create,
+                "did:plc:a",
+                "app.bsky.feed.post",
+                "rk",
+            )],
         };
         drive_external(&mut stream, &*sink, &["dev.idiolect.", "pub.leaflet."])
             .await
@@ -177,7 +197,13 @@ mod tests {
     #[tokio::test]
     async fn missing_body_treated_as_empty_object() {
         let sink = Arc::new(CaptureSink::default());
-        let mut e = event(1, IndexerAction::Create, "did:plc:a", "pub.leaflet.document", "rk");
+        let mut e = event(
+            1,
+            IndexerAction::Create,
+            "did:plc:a",
+            "pub.leaflet.document",
+            "rk",
+        );
         e.body = None;
         let mut stream = VecStream { events: vec![e] };
         drive_external(&mut stream, &*sink, &["pub.leaflet."])

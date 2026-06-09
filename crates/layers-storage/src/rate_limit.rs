@@ -42,10 +42,12 @@ pub struct SlidingWindow {
 
 impl std::fmt::Debug for SlidingWindow {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        // `conn` is a Redis connection handle and not `Debug`; mark the
+        // struct non-exhaustive rather than printing it.
         f.debug_struct("SlidingWindow")
             .field("limit", &self.limit)
             .field("window", &self.window)
-            .finish()
+            .finish_non_exhaustive()
     }
 }
 
@@ -53,7 +55,11 @@ impl SlidingWindow {
     /// Build a limiter that allows `limit` requests per `window`.
     #[must_use]
     pub fn new(conn: ConnectionManager, limit: u64, window: Duration) -> Self {
-        Self { conn, limit, window }
+        Self {
+            conn,
+            limit,
+            window,
+        }
     }
 
     /// Configured request limit per window.
@@ -68,7 +74,7 @@ impl SlidingWindow {
         self.window
     }
 
-    fn key(&self, identity: &str) -> String {
+    fn key(identity: &str) -> String {
         format!("{RATE_LIMIT_PREFIX}{identity}")
     }
 
@@ -86,7 +92,9 @@ impl SlidingWindow {
     /// budget; [`RateLimitError::Redis`] for transport failures.
     pub async fn check(&self, identity: &str) -> Result<u64, RateLimitError> {
         let mut conn = self.conn.clone();
-        let key = self.key(identity);
+        let key = Self::key(identity);
+        // Nanosecond timestamps and window/ttl seconds fit i64 for any real
+        // clock (i64 nanoseconds overflows only past the year 2262).
         let now_ns = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .map(|d| d.as_nanos())
@@ -128,7 +136,7 @@ impl SlidingWindow {
 /// `ARGV[4]`  TTL applied after insertion (in seconds).
 ///
 /// Returns `{denied, used}` where `denied` is `0` or `1`.
-const LIMIT_SCRIPT: &str = r#"
+const LIMIT_SCRIPT: &str = r"
 redis.call('ZREMRANGEBYSCORE', KEYS[1], '-inf', ARGV[1])
 local used = tonumber(redis.call('ZCARD', KEYS[1]))
 local limit = tonumber(ARGV[3])
@@ -138,4 +146,4 @@ end
 redis.call('ZADD', KEYS[1], ARGV[2], ARGV[2])
 redis.call('EXPIRE', KEYS[1], ARGV[4])
 return {0, used + 1}
-"#;
+";

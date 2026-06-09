@@ -7,9 +7,7 @@
 
 use std::sync::Arc;
 
-use idiolect_indexer::{
-    CursorStore, IndexerConfig, JetstreamEventStream, drive_indexer,
-};
+use idiolect_indexer::{CursorStore, IndexerConfig, JetstreamEventStream, drive_indexer};
 use layers_indexer::LayersRecordHandler;
 use layers_records::LayersFamily;
 use layers_storage::{MultiSink, PostgresCursorStore, PostgresRecordSink, RecordSink};
@@ -46,6 +44,10 @@ async fn boot_pg() -> (testcontainers::ContainerAsync<Postgres>, PgPool) {
 
 /// Shape of a Jetstream commit frame as documented at
 /// <https://github.com/bluesky-social/jetstream>.
+#[allow(
+    clippy::needless_pass_by_value,
+    reason = "test fixture builder takes owned JSON"
+)]
 fn jetstream_create_frame(
     time_us: u64,
     did: &str,
@@ -81,8 +83,7 @@ async fn jetstream_frames_index_into_postgres() {
         .await
         .expect("ensure cursor table");
 
-    let mut sinks: Vec<Arc<dyn RecordSink>> = Vec::new();
-    sinks.push(Arc::new(PostgresRecordSink::new(pool.clone())));
+    let sinks: Vec<Arc<dyn RecordSink>> = vec![Arc::new(PostgresRecordSink::new(pool.clone()))];
     let handler = LayersRecordHandler::new(MultiSink::new(sinks));
 
     let frames = vec![
@@ -96,7 +97,7 @@ async fn jetstream_frames_index_into_postgres() {
             serde_json::json!({
                 "$type": "pub.layers.corpus.corpus",
                 "name": "Alpha",
-                "language": "eng",
+                "languages": ["eng"],
                 "createdAt": "2026-04-30T00:00:00Z",
             }),
         ),
@@ -110,7 +111,7 @@ async fn jetstream_frames_index_into_postgres() {
             serde_json::json!({
                 "$type": "pub.layers.corpus.corpus",
                 "name": "Beta",
-                "language": "fra",
+                "languages": ["fra"],
                 "createdAt": "2026-04-30T00:00:00Z",
             }),
         ),
@@ -152,8 +153,7 @@ async fn out_of_family_frames_do_not_create_rows() {
         .await
         .expect("ensure cursor table");
 
-    let mut sinks: Vec<Arc<dyn RecordSink>> = Vec::new();
-    sinks.push(Arc::new(PostgresRecordSink::new(pool.clone())));
+    let sinks: Vec<Arc<dyn RecordSink>> = vec![Arc::new(PostgresRecordSink::new(pool.clone()))];
     let handler = LayersRecordHandler::new(MultiSink::new(sinks));
 
     let frames = vec![jetstream_create_frame(

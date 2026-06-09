@@ -19,7 +19,9 @@ use idiolect_indexer::IndexerError;
 use layers_records::{AnyRecord, LayersFamily, RecordFamily};
 use reqwest::header::{HeaderMap, HeaderName, HeaderValue};
 use reqwest::{Client, StatusCode};
-use serde_json::{Map, Value};
+use std::fmt::Write as _;
+
+use serde_json::{Map, Value, json};
 
 use crate::RecordSink;
 
@@ -63,8 +65,8 @@ impl ElasticsearchRecordSink {
         let name: HeaderName = name
             .parse()
             .map_err(|_| ElasticsearchHeaderError::InvalidName(name.to_owned()))?;
-        let value = HeaderValue::from_str(value)
-            .map_err(|_| ElasticsearchHeaderError::InvalidValue)?;
+        let value =
+            HeaderValue::from_str(value).map_err(|_| ElasticsearchHeaderError::InvalidValue)?;
         self.headers.insert(name, value);
         Ok(self)
     }
@@ -108,8 +110,8 @@ impl RecordSink for ElasticsearchRecordSink {
         }
         let body = serde_json::to_value(record)
             .map_err(|e| IndexerError::Handler(format!("serialize {nsid}: {e}")))?;
-        for (k, v) in extract_searchable_fields(record, &body) {
-            doc.insert(k, v);
+        for (k, v) in extract_searchable_fields(record) {
+            doc.insert(k.to_owned(), v);
         }
         doc.insert("record".into(), body);
 
@@ -174,7 +176,7 @@ fn percent_encode(s: &str) -> String {
         if b.is_ascii_alphanumeric() || matches!(b, b'-' | b'_' | b'.' | b'~') {
             out.push(b as char);
         } else {
-            out.push_str(&format!("%{b:02X}"));
+            let _ = write!(out, "%{b:02X}");
         }
     }
     out
@@ -184,41 +186,196 @@ fn percent_encode(s: &str) -> String {
 /// the JSONB body and into typed top-level keys. The full body is
 /// always also stored under `record`, so this projection is just a
 /// search hint, not a source of truth.
-fn extract_searchable_fields(record: &AnyRecord, body: &Value) -> Vec<(String, Value)> {
-    let Some(obj) = body.as_object() else {
-        return Vec::new();
-    };
-    let mut out = Vec::new();
-    let mut promote = |key: &str| {
-        if let Some(v) = obj.get(key) {
-            out.push((key.to_owned(), v.clone()));
+fn extract_searchable_fields(record: &AnyRecord) -> Vec<(&'static str, Value)> {
+    // Field access is on the generated record structs, so a lexicon
+    // rename regenerates the struct and breaks this match at compile
+    // time. Each arm promotes only fields that actually exist on that
+    // record; keys are the wire (camelCase) names. `push` drops absent
+    // optional fields so the ES doc stays sparse.
+    let mut out: Vec<(&'static str, Value)> = Vec::new();
+    let mut push = |key: &'static str, value: Value| {
+        if !value.is_null() {
+            out.push((key, value));
         }
     };
     match record {
-        AnyRecord::Corpus(_) | AnyRecord::Expression(_) => {
-            promote("name");
-            promote("language");
-            promote("license");
-            promote("domain");
+        AnyRecord::Corpus(c) => {
+            push("name", json!(c.name));
+            push("languages", json!(c.languages));
+            push("license", json!(c.license));
+            push("domain", json!(c.domain));
         }
-        AnyRecord::Eprint(_) => {
-            promote("title");
-            promote("authors");
-            promote("year");
+        AnyRecord::Expression(e) => {
+            push("id", json!(e.id));
+            push("kind", json!(e.kind));
+            push("text", json!(e.text));
+            push("languages", json!(e.languages));
         }
-        AnyRecord::Persona(_) => {
-            promote("displayName");
-            promote("handle");
+        AnyRecord::Eprint(e) => {
+            push("eprintIdentifier", json!(e.eprint_identifier));
+            push("linkType", json!(e.link_type));
+            push("citation", json!(e.citation));
+            push("description", json!(e.description));
         }
-        AnyRecord::Media(_) => {
-            promote("mimeType");
-            promote("title");
+        AnyRecord::Persona(p) => {
+            push("name", json!(p.name));
+            push("domain", json!(p.domain));
+            push("kind", json!(p.kind));
         }
-        AnyRecord::Ontology(_) => {
-            promote("name");
-            promote("version");
+        AnyRecord::Media(m) => {
+            push("kind", json!(m.kind));
+            push("title", json!(m.title));
+        }
+        AnyRecord::Ontology(o) => {
+            push("name", json!(o.name));
+            push("version", json!(o.version));
         }
         _ => {}
     }
     out
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn fields(record: &AnyRecord) -> std::collections::HashMap<&'static str, Value> {
+        extract_searchable_fields(record).into_iter().collect()
+    }
+
+    #[test]
+    fn corpus_promotes_name_languages_license_domain() {
+        let r = AnyRecord::Corpus(
+            serde_json::from_value(json!({
+                "createdAt": "2026-04-28T00:00:00Z",
+                "name": "Alpha",
+                "languages": ["eng", "fra"],
+                "license": "CC-BY-4.0",
+                "domain": "news",
+            }))
+            .unwrap(),
+        );
+        let f = fields(&r);
+        assert_eq!(f["name"], json!("Alpha"));
+        assert_eq!(f["languages"], json!(["eng", "fra"]));
+        assert_eq!(f["license"], json!("CC-BY-4.0"));
+        assert_eq!(f["domain"], json!("news"));
+    }
+
+    #[test]
+    fn corpus_omits_absent_optional_fields() {
+        let r = AnyRecord::Corpus(
+            serde_json::from_value(json!({
+                "createdAt": "2026-04-28T00:00:00Z",
+                "name": "Alpha",
+            }))
+            .unwrap(),
+        );
+        let f = fields(&r);
+        assert_eq!(f["name"], json!("Alpha"));
+        assert!(!f.contains_key("languages"));
+        assert!(!f.contains_key("license"));
+        assert!(!f.contains_key("domain"));
+    }
+
+    #[test]
+    fn expression_promotes_its_own_fields_not_corpus_fields() {
+        let r = AnyRecord::Expression(
+            serde_json::from_value(json!({
+                "createdAt": "2026-04-28T00:00:00Z",
+                "id": "s1",
+                "kind": "sentence",
+                "text": "Hello world.",
+                "languages": ["eng"],
+            }))
+            .unwrap(),
+        );
+        let f = fields(&r);
+        assert_eq!(f["id"], json!("s1"));
+        assert_eq!(f["kind"], json!("sentence"));
+        assert_eq!(f["text"], json!("Hello world."));
+        assert_eq!(f["languages"], json!(["eng"]));
+        // Expression has no name/license/domain — must not be promoted.
+        assert!(!f.contains_key("name"));
+        assert!(!f.contains_key("license"));
+        assert!(!f.contains_key("domain"));
+    }
+
+    #[test]
+    fn eprint_promotes_real_fields() {
+        let r = AnyRecord::Eprint(
+            serde_json::from_value(json!({
+                "createdAt": "2026-04-28T00:00:00Z",
+                "eprintIdentifier": "10.1000/xyz",
+                "linkType": "doi",
+                "citation": "Doe 2026",
+            }))
+            .unwrap(),
+        );
+        let f = fields(&r);
+        assert_eq!(f["eprintIdentifier"], json!("10.1000/xyz"));
+        assert_eq!(f["linkType"], json!("doi"));
+        assert_eq!(f["citation"], json!("Doe 2026"));
+        // The old code promoted title/authors/year, none of which exist.
+        assert!(!f.contains_key("title"));
+        assert!(!f.contains_key("authors"));
+        assert!(!f.contains_key("year"));
+    }
+
+    #[test]
+    fn persona_promotes_name_not_displayname() {
+        let r = AnyRecord::Persona(
+            serde_json::from_value(json!({
+                "createdAt": "2026-04-28T00:00:00Z",
+                "name": "Annotator A",
+                "domain": "linguistics",
+            }))
+            .unwrap(),
+        );
+        let f = fields(&r);
+        assert_eq!(f["name"], json!("Annotator A"));
+        assert_eq!(f["domain"], json!("linguistics"));
+        assert!(!f.contains_key("displayName"));
+        assert!(!f.contains_key("handle"));
+    }
+
+    #[test]
+    fn media_and_ontology_promote_their_fields() {
+        let media = AnyRecord::Media(
+            serde_json::from_value(json!({
+                "createdAt": "2026-04-28T00:00:00Z",
+                "kind": "audio",
+                "title": "Recording 1",
+            }))
+            .unwrap(),
+        );
+        let mf = fields(&media);
+        assert_eq!(mf["kind"], json!("audio"));
+        assert_eq!(mf["title"], json!("Recording 1"));
+
+        let ontology = AnyRecord::Ontology(
+            serde_json::from_value(json!({
+                "createdAt": "2026-04-28T00:00:00Z",
+                "name": "UD",
+                "version": "2.14",
+            }))
+            .unwrap(),
+        );
+        let of = fields(&ontology);
+        assert_eq!(of["name"], json!("UD"));
+        assert_eq!(of["version"], json!("2.14"));
+    }
+
+    #[test]
+    fn unprojected_record_kind_promotes_nothing() {
+        let r = AnyRecord::Membership(
+            serde_json::from_value(json!({
+                "createdAt": "2026-04-28T00:00:00Z",
+                "corpusRef": "at://did:plc:a/pub.layers.corpus.corpus/c1",
+                "expressionRef": "at://did:plc:a/pub.layers.expression.expression/e1",
+            }))
+            .unwrap(),
+        );
+        assert!(extract_searchable_fields(&r).is_empty());
+    }
 }

@@ -43,6 +43,10 @@ const DEFAULT_JETSTREAM: &str =
     "wss://jetstream2.us-east.bsky.network/subscribe?wantedCollections=pub.layers.*";
 
 #[tokio::main]
+#[allow(
+    clippy::too_many_lines,
+    reason = "linear startup wiring reads better as one function"
+)]
 async fn main() -> Result<()> {
     init_tracing();
 
@@ -77,7 +81,12 @@ async fn main() -> Result<()> {
     }
 
     let mut sinks: Vec<Arc<dyn RecordSink>> = Vec::new();
-    sinks.push(Arc::new(PostgresRecordSink::new(pool.clone())));
+    let record_sink = PostgresRecordSink::new(pool.clone());
+    record_sink
+        .ensure_tables()
+        .await
+        .context("ensuring pub.layers.* record tables")?;
+    sinks.push(Arc::new(record_sink));
 
     #[cfg(feature = "elasticsearch")]
     if let Ok(url) = std::env::var("LAYERS_ES_URL") {
@@ -94,8 +103,8 @@ async fn main() -> Result<()> {
     #[cfg(feature = "neo4j")]
     if let Ok(url) = std::env::var("LAYERS_NEO4J_URL") {
         let db = std::env::var("LAYERS_NEO4J_DB").unwrap_or_else(|_| "neo4j".to_owned());
-        let mut sink = layers_storage::Neo4jRecordSink::new(url, db)
-            .context("building Neo4j sink")?;
+        let mut sink =
+            layers_storage::Neo4jRecordSink::new(url, db).context("building Neo4j sink")?;
         if let Ok(auth) = std::env::var("LAYERS_NEO4J_AUTH") {
             sink = sink
                 .with_header("authorization", &auth)
@@ -108,17 +117,14 @@ async fn main() -> Result<()> {
     tracing::info!(sinks = multi.len(), "storage sinks configured");
     let handler = LayersRecordHandler::new(multi);
 
-    let health_bind = std::env::var("LAYERS_HEALTH_BIND")
-        .unwrap_or_else(|_| "0.0.0.0:8081".to_owned());
+    let health_bind =
+        std::env::var("LAYERS_HEALTH_BIND").unwrap_or_else(|_| "0.0.0.0:8081".to_owned());
     let health_addr: std::net::SocketAddr = health_bind
         .parse()
         .with_context(|| format!("parsing LAYERS_HEALTH_BIND={health_bind}"))?;
     let (health_shutdown_tx, health_shutdown_rx) = oneshot::channel::<()>();
-    let health_state = HealthState::new(
-        pool.clone(),
-        cursor_store.clone(),
-        subscription_id.clone(),
-    );
+    let health_state =
+        HealthState::new(pool.clone(), cursor_store.clone(), subscription_id.clone());
     let (bound, health_join) = serve_health(health_addr, health_state, async move {
         let _ = health_shutdown_rx.await;
     })
@@ -126,20 +132,20 @@ async fn main() -> Result<()> {
     .context("starting health server")?;
     tracing::info!(bound = %bound, "indexer health server listening");
 
-    let foreign_prefixes: Vec<String> = std::env::var("LAYERS_FOREIGN_PREFIXES")
-        .ok()
-        .map(|s| {
-            s.split(',')
-                .map(|p| p.trim().to_owned())
-                .filter(|p| !p.is_empty())
-                .collect()
-        })
-        .unwrap_or_else(|| {
+    let foreign_prefixes: Vec<String> = std::env::var("LAYERS_FOREIGN_PREFIXES").ok().map_or_else(
+        || {
             DEFAULT_FOREIGN_PREFIXES
                 .iter()
                 .map(|s| (*s).to_owned())
                 .collect()
-        });
+        },
+        |s| {
+            s.split(',')
+                .map(|p| p.trim().to_owned())
+                .filter(|p| !p.is_empty())
+                .collect()
+        },
+    );
     let foreign_external = PostgresExternalSink::new(pool.clone());
     foreign_external
         .ensure_table()
@@ -155,12 +161,10 @@ async fn main() -> Result<()> {
     );
     let foreign_prefixes_owned = foreign_prefixes.clone();
     let foreign_join = tokio::spawn(async move {
-        let prefix_strs: Vec<&str> =
-            foreign_prefixes_owned.iter().map(String::as_str).collect();
+        let prefix_strs: Vec<&str> = foreign_prefixes_owned.iter().map(String::as_str).collect();
         match JetstreamEventStream::connect(&foreign_url).await {
             Ok(mut stream) => {
-                if let Err(e) = drive_external(&mut stream, &foreign_external, &prefix_strs).await
-                {
+                if let Err(e) = drive_external(&mut stream, &foreign_external, &prefix_strs).await {
                     tracing::warn!(error = %e, "foreign pipeline terminated");
                 }
             }
@@ -183,24 +187,17 @@ async fn main() -> Result<()> {
             }
         }
     };
-    let mut stream = ReconnectingEventStream::with_cursor(
-        factory,
-        BackoffPolicy::default(),
-        starting_cursor,
-    );
+    let mut stream =
+        ReconnectingEventStream::with_cursor(factory, BackoffPolicy::default(), starting_cursor);
 
-    let driver = drive_indexer::<LayersFamily, _, _, _>(
-        &mut stream,
-        &handler,
-        &cursor_store,
-        &config,
-    );
+    let driver =
+        drive_indexer::<LayersFamily, _, _, _>(&mut stream, &handler, &cursor_store, &config);
 
     tokio::select! {
         result = driver => {
             result.context("indexer loop terminated with error")?;
         }
-        _ = shutdown_signal() => {
+        () = shutdown_signal() => {
             tracing::info!("shutting down");
         }
     }

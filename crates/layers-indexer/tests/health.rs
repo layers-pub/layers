@@ -21,11 +21,7 @@ fn lazy_pool() -> sqlx::PgPool {
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn healthz_is_unconditional_ok() {
     let pool = lazy_pool();
-    let state = HealthState::new(
-        pool.clone(),
-        PostgresCursorStore::new(pool),
-        "test".into(),
-    );
+    let state = HealthState::new(pool.clone(), PostgresCursorStore::new(pool), "test".into());
     let (tx, rx) = oneshot::channel::<()>();
     let (bound, join) = serve_health("127.0.0.1:0".parse().unwrap(), state, async move {
         let _ = rx.await;
@@ -48,11 +44,7 @@ async fn healthz_is_unconditional_ok() {
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn readyz_503_when_postgres_unreachable() {
     let pool = lazy_pool();
-    let state = HealthState::new(
-        pool.clone(),
-        PostgresCursorStore::new(pool),
-        "test".into(),
-    );
+    let state = HealthState::new(pool.clone(), PostgresCursorStore::new(pool), "test".into());
     let (tx, rx) = oneshot::channel::<()>();
     let (bound, join) = serve_health("127.0.0.1:0".parse().unwrap(), state, async move {
         let _ = rx.await;

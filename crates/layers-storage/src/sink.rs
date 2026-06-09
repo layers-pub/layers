@@ -20,7 +20,7 @@ mod pg {
 
     use crate::RecordSink;
 
-    /// PostgreSQL writer that upserts each `pub.layers.*` record into its
+    /// `PostgreSQL` writer that upserts each `pub.layers.*` record into its
     /// per-collection table. Every table has the shape
     /// `(uri PRIMARY KEY, did, rkey, indexed_at, record JSONB)`; richer
     /// access patterns query JSONB indexes on `record`.
@@ -43,6 +43,20 @@ mod pg {
             &self.pool
         }
 
+        /// Create every `pub.layers.*` record table if it does not already
+        /// exist, applying the generated `0002_record_tables.sql` migration.
+        /// Called at indexer startup so a fresh deployment boots without an
+        /// out-of-band migration step, mirroring
+        /// [`crate::PostgresExternalSink::ensure_table`].
+        ///
+        /// # Errors
+        /// Returns the underlying [`sqlx::Error`] if the DDL fails.
+        pub async fn ensure_tables(&self) -> Result<(), sqlx::Error> {
+            // Multi-statement DDL must run through the simple query protocol.
+            let sql = include_str!("../../../migrations/0002_record_tables.sql");
+            sqlx::raw_sql(sql).execute(&self.pool).await?;
+            Ok(())
+        }
     }
 
     #[async_trait::async_trait]
@@ -55,10 +69,11 @@ mod pg {
             record: &AnyRecord,
         ) -> Result<(), IndexerError> {
             let nsid = LayersFamily::nsid_str(record);
+            let table = table_for(nsid)?;
             let uri = format!("at://{did}/{nsid}/{rkey}");
             let body = serde_json::to_value(record)
                 .map_err(|e| IndexerError::Handler(format!("serialize {nsid}: {e}")))?;
-            upsert(&self.pool, table_for(nsid), &uri, did, rkey, cid, &body).await
+            upsert(&self.pool, table, &uri, did, rkey, cid, &body).await
         }
 
         async fn delete_record(
@@ -67,7 +82,7 @@ mod pg {
             collection: &str,
             rkey: &str,
         ) -> Result<(), IndexerError> {
-            let table = table_for(collection);
+            let table = table_for(collection)?;
             let uri = format!("at://{did}/{collection}/{rkey}");
             sqlx::query(&format!("DELETE FROM {table} WHERE uri = $1"))
                 .bind(&uri)
@@ -78,37 +93,12 @@ mod pg {
         }
     }
 
-    /// Map a `pub.layers.<ns>.<record>` NSID to its Postgres table name.
-    fn table_for(nsid: &str) -> &'static str {
-        match nsid {
-            "pub.layers.expression.expression" => "expressions",
-            "pub.layers.corpus.corpus" => "corpora",
-            "pub.layers.corpus.membership" => "corpus_memberships",
-            "pub.layers.persona.persona" => "personas",
-            "pub.layers.media.media" => "media_records",
-            "pub.layers.eprint.eprint" => "eprints",
-            "pub.layers.eprint.dataLink" => "data_links",
-            "pub.layers.ontology.ontology" => "ontologies",
-            "pub.layers.ontology.typeDef" => "type_defs",
-            "pub.layers.segmentation.segmentation" => "segmentations",
-            "pub.layers.alignment.alignment" => "alignments",
-            "pub.layers.annotation.annotationLayer" => "annotation_layers",
-            "pub.layers.annotation.clusterSet" => "cluster_sets",
-            "pub.layers.graph.graphNode" => "graph_nodes",
-            "pub.layers.graph.graphEdge" => "graph_edges",
-            "pub.layers.graph.graphEdgeSet" => "graph_edge_sets",
-            "pub.layers.judgment.experimentDef" => "experiment_defs",
-            "pub.layers.judgment.judgmentSet" => "judgment_sets",
-            "pub.layers.judgment.agreementReport" => "agreement_reports",
-            "pub.layers.resource.collection" => "resource_collections",
-            "pub.layers.resource.collectionMembership" => "resource_collection_memberships",
-            "pub.layers.resource.entry" => "resource_entries",
-            "pub.layers.resource.filling" => "resource_fillings",
-            "pub.layers.resource.template" => "resource_templates",
-            "pub.layers.resource.templateComposition" => "resource_template_compositions",
-            "pub.layers.changelog.entry" => "changelog_entries",
-            other => panic!("table_for: unknown pub.layers NSID {other}"),
-        }
+    /// Resolve a `pub.layers.<ns>.<record>` NSID to its Postgres table
+    /// name via the generated [`layers_records::tables`] map (the single
+    /// source of truth shared with the orchestrator route generator).
+    fn table_for(nsid: &str) -> Result<&'static str, IndexerError> {
+        layers_records::tables::table_for(nsid)
+            .ok_or_else(|| IndexerError::Handler(format!("no table for record NSID `{nsid}`")))
     }
 
     async fn upsert(

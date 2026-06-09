@@ -39,13 +39,12 @@ impl<S: RecordSink> RecordHandler<LayersFamily> for LayersRecordHandler<S> {
                     .delete_record(&event.did, event.collection.as_str(), &event.rkey)
                     .await
             }
-            IndexerAction::Create | IndexerAction::Update => match event.record.as_ref() {
-                Some(rec) => {
+            IndexerAction::Create | IndexerAction::Update => {
+                if let Some(rec) = event.record.as_ref() {
                     self.sink
                         .put_record(&event.did, &event.rkey, event.cid.as_deref(), rec)
                         .await
-                }
-                None => {
+                } else {
                     tracing::warn!(
                         seq = event.seq,
                         did = %event.did,
@@ -54,7 +53,7 @@ impl<S: RecordSink> RecordHandler<LayersFamily> for LayersRecordHandler<S> {
                     );
                     Ok(())
                 }
-            },
+            }
         }
     }
 }

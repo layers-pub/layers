@@ -148,12 +148,18 @@ mod tests {
         let multi = MultiSink::new(vec![a.clone(), b.clone()]);
 
         // synthetic AnyRecord variant doesn't matter for counters
-        let rec = AnyRecord::Corpus(serde_json::from_value(serde_json::json!({
-            "createdAt": "2026-04-28T00:00:00Z",
-            "name": "x",
-        })).unwrap());
+        let rec = AnyRecord::Corpus(
+            serde_json::from_value(serde_json::json!({
+                "createdAt": "2026-04-28T00:00:00Z",
+                "name": "x",
+            }))
+            .unwrap(),
+        );
 
-        multi.put_record("did:plc:a", "r1", Some("bafy_test_cid"), &rec).await.unwrap();
+        multi
+            .put_record("did:plc:a", "r1", Some("bafy_test_cid"), &rec)
+            .await
+            .unwrap();
         multi
             .delete_record("did:plc:a", "pub.layers.corpus.corpus", "r1")
             .await
@@ -170,12 +176,17 @@ mod tests {
         let counter = Arc::new(CountingSink::default());
         let multi = MultiSink::new(vec![Arc::new(FailingSink), counter.clone()]);
 
-        let rec = AnyRecord::Corpus(serde_json::from_value(serde_json::json!({
-            "createdAt": "2026-04-28T00:00:00Z",
-            "name": "x",
-        })).unwrap());
+        let rec = AnyRecord::Corpus(
+            serde_json::from_value(serde_json::json!({
+                "createdAt": "2026-04-28T00:00:00Z",
+                "name": "x",
+            }))
+            .unwrap(),
+        );
 
-        let err = multi.put_record("did:plc:a", "r1", Some("bafy_test_cid"), &rec).await;
+        let err = multi
+            .put_record("did:plc:a", "r1", Some("bafy_test_cid"), &rec)
+            .await;
         assert!(err.is_err());
         assert_eq!(counter.puts.load(Ordering::SeqCst), 0);
     }
@@ -184,10 +195,13 @@ mod tests {
     async fn empty_multi_sink_is_a_noop() {
         let multi = MultiSink::new(vec![]);
         assert_eq!(multi.len(), 0);
-        let rec = AnyRecord::Corpus(serde_json::from_value(serde_json::json!({
-            "createdAt": "2026-04-28T00:00:00Z",
-            "name": "x",
-        })).unwrap());
+        let rec = AnyRecord::Corpus(
+            serde_json::from_value(serde_json::json!({
+                "createdAt": "2026-04-28T00:00:00Z",
+                "name": "x",
+            }))
+            .unwrap(),
+        );
         multi
             .put_record("did:plc:a", "r1", None, &rec)
             .await
