@@ -4,6 +4,20 @@ All notable changes to the Layers lexicon schemas will be documented in this fil
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.7.0] - 2026-06-09
+
+### Added
+
+- `guidelinesFormat` optional field on `pub.layers.persona.persona` and `pub.layers.judgment.experimentDef` (`knownValues`: `plain`, `html`, `markdown`), so consumers can render guideline text safely without content sniffing. Defaults to `plain` when omitted.
+
+### Changed
+
+- `pub.layers.defs#annotationMetadata.digest` now specifies a `<algorithm>:<lowercase-hex>` convention (e.g. `sha256:9f86d081...`); sha256 is recommended and verifiers dispatch on the algorithm prefix. `maxLength` raised from 128 to 160 to fit prefixed digests (a backward-compatible constraint widening).
+- Corrected `foundations/primitives.md` to match the lexicons: `feature.value` is a `string` (max 4096) and `featureMap` uses an `entries` array; `agentRef` carries only producer identity (`did`/`id`/`name`/`knowledgeRef`); `annotationMetadata` requires `tool` and uses `personaRef` plus a string `digest`.
+- Corrected `featureMap` examples across the judgment-data, knowledge-grounding, and psycholinguistic-data guides to the `entries` array of string-valued features.
+- Added a recommended anonymized crowd-worker id convention (salted keyed hash) to the judgment-data guide.
+- Updated the `defs`, `judgment`, and `persona` lexicon reference docs for the `digest` convention and the `guidelinesFormat` field.
+
 ## [0.6.0] - 2026-03-19
 
 ### Changed

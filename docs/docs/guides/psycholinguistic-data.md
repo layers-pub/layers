@@ -93,11 +93,11 @@ Per-region reading times are recorded as judgments. Each judgment references the
       "categoricalValue": "yes",
       "responseTimeMs": 1842,
       "behavioralData": {
-        "features": [
-          { "key": "region.0.rt", "value": 312 },
-          { "key": "region.1.rt", "value": 287 },
-          { "key": "region.2.rt", "value": 445 },
-          { "key": "region.3.rt", "value": 398 }
+        "entries": [
+          { "key": "region.0.rt", "value": "312" },
+          { "key": "region.1.rt", "value": "287" },
+          { "key": "region.2.rt", "value": "445" },
+          { "key": "region.3.rt", "value": "398" }
         ]
       }
     }
@@ -136,7 +136,7 @@ The experiment definition specifies measure type, presentation method, recording
       {
         "kind": "no-adjacent-same-condition",
         "targetProperty": "condition",
-        "parameters": { "features": [{ "key": "minDistance", "value": 2 }] }
+        "parameters": { "entries": [{ "key": "minDistance", "value": "2" }] }
       }
     ]
   }
@@ -166,12 +166,12 @@ Fixations are annotations with `temporalSpan` anchors on the stimulus expression
       },
       "label": "fixation",
       "features": {
-        "features": [
-          { "key": "duration", "value": 245 },
-          { "key": "x", "value": 412 },
-          { "key": "y", "value": 300 },
-          { "key": "pupilSize", "value": 3.2 },
-          { "key": "ordinal", "value": 1 }
+        "entries": [
+          { "key": "duration", "value": "245" },
+          { "key": "x", "value": "412" },
+          { "key": "y", "value": "300" },
+          { "key": "pupilSize", "value": "3.2" },
+          { "key": "ordinal", "value": "1" }
         ]
       }
     },
@@ -183,12 +183,12 @@ Fixations are annotations with `temporalSpan` anchors on the stimulus expression
       },
       "label": "fixation",
       "features": {
-        "features": [
-          { "key": "duration", "value": 312 },
-          { "key": "x", "value": 580 },
-          { "key": "y", "value": 300 },
-          { "key": "pupilSize", "value": 3.1 },
-          { "key": "ordinal", "value": 2 }
+        "entries": [
+          { "key": "duration", "value": "312" },
+          { "key": "x", "value": "580" },
+          { "key": "y", "value": "300" },
+          { "key": "pupilSize", "value": "3.1" },
+          { "key": "ordinal", "value": "2" }
         ]
       }
     }
@@ -207,10 +207,10 @@ Saccades are represented as graph edges between consecutive fixation annotations
   "target": { "localId": "fix-002" },
   "edgeType": "saccade",
   "properties": {
-    "features": [
-      { "key": "amplitude", "value": 4.2 },
+    "entries": [
+      { "key": "amplitude", "value": "4.2" },
       { "key": "direction", "value": "forward" },
-      { "key": "latency", "value": 28 }
+      { "key": "latency", "value": "28" }
     ]
   }
 }
@@ -230,9 +230,9 @@ The eye-tracking device and raw data file are recorded as a media record:
   "externalUri": "https://example.com/data/et-session-017.edf",
   "mimeType": "application/x-eyelink-edf",
   "features": {
-    "features": [
+    "entries": [
       { "key": "eyetracking.device", "value": "EyeLink 1000 Plus" },
-      { "key": "eyetracking.sampleRate", "value": 1000 },
+      { "key": "eyetracking.sampleRate", "value": "1000" },
       { "key": "eyetracking.trackingMode", "value": "monocular-right" },
       { "key": "eyetracking.calibration", "value": "9-point" },
       { "key": "eyetracking.displayResolution", "value": "1920x1080" },
@@ -258,14 +258,14 @@ The EEG data file is a media record with modality-specific features:
   "externalUri": "https://example.com/data/sub-017_task-reading_eeg.edf",
   "mimeType": "application/x-edf",
   "features": {
-    "features": [
-      { "key": "eeg.sampleRate", "value": 512 },
-      { "key": "eeg.numChannels", "value": 64 },
+    "entries": [
+      { "key": "eeg.sampleRate", "value": "512" },
+      { "key": "eeg.numChannels", "value": "64" },
       { "key": "eeg.referenceScheme", "value": "average" },
       { "key": "eeg.montage", "value": "biosemi-64" },
-      { "key": "eeg.filterHighpass", "value": 0.1 },
-      { "key": "eeg.filterLowpass", "value": 100 },
-      { "key": "eeg.notchFilter", "value": 60 },
+      { "key": "eeg.filterHighpass", "value": "0.1" },
+      { "key": "eeg.filterLowpass", "value": "100" },
+      { "key": "eeg.notchFilter", "value": "60" },
       { "key": "eeg.impedanceThreshold", "value": "5kOhm" },
       { "key": "eeg.groundElectrode", "value": "AFz" }
     ]
@@ -343,9 +343,9 @@ Event-related potential components are annotations with temporal anchors specify
       "label": "N400",
       "confidence": 850,
       "features": {
-        "features": [
-          { "key": "peakLatency", "value": 412 },
-          { "key": "meanAmplitude", "value": -3.7 },
+        "entries": [
+          { "key": "peakLatency", "value": "412" },
+          { "key": "meanAmplitude", "value": "-3.7" },
           { "key": "unit", "value": "uV" },
           { "key": "electrodeCluster", "value": "centro-parietal" },
           { "key": "electrodes", "value": "Cz,CPz,Pz,CP1,CP2" },
@@ -370,9 +370,9 @@ Event-related potential components are annotations with temporal anchors specify
       "label": "P600",
       "confidence": 720,
       "features": {
-        "features": [
-          { "key": "peakLatency", "value": 650 },
-          { "key": "meanAmplitude", "value": 4.2 },
+        "entries": [
+          { "key": "peakLatency", "value": "650" },
+          { "key": "meanAmplitude", "value": "4.2" },
           { "key": "unit", "value": "uV" },
           { "key": "electrodeCluster", "value": "parietal" },
           { "key": "electrodes", "value": "Pz,P3,P4,POz" },
@@ -413,10 +413,10 @@ Alignment records link EEG epochs to the stimulus expressions they correspond to
       "targetIndices": [0],
       "label": "epoch-42",
       "features": {
-        "features": [
-          { "key": "epochStart", "value": 145200 },
-          { "key": "epochEnd", "value": 146200 },
-          { "key": "artifactFree", "value": true },
+        "entries": [
+          { "key": "epochStart", "value": "145200" },
+          { "key": "epochEnd", "value": "146200" },
+          { "key": "artifactFree", "value": "true" },
           { "key": "rejectionThreshold", "value": "100uV" }
         ]
       }
@@ -441,13 +441,13 @@ MEG uses magnetometers and gradiometers rather than electrodes. The media record
   "externalUri": "https://example.com/data/sub-017_task-reading_meg.fif",
   "mimeType": "application/x-fiff",
   "features": {
-    "features": [
-      { "key": "meg.sampleRate", "value": 1000 },
-      { "key": "meg.numMagnetometers", "value": 102 },
-      { "key": "meg.numGradiometers", "value": 204 },
+    "entries": [
+      { "key": "meg.sampleRate", "value": "1000" },
+      { "key": "meg.numMagnetometers", "value": "102" },
+      { "key": "meg.numGradiometers", "value": "204" },
       { "key": "meg.system", "value": "Elekta Neuromag TRIUX" },
-      { "key": "meg.headPositionIndicator", "value": true },
-      { "key": "meg.maxFilter", "value": true },
+      { "key": "meg.headPositionIndicator", "value": "true" },
+      { "key": "meg.maxFilter", "value": "true" },
       { "key": "meg.sssMethod", "value": "tSSS" }
     ]
   }
@@ -483,9 +483,9 @@ Source-localized MEG data uses `spatialExpression` with MNI brain coordinates:
         }
       },
       "features": {
-        "features": [
+        "entries": [
           { "key": "sourceMethod", "value": "dSPM" },
-          { "key": "amplitude", "value": 12.5 },
+          { "key": "amplitude", "value": "12.5" },
           { "key": "unit", "value": "nAm" }
         ]
       },
@@ -517,16 +517,16 @@ The fMRI data file is a media record with acquisition-specific features:
   "externalUri": "https://example.com/data/sub-017_task-reading_bold.nii.gz",
   "mimeType": "application/x-nifti",
   "features": {
-    "features": [
-      { "key": "fmri.repetitionTime", "value": 2000 },
-      { "key": "fmri.echoTime", "value": 30 },
-      { "key": "fmri.fieldStrength", "value": 3.0 },
+    "entries": [
+      { "key": "fmri.repetitionTime", "value": "2000" },
+      { "key": "fmri.echoTime", "value": "30" },
+      { "key": "fmri.fieldStrength", "value": "3.0" },
       { "key": "fmri.voxelSize", "value": "2x2x2mm" },
       { "key": "fmri.matrixSize", "value": "96x96x72" },
-      { "key": "fmri.numVolumes", "value": 300 },
+      { "key": "fmri.numVolumes", "value": "300" },
       { "key": "fmri.sliceOrder", "value": "interleaved" },
       { "key": "fmri.phaseEncoding", "value": "AP" },
-      { "key": "fmri.multibandFactor", "value": 4 }
+      { "key": "fmri.multibandFactor", "value": "4" }
     ]
   }
 }
@@ -559,10 +559,10 @@ Regions of interest are annotations with `spatialExpression` referencing brain a
         "modifier": { "mod": "approximate" }
       },
       "features": {
-        "features": [
+        "entries": [
           { "key": "roiMethod", "value": "sphere" },
-          { "key": "radiusMm", "value": 6 },
-          { "key": "numVoxels", "value": 112 }
+          { "key": "radiusMm", "value": "6" },
+          { "key": "numVoxels", "value": "112" }
         ]
       },
       "knowledgeRefs": [
@@ -610,10 +610,10 @@ BOLD activation differences between conditions are annotation layers with both s
         }
       },
       "features": {
-        "features": [
-          { "key": "tStatistic", "value": 4.82 },
-          { "key": "pValueFwe", "value": 0.001 },
-          { "key": "clusterSize", "value": 87 },
+        "entries": [
+          { "key": "tStatistic", "value": "4.82" },
+          { "key": "pValueFwe", "value": "0.001" },
+          { "key": "clusterSize", "value": "87" },
           { "key": "contrastWeights", "value": "[1, -1]" },
           { "key": "hrf", "value": "canonical" }
         ]
@@ -651,9 +651,9 @@ Event onsets linking fMRI volumes to stimulus presentations use alignment record
       "targetIndices": [0],
       "label": "item-42-onset",
       "features": {
-        "features": [
-          { "key": "onsetMs", "value": 144000 },
-          { "key": "durationMs", "value": 6000 },
+        "entries": [
+          { "key": "onsetMs", "value": "144000" },
+          { "key": "durationMs", "value": "6000" },
           { "key": "condition", "value": "anomalous" }
         ]
       }

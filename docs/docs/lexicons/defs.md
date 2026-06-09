@@ -297,7 +297,7 @@ Metadata about who or what produced an annotation, when, and with what confidenc
 | `timestamp` | datetime | When the annotation was produced. |
 | `confidence` | integer | Confidence score scaled 0-1000. 1000 = maximum confidence. |
 | `personaRef` | at-uri | Reference to the persona/annotation framework under which this annotation was produced. |
-| `digest` | string | Content hash for integrity verification. |
+| `digest` | string | Content hash for integrity verification, in `<algorithm>:<lowercase-hex>` form (e.g. `sha256:9f86d081...`). sha256 recommended; verifiers dispatch on the algorithm prefix. |
 | `dependencies` | array | References to upstream records this annotation was derived from (provenance chain). Array of ref: `#objectRef` |
 
 ### knowledgeRef

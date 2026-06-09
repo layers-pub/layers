@@ -23,6 +23,7 @@ Definition of an annotation or judgment experiment.
 | `taskTypeUri` | at-uri | AT-URI of the response instrument definition node. Community-expandable via knowledge graph. |
 | `taskType` | string | Response instrument: how the response is collected (fallback). Known values: `forced-choice`, `multi-select`, `ordinal-scale`, `magnitude`, `binary`, `categorical`, `free-text`, `cloze`, `span-labeling`, `custom` |
 | `guidelines` | string | Task guidelines and instructions. |
+| `guidelinesFormat` | string | Format of the guidelines text, so consumers can render it safely without sniffing. Defaults to `plain` when omitted. Known values: `plain`, `html`, `markdown` |
 | `ontologyRef` | at-uri | Reference to the ontology used. |
 | `personaRef` | at-uri | Reference to the persona defining the annotation framework. |
 | `corpusRef` | at-uri | Reference to the corpus. |

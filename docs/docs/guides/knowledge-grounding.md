@@ -52,7 +52,7 @@ A [`graphNode`](../lexicons/graph.md#graphnode) represents a standalone entity o
   "nodeType": "entity",
   "label": "Barack Obama",
   "properties": {
-    "features": [
+    "entries": [
       { "key": "birth-year", "value": "1961" },
       { "key": "nationality", "value": "American" }
     ]

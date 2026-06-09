@@ -78,33 +78,23 @@ Composable agent identity that separates **who** from **what framework** they us
 ```typescript
 agentRef = {
   did?: string                  // Decentralized identifier
-  id?: string                   // Opaque identifier
-  name?: string                 // Human-readable name
+  id?: string                   // Opaque identifier (max 512 chars)
+  name?: string                 // Human-readable name (max 512 chars)
   knowledgeRef?: knowledgeRef   // Link to external authority (e.g., ORCID)
-
-  personaRef?: AtUri            // Link to persona record (framework, theory, background)
-  tool?: {
-    name: string                // Tool name (e.g., "spaCy", "BERT", "Manual")
-    version?: string
-    sourceUri?: string          // URI to tool source/docs
-  }
 }
 ```
 
+agentRef identifies only **who** produced the data. The interpretive framework (persona) and the software used (tool) are separate fields on [annotationMetadata](#annotationmetadata), alongside the agent.
+
 **Why separate fields?**
-- An annotator might have a DID, a persona (their linguistic background/framework), and use a specific annotation tool (Inception, Prodigy, custom script).
-- Linking to Persona and Tool metadata separately enables discovery and reproducibility.
+- Consumers dispatch on which field(s) are populated: `did` for ATProto-native agents, `id` for anonymized or platform-specific identifiers, `knowledgeRef` for externally grounded agents (ORCID, HuggingFace model card, Wikidata).
+- Keeping persona and tool out of the identity reference means the same agent can annotate under different frameworks and with different software without multiplying identities.
 
 **Example**:
 ```json
 {
   "did": "did:key:z6MkhaXgBZDvotzL5oJQWZxv8KhfZXv...",
-  "name": "Alice Chen",
-  "personaRef": "at://did:plc:personas/alice-chen#1980-2025",
-  "tool": {
-    "name": "Inception",
-    "version": "24.1"
-  }
+  "name": "Alice Chen"
 }
 ```
 
@@ -114,29 +104,26 @@ Three-way provenance tracking: agent + persona + tool, plus confidence and diges
 
 ```typescript
 annotationMetadata = {
-  agent: agentRef               // Who created the annotation
-  timestamp: string (ISO 8601)  // When
-  confidence?: integer          // 0–1000 confidence score
+  tool: string                  // Software that produced the annotation, e.g. "spaCy 3.7" (max 512 chars)
+  agent?: agentRef              // Who ran the tool (human or model)
+  timestamp?: string (ISO 8601) // When the annotation was produced
+  confidence?: integer          // 0-1000 confidence score (integer-scaled to avoid floats)
 
-  personaUri?: AtUri            // Explicit link to persona
-  toolUri?: AtUri               // Link to tool record
+  personaRef?: AtUri            // Persona/framework the annotation was produced under
 
-  digest?: {
-    algorithm: "sha256" | string
-    value: string               // Hash of annotation data
-  }
+  dependencies?: objectRef[]    // Upstream records this was derived from (max 32)
 
-  dependencies?: objectRef[]    // Upstream records this was derived from
-
-  metadata?: featureMap         // Additional key-value data
+  digest?: string               // Content hash, "<algorithm>:<hex>" form, e.g. "sha256:9f86d081..." (max 160 chars)
 }
 ```
 
+`tool` is the only required field. The three provenance concerns stay distinct: `agent` (who did it), `personaRef` (under what framework), and `tool` (with what software).
+
 **Use cases**:
-- Human annotation: agent is the annotator, tool is the annotation interface.
-- Model prediction: agent is the model (e.g., a neural network), personaUri could link to a persona describing the model's training data/framework.
+- Human annotation: agent is the annotator, tool is the annotation interface (e.g., "Inception 24.1").
+- Model prediction: agent is the model (e.g., a neural network), personaRef could link to a persona describing the model's training data/framework.
 - Provenance chain: a semantic role annotation lists its dependency parse and POS tagger outputs in `dependencies`, enabling reproducibility and invalidation tracking.
-- Adjudication: metadata includes notes on why annotators agreed/disagreed.
+- Adjudication: notes on why annotators agreed/disagreed go in the annotation's own `features` featureMap.
 
 ## temporalExpression
 
@@ -248,20 +235,20 @@ Open-ended key-value extensibility for annotation-specific attributes:
 
 ```typescript
 feature = {
-  key: string
-  value: string | number | boolean | any
-  confidence?: number
-  metadata?: featureMap
+  key: string                   // Feature name/key (max 256 chars)
+  value: string                 // Feature value as string (max 4096 chars)
 }
 
 featureMap = {
-  features: feature[]
+  entries: feature[]
 }
 ```
 
+All feature values are strings. Consumers parse typed values based on the key's semantics (e.g., a value of `"0.95"` under a key conventionally holding a probability is parsed as a number). This keeps the wire format uniform and avoids cross-language type-coercion ambiguity; see the [feature key conventions](../lexicons/media.md#feature-key-conventions) for how typed semantics attach to keys.
+
 **Use cases**:
 - POS tag with additional morphological features: `{key: "number", value: "plural"}`
-- Named entity with additional attributes: `{key: "entity_type_confidence", value: 0.95}`
+- Named entity with additional attributes: `{key: "entity_type_confidence", value: "0.95"}`
 - Semantic role with frame-specific features.
 
 ## alignmentLink

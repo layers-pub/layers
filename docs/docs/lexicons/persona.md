@@ -25,6 +25,7 @@ A persona representing an annotator's role, expertise, and interpretive framewor
 | `parentRef` | at-uri | AT-URI of a parent persona this one specializes. |
 | `ontologyRefs` | array | Ontologies this persona uses for annotation. Array of at-uri |
 | `guidelines` | string | Annotation guidelines text. |
+| `guidelinesFormat` | string | Format of the guidelines text, so consumers can render it safely without sniffing. Defaults to `plain` when omitted. Known values: `plain`, `html`, `markdown` |
 | `guidelinesBlob` | blob | Annotation guidelines document (PDF, Markdown, or plain text). |
 | `knowledgeRefs` | array | Knowledge graph references (e.g., ORCID, institutional identifiers). Array of ref: `pub.layers.defs#knowledgeRef` |
 | `features` | ref | Open-ended features: expertise level, certification, language proficiency, reliability. Ref: `pub.layers.defs#featureMap` |
