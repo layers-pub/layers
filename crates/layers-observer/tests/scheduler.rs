@@ -5,7 +5,9 @@ use std::sync::Mutex;
 use std::time::Duration;
 
 use layers_observer::{
-    methods::ObservationReport, publisher::{PublishError, Publisher}, scheduler::{run, Scheduler, SchedulerConfig},
+    methods::ObservationReport,
+    publisher::{PublishError, Publisher},
+    scheduler::{Scheduler, SchedulerConfig, run},
     sources::ReportSource,
 };
 use tokio::sync::oneshot;
@@ -53,12 +55,22 @@ async fn scheduler_publishes_each_batch_until_shutdown() {
     let source = Arc::new(FakeSource::default());
     *source.batches.lock().unwrap() = vec![
         vec![
-            report("annotation_coverage", "at://a/c/1", serde_json::json!({"covered": 1})),
-            report("annotation_coverage", "at://a/c/2", serde_json::json!({"covered": 0})),
+            report(
+                "annotation_coverage",
+                "at://a/c/1",
+                serde_json::json!({"covered": 1}),
+            ),
+            report(
+                "annotation_coverage",
+                "at://a/c/2",
+                serde_json::json!({"covered": 0}),
+            ),
         ],
-        vec![
-            report("annotation_coverage", "at://a/c/1", serde_json::json!({"covered": 2})),
-        ],
+        vec![report(
+            "annotation_coverage",
+            "at://a/c/1",
+            serde_json::json!({"covered": 2}),
+        )],
     ];
 
     let publisher = Arc::new(CapturingPublisher::default());
@@ -73,7 +85,13 @@ async fn scheduler_publishes_each_batch_until_shutdown() {
 
     let (tx, rx) = oneshot::channel::<()>();
     let scheduler_handle = tokio::spawn(async move {
-        run(scheduler, Box::pin(async move { let _ = rx.await; })).await
+        run(
+            scheduler,
+            Box::pin(async move {
+                let _ = rx.await;
+            }),
+        )
+        .await
     });
 
     // Wait long enough for both batches to be drained.
@@ -127,9 +145,12 @@ async fn scheduler_skips_tick_when_source_errors() {
 
     let (tx, rx) = oneshot::channel::<()>();
     let handle = tokio::spawn(async move {
-        run(scheduler, Box::pin(async move {
-            let _ = rx.await;
-        }))
+        run(
+            scheduler,
+            Box::pin(async move {
+                let _ = rx.await;
+            }),
+        )
         .await
     });
     tokio::time::sleep(Duration::from_millis(120)).await;
@@ -150,8 +171,16 @@ async fn scheduler_skips_tick_when_source_errors() {
 async fn scheduler_swallows_publish_errors_and_keeps_running() {
     let source = Arc::new(FakeSource::default());
     *source.batches.lock().unwrap() = vec![
-        vec![report("annotation_coverage", "at://a/c/1", serde_json::json!({}))],
-        vec![report("annotation_coverage", "at://a/c/2", serde_json::json!({}))],
+        vec![report(
+            "annotation_coverage",
+            "at://a/c/1",
+            serde_json::json!({}),
+        )],
+        vec![report(
+            "annotation_coverage",
+            "at://a/c/2",
+            serde_json::json!({}),
+        )],
     ];
     let publisher = Arc::new(FailingPublisher::default());
 
@@ -165,13 +194,25 @@ async fn scheduler_swallows_publish_errors_and_keeps_running() {
 
     let (tx, rx) = oneshot::channel::<()>();
     let handle = tokio::spawn(async move {
-        run(scheduler, Box::pin(async move { let _ = rx.await; })).await
+        run(
+            scheduler,
+            Box::pin(async move {
+                let _ = rx.await;
+            }),
+        )
+        .await
     });
     tokio::time::sleep(Duration::from_millis(150)).await;
     let _ = tx.send(());
     let total = handle.await.unwrap();
 
     let attempts = *publisher.attempts.lock().unwrap();
-    assert!(attempts >= 2, "publisher should have been called for each report; saw {attempts}");
-    assert_eq!(total, 0, "no successful publishes when publisher always errors");
+    assert!(
+        attempts >= 2,
+        "publisher should have been called for each report; saw {attempts}"
+    );
+    assert_eq!(
+        total, 0,
+        "no successful publishes when publisher always errors"
+    );
 }

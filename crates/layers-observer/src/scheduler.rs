@@ -1,14 +1,13 @@
 //! Fixed-interval scheduler that drives a [`ReportSource`] through a
 //! [`Publisher`] until shutdown.
 //!
-//! Operators construct a `Scheduler`, hand it the source + publisher
-//! + cadence, and call [`run`] to drive it until the supplied
-//! shutdown future resolves. Each tick:
+//! Operators construct a `Scheduler` with a source, publisher, and
+//! cadence, then call [`run`] to drive it until the supplied shutdown
+//! future resolves. Each tick:
 //!
 //! 1. Calls `source.collect()` to gather every report this tick.
 //! 2. Publishes each report; logs and continues on individual errors.
-//! 3. Sleeps until the next tick or the shutdown future resolves,
-//!    whichever is first.
+//! 3. Sleeps until the next tick or the shutdown future resolves, whichever is first.
 
 use std::sync::Arc;
 use std::time::Duration;
@@ -26,7 +25,7 @@ pub struct SchedulerConfig {
 impl Default for SchedulerConfig {
     fn default() -> Self {
         Self {
-            interval: Duration::from_secs(300),
+            interval: Duration::from_mins(5),
         }
     }
 }
@@ -52,7 +51,7 @@ pub async fn run(
     interval.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Delay);
     loop {
         tokio::select! {
-            _ = &mut shutdown => {
+            () = &mut shutdown => {
                 tracing::info!(total, "scheduler shutting down");
                 return total;
             }

@@ -41,15 +41,16 @@ pub struct CorpusMember {
 /// keeps the method storage-agnostic and unit-testable. The orchestrator
 /// is responsible for the SQL that produces the two iterables.
 #[must_use]
+#[allow(
+    clippy::implicit_hasher,
+    reason = "called only with the default hasher"
+)]
 pub fn annotation_coverage(
     corpus_uri: &str,
     members: &[CorpusMember],
     annotated_targets: &HashSet<String>,
 ) -> ObservationReport {
-    let total = members
-        .iter()
-        .filter(|m| m.corpus == corpus_uri)
-        .count();
+    let total = members.iter().filter(|m| m.corpus == corpus_uri).count();
     let covered = members
         .iter()
         .filter(|m| m.corpus == corpus_uri && annotated_targets.contains(&m.expression))
@@ -119,10 +120,7 @@ mod tests {
 
     #[test]
     fn ignores_other_corpora() {
-        let members = vec![
-            member("at://c", "at://e1"),
-            member("at://other", "at://e2"),
-        ];
+        let members = vec![member("at://c", "at://e1"), member("at://other", "at://e2")];
         let annotated: HashSet<String> = ["at://e1", "at://e2"]
             .iter()
             .map(|s| (*s).to_owned())

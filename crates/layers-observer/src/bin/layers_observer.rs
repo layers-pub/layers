@@ -79,8 +79,7 @@ async fn shutdown_signal() {
 }
 
 fn init_tracing() {
-    let filter = std::env::var("LAYERS_LOG")
-        .unwrap_or_else(|_| "layers_observer=info".to_owned());
+    let filter = std::env::var("LAYERS_LOG").unwrap_or_else(|_| "layers_observer=info".to_owned());
     tracing_subscriber::fmt()
         .with_env_filter(tracing_subscriber::EnvFilter::new(filter))
         .json()
