@@ -1496,7 +1496,7 @@ export interface components {
             confidence?: number;
             /** @description References to upstream records this annotation was derived from. */
             dependencies?: components["schemas"]["DefsObjectRef"][];
-            /** @description Content hash for integrity verification. */
+            /** @description Content hash for integrity verification, in '<algorithm>:<lowercase-hex>' form (e.g. 'sha256:9f86d081...'). sha256 is recommended; verifiers dispatch on the algorithm prefix and should treat digests without a recognized prefix as opaque. */
             digest?: string;
             /**
              * Format: at-uri
@@ -2383,7 +2383,10 @@ export interface components {
             /** @description Experiment design parameters: list constraints, distribution strategy, item order. */
             design?: components["schemas"]["JudgmentDefsExperimentDesign"];
             features?: components["schemas"]["DefsFeatureMap"];
+            /** @description Instructions or guidelines text shown to participants. */
             guidelines?: string;
+            /** @description Format of the guidelines text, so consumers can render it safely without sniffing. Defaults to plain when omitted. */
+            guidelinesFormat?: string;
             /** @description Knowledge graph references (e.g., theoretical framework, methodology citation, task ontology). */
             knowledgeRefs?: components["schemas"]["DefsKnowledgeRef"][];
             /** @description Available labels for categorical judgments. */
@@ -2792,6 +2795,8 @@ export interface components {
                 };
                 size?: number;
             };
+            /** @description Format of the guidelines text, so consumers can render it safely without sniffing. Defaults to plain when omitted. */
+            guidelinesFormat?: string;
             /** @description Persona kind slug (fallback when kindUri unavailable). */
             kind?: string;
             /**
@@ -3375,8 +3380,8 @@ export interface operations {
             query?: {
                 /** @description Optional `did` filter applied to the record's owning repo. */
                 did?: string;
-                target?: string;
-                layerKind?: string;
+                expression?: string;
+                kind?: string;
                 /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
@@ -3470,7 +3475,7 @@ export interface operations {
             query?: {
                 /** @description Optional `did` filter applied to the record's owning repo. */
                 did?: string;
-                collection?: string;
+                subjectCollection?: string;
                 /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
@@ -3626,7 +3631,7 @@ export interface operations {
             query?: {
                 /** @description Optional `did` filter applied to the record's owning repo. */
                 did?: string;
-                corpus?: string;
+                corpusRef?: string;
                 /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
@@ -3717,7 +3722,7 @@ export interface operations {
             query?: {
                 /** @description Optional `did` filter applied to the record's owning repo. */
                 did?: string;
-                eprint?: string;
+                eprintUri?: string;
                 /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
@@ -4210,7 +4215,7 @@ export interface operations {
             query?: {
                 /** @description Optional `did` filter applied to the record's owning repo. */
                 did?: string;
-                experiment?: string;
+                experimentRef?: string;
                 /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
@@ -4275,7 +4280,7 @@ export interface operations {
             query?: {
                 /** @description Optional `did` filter applied to the record's owning repo. */
                 did?: string;
-                experiment?: string;
+                experimentRef?: string;
                 /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
@@ -4460,7 +4465,7 @@ export interface operations {
             query?: {
                 /** @description Optional `did` filter applied to the record's owning repo. */
                 did?: string;
-                ontology?: string;
+                ontologyRef?: string;
                 /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
@@ -4728,7 +4733,7 @@ export interface operations {
             query?: {
                 /** @description Optional `did` filter applied to the record's owning repo. */
                 did?: string;
-                collection?: string;
+                collectionRef?: string;
                 /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
@@ -4793,7 +4798,6 @@ export interface operations {
             query?: {
                 /** @description Optional `did` filter applied to the record's owning repo. */
                 did?: string;
-                collection?: string;
                 /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
@@ -4826,7 +4830,7 @@ export interface operations {
             query?: {
                 /** @description Optional `did` filter applied to the record's owning repo. */
                 did?: string;
-                template?: string;
+                templateRef?: string;
                 /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
@@ -4859,7 +4863,6 @@ export interface operations {
             query?: {
                 /** @description Optional `did` filter applied to the record's owning repo. */
                 did?: string;
-                template?: string;
                 /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;
@@ -4953,7 +4956,7 @@ export interface operations {
             query?: {
                 /** @description Optional `did` filter applied to the record's owning repo. */
                 did?: string;
-                target?: string;
+                expression?: string;
                 /** @description Opaque pagination cursor returned by a previous list call. */
                 cursor?: string;
                 limit?: number;

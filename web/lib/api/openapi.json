@@ -1547,8 +1547,8 @@
             "type": "array"
           },
           "digest": {
-            "description": "Content hash for integrity verification.",
-            "maxLength": 128,
+            "description": "Content hash for integrity verification, in '<algorithm>:<lowercase-hex>' form (e.g. 'sha256:9f86d081...'). sha256 is recommended; verifiers dispatch on the algorithm prefix and should treat digests without a recognized prefix as opaque.",
+            "maxLength": 160,
             "type": "string"
           },
           "personaRef": {
@@ -4020,8 +4020,19 @@
             "$ref": "#/components/schemas/DefsFeatureMap"
           },
           "guidelines": {
+            "description": "Instructions or guidelines text shown to participants.",
             "maxLength": 100000,
             "type": "string"
+          },
+          "guidelinesFormat": {
+            "description": "Format of the guidelines text, so consumers can render it safely without sniffing. Defaults to plain when omitted.",
+            "maxLength": 32,
+            "type": "string",
+            "x-known-values": [
+              "plain",
+              "html",
+              "markdown"
+            ]
           },
           "knowledgeRefs": {
             "description": "Knowledge graph references (e.g., theoretical framework, methodology citation, task ontology).",
@@ -5183,6 +5194,16 @@
               }
             },
             "type": "object"
+          },
+          "guidelinesFormat": {
+            "description": "Format of the guidelines text, so consumers can render it safely without sniffing. Defaults to plain when omitted.",
+            "maxLength": 32,
+            "type": "string",
+            "x-known-values": [
+              "plain",
+              "html",
+              "markdown"
+            ]
           },
           "kind": {
             "description": "Persona kind slug (fallback when kindUri unavailable).",
@@ -6620,7 +6641,7 @@
           },
           {
             "in": "query",
-            "name": "target",
+            "name": "expression",
             "required": false,
             "schema": {
               "type": "string"
@@ -6628,7 +6649,7 @@
           },
           {
             "in": "query",
-            "name": "layerKind",
+            "name": "kind",
             "required": false,
             "schema": {
               "type": "string"
@@ -6826,7 +6847,7 @@
           },
           {
             "in": "query",
-            "name": "collection",
+            "name": "subjectCollection",
             "required": false,
             "schema": {
               "type": "string"
@@ -7152,7 +7173,7 @@
           },
           {
             "in": "query",
-            "name": "corpus",
+            "name": "corpusRef",
             "required": false,
             "schema": {
               "type": "string"
@@ -7330,7 +7351,7 @@
           },
           {
             "in": "query",
-            "name": "eprint",
+            "name": "eprintUri",
             "required": false,
             "schema": {
               "type": "string"
@@ -8329,7 +8350,7 @@
           },
           {
             "in": "query",
-            "name": "experiment",
+            "name": "experimentRef",
             "required": false,
             "schema": {
               "type": "string"
@@ -8477,7 +8498,7 @@
           },
           {
             "in": "query",
-            "name": "experiment",
+            "name": "experimentRef",
             "required": false,
             "schema": {
               "type": "string"
@@ -8853,7 +8874,7 @@
           },
           {
             "in": "query",
-            "name": "ontology",
+            "name": "ontologyRef",
             "required": false,
             "schema": {
               "type": "string"
@@ -9351,7 +9372,7 @@
           },
           {
             "in": "query",
-            "name": "collection",
+            "name": "collectionRef",
             "required": false,
             "schema": {
               "type": "string"
@@ -9498,14 +9519,6 @@
             }
           },
           {
-            "in": "query",
-            "name": "collection",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "description": "Opaque pagination cursor returned by a previous list call.",
             "in": "query",
             "name": "cursor",
@@ -9577,7 +9590,7 @@
           },
           {
             "in": "query",
-            "name": "template",
+            "name": "templateRef",
             "required": false,
             "schema": {
               "type": "string"
@@ -9648,14 +9661,6 @@
             "description": "Optional `did` filter applied to the record's owning repo.",
             "in": "query",
             "name": "did",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "template",
             "required": false,
             "schema": {
               "type": "string"
@@ -9853,7 +9858,7 @@
           },
           {
             "in": "query",
-            "name": "target",
+            "name": "expression",
             "required": false,
             "schema": {
               "type": "string"
