@@ -37,13 +37,7 @@ fn jwk_for(public: &PublicKey) -> serde_json::Value {
     serde_json::to_value(jwk).expect("jwk -> value")
 }
 
-fn mint(
-    secret: &SecretKey,
-    issuer: &str,
-    aud: &str,
-    lxm: &str,
-    exp_offset_secs: i64,
-) -> String {
+fn mint(secret: &SecretKey, issuer: &str, aud: &str, lxm: &str, exp_offset_secs: i64) -> String {
     let exp = (time::OffsetDateTime::now_utc().unix_timestamp() + exp_offset_secs) as usize;
     let iat = time::OffsetDateTime::now_utc().unix_timestamp() as usize;
     let claims = json!({
@@ -131,5 +125,8 @@ async fn plc_directory_404_propagates_as_fetch_error() {
 
     let err = verify_jwt(&token, &resolver).await.unwrap_err();
     let msg = err.to_string();
-    assert!(msg.contains("404") || msg.contains("HTTP"), "unexpected error: {msg}");
+    assert!(
+        msg.contains("404") || msg.contains("HTTP"),
+        "unexpected error: {msg}"
+    );
 }

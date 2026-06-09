@@ -1,6 +1,6 @@
-//! Scope model: parse and represent the ATProto granular scopes a request carries.
+//! Scope model: parse and represent the `ATProto` granular scopes a request carries.
 //!
-//! The scope strings Layers recognises are a subset of the ATProto permission
+//! The scope strings Layers recognises are a subset of the `ATProto` permission
 //! grammar:
 //!
 //! - `include:pub.layers.authReadOnly` — expands to the rpc/lxm list declared
@@ -73,11 +73,13 @@ impl ScopeSet {
     }
 
     /// Check whether this scope set allows writing to a given collection NSID.
+    #[must_use]
     pub fn permits_write(&self, collection: &str) -> bool {
         self.repos.iter().any(|c| c == collection)
     }
 
     /// Check whether this scope set allows calling a given XRPC method.
+    #[must_use]
     pub fn permits_rpc(&self, lxm: &str) -> bool {
         self.rpcs.iter().any(|m| m == lxm)
     }

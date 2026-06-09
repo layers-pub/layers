@@ -1,4 +1,4 @@
-//! Mint ATProto service-auth JWTs for outbound calls.
+//! Mint `ATProto` service-auth JWTs for outbound calls.
 //!
 //! The orchestrator and observer occasionally need to call out to a
 //! PDS (e.g. to fetch a record on demand or to publish an observation
@@ -16,7 +16,7 @@
 //! - `lxm`: the lexicon method id this token authorises.
 //! - `iat` / `exp`: seconds since the Unix epoch. Default `exp` is 60s
 //!   from `iat`; tokens are short-lived by design.
-//! - `jti`: a UUIDv4 nonce.
+//! - `jti`: a `UUIDv4` nonce.
 //!
 //! The signer is stateless beyond the loaded private key; mint as
 //! many tokens as needed.
@@ -66,9 +66,10 @@ pub struct ServiceAuthSigner {
 
 impl std::fmt::Debug for ServiceAuthSigner {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        // `key` is private signing material and is deliberately omitted.
         f.debug_struct("ServiceAuthSigner")
             .field("kid", &self.kid)
-            .finish()
+            .finish_non_exhaustive()
     }
 }
 
@@ -80,8 +81,7 @@ impl ServiceAuthSigner {
     /// Returns [`SignError::LoadKey`] when the PEM is not a valid
     /// PKCS#8 P-256 private key.
     pub fn from_pem(pem: &[u8], kid: impl Into<String>) -> Result<Self, SignError> {
-        let key = EncodingKey::from_ec_pem(pem)
-            .map_err(|e| SignError::LoadKey(e.to_string()))?;
+        let key = EncodingKey::from_ec_pem(pem).map_err(|e| SignError::LoadKey(e.to_string()))?;
         Ok(Self {
             key,
             kid: kid.into(),
@@ -100,7 +100,7 @@ impl ServiceAuthSigner {
         let now = std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
             .map_err(|_| SignError::ClockPreEpoch)?;
-        let ttl = request.ttl.unwrap_or(std::time::Duration::from_secs(60));
+        let ttl = request.ttl.unwrap_or(std::time::Duration::from_mins(1));
         let claims = Claims {
             iss: request.issuer,
             aud: request.audience,
@@ -162,7 +162,7 @@ mod tests {
                 issuer: "did:web:caller",
                 audience: "did:web:callee",
                 method: "pub.layers.corpus.getCorpus",
-                ttl: Some(std::time::Duration::from_secs(120)),
+                ttl: Some(std::time::Duration::from_mins(2)),
             })
             .expect("mint");
 
@@ -175,8 +175,8 @@ mod tests {
 
         let mut validation = Validation::new(Algorithm::ES256);
         validation.validate_aud = false;
-        let token_data = jsonwebtoken::decode::<ServiceAuthClaims>(&token, &key, &validation)
-            .expect("decode");
+        let token_data =
+            jsonwebtoken::decode::<ServiceAuthClaims>(&token, &key, &validation).expect("decode");
 
         assert_eq!(token_data.claims.iss, "did:web:caller");
         assert_eq!(token_data.claims.aud, "did:web:callee");

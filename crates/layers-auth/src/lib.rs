@@ -11,7 +11,7 @@
 //! - `authFull` — every collection + every query.
 //!
 //! This crate parses those lexicons, materialises them into the scope
-//! normal form consumed by ATProto OAuth servers (`include:pub.layers.auth*`
+//! normal form consumed by `ATProto` OAuth servers (`include:pub.layers.auth*`
 //! references plus `rpc:` / `repo:` expansions), and exposes:
 //!
 //! - [`scope::ScopeSet`] — a granted-scope bundle extracted from a JWT.

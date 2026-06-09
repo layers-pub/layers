@@ -1,6 +1,6 @@
 //! JWT signature verification against a resolved DID document.
 //!
-//! Layers tokens are ATProto service-auth JWTs: ES256 (P-256)
+//! Layers tokens are `ATProto` service-auth JWTs: ES256 (P-256)
 //! signatures over a header + claim set whose `iss` is the calling
 //! DID and `lxm` is the lexicon method the token authorises.
 //! [`verify_jwt`] resolves the issuer's DID document via a
@@ -55,8 +55,7 @@ pub async fn verify_jwt<R: DidResolver + ?Sized>(
     token: &str,
     resolver: &R,
 ) -> Result<ServiceAuthClaims, JwtError> {
-    let header = jsonwebtoken::decode_header(token)
-        .map_err(|e| JwtError::Header(e.to_string()))?;
+    let header = jsonwebtoken::decode_header(token).map_err(|e| JwtError::Header(e.to_string()))?;
     let alg = match header.alg {
         Algorithm::ES256 => header.alg,
         other => return Err(JwtError::UnsupportedAlgorithm(format!("{other:?}"))),
@@ -87,7 +86,9 @@ struct ClaimsPeek {
 
 fn peek_claims(token: &str) -> Result<ClaimsPeek, JwtError> {
     let mut parts = token.split('.');
-    let _ = parts.next().ok_or_else(|| JwtError::Header("missing header".into()))?;
+    let _ = parts
+        .next()
+        .ok_or_else(|| JwtError::Header("missing header".into()))?;
     let payload = parts
         .next()
         .ok_or_else(|| JwtError::Header("missing payload".into()))?;
@@ -111,9 +112,7 @@ fn pick_method<'a>(
                 kid: Some(kid.to_owned()),
             });
     }
-    methods
-        .first()
-        .ok_or(JwtError::KeyNotFound { kid: None })
+    methods.first().ok_or(JwtError::KeyNotFound { kid: None })
 }
 
 fn decoding_key_from_method(

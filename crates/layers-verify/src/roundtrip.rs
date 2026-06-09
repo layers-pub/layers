@@ -193,7 +193,7 @@ mod tests {
 
     #[tokio::test]
     async fn identity_lens_passes() {
-        let outcome = RoundtripRunner::default()
+        let outcome = RoundtripRunner
             .run(&IdentityLens, &three_corpora())
             .await
             .unwrap();
@@ -202,7 +202,7 @@ mod tests {
 
     #[tokio::test]
     async fn add_drop_lens_passes() {
-        let outcome = RoundtripRunner::default()
+        let outcome = RoundtripRunner
             .run(&AddDropLens, &three_corpora())
             .await
             .unwrap();
@@ -211,7 +211,7 @@ mod tests {
 
     #[tokio::test]
     async fn lossy_lens_reports_first_counterexample() {
-        let outcome = RoundtripRunner::default()
+        let outcome = RoundtripRunner
             .run(&LossyLens, &three_corpora())
             .await
             .unwrap();
@@ -224,13 +224,13 @@ mod tests {
                 assert_eq!(counterexample_label, "a");
                 assert_eq!(sampled, 1);
             }
-            other => panic!("expected Fail, got {other:?}"),
+            RoundtripOutcome::Pass { .. } => panic!("expected Fail, got Pass"),
         }
     }
 
     #[tokio::test]
     async fn empty_corpus_is_an_error() {
-        let err = RoundtripRunner::default()
+        let err = RoundtripRunner
             .run(&IdentityLens, &Corpus::new())
             .await
             .unwrap_err();

@@ -33,9 +33,6 @@ pub enum ResolveError {
     /// The DID document JSON did not parse.
     #[error("did doc parse failed: {0}")]
     Parse(String),
-    /// The DID document carried no usable verification method.
-    #[error("did doc has no verification method")]
-    NoVerificationMethod,
 }
 
 /// One verification method extracted from a DID document.
@@ -48,7 +45,7 @@ pub struct VerificationMethod {
     pub public_key_jwk: serde_json::Value,
 }
 
-/// Service endpoint declared in a DID document. ATProto deployments
+/// Service endpoint declared in a DID document. `ATProto` deployments
 /// publish at least one entry whose `id` ends in `#atproto_pds` and
 /// whose `type` is `AtprotoPersonalDataServer`; the appview imports
 /// foreign records by hitting that endpoint's `com.atproto.repo.getRecord`.
@@ -92,7 +89,9 @@ impl DidDocument {
 /// Trait the auth middleware consumes.
 #[async_trait::async_trait]
 pub trait DidResolver: Send + Sync {
-    /// Fetch the DID document for `did` and return its verification methods.
+    /// Fetch and return the DID document for `did`. Consumers extract
+    /// whichever part they need (verification methods for JWT checks,
+    /// the `#atproto_pds` service entry for record imports).
     async fn resolve(&self, did: &str) -> Result<DidDocument, ResolveError>;
 }
 
@@ -186,9 +185,12 @@ impl DidResolverImpl {
             .map_err(|e| ResolveError::Fetch(format!("{url}: body: {e}")))?;
         let doc: DidDocument =
             serde_json::from_str(&text).map_err(|e| ResolveError::Parse(e.to_string()))?;
-        if doc.verification_method.is_empty() {
-            return Err(ResolveError::NoVerificationMethod);
-        }
+        // The resolver returns the document verbatim; it does not judge
+        // whether a verification method is present. The JWT path enforces
+        // that itself (a missing key yields `JwtError::KeyNotFound` via
+        // `pick_method`), while the PDS-discovery path needs only the
+        // `#atproto_pds` service entry. Rejecting vm-less docs here would
+        // wrongly block record imports for an auth-only concern.
         Ok(doc)
     }
 }
@@ -300,7 +302,8 @@ mod tests {
                     "serviceEndpoint": "https://labeler.alice.example"
                 }
             ]
-        })).unwrap();
+        }))
+        .unwrap();
         assert_eq!(doc.pds_endpoint(), Some("https://pds.alice.example"));
     }
 
@@ -308,7 +311,8 @@ mod tests {
     fn pds_endpoint_returns_none_when_no_pds_service() {
         let doc: DidDocument = serde_json::from_value(serde_json::json!({
             "service": []
-        })).unwrap();
+        }))
+        .unwrap();
         assert!(doc.pds_endpoint().is_none());
     }
 }

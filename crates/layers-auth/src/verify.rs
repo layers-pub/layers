@@ -1,6 +1,6 @@
 //! Service-auth verification.
 //!
-//! ATProto service-auth tokens are JWTs whose `lxm` claim names the single
+//! `ATProto` service-auth tokens are JWTs whose `lxm` claim names the single
 //! XRPC method the token is valid for. Layers follows the Chive enforcement
 //! pattern (see `~/chive/src/auth/service-auth/service-auth-verifier.ts`):
 //! the orchestrator middleware pulls the Bearer token, decodes the JWT, and
@@ -86,13 +86,10 @@ pub fn verify_service_auth(
     if claims.exp <= now_unix {
         return Err(VerifyError::Expired { exp: claims.exp });
     }
-    if let Some(nbf) = claims.nbf {
-        if nbf > now_unix {
-            return Err(VerifyError::NotYetValid {
-                nbf,
-                now: now_unix,
-            });
-        }
+    if let Some(nbf) = claims.nbf
+        && nbf > now_unix
+    {
+        return Err(VerifyError::NotYetValid { nbf, now: now_unix });
     }
     if claims.lxm != expected_lxm {
         return Err(VerifyError::WrongLxm {
@@ -119,14 +116,34 @@ mod tests {
 
     #[test]
     fn accepts_matching_lxm() {
-        let c = claims("pub.layers.annotation.getAnnotationLayer", "did:web:layers.pub", 9_999_999_999);
-        verify_service_auth(&c, "did:web:layers.pub", "pub.layers.annotation.getAnnotationLayer", 0).unwrap();
+        let c = claims(
+            "pub.layers.annotation.getAnnotationLayer",
+            "did:web:layers.pub",
+            9_999_999_999,
+        );
+        verify_service_auth(
+            &c,
+            "did:web:layers.pub",
+            "pub.layers.annotation.getAnnotationLayer",
+            0,
+        )
+        .unwrap();
     }
 
     #[test]
     fn rejects_mismatched_lxm() {
-        let c = claims("pub.layers.annotation.getAnnotationLayer", "did:web:layers.pub", 9_999_999_999);
-        let err = verify_service_auth(&c, "did:web:layers.pub", "pub.layers.ontology.getOntology", 0).unwrap_err();
+        let c = claims(
+            "pub.layers.annotation.getAnnotationLayer",
+            "did:web:layers.pub",
+            9_999_999_999,
+        );
+        let err = verify_service_auth(
+            &c,
+            "did:web:layers.pub",
+            "pub.layers.ontology.getOntology",
+            0,
+        )
+        .unwrap_err();
         assert!(matches!(err, VerifyError::WrongLxm { .. }));
     }
 
