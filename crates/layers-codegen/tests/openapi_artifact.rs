@@ -2,7 +2,7 @@
 //!
 //! This guards three properties:
 //!
-//! 1. The document is valid JSON and conforms to OpenAPI 3.1's required
+//! 1. The document is valid JSON and conforms to `OpenAPI` 3.1's required
 //!    top-level shape.
 //! 2. Every path response references a component that actually exists
 //!    in `components.schemas`.
@@ -21,7 +21,8 @@ fn load_openapi() -> Value {
         .parent()
         .expect("layers dir");
     let path = layers_root.join("web/lib/api/openapi.json");
-    let raw = std::fs::read_to_string(&path).unwrap_or_else(|e| panic!("read {}: {e}", path.display()));
+    let raw =
+        std::fs::read_to_string(&path).unwrap_or_else(|e| panic!("read {}: {e}", path.display()));
     serde_json::from_str(&raw).expect("openapi.json parses")
 }
 
@@ -79,22 +80,23 @@ fn record_alias_components_exist_for_every_record_lexicon() {
         ("ExpressionExpressionRecord", "ExpressionExpressionMain"),
         ("CorpusCorpusRecord", "CorpusCorpusMain"),
         ("OntologyOntologyRecord", "OntologyOntologyMain"),
-        ("AnnotationAnnotationLayerRecord", "AnnotationAnnotationLayerMain"),
-        ("SegmentationSegmentationRecord", "SegmentationSegmentationMain"),
+        (
+            "AnnotationAnnotationLayerRecord",
+            "AnnotationAnnotationLayerMain",
+        ),
+        (
+            "SegmentationSegmentationRecord",
+            "SegmentationSegmentationMain",
+        ),
     ];
     for (alias, primary) in expected {
         assert!(
             schemas.contains_key(primary),
             "missing primary component {primary}"
         );
-        assert!(
-            schemas.contains_key(alias),
-            "missing record alias {alias}"
-        );
+        assert!(schemas.contains_key(alias), "missing record alias {alias}");
         assert_eq!(
-            schemas[alias]["$ref"]
-                .as_str()
-                .unwrap_or_default(),
+            schemas[alias]["$ref"].as_str().unwrap_or_default(),
             format!("#/components/schemas/{primary}"),
             "{alias} should ref {primary}"
         );
@@ -127,8 +129,5 @@ fn record_view_and_list_response_baked_in_components_present() {
             "missing baked-in component {name}"
         );
     }
-    assert_eq!(
-        schemas["RecordView"]["properties"]["uri"]["type"],
-        "string"
-    );
+    assert_eq!(schemas["RecordView"]["properties"]["uri"]["type"], "string");
 }

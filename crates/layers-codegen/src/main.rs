@@ -24,10 +24,12 @@ use idiolect_codegen::emit::family::FamilyConfig;
 use idiolect_codegen::{Example, emit, lexicon, rustfmt_source};
 use serde_json::Value;
 
+mod fields;
 mod frontend;
 mod lenses;
 mod lexicon_jsonschema;
 mod seed;
+mod tables;
 
 fn to_camel(snake: &str) -> String {
     let mut out = String::with_capacity(snake.len());
@@ -61,7 +63,7 @@ fn main() -> ExitCode {
 
 fn run() -> Result<ExitCode> {
     let args: Vec<String> = env::args().skip(1).collect();
-    let sub = args.first().map(String::as_str).unwrap_or("help");
+    let sub = args.first().map_or("help", String::as_str);
 
     let repo_root = resolve_repo_root()?;
     let lexicons_dir = repo_root.join("lexicons/pub/layers");
@@ -69,20 +71,26 @@ fn run() -> Result<ExitCode> {
     let ts_out = repo_root.join("packages/schema/src/generated");
 
     let routes_spec = repo_root.join("orchestrator-spec/queries.json");
-    let routes_out = repo_root
-        .join("crates/layers-orchestrator/src/generated_routes.rs");
+    let routes_out = repo_root.join("crates/layers-orchestrator/src/generated_routes.rs");
     let openapi_out = repo_root.join("web/lib/api/openapi.json");
+    let tables_out = repo_root.join("crates/layers-records/src/tables.rs");
+    let record_tables_sql = repo_root.join("migrations/0002_record_tables.sql");
+    let fields_out = repo_root.join("crates/layers-records/src/fields.rs");
 
     match sub {
         "generate" => {
             cmd_generate(&lexicons_dir, &rust_out, &ts_out, false)?;
-            cmd_routes(&routes_spec, &routes_out, false)?;
+            tables::cmd_tables(&lexicons_dir, &tables_out, &record_tables_sql, false)?;
+            fields::cmd_fields(&lexicons_dir, &fields_out, false)?;
+            cmd_routes(&routes_spec, &routes_out, &lexicons_dir, false)?;
             cmd_openapi(&routes_spec, &openapi_out, false)?;
             frontend::cmd_frontend(&repo_root, false)
         }
         "check" => {
             cmd_generate(&lexicons_dir, &rust_out, &ts_out, true)?;
-            cmd_routes(&routes_spec, &routes_out, true)?;
+            tables::cmd_tables(&lexicons_dir, &tables_out, &record_tables_sql, true)?;
+            fields::cmd_fields(&lexicons_dir, &fields_out, true)?;
+            cmd_routes(&routes_spec, &routes_out, &lexicons_dir, true)?;
             cmd_openapi(&routes_spec, &openapi_out, true)?;
             // Frontend codegen drift checks (queries hooks + lens
             // registry) reuse the same byte-equality gate. The
@@ -93,13 +101,16 @@ fn run() -> Result<ExitCode> {
             drift |= frontend::lenses::emit(&repo_root, true)?;
             drift |= frontend::forms::emit(&repo_root, true)?;
             drift |= frontend::mutations::emit(&repo_root, true)?;
+            drift |= frontend::schema::emit(&repo_root, true)?;
+            drift |= frontend::registry::emit(&repo_root, true)?;
+            drift |= frontend::views::emit(&repo_root, true)?;
             if drift {
                 Ok(ExitCode::from(1))
             } else {
                 Ok(ExitCode::SUCCESS)
             }
         }
-        "routes" => cmd_routes(&routes_spec, &routes_out, false),
+        "routes" => cmd_routes(&routes_spec, &routes_out, &lexicons_dir, false),
         "openapi" => cmd_openapi(&routes_spec, &openapi_out, false),
         "frontend" => frontend::cmd_frontend(&repo_root, false),
         "lenses" => lenses::cmd_lenses(&repo_root, false),
@@ -120,9 +131,12 @@ fn run() -> Result<ExitCode> {
     }
 }
 
+// Codegen string-builders: `push_str(&format!(..))` reads clearly here and
+// the function is necessarily long because it emits one block per query.
+#[allow(clippy::too_many_lines, clippy::format_push_string)]
 fn cmd_openapi(spec: &Path, out: &Path, check_only: bool) -> Result<ExitCode> {
-    let raw = std::fs::read_to_string(spec)
-        .with_context(|| format!("reading {}", spec.display()))?;
+    let raw =
+        std::fs::read_to_string(spec).with_context(|| format!("reading {}", spec.display()))?;
     let spec_v: Value = serde_json::from_str(&raw)
         .with_context(|| format!("parsing {} as json", spec.display()))?;
     let queries = spec_v
@@ -182,17 +196,11 @@ fn cmd_openapi(spec: &Path, out: &Path, check_only: bool) -> Result<ExitCode> {
                 "description": "Optional `did` filter applied to the record's owning repo.",
             }));
             for p in &params {
-                let pname = p
-                    .get("name")
-                    .and_then(Value::as_str)
-                    .unwrap_or("");
+                let pname = p.get("name").and_then(Value::as_str).unwrap_or("");
                 if matches!(pname, "did" | "cursor" | "limit") {
                     continue;
                 }
-                let http_q = p
-                    .get("http_query")
-                    .and_then(Value::as_str)
-                    .unwrap_or(pname);
+                let http_q = p.get("http_query").and_then(Value::as_str).unwrap_or(pname);
                 openapi_params.push(serde_json::json!({
                     "name": http_q,
                     "in": "query",
@@ -391,83 +399,31 @@ fn cmd_openapi(spec: &Path, out: &Path, check_only: bool) -> Result<ExitCode> {
 
     if check_only {
         let actual = std::fs::read_to_string(out).unwrap_or_default();
-        if actual == formatted {
-            println!("openapi up-to-date: {} routes", queries.len());
-            Ok(ExitCode::SUCCESS)
-        } else {
-            eprintln!("drift detected in {}", out.display());
-            eprintln!("run `cargo run -p layers-codegen -- openapi` to update.");
-            Ok(ExitCode::from(1))
+        if actual != formatted {
+            bail!(
+                "drift detected in {}; run `cargo run -p layers-codegen -- openapi` to update",
+                out.display()
+            );
         }
+        println!("openapi up-to-date: {} routes", queries.len());
+        Ok(ExitCode::SUCCESS)
     } else {
         if let Some(parent) = out.parent() {
             std::fs::create_dir_all(parent)
                 .with_context(|| format!("creating {}", parent.display()))?;
         }
-        std::fs::write(out, &formatted)
-            .with_context(|| format!("writing {}", out.display()))?;
+        std::fs::write(out, &formatted).with_context(|| format!("writing {}", out.display()))?;
         println!("wrote {} ({} routes)", out.display(), queries.len());
         Ok(ExitCode::SUCCESS)
     }
 }
 
-/// Map an XRPC method NSID to its Postgres table.
-///
-/// Strips the `get|list[ByCollection]` verb to recover the collection
-/// kind, then maps that kind to the table name the indexer's
-/// `PostgresRecordSink` writes to.
-fn table_for_nsid(lxm: &str) -> &'static str {
-    let leaf = lxm.rsplit('.').next().unwrap_or(lxm);
-    let trimmed = strip_verb(leaf);
-    match trimmed {
-        "Expression" | "Expressions" => "expressions",
-        "Corpus" | "Corpora" => "corpora",
-        "Membership" | "Memberships" => "corpus_memberships",
-        "Persona" | "Personas" => "personas",
-        "Media" => "media_records",
-        "Eprint" | "Eprints" => "eprints",
-        "DataLink" | "DataLinks" => "data_links",
-        "Ontology" | "Ontologies" => "ontologies",
-        "TypeDef" | "TypeDefs" => "type_defs",
-        "Segmentation" | "Segmentations" => "segmentations",
-        "Alignment" | "Alignments" => "alignments",
-        "AnnotationLayer" | "AnnotationLayers" => "annotation_layers",
-        "ClusterSet" | "ClusterSets" => "cluster_sets",
-        "GraphNode" | "GraphNodes" => "graph_nodes",
-        "GraphEdge" | "GraphEdges" => "graph_edges",
-        "GraphEdgeSet" | "GraphEdgeSets" => "graph_edge_sets",
-        "ExperimentDef" | "ExperimentDefs" => "experiment_defs",
-        "JudgmentSet" | "JudgmentSets" => "judgment_sets",
-        "AgreementReport" | "AgreementReports" => "agreement_reports",
-        "Collection" | "Collections" => "resource_collections",
-        "CollectionMembership" | "CollectionMemberships" => "resource_collection_memberships",
-        "Entry" | "Entries" | "ByCollection" => {
-            if lxm.starts_with("pub.layers.changelog.") {
-                "changelog_entries"
-            } else {
-                "resource_entries"
-            }
-        }
-        "Filling" | "Fillings" => "resource_fillings",
-        "Template" | "Templates" => "resource_templates",
-        "TemplateComposition" | "TemplateCompositions" => "resource_template_compositions",
-        "External" | "ExternalRecord" | "ExternalRecords" => "external_records",
-        other => panic!("layers-codegen: unhandled NSID `{lxm}` (kind: `{other}`)"),
-    }
-}
-
-fn strip_verb(s: &str) -> &str {
-    for verb in ["list", "get", "search"] {
-        if let Some(rest) = s.strip_prefix(verb) {
-            return rest;
-        }
-    }
-    s
-}
-
-fn cmd_routes(spec: &Path, out: &Path, check_only: bool) -> Result<ExitCode> {
-    let raw = std::fs::read_to_string(spec)
-        .with_context(|| format!("reading {}", spec.display()))?;
+// Codegen string-builder: emits one axum handler + route per query, so it is
+// necessarily long and leans on `push_str(&format!(..))` for readability.
+#[allow(clippy::too_many_lines, clippy::format_push_string)]
+fn cmd_routes(spec: &Path, out: &Path, lexicons_dir: &Path, check_only: bool) -> Result<ExitCode> {
+    let raw =
+        std::fs::read_to_string(spec).with_context(|| format!("reading {}", spec.display()))?;
     let spec_v: Value = serde_json::from_str(&raw)
         .with_context(|| format!("parsing {} as json", spec.display()))?;
     let queries = spec_v
@@ -475,12 +431,16 @@ fn cmd_routes(spec: &Path, out: &Path, check_only: bool) -> Result<ExitCode> {
         .and_then(Value::as_array)
         .ok_or_else(|| anyhow!("queries.json: missing top-level `queries` array"))?;
 
+    // Field metadata per record kind, used to validate every filter path
+    // against the lexicon so a stale `http_query` fails codegen.
+    let record_fields = fields::load_record_fields(lexicons_dir)?;
+
     let mut body = String::from(
         "// @generated by layers-codegen. do not edit.\n\n\
          //! Generated handlers and route table for the orchestrator, derived\n\
          //! from `orchestrator-spec/queries.json`. Each query in the spec\n\
          //! emits one axum handler function plus one route mount.\n\n\
-         #![allow(clippy::too_many_lines, clippy::needless_pass_by_value)]\n\n\
+         #![allow(missing_docs, clippy::too_many_lines, clippy::needless_pass_by_value, clippy::missing_errors_doc)]\n\n\
          use axum::Json;\n\
          use axum::Router;\n\
          use axum::extract::{Query, State};\n\
@@ -490,7 +450,7 @@ fn cmd_routes(spec: &Path, out: &Path, check_only: bool) -> Result<ExitCode> {
          use crate::auth::{Tier, require};\n\
          use crate::error::Result;\n\
          use crate::queries::{\n\
-         \x20\x20\x20\x20ByUri, Filter, ListParams, ListResponse, RecordView, clamp_limit, fetch_one, list_table_filtered,\n\
+         \x20\x20\x20\x20ByUri, Filter, ListResponse, RecordView, clamp_limit, fetch_one, list_table_filtered,\n\
          };\n\
          use crate::state::AppState;\n\n",
     );
@@ -505,16 +465,22 @@ fn cmd_routes(spec: &Path, out: &Path, check_only: bool) -> Result<ExitCode> {
             .get("name")
             .and_then(Value::as_str)
             .ok_or_else(|| anyhow!("query missing `name`"))?;
-        let predicate = q
-            .get("predicate")
-            .and_then(Value::as_str)
-            .unwrap_or("");
+        let predicate = q.get("predicate").and_then(Value::as_str).unwrap_or("");
         let params = q
             .get("params")
             .and_then(Value::as_array)
             .cloned()
             .unwrap_or_default();
-        let table = table_for_nsid(lxm);
+        let entity = q
+            .get("entity")
+            .and_then(Value::as_str)
+            .ok_or_else(|| anyhow!("query `{lxm}` missing `entity`"))?;
+        let table = tables::table_for_entity(entity).ok_or_else(|| {
+            anyhow!(
+                "query `{lxm}` entity `{entity}` has no table mapping in \
+                 crates/layers-codegen/src/tables.rs"
+            )
+        })?;
 
         let is_get = predicate.ends_with("_by_uri");
         if is_get {
@@ -534,10 +500,7 @@ fn cmd_routes(spec: &Path, out: &Path, check_only: bool) -> Result<ExitCode> {
             let filter_params: Vec<&Value> = params
                 .iter()
                 .filter(|p| {
-                    let n = p
-                        .get("name")
-                        .and_then(Value::as_str)
-                        .unwrap_or_default();
+                    let n = p.get("name").and_then(Value::as_str).unwrap_or_default();
                     !matches!(n, "did" | "cursor" | "limit")
                 })
                 .collect();
@@ -552,10 +515,7 @@ fn cmd_routes(spec: &Path, out: &Path, check_only: bool) -> Result<ExitCode> {
             ));
             for p in &filter_params {
                 let pname = p.get("name").and_then(Value::as_str).unwrap();
-                let http_q = p
-                    .get("http_query")
-                    .and_then(Value::as_str)
-                    .unwrap_or(pname);
+                let http_q = p.get("http_query").and_then(Value::as_str).unwrap_or(pname);
                 body.push_str(&format!(
                     "    /// `{http_q}` filter.\n    #[serde(rename = \"{http_q}\", default)] pub {pname}: Option<String>,\n"
                 ));
@@ -578,12 +538,10 @@ fn cmd_routes(spec: &Path, out: &Path, check_only: bool) -> Result<ExitCode> {
             ));
             for p in &filter_params {
                 let pname = p.get("name").and_then(Value::as_str).unwrap();
-                let http_q = p
-                    .get("http_query")
-                    .and_then(Value::as_str)
-                    .unwrap_or(pname);
+                let http_q = p.get("http_query").and_then(Value::as_str).unwrap_or(pname);
+                let sql_path = filter_sql_path(lxm, entity, http_q, &record_fields)?;
                 body.push_str(&format!(
-                    "        Filter::opt(\"{http_q}\", q.{pname}.as_deref()),\n"
+                    "        Filter::opt(\"{sql_path}\", q.{pname}.as_deref()),\n"
                 ));
             }
             body.push_str(&format!(
@@ -603,7 +561,6 @@ fn cmd_routes(spec: &Path, out: &Path, check_only: bool) -> Result<ExitCode> {
         ));
     }
     body.push_str("/// Mount every XRPC route declared in `orchestrator-spec/queries.json`.\n");
-    body.push_str("#[must_use]\n");
     body.push_str("pub fn xrpc_routes(state: AppState) -> Router<AppState> {\n");
     body.push_str("    Router::new()\n");
     body.push_str(&mounts);
@@ -612,23 +569,62 @@ fn cmd_routes(spec: &Path, out: &Path, check_only: bool) -> Result<ExitCode> {
     let formatted = idiolect_codegen::rustfmt_source(&body);
     if check_only {
         let actual = std::fs::read_to_string(out).unwrap_or_default();
-        if actual == formatted {
-            println!("routes up-to-date: {} entries", queries.len());
-            Ok(ExitCode::SUCCESS)
-        } else {
-            eprintln!("drift detected in {}", out.display());
-            eprintln!("run `cargo run -p layers-codegen -- routes` to update.");
-            Ok(ExitCode::from(1))
+        if actual != formatted {
+            bail!(
+                "drift detected in {}; run `cargo run -p layers-codegen -- routes` to update",
+                out.display()
+            );
         }
+        println!("routes up-to-date: {} entries", queries.len());
     } else {
         if let Some(parent) = out.parent() {
             std::fs::create_dir_all(parent)
                 .with_context(|| format!("creating {}", parent.display()))?;
         }
-        std::fs::write(out, &formatted)
-            .with_context(|| format!("writing {}", out.display()))?;
+        std::fs::write(out, &formatted).with_context(|| format!("writing {}", out.display()))?;
         println!("wrote {} ({} routes)", out.display(), queries.len());
-        Ok(ExitCode::SUCCESS)
+    }
+    Ok(ExitCode::SUCCESS)
+}
+
+/// Validate a list filter's `http_query` against the target record's
+/// lexicon fields and return the JSONB path the generated handler should
+/// query. An `objectRef`-typed field nests to its `recordRef` at-uri
+/// (`source.recordRef` -> `record->'source'->>'recordRef'`); any field
+/// that does not exist on the record fails codegen.
+fn filter_sql_path(
+    lxm: &str,
+    entity: &str,
+    http_q: &str,
+    record_fields: &[fields::RecordFields],
+) -> Result<String> {
+    let nsid = tables::RECORD_TABLES
+        .iter()
+        .find(|r| r.entity == entity)
+        .map(|r| r.nsid)
+        .ok_or_else(|| anyhow!("query `{lxm}` entity `{entity}` is not a known record kind"))?;
+
+    // Synthetic kinds (the foreign `external_records` table) have no record
+    // lexicon; their filters map to real columns, handled by the runtime.
+    if nsid.is_empty() {
+        return Ok(http_q.to_owned());
+    }
+
+    let rf = record_fields
+        .iter()
+        .find(|r| r.nsid == nsid)
+        .ok_or_else(|| anyhow!("no lexicon fields loaded for record `{nsid}` (query `{lxm}`)"))?;
+    let field = rf.field(http_q).ok_or_else(|| {
+        anyhow!(
+            "query `{lxm}` filters on `{http_q}`, which is not a field of record \
+             `{nsid}`; fix the `http_query` in orchestrator-spec/queries.json"
+        )
+    })?;
+
+    if field.is_object_ref {
+        Ok(format!("{http_q}.recordRef"))
+    } else {
+        Ok(http_q.to_owned())
     }
 }
 
@@ -662,21 +658,24 @@ fn cmd_generate(
         for (path, expected) in rust_files.iter().chain(ts_files.iter()) {
             match std::fs::read_to_string(path) {
                 Ok(actual) if actual == *expected => {}
-                Ok(_) => drift.push(path.clone()),
-                Err(_) => drift.push(path.clone()),
+                _ => drift.push(path.clone()),
             }
         }
-        if drift.is_empty() {
-            println!("codegen up-to-date: {} rust + {} ts files", rust_files.len(), ts_files.len());
-            Ok(ExitCode::SUCCESS)
-        } else {
-            eprintln!("drift detected in {} file(s):", drift.len());
+        if !drift.is_empty() {
             for p in &drift {
-                eprintln!("  {}", p.display());
+                eprintln!("  drift: {}", p.display());
             }
-            eprintln!("run `cargo run -p layers-codegen -- generate` to update.");
-            Ok(ExitCode::from(1))
+            bail!(
+                "drift detected in {} file(s); run `cargo run -p layers-codegen -- generate` to update",
+                drift.len()
+            );
         }
+        println!(
+            "codegen up-to-date: {} rust + {} ts files",
+            rust_files.len(),
+            ts_files.len()
+        );
+        Ok(ExitCode::SUCCESS)
     } else {
         for (path, contents) in rust_files.iter().chain(ts_files.iter()) {
             if let Some(parent) = path.parent() {
@@ -719,9 +718,7 @@ fn load_lexicons(dir: &Path) -> Result<Vec<lexicon::LexiconDoc>> {
 }
 
 fn collect_json(dir: &Path, out: &mut Vec<PathBuf>) -> Result<()> {
-    for entry in std::fs::read_dir(dir)
-        .with_context(|| format!("reading dir {}", dir.display()))?
-    {
+    for entry in std::fs::read_dir(dir).with_context(|| format!("reading dir {}", dir.display()))? {
         let entry = entry?;
         let path = entry.path();
         if path.is_dir() {
@@ -748,10 +745,10 @@ fn list_lexicons(dir: &Path) -> Result<()> {
     let mut nsids = Vec::new();
     for path in paths {
         let raw = std::fs::read_to_string(&path)?;
-        if let Ok(v) = serde_json::from_str::<Value>(&raw) {
-            if let Some(id) = v.get("id").and_then(|i| i.as_str()) {
-                nsids.push(id.to_owned());
-            }
+        if let Ok(v) = serde_json::from_str::<Value>(&raw)
+            && let Some(id) = v.get("id").and_then(|i| i.as_str())
+        {
+            nsids.push(id.to_owned());
         }
     }
     nsids.sort();

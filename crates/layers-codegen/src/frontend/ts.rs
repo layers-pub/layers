@@ -125,12 +125,6 @@ impl TsImport {
         self
     }
 
-    /// Add a value specifier to an existing import.
-    pub fn add_value(mut self, name: impl Into<String>) -> Self {
-        self.specifiers.push(TsImportSpec::Value(name.into()));
-        self
-    }
-
     fn emit(&self) -> String {
         let inside: Vec<String> = self
             .specifiers
@@ -296,11 +290,6 @@ impl TsParam {
 
     pub fn optional(mut self) -> Self {
         self.optional = true;
-        self
-    }
-
-    pub fn with_default(mut self, default: impl Into<String>) -> Self {
-        self.default = Some(default.into());
         self
     }
 

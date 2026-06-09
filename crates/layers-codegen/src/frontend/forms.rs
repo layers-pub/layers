@@ -16,6 +16,10 @@
 //! call). Keep new shapes out of raw string concatenation by adding
 //! new constructors to either the TS IR or the Zod helpers below.
 
+// This module is a codegen string-builder: `push_str(&format!(..))` and
+// `format!`-based joins read clearly when emitting Zod/TS source.
+#![allow(clippy::format_push_string, clippy::format_collect)]
+
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 
@@ -34,10 +38,10 @@ pub fn emit(repo_root: &Path, check_only: bool) -> Result<bool> {
     let mut nsids: Vec<String> = Vec::new();
 
     walk_lexicons(&lex_root, &mut |path| -> Result<()> {
-        let raw = std::fs::read_to_string(path)
-            .with_context(|| format!("reading {}", path.display()))?;
-        let doc: Value = serde_json::from_str(&raw)
-            .with_context(|| format!("parsing {}", path.display()))?;
+        let raw =
+            std::fs::read_to_string(path).with_context(|| format!("reading {}", path.display()))?;
+        let doc: Value =
+            serde_json::from_str(&raw).with_context(|| format!("parsing {}", path.display()))?;
         let Some(nsid) = doc.get("id").and_then(Value::as_str) else {
             return Ok(());
         };
@@ -76,10 +80,7 @@ pub fn emit(repo_root: &Path, check_only: bool) -> Result<bool> {
     })?;
 
     nsids.sort();
-    emitted.insert(
-        out_dir.join("index.ts"),
-        build_index_module(&nsids).emit(),
-    );
+    emitted.insert(out_dir.join("index.ts"), build_index_module(&nsids).emit());
 
     let mut drift = false;
     if !check_only {
@@ -115,10 +116,11 @@ pub fn emit(repo_root: &Path, check_only: bool) -> Result<bool> {
     Ok(drift)
 }
 
-fn walk_lexicons(root: &Path, visit: &mut impl FnMut(&Path) -> Result<()>) -> Result<()> {
-    for entry in std::fs::read_dir(root)
-        .with_context(|| format!("reading {}", root.display()))?
-    {
+pub(super) fn walk_lexicons(
+    root: &Path,
+    visit: &mut impl FnMut(&Path) -> Result<()>,
+) -> Result<()> {
+    for entry in std::fs::read_dir(root).with_context(|| format!("reading {}", root.display()))? {
         let path = entry?.path();
         if path.is_dir() {
             walk_lexicons(&path, visit)?;
@@ -256,10 +258,7 @@ fn render_field_object(key: &str, prop: &Value, required: &[&str]) -> String {
     if let Some(d) = prop.get("description").and_then(Value::as_str) {
         body.push_str(&format!("    description: {},\n", quote_string(d)));
     }
-    body.push_str(&format!(
-        "    required: {},\n",
-        required.contains(&key)
-    ));
+    body.push_str(&format!("    required: {},\n", required.contains(&key)));
     if let Some(arr) = prop.get("knownValues").and_then(Value::as_array) {
         let listed: Vec<String> = arr
             .iter()
@@ -267,10 +266,7 @@ fn render_field_object(key: &str, prop: &Value, required: &[&str]) -> String {
             .map(|s| format!("'{}'", escape_single(s)))
             .collect();
         if !listed.is_empty() {
-            body.push_str(&format!(
-                "    knownValues: [{}],\n",
-                listed.join(", ")
-            ));
+            body.push_str(&format!("    knownValues: [{}],\n", listed.join(", ")));
         }
     }
     if let Some(min) = prop.get("minLength").and_then(Value::as_u64) {
@@ -279,10 +275,10 @@ fn render_field_object(key: &str, prop: &Value, required: &[&str]) -> String {
     if let Some(max) = prop.get("maxLength").and_then(Value::as_u64) {
         body.push_str(&format!("    maxLength: {max},\n"));
     }
-    if kind == "array" {
-        if let Some(item) = prop.get("items") {
-            body.push_str(&format!("    itemKind: '{}',\n", field_kind(item)));
-        }
+    if kind == "array"
+        && let Some(item) = prop.get("items")
+    {
+        body.push_str(&format!("    itemKind: '{}',\n", field_kind(item)));
     }
     if let Some(r) = prop.get("ref").and_then(Value::as_str) {
         body.push_str(&format!("    refTarget: '{r}',\n"));
@@ -308,7 +304,7 @@ fn zod_for_property(prop: &Value) -> String {
                 Some("uri") => z.push_str(".url()"),
                 Some("datetime") => z.push_str(".datetime({ offset: true })"),
                 Some("at-uri") => {
-                    z.push_str(".regex(/^at:\\/\\//, 'must start with at://')")
+                    z.push_str(".regex(/^at:\\/\\//, 'must start with at://')");
                 }
                 _ => {}
             }
@@ -339,8 +335,7 @@ fn zod_for_property(prop: &Value) -> String {
         "array" => {
             let item = prop
                 .get("items")
-                .map(zod_for_property)
-                .unwrap_or_else(|| "z.unknown()".into());
+                .map_or_else(|| "z.unknown()".into(), zod_for_property);
             let mut z = format!("z.array({item})");
             if let Some(min) = prop.get("minLength").and_then(Value::as_u64) {
                 z.push_str(&format!(".min({min})"));
@@ -350,11 +345,9 @@ fn zod_for_property(prop: &Value) -> String {
             }
             z
         }
-        "ref" => "z.unknown()".into(),
-        "union" => "z.unknown()".into(),
-        "blob" => "z.unknown()".into(),
-        "bytes" => "z.unknown()".into(),
         "cid-link" => "z.string()".into(),
+        // ref / union / blob / bytes and anything unrecognized fall back to
+        // an opaque schema.
         _ => "z.unknown()".into(),
     }
 }
@@ -386,7 +379,7 @@ fn field_kind(prop: &Value) -> String {
     }
 }
 
-fn humanize(camel: &str) -> String {
+pub(super) fn humanize(camel: &str) -> String {
     let mut out = String::with_capacity(camel.len() + 4);
     for (i, ch) in camel.chars().enumerate() {
         if i == 0 {
@@ -411,10 +404,10 @@ fn quote_key(k: &str) -> String {
     }
 }
 
-fn quote_string(s: &str) -> String {
+pub(super) fn quote_string(s: &str) -> String {
     format!("'{}'", escape_single(s))
 }
 
-fn escape_single(s: &str) -> String {
+pub(super) fn escape_single(s: &str) -> String {
     s.replace('\\', "\\\\").replace('\'', "\\'")
 }

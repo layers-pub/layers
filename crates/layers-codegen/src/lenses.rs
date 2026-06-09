@@ -123,8 +123,7 @@ pub fn cmd_lenses(repo_root: &Path, _check_only: bool) -> Result<ExitCode> {
     let mut emitted = 0usize;
     for entry in &manifest.entries {
         let dir = repo_root.join(format!("lexicons/lenses/{}", entry.name));
-        std::fs::create_dir_all(&dir)
-            .with_context(|| format!("creating {}", dir.display()))?;
+        std::fs::create_dir_all(&dir).with_context(|| format!("creating {}", dir.display()))?;
 
         let source_schema = load_lexicon_as_schema(repo_root, &entry.source_lexicon)
             .with_context(|| format!("source lexicon {}", entry.source_lexicon))?;
@@ -184,8 +183,8 @@ fn pick_dsl_path(dir: &Path) -> Result<PathBuf> {
 
 fn load_lexicon_as_schema(repo_root: &Path, rel: &str) -> Result<Schema> {
     let path = repo_root.join(rel);
-    let raw = std::fs::read_to_string(&path)
-        .with_context(|| format!("reading {}", path.display()))?;
+    let raw =
+        std::fs::read_to_string(&path).with_context(|| format!("reading {}", path.display()))?;
     let value: Value = serde_json::from_str(&raw)
         .with_context(|| format!("parsing {} as json", path.display()))?;
     parse_lexicon(&value).map_err(|e| anyhow!("parse_lexicon {}: {e}", path.display()))
@@ -234,8 +233,7 @@ fn emit_lens_record(
     target_uri: &str,
 ) -> Result<()> {
     let body = LensBody::Chain(chain.clone());
-    let bytes = rmp_serde::to_vec_named(&body)
-        .with_context(|| "msgpack-serialize lens body")?;
+    let bytes = rmp_serde::to_vec_named(&body).with_context(|| "msgpack-serialize lens body")?;
     let object_hash = sha256_hex(&bytes);
     let record = LensRecord {
         nsid: "dev.panproto.schema.lens",
@@ -259,6 +257,10 @@ fn emit_lens_record(
     Ok(())
 }
 
+#[allow(
+    clippy::format_collect,
+    reason = "hex digest formatting reads clearly as map/collect"
+)]
 fn sha256_hex(bytes: &[u8]) -> String {
     let mut hasher = Sha256::new();
     hasher.update(bytes);

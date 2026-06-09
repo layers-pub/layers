@@ -16,6 +16,9 @@
 //! sufficient for a registry that publishes ~700K records and grows
 //! by hundreds per quarter.
 
+// Canonical-JSON string builder: `push_str(&format!(..))` reads clearly here.
+#![allow(clippy::format_push_string)]
+
 use anyhow::Result;
 use serde_json::{Map, Value};
 use sha2::{Digest, Sha256};
@@ -31,6 +34,10 @@ const MUTABLE_FIELDS: &[&str] = &["createdAt", "indexedAt", "publishedAt", "vers
 /// Propagates JSON serialisation errors, which only happen on
 /// non-string keys or other malformed input that `serde_yaml` would
 /// have already rejected upstream.
+#[allow(
+    clippy::unnecessary_wraps,
+    reason = "fallible-shaped: canonicalisation may surface errors"
+)]
 pub fn for_record(body: &Value) -> Result<String> {
     let stripped = strip_mutable(body.clone());
     let canonical = canonicalise(&stripped);

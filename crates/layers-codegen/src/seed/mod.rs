@@ -24,7 +24,7 @@ pub mod stamp;
 
 /// Dispatch entry point invoked by `main.rs`.
 pub fn run(repo_root: &Path, args: &[String]) -> Result<ExitCode> {
-    let sub = args.first().map(String::as_str).unwrap_or("help");
+    let sub = args.first().map_or("help", String::as_str);
     match sub {
         "list" => list(repo_root),
         "plan" => {
@@ -60,16 +60,29 @@ fn list(repo_root: &Path) -> Result<ExitCode> {
         println!("no seeds tree at {} — nothing to list", seeds_dir.display());
         return Ok(ExitCode::SUCCESS);
     }
-    let entries = model::walk(&seeds_dir)
-        .with_context(|| format!("walking {}", seeds_dir.display()))?;
+    let entries =
+        model::walk(&seeds_dir).with_context(|| format!("walking {}", seeds_dir.display()))?;
     if entries.is_empty() {
         println!("seeds tree is empty");
         return Ok(ExitCode::SUCCESS);
     }
     for entry in &entries {
         let fp = fingerprint::for_record(&entry.body)?;
-        println!("{:60} {}  {}", entry.account, &fp[..16], entry.relpath.display());
+        println!(
+            "{:60} {}  {}",
+            entry.account,
+            &fp[..16],
+            entry.relpath.display()
+        );
     }
-    println!("\n{} seeds across {} accounts", entries.len(), entries.iter().map(|e| &e.account).collect::<std::collections::BTreeSet<_>>().len());
+    println!(
+        "\n{} seeds across {} accounts",
+        entries.len(),
+        entries
+            .iter()
+            .map(|e| &e.account)
+            .collect::<std::collections::BTreeSet<_>>()
+            .len()
+    );
     Ok(ExitCode::SUCCESS)
 }

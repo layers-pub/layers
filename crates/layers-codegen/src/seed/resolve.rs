@@ -50,18 +50,6 @@ impl HandleDidMap {
     pub fn get(&self, handle: &str) -> Option<&str> {
         self.inner.get(handle).map(String::as_str)
     }
-
-    /// Number of `(handle, did)` pairs recorded.
-    #[must_use]
-    pub fn len(&self) -> usize {
-        self.inner.len()
-    }
-
-    /// Whether the map is empty.
-    #[must_use]
-    pub fn is_empty(&self) -> bool {
-        self.inner.is_empty()
-    }
 }
 
 /// Result of rewriting one body.
@@ -146,10 +134,7 @@ mod tests {
     fn fixture_map() -> HandleDidMap {
         let mut m = HandleDidMap::new();
         m.insert("ud.ontology.layers.pub", "did:plc:ud-fake");
-        m.insert(
-            "ewt.eng.ud.segmentation.layers.pub",
-            "did:plc:seg-ewt-fake",
-        );
+        m.insert("ewt.eng.ud.segmentation.layers.pub", "did:plc:seg-ewt-fake");
         m
     }
 

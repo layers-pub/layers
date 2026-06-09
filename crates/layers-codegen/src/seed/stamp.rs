@@ -59,8 +59,7 @@ pub fn stamp_uuids(body: &mut Value, collection: &str) -> StampReport {
             // uuid; stamp them too.
             if let Some(clusters) = body.get_mut("clusters").and_then(Value::as_array_mut) {
                 for (i, cluster) in clusters.iter_mut().enumerate() {
-                    if let Some(members) =
-                        cluster.get_mut("members").and_then(Value::as_array_mut)
+                    if let Some(members) = cluster.get_mut("members").and_then(Value::as_array_mut)
                     {
                         for (j, member) in members.iter_mut().enumerate() {
                             stamp_object(
@@ -77,9 +76,7 @@ pub fn stamp_uuids(body: &mut Value, collection: &str) -> StampReport {
             // Per `pub.layers.segmentation.defs#tokenization`, the
             // tokenization wrapper carries the required `uuid`;
             // individual tokens require only `tokenIndex`.
-            if let Some(tokenizations) = body
-                .get_mut("tokenizations")
-                .and_then(Value::as_array_mut)
+            if let Some(tokenizations) = body.get_mut("tokenizations").and_then(Value::as_array_mut)
             {
                 for (ti, tokenization) in tokenizations.iter_mut().enumerate() {
                     stamp_object(
@@ -189,12 +186,16 @@ mod tests {
         // Only the tokenization itself gets a uuid; tokens get
         // tokenIndex back-fill but no uuid.
         assert_eq!(report.stamped, 1);
-        let stamped = body["tokenizations"][0]["uuid"]["value"]
-            .as_str()
-            .unwrap();
+        let stamped = body["tokenizations"][0]["uuid"]["value"].as_str().unwrap();
         assert!(Uuid::parse_str(stamped).is_ok());
-        assert_eq!(body["tokenizations"][0]["tokens"][0]["tokenIndex"], json!(0));
-        assert_eq!(body["tokenizations"][0]["tokens"][1]["tokenIndex"], json!(1));
+        assert_eq!(
+            body["tokenizations"][0]["tokens"][0]["tokenIndex"],
+            json!(0)
+        );
+        assert_eq!(
+            body["tokenizations"][0]["tokens"][1]["tokenIndex"],
+            json!(1)
+        );
     }
 
     #[test]

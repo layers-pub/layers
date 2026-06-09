@@ -38,10 +38,6 @@ use std::path::{Path, PathBuf};
 use anyhow::{Context, Result, anyhow};
 use serde::Deserialize;
 use serde_json::Value;
-// `Deserialize::deserialize(deserializer)` is required to drive
-// serde_yaml's per-document iterator; the generic-fn import below
-// brings the trait into scope for the call site in walk_account.
-use serde::Deserialize as _;
 
 /// One seed file, parsed.
 #[derive(Debug, Clone)]
@@ -57,6 +53,10 @@ pub struct SeedEntry {
     pub body: Value,
     /// Optional changelog summary the publisher uses on fingerprint
     /// changes.
+    #[allow(
+        dead_code,
+        reason = "parsed from seed files; consumed by the publish path"
+    )]
     pub changelog_summary: Option<String>,
 }
 
@@ -141,8 +141,8 @@ fn push_lexicon_record(
     account: &str,
     out: &mut Vec<SeedEntry>,
 ) -> Result<()> {
-    let raw = std::fs::read_to_string(path)
-        .with_context(|| format!("reading {}", path.display()))?;
+    let raw =
+        std::fs::read_to_string(path).with_context(|| format!("reading {}", path.display()))?;
     let mut body: Value = serde_json::from_str(&raw)
         .with_context(|| format!("parsing {} as lexicon JSON", path.display()))?;
     if let Value::Object(map) = &mut body {
@@ -232,9 +232,8 @@ fn walk_account(
         // records as one batched file per (handle, kind) instead of
         // one file per record.
         for (i, doc) in serde_yaml::Deserializer::from_str(&raw).enumerate() {
-            let value = serde_yaml::Value::deserialize(doc).with_context(|| {
-                format!("parsing document #{i} of {} as YAML", path.display())
-            })?;
+            let value = serde_yaml::Value::deserialize(doc)
+                .with_context(|| format!("parsing document #{i} of {} as YAML", path.display()))?;
             if value.is_null() {
                 // A trailing `---\n` produces a final null document
                 // — skip rather than fail.
@@ -310,12 +309,12 @@ mod tests {
     fn collect_at_uri_handles(value: &Value, out: &mut BTreeSet<String>) {
         match value {
             Value::String(s) => {
-                if let Some(rest) = s.strip_prefix("at://") {
-                    if let Some((auth, _)) = rest.split_once('/') {
-                        if !auth.starts_with("did:") && auth.contains('.') {
-                            out.insert(auth.to_owned());
-                        }
-                    }
+                if let Some(rest) = s.strip_prefix("at://")
+                    && let Some((auth, _)) = rest.split_once('/')
+                    && !auth.starts_with("did:")
+                    && auth.contains('.')
+                {
+                    out.insert(auth.to_owned());
                 }
             }
             Value::Array(items) => {

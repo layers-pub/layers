@@ -1,4 +1,4 @@
-//! Per-namespace TanStack Query hooks generated from
+//! Per-namespace `TanStack` Query hooks generated from
 //! `orchestrator-spec/queries.json`.
 //!
 //! Composition: this module groups spec entries by `pub.layers.<ns>.*`
@@ -39,8 +39,8 @@ pub fn emit(repo_root: &Path, check_only: bool) -> Result<bool> {
             .get("lxm")
             .and_then(Value::as_str)
             .ok_or_else(|| anyhow!("query missing `lxm`"))?;
-        let ns = namespace_for(lxm)
-            .ok_or_else(|| anyhow!("could not derive namespace from `{lxm}`"))?;
+        let ns =
+            namespace_for(lxm).ok_or_else(|| anyhow!("could not derive namespace from `{lxm}`"))?;
         by_namespace.entry(ns.to_owned()).or_default().push(q);
     }
 
@@ -110,12 +110,9 @@ fn build_namespace_module(namespace: &str, entries: &[&Value]) -> TsModule {
     ));
     module
         .import(
-            TsImport::named(
-                "@tanstack/react-query",
-                ["useInfiniteQuery", "useQuery"],
-            )
-            .add_type("UseInfiniteQueryOptions")
-            .add_type("UseQueryOptions"),
+            TsImport::named("@tanstack/react-query", ["useInfiniteQuery", "useQuery"])
+                .add_type("UseInfiniteQueryOptions")
+                .add_type("UseQueryOptions"),
         )
         .import(TsImport::named("@/lib/api/client", ["api"]))
         .import(TsImport::types("@/lib/api/schema.generated", ["paths"]));
@@ -131,11 +128,10 @@ fn build_namespace_module(namespace: &str, entries: &[&Value]) -> TsModule {
         let has_cursor = entry
             .get("params")
             .and_then(Value::as_array)
-            .map(|ps| {
+            .is_some_and(|ps| {
                 ps.iter()
                     .any(|p| p.get("name").and_then(Value::as_str) == Some("cursor"))
-            })
-            .unwrap_or(false);
+            });
         let spec = QueryHookSpec {
             lxm,
             namespace,

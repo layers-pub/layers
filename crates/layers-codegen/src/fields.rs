@@ -1,0 +1,182 @@
+//! Per-record field metadata loaded from the record lexicons.
+//!
+//! Two consumers use this:
+//!
+//! - the orchestrator route generator (`cmd_routes`) validates every
+//!   `queries.json` filter path against the target record's lexicon
+//!   fields, so a filter that names a nonexistent field fails codegen
+//!   instead of silently matching nothing;
+//! - the generated `crates/layers-records/src/fields.rs` exposes each
+//!   record's wire field names as `&str` consts, so hand-written SQL
+//!   (e.g. the observer's JSONB aggregation) references a generated
+//!   constant rather than a magic string that can drift.
+
+use std::collections::BTreeMap;
+use std::fmt::Write as _;
+use std::path::Path;
+use std::process::ExitCode;
+
+use anyhow::{Context, Result, bail};
+use serde_json::Value;
+
+use crate::tables::RECORD_TABLES;
+
+/// One record field's wire name and whether it is an `objectRef`.
+pub struct FieldDef {
+    /// Wire (camelCase) property name.
+    pub name: String,
+    /// True when the property is a `ref` to `pub.layers.defs#objectRef`
+    /// (a nested object whose graph at-uri lives under `recordRef`), so a
+    /// flat `record->>'<name>'` filter can never match.
+    pub is_object_ref: bool,
+}
+
+/// A record kind's NSID and its fields.
+pub struct RecordFields {
+    /// Record lexicon NSID.
+    pub nsid: String,
+    /// Declared properties, in lexicon order.
+    pub fields: Vec<FieldDef>,
+}
+
+impl RecordFields {
+    /// Look up a field by wire name.
+    #[must_use]
+    pub fn field(&self, name: &str) -> Option<&FieldDef> {
+        self.fields.iter().find(|f| f.name == name)
+    }
+}
+
+/// Load every record-kind lexicon's fields under `dir`.
+///
+/// # Errors
+/// Returns an error if a lexicon file cannot be read or parsed.
+pub fn load_record_fields(dir: &Path) -> Result<Vec<RecordFields>> {
+    let mut paths = Vec::new();
+    crate::collect_json(dir, &mut paths)?;
+    paths.sort();
+
+    let mut out = Vec::new();
+    for path in paths {
+        let raw = std::fs::read_to_string(&path)
+            .with_context(|| format!("reading {}", path.display()))?;
+        let v: Value = serde_json::from_str(&raw)
+            .with_context(|| format!("parsing {} as json", path.display()))?;
+        let main = v.get("defs").and_then(|d| d.get("main"));
+        if main.and_then(|m| m.get("type")).and_then(Value::as_str) != Some("record") {
+            continue;
+        }
+        let Some(nsid) = v.get("id").and_then(Value::as_str) else {
+            continue;
+        };
+        let props = main
+            .and_then(|m| m.get("record"))
+            .and_then(|r| r.get("properties"))
+            .and_then(Value::as_object);
+        let mut fields = Vec::new();
+        if let Some(props) = props {
+            for (name, def) in props {
+                let is_object_ref = def
+                    .get("ref")
+                    .and_then(Value::as_str)
+                    .is_some_and(|r| r.ends_with("#objectRef"));
+                fields.push(FieldDef {
+                    name: name.clone(),
+                    is_object_ref,
+                });
+            }
+        }
+        out.push(RecordFields {
+            nsid: nsid.to_owned(),
+            fields,
+        });
+    }
+    Ok(out)
+}
+
+/// Emit (or, when `check_only`, verify) the generated
+/// `crates/layers-records/src/fields.rs`: one module per record kind
+/// exposing its wire field names as `&str` consts.
+///
+/// # Errors
+/// Returns an error if the lexicons cannot be read or the file cannot be
+/// written, or (in check mode) if the on-disk file drifts.
+pub fn cmd_fields(lexicons_dir: &Path, out: &Path, check_only: bool) -> Result<ExitCode> {
+    let records = load_record_fields(lexicons_dir)?;
+    let rendered = render_fields_rs(&records);
+    if check_only {
+        let actual = std::fs::read_to_string(out).unwrap_or_default();
+        if actual != rendered {
+            bail!(
+                "drift detected in {}; run `cargo run -p layers-codegen -- generate` to update",
+                out.display()
+            );
+        }
+        println!("fields up-to-date: {} record kinds", records.len());
+    } else {
+        std::fs::write(out, &rendered).with_context(|| format!("writing {}", out.display()))?;
+        println!("wrote {} ({} record kinds)", out.display(), records.len());
+    }
+    Ok(ExitCode::SUCCESS)
+}
+
+/// Map a record NSID to its `queries.json` entity slug (the generated
+/// module name), via the canonical [`RECORD_TABLES`].
+fn module_for_nsid(nsid: &str) -> Option<&'static str> {
+    RECORD_TABLES
+        .iter()
+        .find(|r| r.nsid == nsid)
+        .map(|r| r.entity)
+}
+
+fn render_fields_rs(records: &[RecordFields]) -> String {
+    // Sort modules by entity name for deterministic output.
+    let mut modules: BTreeMap<&str, &RecordFields> = BTreeMap::new();
+    for rf in records {
+        if let Some(entity) = module_for_nsid(&rf.nsid) {
+            modules.insert(entity, rf);
+        }
+    }
+
+    let mut body = String::from(
+        "// @generated by layers-codegen. do not edit.\n\n\
+         //! Wire field names for every `pub.layers.*` record kind, one module\n\
+         //! per record. Hand-written SQL that reads a record's JSONB body by\n\
+         //! key (e.g. the observer's `record->>'corpusRef'`) references these\n\
+         //! constants, so a lexicon field rename regenerates the constant and\n\
+         //! the drift gate catches any stale reference.\n\n",
+    );
+    for (entity, rf) in modules {
+        let _ = write!(
+            body,
+            "/// Field names for `{}`.\npub mod {entity} {{\n",
+            rf.nsid
+        );
+        for f in &rf.fields {
+            let const_name = screaming_snake(&f.name);
+            let _ = write!(
+                body,
+                "    /// Wire name of the `{}` property.\n    pub const {const_name}: &str = {:?};\n",
+                f.name, f.name
+            );
+        }
+        body.push_str("}\n\n");
+    }
+    idiolect_codegen::rustfmt_source(&body)
+}
+
+/// Convert a camelCase wire name to `SCREAMING_SNAKE_CASE`.
+fn screaming_snake(camel: &str) -> String {
+    let mut out = String::with_capacity(camel.len() + 4);
+    for (i, ch) in camel.chars().enumerate() {
+        if ch.is_ascii_uppercase() {
+            if i != 0 {
+                out.push('_');
+            }
+            out.push(ch);
+        } else {
+            out.push(ch.to_ascii_uppercase());
+        }
+    }
+    out
+}

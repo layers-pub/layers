@@ -114,11 +114,7 @@ pub fn query_hook_fragment(spec: &QueryHookSpec<'_>) -> (Vec<TsItem>, KeysFactor
     });
 
     if spec.paginated {
-        items.push(infinite_hook_fragment(
-            spec,
-            &params_alias,
-            &response_alias,
-        ));
+        items.push(infinite_hook_fragment(spec, &params_alias, &response_alias));
     }
 
     let keys_entry = KeysFactoryEntry {

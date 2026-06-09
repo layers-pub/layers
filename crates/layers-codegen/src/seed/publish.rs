@@ -79,11 +79,7 @@ pub fn check(repo_root: &Path, args: &[String]) -> Result<ExitCode> {
                         drift = true;
                     }
                     None => {
-                        eprintln!(
-                            "[missing] {} {} not on PDS",
-                            entry.collection,
-                            &fp[..16]
-                        );
+                        eprintln!("[missing] {} {} not on PDS", entry.collection, &fp[..16]);
                         drift = true;
                     }
                 }
@@ -129,8 +125,8 @@ struct Options {
 
 impl Options {
     fn parse(args: &[String]) -> Result<Self> {
-        let mut pds_url = std::env::var("LAYERS_PDS_URL")
-            .unwrap_or_else(|_| "https://pds.layers.pub".to_owned());
+        let mut pds_url =
+            std::env::var("LAYERS_PDS_URL").unwrap_or_else(|_| "https://pds.layers.pub".to_owned());
         let mut account_filter: Option<String> = None;
         let mut dry_run = false;
         let mut i = 0;
@@ -139,9 +135,11 @@ impl Options {
                 "--dry-run" | "--plan" => dry_run = true,
                 "--account" => {
                     i += 1;
-                    account_filter = Some(args.get(i).cloned().ok_or_else(|| {
-                        anyhow!("--account expects a handle argument")
-                    })?);
+                    account_filter = Some(
+                        args.get(i)
+                            .cloned()
+                            .ok_or_else(|| anyhow!("--account expects a handle argument"))?,
+                    );
                 }
                 "--pds" => {
                     i += 1;
@@ -168,10 +166,10 @@ fn group_by_account<'a>(
 ) -> BTreeMap<String, Vec<&'a SeedEntry>> {
     let mut out: BTreeMap<String, Vec<&'a SeedEntry>> = BTreeMap::new();
     for entry in entries {
-        if let Some(f) = filter {
-            if entry.account != f {
-                continue;
-            }
+        if let Some(f) = filter
+            && entry.account != f
+        {
+            continue;
         }
         out.entry(entry.account.clone()).or_default().push(entry);
     }
@@ -261,12 +259,12 @@ async fn publish_async(
                 .await
                 .ok()
                 .flatten();
-            if let Some(prev) = existing {
-                if prev == body {
-                    println!("  skip {}/{} (unchanged)", entry.collection, &rkey[..16]);
-                    total_skipped += 1;
-                    continue;
-                }
+            if let Some(prev) = existing
+                && prev == body
+            {
+                println!("  skip {}/{} (unchanged)", entry.collection, &rkey[..16]);
+                total_skipped += 1;
+                continue;
             }
             let result = client
                 .put_record(session, &entry.collection, &rkey, &body)
@@ -300,7 +298,10 @@ fn load_credentials(repo_root: &Path, handle: &str) -> Result<AccountCredentials
         }
     }
     let password = password.ok_or_else(|| {
-        anyhow!("credential file {} is missing `password=...`", path.display())
+        anyhow!(
+            "credential file {} is missing `password=...`",
+            path.display()
+        )
     })?;
     Ok(AccountCredentials {
         handle: handle.to_owned(),

@@ -1,7 +1,7 @@
 //! Per-namespace mutation hooks (`useCreate<X>` / `useUpdate<X>` /
 //! `useDelete<X>`) for every `pub.layers.*` record collection.
 //!
-//! ATProto puts writes in the user's PDS, not in the appview, so the
+//! `ATProto` puts writes in the user's PDS, not in the appview, so the
 //! generated hooks delegate to a [`RecordWriter`] (typically backed
 //! by an OAuth session) injected via React context. Each hook
 //! invalidates the matching read query keys after a successful
@@ -108,9 +108,7 @@ pub fn emit(repo_root: &Path, check_only: bool) -> Result<bool> {
 }
 
 fn walk(root: &Path, visit: &mut impl FnMut(&Path) -> Result<()>) -> Result<()> {
-    for entry in std::fs::read_dir(root)
-        .with_context(|| format!("reading {}", root.display()))?
-    {
+    for entry in std::fs::read_dir(root).with_context(|| format!("reading {}", root.display()))? {
         let path = entry?.path();
         if path.is_dir() {
             walk(&path, visit)?;
@@ -123,7 +121,8 @@ fn walk(root: &Path, visit: &mut impl FnMut(&Path) -> Result<()>) -> Result<()> 
 
 fn build_index_module<'a>(namespaces: impl IntoIterator<Item = &'a String>) -> TsModule {
     let mut module = TsModule::new();
-    module.leading_comment = Some("Barrel of every mutation namespace + the RecordWriter context.".into());
+    module.leading_comment =
+        Some("Barrel of every mutation namespace + the RecordWriter context.".into());
     module.item(TsItem::Raw("export * from './writer';\n".into()));
     for ns in namespaces {
         module.item(TsItem::Raw(format!("export * from './{ns}';\n")));
@@ -183,11 +182,8 @@ fn build_namespace_module(namespace: &str, entries: &[RecordEntry]) -> TsModule 
     ));
     module
         .import(
-            TsImport::named(
-                "@tanstack/react-query",
-                ["useMutation", "useQueryClient"],
-            )
-            .add_type("UseMutationOptions"),
+            TsImport::named("@tanstack/react-query", ["useMutation", "useQueryClient"])
+                .add_type("UseMutationOptions"),
         )
         .import(TsImport::named("./writer", ["useRecordWriter"]));
 
@@ -218,12 +214,12 @@ fn pascal_case(s: &str) -> String {
             out.push(ch);
         }
     }
-    if let Some(first) = out.chars().next() {
-        if first.is_lowercase() {
-            let mut chars = out.chars();
-            let head = chars.next().unwrap().to_uppercase().to_string();
-            return head + chars.as_str();
-        }
+    if let Some(first) = out.chars().next()
+        && first.is_lowercase()
+    {
+        let mut chars = out.chars();
+        let head = chars.next().unwrap().to_uppercase().to_string();
+        return head + chars.as_str();
     }
     out
 }

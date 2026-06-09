@@ -1,8 +1,8 @@
-//! Convert ATProto lexicon JSON Schema-ish definitions into vanilla
-//! JSON Schema components for the orchestrator's OpenAPI document.
+//! Convert `ATProto` lexicon JSON Schema-ish definitions into vanilla
+//! JSON Schema components for the orchestrator's `OpenAPI` document.
 //!
 //! Lexicons use a restricted subset of JSON Schema with a few
-//! ATProto-specific type tokens. This module emits one OpenAPI 3.1
+//! ATProto-specific type tokens. This module emits one `OpenAPI` 3.1
 //! component schema per top-level lexicon def and resolves intra-
 //! lexicon `ref`s into `$ref: "#/components/schemas/<...>"` pointers.
 //!
@@ -28,7 +28,7 @@ use std::collections::BTreeMap;
 use anyhow::{Context, Result, bail};
 use serde_json::{Map, Value};
 
-/// Walk every lexicon under `lexicons_dir` and return the OpenAPI
+/// Walk every lexicon under `lexicons_dir` and return the `OpenAPI`
 /// `components.schemas` map as a sorted `serde_json::Map`.
 ///
 /// # Errors
@@ -99,9 +99,8 @@ fn emit_doc(doc: &LexiconDoc, out: &mut BTreeMap<String, Value>) -> Result<()> {
     }
 
     for (def_id, def) in &doc.defs {
-        let def_obj = match def.as_object() {
-            Some(o) => o,
-            None => continue,
+        let Some(def_obj) = def.as_object() else {
+            continue;
         };
         let ty = def_obj.get("type").and_then(Value::as_str).unwrap_or("");
         let primary_name = component_name(&doc.nsid, def_id);
@@ -117,27 +116,22 @@ fn emit_doc(doc: &LexiconDoc, out: &mut BTreeMap<String, Value>) -> Result<()> {
                 let record_alias = record_alias_name(&doc.nsid);
                 out.insert(record_alias, Value::Object(ref_object(&primary_name)));
             }
-            "object" | "string" | "integer" | "boolean" | "array" | "ref" | "union"
-            | "token" | "blob" | "cid-link" | "bytes" | "unknown" => {
+            "object" | "string" | "integer" | "boolean" | "array" | "ref" | "union" | "token"
+            | "blob" | "cid-link" | "bytes" | "unknown" => {
                 let schema = convert(&doc.nsid, def)?;
                 out.insert(primary_name, schema);
             }
             "query" => {
-                if let Some(output_schema) = def_obj
-                    .get("output")
-                    .and_then(|o| o.get("schema"))
-                {
+                if let Some(output_schema) = def_obj.get("output").and_then(|o| o.get("schema")) {
                     let schema = convert(&doc.nsid, output_schema)?;
                     let output_name = query_output_name(&doc.nsid);
                     out.insert(output_name.clone(), schema.clone());
                     // For listX queries, expose the `records[*]` shape
                     // under a `<...>RecordView` alias.
-                    if let Some(record_view_name) = list_record_view_name(&doc.nsid) {
-                        if let Some(record_view_schema) =
-                            extract_record_view_schema(&schema)
-                        {
-                            out.insert(record_view_name, record_view_schema);
-                        }
+                    if let Some(record_view_name) = list_record_view_name(&doc.nsid)
+                        && let Some(record_view_schema) = extract_record_view_schema(&schema)
+                    {
+                        out.insert(record_view_name, record_view_schema);
                     }
                 }
             }
@@ -237,14 +231,14 @@ fn upper_camel(input: &str) -> String {
 }
 
 /// Convert a lexicon type definition into a vanilla JSON Schema
-/// suitable for OpenAPI components.
+/// suitable for `OpenAPI` components.
 ///
 /// `current_nsid` provides the context for resolving relative refs
 /// (`#defId` shorthand resolves against the lexicon the def lives in).
 fn convert(current_nsid: &str, value: &Value) -> Result<Value> {
     let obj = value
         .as_object()
-        .ok_or_else(|| anyhow::anyhow!("{}: lexicon def is not an object", current_nsid))?;
+        .ok_or_else(|| anyhow::anyhow!("{current_nsid}: lexicon def is not an object"))?;
     let ty = obj.get("type").and_then(Value::as_str).unwrap_or("");
     match ty {
         "object" => convert_object(current_nsid, obj),
@@ -275,7 +269,7 @@ fn convert(current_nsid: &str, value: &Value) -> Result<Value> {
             }
             Ok(Value::Object(m))
         }
-        other => bail!("{}: unsupported lexicon type `{}`", current_nsid, other),
+        other => bail!("{current_nsid}: unsupported lexicon type `{other}`"),
     }
 }
 
@@ -397,7 +391,7 @@ fn convert_ref(current_nsid: &str, obj: &Map<String, Value>) -> Result<Value> {
     let raw = obj
         .get("ref")
         .and_then(Value::as_str)
-        .ok_or_else(|| anyhow::anyhow!("{}: ref missing 'ref'", current_nsid))?;
+        .ok_or_else(|| anyhow::anyhow!("{current_nsid}: ref missing 'ref'"))?;
     let target = resolve_ref_name(current_nsid, raw)?;
     let mut m = Map::new();
     m.insert(
@@ -414,12 +408,12 @@ fn convert_union(current_nsid: &str, obj: &Map<String, Value>) -> Result<Value> 
     let refs = obj
         .get("refs")
         .and_then(Value::as_array)
-        .ok_or_else(|| anyhow::anyhow!("{}: union missing 'refs'", current_nsid))?;
+        .ok_or_else(|| anyhow::anyhow!("{current_nsid}: union missing 'refs'"))?;
     let mut variants: Vec<Value> = Vec::with_capacity(refs.len());
     for r in refs {
         let raw = r
             .as_str()
-            .ok_or_else(|| anyhow::anyhow!("{}: union ref is not a string", current_nsid))?;
+            .ok_or_else(|| anyhow::anyhow!("{current_nsid}: union ref is not a string"))?;
         let target = resolve_ref_name(current_nsid, raw)?;
         let mut item = Map::new();
         item.insert(
@@ -441,8 +435,12 @@ fn convert_union(current_nsid: &str, obj: &Map<String, Value>) -> Result<Value> 
 /// Handles three shapes:
 ///
 /// - `pub.layers.foo.bar#main` -> full NSID + def id.
-/// - `pub.layers.foo.bar` -> implicit `#main` per ATProto convention.
+/// - `pub.layers.foo.bar` -> implicit `#main` per `ATProto` convention.
 /// - `#defId` -> shorthand for the current NSID's `<defId>`.
+#[allow(
+    clippy::unnecessary_wraps,
+    reason = "fallible-shaped for future malformed-ref handling"
+)]
 fn resolve_ref_name(current_nsid: &str, raw: &str) -> Result<String> {
     if let Some(stripped) = raw.strip_prefix('#') {
         return Ok(component_name(current_nsid, stripped));
@@ -753,8 +751,14 @@ mod tests {
 
     #[test]
     fn record_alias_name_appends_record_suffix() {
-        assert_eq!(record_alias_name("pub.layers.expression.expression"), "ExpressionExpressionRecord");
-        assert_eq!(record_alias_name("pub.layers.corpus.corpus"), "CorpusCorpusRecord");
+        assert_eq!(
+            record_alias_name("pub.layers.expression.expression"),
+            "ExpressionExpressionRecord"
+        );
+        assert_eq!(
+            record_alias_name("pub.layers.corpus.corpus"),
+            "CorpusCorpusRecord"
+        );
     }
 
     #[test]

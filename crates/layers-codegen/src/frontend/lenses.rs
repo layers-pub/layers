@@ -69,8 +69,7 @@ for the `/lenses` browse page and the lens detail drawer."
         let description = parsed
             .description
             .as_deref()
-            .map(str::trim)
-            .unwrap_or("")
+            .map_or("", str::trim)
             .to_owned();
         let lens_uri = format!(
             "at://{}/dev.panproto.schema.lens/{}",

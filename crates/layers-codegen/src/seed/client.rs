@@ -26,7 +26,11 @@ pub struct AccountCredentials {
 }
 
 /// Authenticated session returned by `createSession`.
+///
+/// Mirrors the AT Protocol response shape; `handle`/`refresh_jwt` are parsed
+/// for completeness even though the seed publisher only reads `access_jwt`.
 #[derive(Debug, Clone, Deserialize)]
+#[allow(dead_code, reason = "deserialization target mirrors the wire response")]
 pub struct Session {
     pub did: String,
     pub handle: String,
@@ -109,7 +113,7 @@ impl PdsClient {
         let status = resp.status();
         let body = resp.text().await.unwrap_or_default();
         if !status.is_success() {
-            return Err(anyhow!("getRecord {} failed: {} {}", url, status, body));
+            return Err(anyhow!("getRecord {url} failed: {status} {body}"));
         }
         let parsed: Value = serde_json::from_str(&body)?;
         Ok(parsed.get("value").cloned())
@@ -151,7 +155,9 @@ impl PdsClient {
         let status = resp.status();
         let body = resp.text().await.unwrap_or_default();
         if !status.is_success() {
-            return Err(anyhow!("putRecord {}/{} failed: {} {}", collection, rkey, status, body));
+            return Err(anyhow!(
+                "putRecord {collection}/{rkey} failed: {status} {body}"
+            ));
         }
         let parsed: PutResult = serde_json::from_str(&body)
             .with_context(|| format!("decoding putRecord response: {body}"))?;
@@ -160,6 +166,7 @@ impl PdsClient {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+#[allow(dead_code, reason = "deserialization target mirrors the wire response")]
 pub struct PutResult {
     pub uri: String,
     pub cid: String,
