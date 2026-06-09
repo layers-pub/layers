@@ -1,7 +1,7 @@
 //! On-demand foreign-record import.
 //!
 //! `pub.layers.integration.getExternal` resolves an arbitrary
-//! ATProto AT-URI to its source PDS, fetches the record via
+//! `ATProto` AT-URI to its source PDS, fetches the record via
 //! `com.atproto.repo.getRecord`, persists it into the local
 //! `external_records` table, and returns the imported view. Callers
 //! use it to lift records from apps the indexer is not subscribed to
@@ -33,7 +33,11 @@ pub struct GetExternalParams {
 }
 
 /// Response shape: identifying metadata plus the foreign record body.
+/// Field names follow the `pub.layers.integration.getExternal` lexicon
+/// output, which (like all XRPC JSON) is camelCase: `from_cache` ->
+/// `fromCache`.
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ImportedRecord {
     /// AT-URI of the imported record.
     pub uri: String,
@@ -104,10 +108,8 @@ pub async fn get_external(
 pub async fn fetch_or_cache(state: &AppState, uri: &str, fresh: bool) -> Result<ImportedRecord> {
     let parts = parse_at_uri(uri)?;
 
-    if !fresh {
-        if let Some(hit) = lookup_cache(state, uri).await? {
-            return Ok(hit);
-        }
+    if !fresh && let Some(hit) = lookup_cache(state, uri).await? {
+        return Ok(hit);
     }
 
     let doc = state
@@ -149,12 +151,10 @@ pub async fn fetch_or_cache(state: &AppState, uri: &str, fresh: bool) -> Result<
 }
 
 async fn lookup_cache(state: &AppState, uri: &str) -> Result<Option<ImportedRecord>> {
-    let row = sqlx::query(
-        "SELECT cid, nsid, record FROM external_records WHERE uri = $1",
-    )
-    .bind(uri)
-    .fetch_optional(state.pool())
-    .await?;
+    let row = sqlx::query("SELECT cid, nsid, record FROM external_records WHERE uri = $1")
+        .bind(uri)
+        .fetch_optional(state.pool())
+        .await?;
     let Some(row) = row else { return Ok(None) };
     let nsid: String = row.try_get("nsid")?;
     let cid: Option<String> = row.try_get("cid")?;

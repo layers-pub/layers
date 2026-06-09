@@ -8,8 +8,8 @@
 //!
 //! - SQL migrations under `migrations/`.
 //! - `PostgresCursorStore::ensure_table` + the indexer's cursor commits.
-//! - `LayersRecordHandler` -> `PostgresRecordSink::put_record` typed
-//!   column extraction (corpus name / language / domain).
+//! - `LayersRecordHandler` -> `PostgresRecordSink::put_record` storing
+//!   the decoded corpus body (name / languages / domain) as `record` JSONB.
 //! - Generated route at `/xrpc/pub.layers.corpus.getCorpus`.
 //! - Orchestrator's JSON envelope shape (`{records|record, cursor?}`).
 
@@ -22,8 +22,8 @@ use idiolect_indexer::{
     CursorStore, InMemoryEventStream, IndexerAction, IndexerConfig, RawEvent, drive_indexer,
 };
 use layers_indexer::LayersRecordHandler;
-use layers_records::{LayersFamily, Nsid};
 use layers_orchestrator::{AppState, build_router};
+use layers_records::{LayersFamily, Nsid};
 use layers_storage::{PostgresCursorStore, PostgresRecordSink, RecordSink};
 use serde_json::{Value, json};
 use sqlx::PgPool;
@@ -71,7 +71,7 @@ fn corpus_event(seq: u64, did: &str, rkey: &str, name: &str, language: &str) -> 
         body: Some(json!({
             "$type": "pub.layers.corpus.corpus",
             "name": name,
-            "language": language,
+            "languages": [language],
             "createdAt": "2026-04-30T00:00:00Z",
         })),
     }
@@ -87,8 +87,7 @@ async fn pipeline_indexes_corpus_and_serves_get() {
         .await
         .expect("ensure cursor table");
 
-    let mut sinks: Vec<Arc<dyn RecordSink>> = Vec::new();
-    sinks.push(Arc::new(PostgresRecordSink::new(pool.clone())));
+    let sinks: Vec<Arc<dyn RecordSink>> = vec![Arc::new(PostgresRecordSink::new(pool.clone()))];
     let handler = LayersRecordHandler::new(layers_storage::MultiSink::new(sinks));
 
     let mut stream = InMemoryEventStream::new();
@@ -133,7 +132,7 @@ async fn pipeline_indexes_corpus_and_serves_get() {
         "at://did:plc:alice/pub.layers.corpus.corpus/rk1"
     );
     assert_eq!(payload["value"]["name"], "Alpha");
-    assert_eq!(payload["value"]["language"], "eng");
+    assert_eq!(payload["value"]["languages"][0], "eng");
 
     // Public-read tier should serve the same response without auth: this
     // checkpoint really exercises the middleware against a real DB instead
@@ -195,8 +194,7 @@ async fn delete_event_removes_record() {
         .await
         .expect("ensure cursor table");
 
-    let mut sinks: Vec<Arc<dyn RecordSink>> = Vec::new();
-    sinks.push(Arc::new(PostgresRecordSink::new(pool.clone())));
+    let sinks: Vec<Arc<dyn RecordSink>> = vec![Arc::new(PostgresRecordSink::new(pool.clone()))];
     let handler = LayersRecordHandler::new(layers_storage::MultiSink::new(sinks));
 
     let mut stream = InMemoryEventStream::new();

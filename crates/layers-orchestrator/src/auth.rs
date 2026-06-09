@@ -45,6 +45,10 @@ pub struct AuthContext {
 }
 
 /// Build a middleware closure that enforces the given tier and method.
+#[allow(
+    clippy::type_complexity,
+    reason = "axum middleware factory's boxed-future return type"
+)]
 pub fn require(
     tier: Tier,
     lxm: &'static str,
@@ -73,9 +77,9 @@ async fn enforce(
 
     let mut ctx = AuthContext::default();
     if let Some(value) = header {
-        let token = value.strip_prefix("Bearer ").ok_or_else(|| {
-            ApiError::Unauthorized("authorization must be a Bearer token".into())
-        })?;
+        let token = value
+            .strip_prefix("Bearer ")
+            .ok_or_else(|| ApiError::Unauthorized("authorization must be a Bearer token".into()))?;
         let resolver = state.resolver();
         let claims = verify_jwt(token, resolver.as_ref())
             .await

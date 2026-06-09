@@ -21,8 +21,8 @@ use std::sync::Arc;
 
 use anyhow::{Context, Result};
 use layers_auth::did::{DidResolverConfig, DidResolverImpl};
-use layers_orchestrator::{AppState, build_router};
 use layers_orchestrator::metrics::install_recorder;
+use layers_orchestrator::{AppState, build_router};
 use tokio::signal::unix::{SignalKind, signal};
 
 #[tokio::main]

@@ -1,6 +1,6 @@
 //! Foreign-record lensing via the panproto runtime.
 //!
-//! Every transform that lifts a foreign ATProto record into a
+//! Every transform that lifts a foreign `ATProto` record into a
 //! `pub.layers.*` shape goes through [`idiolect_lens::apply_lens`].
 //! There is no Rust-closure escape hatch: a transform exists only
 //! when a `dev.panproto.schema.lens` record has been authored,
@@ -123,9 +123,11 @@ pub struct PanprotoLensApplier {
 
 impl std::fmt::Debug for PanprotoLensApplier {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        // `resolver`/`schemas`/`protocol` are trait objects / opaque and not
+        // usefully `Debug`; only the registry keys are printed.
         f.debug_struct("PanprotoLensApplier")
             .field("registered", &self.registry.keys().collect::<Vec<_>>())
-            .finish()
+            .finish_non_exhaustive()
     }
 }
 
@@ -210,14 +212,9 @@ impl LensApplier for PanprotoLensApplier {
         // `Arc<T: Resolver + ?Sized>` upstream, so `&self.resolver`
         // (a `&Arc<dyn Resolver>`) satisfies `apply_lens`'s `R:
         // Resolver` bound without `?Sized` propagation.
-        let output = apply_lens(
-            &self.resolver,
-            &self.schemas,
-            &self.protocol,
-            input,
-        )
-        .await
-        .map_err(|e| LensError::Apply(format!("apply_lens: {e}")))?;
+        let output = apply_lens(&self.resolver, &self.schemas, &self.protocol, input)
+            .await
+            .map_err(|e| LensError::Apply(format!("apply_lens: {e}")))?;
         Ok(LensOutput {
             target_nsid: entry.target_nsid.clone(),
             value: output.target_record,
@@ -258,9 +255,7 @@ pub async fn apply_lens_route(
     Query(q): Query<ApplyLensParams>,
 ) -> ApiResult<Json<AppliedLens>> {
     let applier = state.lens_applier().ok_or_else(|| {
-        ApiError::BadRequest(
-            "this appview is not configured with a lens applier".into(),
-        )
+        ApiError::BadRequest("this appview is not configured with a lens applier".into())
     })?;
     let source = fetch_or_cache(&state, &q.uri, q.fresh).await?;
     let target = applier
@@ -326,9 +321,9 @@ mod tests {
             .apply("at.margin.note", &serde_json::json!({}))
             .await
             .unwrap_err();
-        match err {
-            LensError::Apply(msg) => assert!(msg.contains("apply_lens"), "got: {msg}"),
-            other => panic!("expected Apply, got {other:?}"),
-        }
+        assert!(
+            matches!(&err, LensError::Apply(msg) if msg.contains("apply_lens")),
+            "expected Apply(apply_lens...), got {err:?}"
+        );
     }
 }

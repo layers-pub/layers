@@ -6,6 +6,8 @@
 //! every handler builds on: shape types, pagination, and the two
 //! generic SQL paths `fetch_one` and `list_table_filtered`.
 
+use std::fmt::Write as _;
+
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use sqlx::Row;
@@ -51,7 +53,7 @@ pub struct ListResponse {
     pub cursor: Option<String>,
 }
 
-/// Wire shape of a single record view, matching the ATProto
+/// Wire shape of a single record view, matching the `ATProto`
 /// `com.atproto.repo.getRecord` convention (`uri`, `cid`, `value`).
 #[derive(Debug, Serialize)]
 pub struct RecordView {
@@ -65,6 +67,7 @@ pub struct RecordView {
 }
 
 /// Clamp a caller-supplied `limit` to the allowed range.
+#[must_use]
 pub fn clamp_limit(req: Option<i64>) -> i64 {
     req.unwrap_or(DEFAULT_LIMIT).clamp(1, MAX_LIMIT)
 }
@@ -121,6 +124,86 @@ impl<'a> Filter<'a> {
     }
 }
 
+/// List records from `table`, applying every active filter and a
+/// keyset-paginated `(uri >  cursor) ORDER BY uri ASC` window.
+///
+/// # Errors
+/// Returns [`ApiError::Internal`] for any underlying SQL error.
+pub async fn list_table_filtered(
+    state: &AppState,
+    table: &str,
+    filters: &[Filter<'_>],
+    cursor: Option<&str>,
+    limit: i64,
+) -> Result<ListResponse> {
+    let mut sql = format!("SELECT uri, cid, record FROM {table} WHERE 1=1");
+    let mut binds: Vec<String> = Vec::new();
+    let mut next_param = 1usize;
+
+    for f in filters {
+        let Some(value) = &f.value else {
+            continue;
+        };
+        if f.path == "did" {
+            let _ = write!(sql, " AND did = ${next_param}");
+        } else if let Some((outer, inner)) = f.path.split_once('.') {
+            // Nested JSON path for objectRef fields: `source.recordRef`
+            // -> `record->'source'->>'recordRef'`.
+            let _ = write!(sql, " AND record->'{outer}'->>'{inner}' = ${next_param}");
+        } else {
+            let _ = write!(sql, " AND record->>'{}' = ${next_param}", f.path);
+        }
+        binds.push(value.clone());
+        next_param += 1;
+    }
+
+    let _ = write!(
+        sql,
+        " AND (${next_param}::TEXT IS NULL OR uri > ${next_param})"
+    );
+    binds.push(cursor.unwrap_or_default().to_owned());
+    let cursor_is_none = cursor.is_none();
+    next_param += 1;
+
+    let _ = write!(sql, " ORDER BY uri ASC LIMIT ${next_param}");
+    let fetch_limit = limit + 1;
+    let limit_param = next_param;
+
+    let mut q = sqlx::query(&sql);
+    for (i, b) in binds.iter().enumerate() {
+        if i + 1 == limit_param - 1 && cursor_is_none {
+            q = q.bind::<Option<String>>(None);
+        } else {
+            q = q.bind(b);
+        }
+    }
+    q = q.bind(fetch_limit);
+
+    let rows = q.fetch_all(state.pool()).await?;
+
+    let mut records: Vec<RecordView> = rows
+        .into_iter()
+        .map(|row| {
+            Ok::<_, ApiError>(RecordView {
+                uri: row.try_get("uri")?,
+                cid: row.try_get("cid")?,
+                value: row.try_get::<sqlx::types::Json<Value>, _>("record")?.0,
+            })
+        })
+        .collect::<Result<_>>()?;
+
+    let next_cursor = if records.len() as i64 == fetch_limit {
+        records.pop().map(|r| r.uri)
+    } else {
+        None
+    };
+
+    Ok(ListResponse {
+        records,
+        cursor: next_cursor,
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -167,77 +250,3 @@ mod tests {
         assert_eq!(f.value.as_deref(), Some("document"));
     }
 }
-
-/// List records from `table`, applying every active filter and a
-/// keyset-paginated `(uri >  cursor) ORDER BY uri ASC` window.
-///
-/// # Errors
-/// Returns [`ApiError::Internal`] for any underlying SQL error.
-pub async fn list_table_filtered(
-    state: &AppState,
-    table: &str,
-    filters: &[Filter<'_>],
-    cursor: Option<&str>,
-    limit: i64,
-) -> Result<ListResponse> {
-    let mut sql = format!("SELECT uri, cid, record FROM {table} WHERE 1=1");
-    let mut binds: Vec<String> = Vec::new();
-    let mut next_param = 1usize;
-
-    for f in filters {
-        let Some(value) = &f.value else {
-            continue;
-        };
-        if f.path == "did" {
-            sql.push_str(&format!(" AND did = ${next_param}"));
-        } else {
-            sql.push_str(&format!(" AND record->>'{}' = ${next_param}", f.path));
-        }
-        binds.push(value.clone());
-        next_param += 1;
-    }
-
-    sql.push_str(&format!(" AND (${next_param}::TEXT IS NULL OR uri > ${next_param})"));
-    binds.push(cursor.unwrap_or_default().to_owned());
-    let cursor_is_none = cursor.is_none();
-    next_param += 1;
-
-    sql.push_str(&format!(" ORDER BY uri ASC LIMIT ${next_param}"));
-    let fetch_limit = limit + 1;
-    let limit_param = next_param;
-
-    let mut q = sqlx::query(&sql);
-    for (i, b) in binds.iter().enumerate() {
-        if i + 1 == limit_param - 1 && cursor_is_none {
-            q = q.bind::<Option<String>>(None);
-        } else {
-            q = q.bind(b);
-        }
-    }
-    q = q.bind(fetch_limit);
-
-    let rows = q.fetch_all(state.pool()).await?;
-
-    let mut records: Vec<RecordView> = rows
-        .into_iter()
-        .map(|row| {
-            Ok::<_, ApiError>(RecordView {
-                uri: row.try_get("uri")?,
-                cid: row.try_get("cid")?,
-                value: row.try_get::<sqlx::types::Json<Value>, _>("record")?.0,
-            })
-        })
-        .collect::<Result<_>>()?;
-
-    let next_cursor = if records.len() as i64 == fetch_limit {
-        records.pop().map(|r| r.uri)
-    } else {
-        None
-    };
-
-    Ok(ListResponse {
-        records,
-        cursor: next_cursor,
-    })
-}
-

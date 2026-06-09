@@ -4,7 +4,7 @@
 //! pair of axum middleware fns (`record_request`) that emit per-route
 //! counters and latency histograms via the `metrics` facade.
 //!
-//! Counter and histogram naming follows the Prometheus + OpenMetrics
+//! Counter and histogram naming follows the Prometheus + `OpenMetrics`
 //! conventions: `layers_<subsystem>_<unit>` for counters,
 //! `layers_<subsystem>_<unit>_seconds` for histograms.
 

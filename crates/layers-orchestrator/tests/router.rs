@@ -174,7 +174,10 @@ async fn metrics_endpoint_is_exposed_when_recorder_installed() {
     // Either OK (handle installed) or 503 (recorder already taken). Both
     // confirm the route exists and the response shape is sane.
     assert!(
-        matches!(resp.status(), StatusCode::OK | StatusCode::SERVICE_UNAVAILABLE),
+        matches!(
+            resp.status(),
+            StatusCode::OK | StatusCode::SERVICE_UNAVAILABLE
+        ),
         "unexpected /metrics status: {}",
         resp.status()
     );
@@ -193,4 +196,3 @@ async fn oauth_metadata_route_serves_503_without_config() {
         .unwrap();
     assert_eq!(resp.status(), StatusCode::SERVICE_UNAVAILABLE);
 }
-

@@ -56,15 +56,13 @@ pub async fn enforce(
 }
 
 fn identity_for(req: &Request, trust_forwarded: bool) -> String {
-    if let Some(ctx) = req.extensions().get::<AuthContext>() {
-        if let Some(did) = ctx.did.as_deref() {
-            return format!("did:{did}");
-        }
+    if let Some(ctx) = req.extensions().get::<AuthContext>()
+        && let Some(did) = ctx.did.as_deref()
+    {
+        return format!("did:{did}");
     }
-    if trust_forwarded {
-        if let Some(ip) = client_ip_from_forwarded(req.headers()) {
-            return format!("ip:{ip}");
-        }
+    if trust_forwarded && let Some(ip) = client_ip_from_forwarded(req.headers()) {
+        return format!("ip:{ip}");
     }
     if let Some(ConnectInfo(addr)) = req.extensions().get::<ConnectInfo<SocketAddr>>() {
         return format!("ip:{}", addr.ip());
@@ -76,6 +74,7 @@ fn identity_for(req: &Request, trust_forwarded: bool) -> String {
 /// `X-Forwarded-For`, in that order. Returns the leftmost address —
 /// the closest hop to the client, which is the only entry the trust
 /// boundary cares about.
+#[must_use]
 pub fn client_ip_from_forwarded(headers: &axum::http::HeaderMap) -> Option<String> {
     if let Some(forwarded) = headers.get(&FORWARDED).and_then(|v| v.to_str().ok()) {
         // Forwarded: for=192.0.2.60;proto=http;by=203.0.113.43
@@ -91,12 +90,12 @@ pub fn client_ip_from_forwarded(headers: &axum::http::HeaderMap) -> Option<Strin
             }
         }
     }
-    if let Some(xff) = headers.get(&FORWARDED_FOR).and_then(|v| v.to_str().ok()) {
-        if let Some(first) = xff.split(',').next() {
-            let ip = first.trim().trim_matches('"');
-            if !ip.is_empty() {
-                return Some(ip.to_owned());
-            }
+    if let Some(xff) = headers.get(&FORWARDED_FOR).and_then(|v| v.to_str().ok())
+        && let Some(first) = xff.split(',').next()
+    {
+        let ip = first.trim().trim_matches('"');
+        if !ip.is_empty() {
+            return Some(ip.to_owned());
         }
     }
     let _ = header::HOST; // pull header into scope so the import isn't dead
@@ -116,18 +115,15 @@ fn attach_rate_limit_headers(response: &mut Response, limiter: &SlidingWindow, u
     let limit = limiter.limit();
     let remaining = limit.saturating_sub(used);
     let reset = limiter.window().as_secs();
-    let _ = response.headers_mut().insert(
-        X_RATE_LIMIT_LIMIT.clone(),
-        header_u64(limit),
-    );
-    let _ = response.headers_mut().insert(
-        X_RATE_LIMIT_REMAINING.clone(),
-        header_u64(remaining),
-    );
-    let _ = response.headers_mut().insert(
-        X_RATE_LIMIT_RESET.clone(),
-        header_u64(reset),
-    );
+    let _ = response
+        .headers_mut()
+        .insert(X_RATE_LIMIT_LIMIT.clone(), header_u64(limit));
+    let _ = response
+        .headers_mut()
+        .insert(X_RATE_LIMIT_REMAINING.clone(), header_u64(remaining));
+    let _ = response
+        .headers_mut()
+        .insert(X_RATE_LIMIT_RESET.clone(), header_u64(reset));
 }
 
 fn header_u64(value: u64) -> HeaderValue {
@@ -136,12 +132,10 @@ fn header_u64(value: u64) -> HeaderValue {
 
 fn map_error(limiter: &SlidingWindow, err: RateLimitError) -> ApiError {
     match err {
-        RateLimitError::Exceeded { window_seconds, .. } => {
-            ApiError::TooManyRequests {
-                retry_after_secs: window_seconds,
-                limit: limiter.limit(),
-            }
-        }
+        RateLimitError::Exceeded { window_seconds, .. } => ApiError::TooManyRequests {
+            retry_after_secs: window_seconds,
+            limit: limiter.limit(),
+        },
         RateLimitError::Redis(e) => ApiError::Internal(format!("rate limiter: {e}")),
     }
 }
@@ -193,10 +187,7 @@ mod tests {
 
     #[test]
     fn forwarded_for_chain_returns_first_only() {
-        let h = headers(&[(
-            "forwarded",
-            "for=192.0.2.43, for=198.51.100.17",
-        )]);
+        let h = headers(&[("forwarded", "for=192.0.2.43, for=198.51.100.17")]);
         assert_eq!(client_ip_from_forwarded(&h).as_deref(), Some("192.0.2.43"));
     }
 
@@ -206,4 +197,3 @@ mod tests {
         assert!(client_ip_from_forwarded(&h).is_none());
     }
 }
-

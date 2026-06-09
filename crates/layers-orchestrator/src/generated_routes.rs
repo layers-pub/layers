@@ -4,7 +4,12 @@
 //! from `orchestrator-spec/queries.json`. Each query in the spec
 //! emits one axum handler function plus one route mount.
 
-#![allow(clippy::too_many_lines, clippy::needless_pass_by_value)]
+#![allow(
+    missing_docs,
+    clippy::too_many_lines,
+    clippy::needless_pass_by_value,
+    clippy::missing_errors_doc
+)]
 
 use axum::Json;
 use axum::Router;
@@ -16,8 +21,7 @@ use serde::Deserialize;
 use crate::auth::{Tier, require};
 use crate::error::Result;
 use crate::queries::{
-    ByUri, Filter, ListParams, ListResponse, RecordView, clamp_limit, fetch_one,
-    list_table_filtered,
+    ByUri, Filter, ListResponse, RecordView, clamp_limit, fetch_one, list_table_filtered,
 };
 use crate::state::AppState;
 
@@ -96,9 +100,9 @@ pub async fn get_corpus_membership(
 pub struct ListCorpusMembershipsParams {
     #[serde(default)]
     pub did: Option<String>,
-    /// `corpus` filter.
-    #[serde(rename = "corpus", default)]
-    pub corpus: Option<String>,
+    /// `corpusRef` filter.
+    #[serde(rename = "corpusRef", default)]
+    pub corpus_ref: Option<String>,
     #[serde(default)]
     pub cursor: Option<String>,
     #[serde(default)]
@@ -113,7 +117,7 @@ pub async fn list_corpus_memberships(
     let limit = clamp_limit(q.limit);
     let filters = [
         Filter::opt("did", q.did.as_deref()),
-        Filter::opt("corpus", q.corpus.as_deref()),
+        Filter::opt("corpusRef", q.corpus_ref.as_deref()),
     ];
     Ok(Json(
         list_table_filtered(
@@ -171,9 +175,9 @@ pub async fn get_type_def(
 pub struct ListTypeDefsParams {
     #[serde(default)]
     pub did: Option<String>,
-    /// `ontology` filter.
-    #[serde(rename = "ontology", default)]
-    pub ontology: Option<String>,
+    /// `ontologyRef` filter.
+    #[serde(rename = "ontologyRef", default)]
+    pub ontology_ref: Option<String>,
     #[serde(default)]
     pub cursor: Option<String>,
     #[serde(default)]
@@ -188,7 +192,7 @@ pub async fn list_type_defs(
     let limit = clamp_limit(q.limit);
     let filters = [
         Filter::opt("did", q.did.as_deref()),
-        Filter::opt("ontology", q.ontology.as_deref()),
+        Filter::opt("ontologyRef", q.ontology_ref.as_deref()),
     ];
     Ok(Json(
         list_table_filtered(&state, "type_defs", &filters, q.cursor.as_deref(), limit).await?,
@@ -239,12 +243,12 @@ pub async fn get_annotation_layer(
 pub struct ListAnnotationLayersParams {
     #[serde(default)]
     pub did: Option<String>,
-    /// `target` filter.
-    #[serde(rename = "target", default)]
-    pub target: Option<String>,
-    /// `layerKind` filter.
-    #[serde(rename = "layerKind", default)]
-    pub layer_kind: Option<String>,
+    /// `expression` filter.
+    #[serde(rename = "expression", default)]
+    pub expression: Option<String>,
+    /// `kind` filter.
+    #[serde(rename = "kind", default)]
+    pub kind: Option<String>,
     #[serde(default)]
     pub cursor: Option<String>,
     #[serde(default)]
@@ -259,8 +263,8 @@ pub async fn list_annotation_layers(
     let limit = clamp_limit(q.limit);
     let filters = [
         Filter::opt("did", q.did.as_deref()),
-        Filter::opt("target", q.target.as_deref()),
-        Filter::opt("layerKind", q.layer_kind.as_deref()),
+        Filter::opt("expression", q.expression.as_deref()),
+        Filter::opt("kind", q.kind.as_deref()),
     ];
     Ok(Json(
         list_table_filtered(
@@ -318,9 +322,9 @@ pub async fn get_segmentation(
 pub struct ListSegmentationsParams {
     #[serde(default)]
     pub did: Option<String>,
-    /// `target` filter.
-    #[serde(rename = "target", default)]
-    pub target: Option<String>,
+    /// `expression` filter.
+    #[serde(rename = "expression", default)]
+    pub expression: Option<String>,
     #[serde(default)]
     pub cursor: Option<String>,
     #[serde(default)]
@@ -335,7 +339,7 @@ pub async fn list_segmentations(
     let limit = clamp_limit(q.limit);
     let filters = [
         Filter::opt("did", q.did.as_deref()),
-        Filter::opt("target", q.target.as_deref()),
+        Filter::opt("expression", q.expression.as_deref()),
     ];
     Ok(Json(
         list_table_filtered(
@@ -382,8 +386,8 @@ pub async fn list_alignments(
     let limit = clamp_limit(q.limit);
     let filters = [
         Filter::opt("did", q.did.as_deref()),
-        Filter::opt("source", q.source.as_deref()),
-        Filter::opt("target", q.target.as_deref()),
+        Filter::opt("source.recordRef", q.source.as_deref()),
+        Filter::opt("target.recordRef", q.target.as_deref()),
     ];
     Ok(Json(
         list_table_filtered(&state, "alignments", &filters, q.cursor.as_deref(), limit).await?,
@@ -454,8 +458,8 @@ pub async fn list_graph_edges(
     let limit = clamp_limit(q.limit);
     let filters = [
         Filter::opt("did", q.did.as_deref()),
-        Filter::opt("source", q.source.as_deref()),
-        Filter::opt("target", q.target.as_deref()),
+        Filter::opt("source.recordRef", q.source.as_deref()),
+        Filter::opt("target.recordRef", q.target.as_deref()),
     ];
     Ok(Json(
         list_table_filtered(&state, "graph_edges", &filters, q.cursor.as_deref(), limit).await?,
@@ -551,9 +555,9 @@ pub async fn get_judgment_set(
 pub struct ListJudgmentSetsParams {
     #[serde(default)]
     pub did: Option<String>,
-    /// `experiment` filter.
-    #[serde(rename = "experiment", default)]
-    pub experiment: Option<String>,
+    /// `experimentRef` filter.
+    #[serde(rename = "experimentRef", default)]
+    pub experiment_ref: Option<String>,
     #[serde(default)]
     pub cursor: Option<String>,
     #[serde(default)]
@@ -568,7 +572,7 @@ pub async fn list_judgment_sets(
     let limit = clamp_limit(q.limit);
     let filters = [
         Filter::opt("did", q.did.as_deref()),
-        Filter::opt("experiment", q.experiment.as_deref()),
+        Filter::opt("experimentRef", q.experiment_ref.as_deref()),
     ];
     Ok(Json(
         list_table_filtered(
@@ -595,9 +599,9 @@ pub async fn get_agreement_report(
 pub struct ListAgreementReportsParams {
     #[serde(default)]
     pub did: Option<String>,
-    /// `experiment` filter.
-    #[serde(rename = "experiment", default)]
-    pub experiment: Option<String>,
+    /// `experimentRef` filter.
+    #[serde(rename = "experimentRef", default)]
+    pub experiment_ref: Option<String>,
     #[serde(default)]
     pub cursor: Option<String>,
     #[serde(default)]
@@ -612,7 +616,7 @@ pub async fn list_agreement_reports(
     let limit = clamp_limit(q.limit);
     let filters = [
         Filter::opt("did", q.did.as_deref()),
-        Filter::opt("experiment", q.experiment.as_deref()),
+        Filter::opt("experimentRef", q.experiment_ref.as_deref()),
     ];
     Ok(Json(
         list_table_filtered(
@@ -681,9 +685,9 @@ pub async fn get_collection_membership(
 pub struct ListCollectionMembershipsParams {
     #[serde(default)]
     pub did: Option<String>,
-    /// `collection` filter.
-    #[serde(rename = "collection", default)]
-    pub collection: Option<String>,
+    /// `collectionRef` filter.
+    #[serde(rename = "collectionRef", default)]
+    pub collection_ref: Option<String>,
     #[serde(default)]
     pub cursor: Option<String>,
     #[serde(default)]
@@ -698,7 +702,7 @@ pub async fn list_collection_memberships(
     let limit = clamp_limit(q.limit);
     let filters = [
         Filter::opt("did", q.did.as_deref()),
-        Filter::opt("collection", q.collection.as_deref()),
+        Filter::opt("collectionRef", q.collection_ref.as_deref()),
     ];
     Ok(Json(
         list_table_filtered(
@@ -725,9 +729,6 @@ pub async fn get_entry(
 pub struct ListEntriesParams {
     #[serde(default)]
     pub did: Option<String>,
-    /// `collection` filter.
-    #[serde(rename = "collection", default)]
-    pub collection: Option<String>,
     #[serde(default)]
     pub cursor: Option<String>,
     #[serde(default)]
@@ -740,10 +741,7 @@ pub async fn list_entries(
     Query(q): Query<ListEntriesParams>,
 ) -> Result<Json<ListResponse>> {
     let limit = clamp_limit(q.limit);
-    let filters = [
-        Filter::opt("did", q.did.as_deref()),
-        Filter::opt("collection", q.collection.as_deref()),
-    ];
+    let filters = [Filter::opt("did", q.did.as_deref())];
     Ok(Json(
         list_table_filtered(
             &state,
@@ -769,9 +767,9 @@ pub async fn get_filling(
 pub struct ListFillingsParams {
     #[serde(default)]
     pub did: Option<String>,
-    /// `template` filter.
-    #[serde(rename = "template", default)]
-    pub template: Option<String>,
+    /// `templateRef` filter.
+    #[serde(rename = "templateRef", default)]
+    pub template_ref: Option<String>,
     #[serde(default)]
     pub cursor: Option<String>,
     #[serde(default)]
@@ -786,7 +784,7 @@ pub async fn list_fillings(
     let limit = clamp_limit(q.limit);
     let filters = [
         Filter::opt("did", q.did.as_deref()),
-        Filter::opt("template", q.template.as_deref()),
+        Filter::opt("templateRef", q.template_ref.as_deref()),
     ];
     Ok(Json(
         list_table_filtered(
@@ -853,9 +851,6 @@ pub async fn get_template_composition(
 pub struct ListTemplateCompositionsParams {
     #[serde(default)]
     pub did: Option<String>,
-    /// `template` filter.
-    #[serde(rename = "template", default)]
-    pub template: Option<String>,
     #[serde(default)]
     pub cursor: Option<String>,
     #[serde(default)]
@@ -868,10 +863,7 @@ pub async fn list_template_compositions(
     Query(q): Query<ListTemplateCompositionsParams>,
 ) -> Result<Json<ListResponse>> {
     let limit = clamp_limit(q.limit);
-    let filters = [
-        Filter::opt("did", q.did.as_deref()),
-        Filter::opt("template", q.template.as_deref()),
-    ];
+    let filters = [Filter::opt("did", q.did.as_deref())];
     Ok(Json(
         list_table_filtered(
             &state,
@@ -928,9 +920,9 @@ pub async fn get_data_link(
 pub struct ListDataLinksParams {
     #[serde(default)]
     pub did: Option<String>,
-    /// `eprint` filter.
-    #[serde(rename = "eprint", default)]
-    pub eprint: Option<String>,
+    /// `eprintUri` filter.
+    #[serde(rename = "eprintUri", default)]
+    pub eprint_uri: Option<String>,
     #[serde(default)]
     pub cursor: Option<String>,
     #[serde(default)]
@@ -945,7 +937,7 @@ pub async fn list_data_links(
     let limit = clamp_limit(q.limit);
     let filters = [
         Filter::opt("did", q.did.as_deref()),
-        Filter::opt("eprint", q.eprint.as_deref()),
+        Filter::opt("eprintUri", q.eprint_uri.as_deref()),
     ];
     Ok(Json(
         list_table_filtered(&state, "data_links", &filters, q.cursor.as_deref(), limit).await?,
@@ -1085,9 +1077,9 @@ pub async fn list_external_records(
 pub struct ListChangelogByCollectionParams {
     #[serde(default)]
     pub did: Option<String>,
-    /// `collection` filter.
-    #[serde(rename = "collection", default)]
-    pub collection: Option<String>,
+    /// `subjectCollection` filter.
+    #[serde(rename = "subjectCollection", default)]
+    pub subject_collection: Option<String>,
     #[serde(default)]
     pub cursor: Option<String>,
     #[serde(default)]
@@ -1102,7 +1094,7 @@ pub async fn list_changelog_by_collection(
     let limit = clamp_limit(q.limit);
     let filters = [
         Filter::opt("did", q.did.as_deref()),
-        Filter::opt("collection", q.collection.as_deref()),
+        Filter::opt("subjectCollection", q.subject_collection.as_deref()),
     ];
     Ok(Json(
         list_table_filtered(
@@ -1117,7 +1109,6 @@ pub async fn list_changelog_by_collection(
 }
 
 /// Mount every XRPC route declared in `orchestrator-spec/queries.json`.
-#[must_use]
 pub fn xrpc_routes(state: AppState) -> Router<AppState> {
     Router::new()
         .route(

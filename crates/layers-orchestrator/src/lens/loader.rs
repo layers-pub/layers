@@ -54,7 +54,7 @@ pub enum LoadError {
     Parse {
         /// Path to the file that failed to parse.
         path: PathBuf,
-        /// serde_json error message.
+        /// `serde_json` error message.
         message: String,
     },
     /// Base64 decode failure on a blob.
@@ -113,10 +113,20 @@ pub fn load_lenses_from_dir(dir: &Path) -> Result<PanprotoLensApplier, LoadError
 
     for entry in &manifest.entries {
         let entry_dir = dir.join(&entry.name);
-        let source_uri =
-            install_schema(&entry_dir, "source", &entry.name, &manifest.authoring_did, &mut schemas)?;
-        let target_uri =
-            install_schema(&entry_dir, "target", &entry.name, &manifest.authoring_did, &mut schemas)?;
+        let source_uri = install_schema(
+            &entry_dir,
+            "source",
+            &entry.name,
+            &manifest.authoring_did,
+            &mut schemas,
+        )?;
+        let target_uri = install_schema(
+            &entry_dir,
+            "target",
+            &entry.name,
+            &manifest.authoring_did,
+            &mut schemas,
+        )?;
         let lens_uri = install_lens(
             &entry_dir,
             &entry.name,
@@ -158,8 +168,8 @@ fn install_schema(
     let bytes = base64::engine::general_purpose::URL_SAFE_NO_PAD
         .decode(env.blob.base64.as_bytes())
         .map_err(|e| LoadError::Base64(format!("{}: {e}", path.display())))?;
-    let schema: Schema =
-        rmp_serde::from_slice(&bytes).map_err(|e| LoadError::Msgpack(format!("{}: {e}", path.display())))?;
+    let schema: Schema = rmp_serde::from_slice(&bytes)
+        .map_err(|e| LoadError::Msgpack(format!("{}: {e}", path.display())))?;
     let object_hash = sha256_hex(&bytes);
     schemas.insert(object_hash, schema);
     let rkey = format!("{lens_name}-{side}");
@@ -188,26 +198,30 @@ fn install_lens(
     // hands it back to apply_lens which msgpack-decodes it itself.
     // But validate the bytes parse so we fail fast at boot rather
     // than at first apply.
-    let _: LensBody =
-        rmp_serde::from_slice(&bytes).map_err(|e| LoadError::Msgpack(format!("{}: {e}", path.display())))?;
+    let _: LensBody = rmp_serde::from_slice(&bytes)
+        .map_err(|e| LoadError::Msgpack(format!("{}: {e}", path.display())))?;
 
     let _ = (source_uri, target_uri);
     let _ = env.source_schema;
     let _ = env.target_schema;
 
-    let rkey = format!("{lens_name}");
+    let rkey = lens_name.to_string();
     let uri_str = format!("at://{authoring_did}/dev.panproto.schema.lens/{rkey}");
     let uri = AtUri::parse(&uri_str).map_err(|e| LoadError::AtUri(format!("{uri_str}: {e}")))?;
 
     let lens_record = PanprotoLensRecord {
         blob: Some(serde_json::Value::Array(
-            bytes.iter().map(|b| serde_json::Value::Number((*b).into())).collect(),
+            bytes
+                .iter()
+                .map(|b| serde_json::Value::Number((*b).into()))
+                .collect(),
         )),
-        created_at: idiolect_records::Datetime::parse(&env.created_at)
-            .map_err(|e| LoadError::Parse {
+        created_at: idiolect_records::Datetime::parse(&env.created_at).map_err(|e| {
+            LoadError::Parse {
                 path: path.clone(),
                 message: format!("createdAt: {e}"),
-            })?,
+            }
+        })?,
         laws_verified: None,
         object_hash: env.object_hash,
         round_trip_class: None,
@@ -218,6 +232,10 @@ fn install_lens(
     Ok(uri)
 }
 
+#[allow(
+    clippy::format_collect,
+    reason = "hex digest formatting reads clearly as map/collect"
+)]
 fn sha256_hex(bytes: &[u8]) -> String {
     use sha2::{Digest, Sha256};
     let mut hasher = Sha256::new();

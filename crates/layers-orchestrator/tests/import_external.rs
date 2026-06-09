@@ -28,10 +28,7 @@ const FOREIGN_NSID: &str = "app.bsky.feed.post";
 const FOREIGN_RKEY: &str = "rk1";
 
 async fn boot_postgres() -> (testcontainers::ContainerAsync<Postgres>, PgPool) {
-    let container = Postgres::default()
-        .start()
-        .await
-        .expect("start postgres");
+    let container = Postgres::default().start().await.expect("start postgres");
     let port = container
         .get_host_port_ipv4(5432)
         .await
@@ -104,9 +101,7 @@ async fn import_fetches_from_pds_then_serves_from_cache() {
         .build();
     let app = build_router(state);
 
-    let uri_param = format!(
-        "at%3A%2F%2F{FOREIGN_DID}%2F{FOREIGN_NSID}%2F{FOREIGN_RKEY}"
-    );
+    let uri_param = format!("at%3A%2F%2F{FOREIGN_DID}%2F{FOREIGN_NSID}%2F{FOREIGN_RKEY}");
     let url = format!("/xrpc/pub.layers.integration.getExternal?uri={uri_param}");
 
     let resp = app
@@ -165,9 +160,7 @@ async fn missing_pds_endpoint_returns_400() {
         .build();
     let app = build_router(state);
 
-    let uri_param = format!(
-        "at%3A%2F%2F{FOREIGN_DID}%2F{FOREIGN_NSID}%2F{FOREIGN_RKEY}"
-    );
+    let uri_param = format!("at%3A%2F%2F{FOREIGN_DID}%2F{FOREIGN_NSID}%2F{FOREIGN_RKEY}");
     let url = format!("/xrpc/pub.layers.integration.getExternal?uri={uri_param}");
     let resp = app
         .oneshot(Request::builder().uri(&url).body(Body::empty()).unwrap())

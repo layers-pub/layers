@@ -5,7 +5,7 @@
 use axum::body::Body;
 use axum::http::{Request, StatusCode};
 use http_body_util::BodyExt;
-use layers_orchestrator::metrics::{install_recorder, REQUEST_LATENCY, REQUEST_TOTAL};
+use layers_orchestrator::metrics::{REQUEST_LATENCY, REQUEST_TOTAL, install_recorder};
 use layers_orchestrator::{AppState, build_router};
 use sqlx::postgres::PgPoolOptions;
 use tower::ServiceExt;

@@ -2,7 +2,7 @@
 //!
 //! XRPC clients expect errors as `{"error": "Code", "message": "..."}`,
 //! so [`ApiError`] renders to that envelope on `IntoResponse`. Codes
-//! follow the ATProto convention: `BadRequest`, `Unauthorized`,
+//! follow the `ATProto` convention: `BadRequest`, `Unauthorized`,
 //! `Forbidden`, `NotFound`, `InternalError`.
 
 use axum::Json;
@@ -77,8 +77,19 @@ impl IntoResponse for ApiError {
         let status = self.status();
         let code = self.code();
         let message = self.to_string();
-        let mut response = (status, Json(ErrorBody { error: code, message })).into_response();
-        if let Self::TooManyRequests { retry_after_secs, limit } = self {
+        let mut response = (
+            status,
+            Json(ErrorBody {
+                error: code,
+                message,
+            }),
+        )
+            .into_response();
+        if let Self::TooManyRequests {
+            retry_after_secs,
+            limit,
+        } = self
+        {
             use axum::http::{HeaderName, HeaderValue};
             let headers = response.headers_mut();
             let _ = headers.insert(
@@ -131,10 +142,7 @@ mod tests {
         let (status, _, body) = render(ApiError::BadRequest("missing uri".into())).await;
         assert_eq!(status, StatusCode::BAD_REQUEST);
         assert_eq!(body["error"], "BadRequest");
-        assert!(body["message"]
-            .as_str()
-            .unwrap()
-            .contains("missing uri"));
+        assert!(body["message"].as_str().unwrap().contains("missing uri"));
     }
 
     #[tokio::test]

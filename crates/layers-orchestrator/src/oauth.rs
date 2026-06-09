@@ -1,6 +1,6 @@
 //! OAuth client metadata endpoint.
 //!
-//! Per the ATProto OAuth spec, an appview that registers as an OAuth
+//! Per the `ATProto` OAuth spec, an appview that registers as an OAuth
 //! client publishes a JSON document at a stable URL describing itself
 //! (DID, redirect URIs, scopes, JWKS endpoint). This module renders
 //! that document at `/oauth/client-metadata.json` from
@@ -43,11 +43,11 @@ pub struct OAuthClientMetadata {
     pub application_type: String,
     /// Grant types this client supports.
     pub grant_types: Vec<String>,
-    /// Response types this client supports (`code` for ATProto OAuth).
+    /// Response types this client supports (`code` for `ATProto` OAuth).
     pub response_types: Vec<String>,
     /// Scope string — space-separated `include:` references.
     pub scope: String,
-    /// PAR-required flag (`true` per the ATProto profile).
+    /// PAR-required flag (`true` per the `ATProto` profile).
     pub require_pushed_authorization_requests: bool,
 }
 
@@ -132,7 +132,10 @@ mod tests {
     fn defaults_compute_callback_and_jwks() {
         let cfg = OAuthClientConfig::defaults_for("https://layers.pub/");
         let meta = cfg.into_metadata();
-        assert_eq!(meta.client_id, "https://layers.pub/oauth/client-metadata.json");
+        assert_eq!(
+            meta.client_id,
+            "https://layers.pub/oauth/client-metadata.json"
+        );
         assert_eq!(meta.jwks_uri, "https://layers.pub/.well-known/jwks.json");
         assert_eq!(
             meta.redirect_uris,

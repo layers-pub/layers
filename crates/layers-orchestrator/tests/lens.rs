@@ -39,10 +39,7 @@ use wiremock::{Mock, MockServer, ResponseTemplate};
 const FOREIGN_DID: &str = "did:plc:bobbobbobbobbobbobbobbob";
 
 async fn boot_postgres() -> (testcontainers::ContainerAsync<Postgres>, PgPool) {
-    let container = Postgres::default()
-        .start()
-        .await
-        .expect("start postgres");
+    let container = Postgres::default().start().await.expect("start postgres");
     let port = container
         .get_host_port_ipv4(5432)
         .await
@@ -61,10 +58,8 @@ async fn boot_postgres() -> (testcontainers::ContainerAsync<Postgres>, PgPool) {
 }
 
 fn applier_with_registered_lens() -> Arc<dyn LensApplier> {
-    let lens_uri = AtUri::parse(
-        "at://did:plc:lensowner/dev.panproto.schema.lens/margin-note-v1",
-    )
-    .unwrap();
+    let lens_uri =
+        AtUri::parse("at://did:plc:lensowner/dev.panproto.schema.lens/margin-note-v1").unwrap();
     Arc::new(
         PanprotoLensApplier::new(
             Arc::new(InMemoryResolver::new()),
@@ -225,7 +220,9 @@ async fn apply_lens_dispatches_into_panproto_runtime_for_registered_nsid() {
     let payload: serde_json::Value = serde_json::from_slice(&body).expect("json");
     let message = payload["message"].as_str().unwrap_or_default();
     assert!(
-        message.contains("apply_lens") || message.contains("not found") || message.contains("NotFound"),
+        message.contains("apply_lens")
+            || message.contains("not found")
+            || message.contains("NotFound"),
         "expected runtime-routed error; got: {message}"
     );
 }
