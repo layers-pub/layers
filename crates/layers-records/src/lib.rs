@@ -12,9 +12,9 @@
 #![allow(missing_docs)]
 
 pub use idiolect_records::{
-    AtUri, AtUriError, Cid, CidError, Datetime, DatetimeError, Did, DidError, DidMethod,
-    Language, LanguageError, Nsid, NsidError, OrAny, OrFamily, Record, RecordFamily, Uri,
-    UriError, detect_or_family_overlap,
+    AtUri, AtUriError, Cid, CidError, Datetime, DatetimeError, Did, DidError, DidMethod, Language,
+    LanguageError, Nsid, NsidError, OrAny, OrFamily, Record, RecordFamily, Uri, UriError,
+    detect_or_family_overlap,
 };
 
 /// Trait module re-export so generated `family.rs` can name `crate::family::RecordFamily`.
@@ -29,6 +29,13 @@ pub mod record {
 
 #[path = "generated/mod.rs"]
 pub mod generated;
+
+/// Generated NSID -> Postgres table map (see `crates/layers-codegen/src/tables.rs`).
+pub mod tables;
+
+/// Generated per-record wire field-name constants (see
+/// `crates/layers-codegen/src/fields.rs`).
+pub mod fields;
 
 pub use generated::family::{AnyRecord, LayersFamily, decode_record};
 pub use generated::*;
