@@ -13,9 +13,9 @@ Universal cross-referencing mechanism for resolving objects by multiple pathways
 
 ```typescript
 objectRef = {
-  localId?: string              // Local ID within a record (e.g., "token_0")
+  localId?: uuid                // uuid ({value: string}): UUID of an object within the same record
   recordRef?: AtUri             // Reference to an ATProto record
-  objectId?: string             // Opaque object identifier
+  objectId?: uuid               // uuid ({value: string}): UUID of an object within the recordRef'd record
   knowledgeRef?: knowledgeRef   // External knowledge base reference
 }
 ```
@@ -31,24 +31,28 @@ Polymorphic attachment point that specifies where an annotation applies. Differe
 
 ```typescript
 anchor = {
-  kind: "textSpan" | "tokenRef" | "tokenRefSequence" | "temporalSpan" |
-         "spatioTemporalAnchor" | "pageAnchor" | "externalTarget" | string
-  value: any  // Type depends on kind
-
-  // Common fields
-  sourceUri?: AtUri             // Reference to source document/media
-  selector?: W3CSelector | objectRef  // W3C selector or local reference
+  // Polymorphic: at least one anchoring field should be present.
+  // Consumers dispatch on which field(s) are populated.
+  textSpan?: span                          // Character/byte span in text
+  tokenRef?: tokenRef                       // Single token reference
+  tokenRefSequence?: tokenRefSequence       // Sequence of token references
+  temporalSpan?: temporalSpan               // Temporal span in audio/video
+  spatioTemporalAnchor?: spatioTemporalAnchor  // Spatio-temporal region in video
+  pageAnchor?: pageAnchor                    // Page and region in a paged document
+  externalTarget?: externalTarget            // External resource target (web page, document, etc.)
 }
 ```
 
-**Kinds**:
-- `textSpan`: `{byteStart: number, byteEnd: number}` UTF-8 byte offsets in text.
-- `tokenRef`: single token identifier (localId or recordRef).
-- `tokenRefSequence`: `{tokens: objectRef[]}` ordered sequence of tokens.
-- `temporalSpan`: `{start: number, end: number}` time in seconds (audio, video).
-- `spatioTemporalAnchor`: `{x, y, width, height, start, end}` region in video.
-- `pageAnchor`: `{page: number, x, y, width, height}` region in paged document.
-- `externalTarget`: external URL or resource identifier.
+W3C selectors are not carried directly on the anchor; they live inside `externalTarget` (see [W3C Selectors](#w3c-selectors)).
+
+**Fields**:
+- `textSpan`: the `span` type `{byteStart: integer, byteEnd: integer, charStart?: integer, charEnd?: integer}` (UTF-8 byte offsets; optional character offsets).
+- `tokenRef`: `{tokenizationId: uuid, tokenIndex: integer}` referencing a token by tokenization id and 0-based index.
+- `tokenRefSequence`: `{tokenizationId: uuid, tokenIndexes: integer[], anchorTokenIndex?: integer}` referencing possibly non-contiguous token indices within one tokenization.
+- `temporalSpan`: `{start: integer, ending: integer}` in milliseconds (audio, video).
+- `spatioTemporalAnchor`: `{temporalSpan, keyframes?: keyframe[], interpolation?}` where each `keyframe` is `{timeMs, bbox, features?}` (region tracked through video).
+- `pageAnchor`: `{page: integer, boundingBox?: boundingBox, textSpan?: span}` where `boundingBox` is `{x, y, width, height}` (region in a paged document).
+- `externalTarget`: external URL or resource identifier (carries an optional W3C selector).
 
 **W3C Compatibility**: Anchors can include W3C selectors (textQuoteSelector, textPositionSelector, fragmentSelector) for compatibility with Web Annotation clients.
 
@@ -58,18 +62,20 @@ DSL-agnostic expression for specifying constraints, conditions, or patterns:
 
 ```typescript
 constraint = {
-  expressionFormat: "xpath" | "jmespath" | "sparql" | "regex" | string
-  expression: string
-  scope?: string                 // "document" | "sentence" | "record" | etc.
-  context?: any                  // Additional context for evaluation
-  isNegative?: boolean           // Negation
+  expression: string             // The constraint expression (required)
+  expressionFormat?: "python-expr" | "json-logic" | "regex" | "sparql-filter" | "type-ref" | "custom"
+  expressionFormatUri?: AtUri    // AT-URI of the expression format definition node
+  scope?: "slot" | "template" | "cross-template" | "global"
+  scopeUri?: AtUri               // AT-URI of the scope definition node
+  context?: string[]             // Names of slots/variables this constraint ranges over (max 32)
+  description?: string           // Human-readable description
 }
 ```
 
 **Use cases**:
-- Dependency constraint: `{expressionFormat: "xpath", expression: "parent/dep_type='nsubj'"}`
+- Dependency constraint: `{expressionFormat: "python-expr", expression: "parent.dep_type == 'nsubj'"}`
 - Pattern constraint: `{expressionFormat: "regex", expression: "^[A-Z].*"}`
-- Semantic constraint: `{expressionFormat: "sparql", expression: "?x rdf:type :Person"}`
+- Semantic constraint: `{expressionFormat: "sparql-filter", expression: "?x rdf:type :Person"}`
 
 ## agentRef
 
@@ -185,7 +191,7 @@ spatialEntity = {
   type?: string                   // "point" | "box" | "polygon" | "line-string" | "circle" | ...
   geometryFormat?: string         // "wkt" | "geojson" | "svg-path" | "coco-polygon" | ...
   crs?: string                    // "pixel" | "percentage" | "wgs84" | "web-mercator" | ...
-  dimensions?: number             // 2 or 3
+  dimensions?: integer            // 2, 3, or 4 (minimum 2, maximum 4)
   uncertainty?: string            // "50m" | "10px" | "0.001deg"
 }
 
@@ -257,11 +263,12 @@ Many-to-many sequence correspondence for linking parallel annotations:
 
 ```typescript
 alignmentLink = {
-  source: objectRef[]           // Source sequence of objects
-  target: objectRef[]           // Target sequence of objects
-  alignmentType: string         // "1-1" | "1-n" | "n-1" | "n-m" | string
-  confidence?: number           // Alignment confidence
-  metadata?: annotationMetadata
+  sourceIndices?: integer[]     // Indices into the source sequence
+  targetIndices?: integer[]     // Indices into the target sequence
+  confidence?: integer          // Alignment confidence (0-1000)
+  label?: string                // Optional label (e.g., alignment type, max 256 chars)
+  knowledgeRefs?: knowledgeRef[] // Knowledge graph references for this link (max 8)
+  features?: featureMap         // Open-ended per-link attributes
 }
 ```
 
@@ -276,20 +283,19 @@ Layers supports W3C Web Annotation selectors for compatibility with existing too
 
 ```typescript
 textQuoteSelector = {
-  type: "TextQuoteSelector"
   exact: string                 // Exact text match
   prefix?: string               // Context before match
   suffix?: string               // Context after match
 }
 
 textPositionSelector = {
-  type: "TextPositionSelector"
   byteStart: number             // UTF-8 byte offset
   byteEnd: number
+  charStart?: number            // Optional character offset (for character-offset datasets)
+  charEnd?: number
 }
 
 fragmentSelector = {
-  type: "FragmentSelector"
   value: string                 // Fragment identifier (e.g., "xywh=100,50,200,150")
   conformsTo?: string           // Media type (e.g., "http://www.w3.org/TR/media-frags/")
 }

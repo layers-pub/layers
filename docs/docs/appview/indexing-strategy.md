@@ -46,7 +46,7 @@ Each `expression` record is written to PostgreSQL, Elasticsearch, and Neo4j.
 
 ### Segmentation Indexing
 
-**PostgreSQL only.** Extract `expression` (the referenced expression AT-URI), `strategy`, and computed `tokenCount`. Segmentation data (token arrays) is stored in the JSONB `record` column and queried through the expression it belongs to.
+**PostgreSQL only.** Extract `expression` (the referenced expression AT-URI) and computed `tokenCount` from the `tokenizations` array. Segmentation data (token arrays) is stored in the JSONB `record` column and queried through the expression it belongs to.
 
 Segmentations are not indexed in ES or Neo4j because they are always accessed through their parent expression, never searched independently.
 
@@ -113,7 +113,7 @@ Other resource types (`template`, `filling`, `templateComposition`, `collectionM
 
 The `graph.*` namespace is the primary driver for Neo4j.
 
-**graphNode:** Each node becomes a Neo4j node labeled by its `kind` (entity, concept, situation, state, time, location, claim). `knowledgeRefs` create edges to external KB identifier nodes.
+**graphNode:** Each node becomes a Neo4j node labeled by its `nodeType` (entity, concept, situation, state, time, location, claim, proposition, custom). `knowledgeRefs` create edges to external KB identifier nodes.
 
 **graphEdge:** Each edge becomes a Neo4j relationship between its `source` and `target` objects, typed by the edge's `edgeType`. Confidence scores and metadata are stored as relationship properties.
 
@@ -139,14 +139,14 @@ Every AT-URI reference field in every record is extracted and written to the `cr
 | `parentRef` | expression | `parentRef` |
 | `mediaRef` | expression | `mediaRef` |
 | `expressionRef` | segmentation, annotationLayer | `expression` |
-| `segmentationRef` | annotationLayer | `segmentation` |
+| `tokenizationId` | annotationLayer | `tokenizationId` |
 | `ontologyRef` | annotationLayer | `ontologyRef` |
-| `personaRef` | annotationLayer | `personaRef` |
-| `corpusRef` | membership | `corpus` |
+| `personaRef` | annotationLayer | `metadata.personaRef` |
+| `corpusRef` | membership | `corpusRef` |
 | `experimentRef` | judgmentSet, agreementReport | `experimentRef` |
-| `templateRef` | filling, templateComposition | `templateRef` |
+| `templateRef` | filling, templateComposition | `templateRef` (filling), `members[].templateRef`, `members[].compositionRef` (templateComposition) |
 | `graphTarget` | graphEdge | `target` |
-| `eprintLink` | dataLink | `eprintRef`, `dataRef` |
+| `eprintLink` | dataLink | `eprintUri`, `corpusRef`, `expressionRefs`, `annotationRefs` |
 | `subjectRef` | changelog.entry | `subject` |
 | `changeTarget` | changelog.entry | `sections[].items[].targets[]` |
 

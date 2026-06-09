@@ -34,7 +34,7 @@ Layers fully subsumes ISO-Space through three mechanisms:
 | `PLACE.latLong` | `spatialEntity.geometry` with `crs="wgs84"` | WKT POINT: `"POINT(lat lon)"` |
 | `PLACE.dcl` (document creation location) | `spatialExpression.function="document-location"` | Parallel to TimeML's `functionInDocument` |
 | `SPATIAL_ENTITY` (non-place) | `annotation` with `subkind="spatial-expression"` + `spatial` field | Non-place spatial entities (objects with spatial extent). `spatial.type` varies by entity nature. |
-| `SPATIAL_ENTITY.dimensionality` | `spatialEntity.dimensions` | 2 or 3 |
+| `SPATIAL_ENTITY.dimensionality` | `spatialEntity.dimensions` | 2, 3, or 4 (minimum 2, maximum 4) |
 | `SPATIAL_ENTITY.form` | `annotation.features` | Shape description (e.g., "linear", "areal", "volumetric") |
 
 ### Spatial Signals

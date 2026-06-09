@@ -639,7 +639,7 @@ The `experimentDef` record specifies the full experimental design, including lis
 | `latin-square` | Each participant sees one condition per item; all conditions equally represented | `numConditions`, `numLists` |
 | `no-adjacent-same-condition` | Prevent consecutive items from the same condition | `minDistance` |
 | `balanced-frequency` | Control the ratio of experimental to filler items | Per-type counts |
-| `min-distance` | Minimum distance between items of the same type | `minDistance`, `targetProperty` |
+| `minimum-distance` | Minimum distance between items of the same type | `minDistance`, `targetProperty` |
 
 ### Distribution and Item Order
 
@@ -753,7 +753,7 @@ The `agreementReport` record summarizes inter-annotator agreement across judgmen
     "at://did:plc:annotator2/pub.layers.judgment.judgmentSet/ner-batch1"
   ],
   "metric": "cohens-kappa",
-  "value": 8200,
+  "value": 820,
   "numAnnotators": 2,
   "numItems": 500
 }
@@ -771,7 +771,7 @@ The `agreementReport` record summarizes inter-annotator agreement across judgmen
     "at://did:plc:annotator3/pub.layers.judgment.judgmentSet/nat-batch1"
   ],
   "metric": "krippendorff-alpha",
-  "value": 7100,
+  "value": 710,
   "numAnnotators": 3,
   "numItems": 200
 }

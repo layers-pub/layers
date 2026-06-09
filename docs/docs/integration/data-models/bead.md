@@ -45,7 +45,7 @@ bead defines abstract interfaces that unify heterogeneous frame ontology resourc
 | bead Concept | Layers Equivalent | Notes |
 |---|---|---|
 | Frame instance (SRL) | `pub.layers.annotation.annotationLayer` with `kind="span"`, `subkind="frame"` | Frame instances annotated in text. `annotation.label` holds the frame name; `annotation.ontologyTypeRef` points to the `typeDef`. |
-| Role filler | `pub.layers.annotation.defs#argumentRef` | `argumentRef.role` is the role label; `argumentRef.annotationId` points to the filler span annotation. |
+| Role filler | `pub.layers.annotation.defs#argumentRef` | `argumentRef.role` is the role label; `argumentRef.target` (a `pub.layers.defs#objectRef`) points to the filler span annotation, using `localId` for same-layer or `recordRef`+`objectId` for cross-layer references. |
 | PropBank-style SRL | `formalism="PropBank"` on the annotationLayer | `annotation.label` = roleset ID (e.g., `buy.01`); arguments use ARG0, ARG1, etc. |
 | FrameNet-style SRL | `formalism="FrameNet"` on the annotationLayer | `annotation.label` = frame name; arguments use frame element names. |
 | VerbNet-style | `formalism="VerbNet"` on the annotationLayer | `annotation.label` = verb class; arguments use thematic role names. |
@@ -120,7 +120,7 @@ bead's stimulus construction pipeline maps to Layers as a chain of AT-URI refere
 4. **Materialize items**: Create `expression` records from rendered text; set `filling.expressionRef` to link back
 5. **Annotate items**: Create `annotation.annotationLayer` records on the expressions (labeled spans, span relations)
 6. **Run experiment**: Create `judgment.experimentDef` with `templateRefs` pointing to the templates and `collectionRefs` to the filler pools
-7. **Collect judgments**: Annotators create `judgment.judgmentSet` records; each `judgment` has `itemRef` → expression and `fillingRef` → filling
+7. **Collect judgments**: Annotators create `judgment.judgmentSet` records; each `judgment` has `item` (an objectRef whose `recordRef`/`objectId`/`localId` points at the judged expression) and `fillingRef` → filling
 8. **Analyze**: `judgment.agreementReport` summarizes inter-annotator agreement
 
 Every step is a separate ATProto record linked by AT-URI, enabling full provenance tracing from judgment back through filling to template to lexicon to entry.

@@ -24,7 +24,7 @@ NAF is a layered stand-off annotation format designed for NLP pipeline interoper
 | NAF Element | Layers Equivalent | Notes |
 |---|---|---|
 | `<text>` layer | `pub.layers.expression.text` | Raw text. |
-| `<wf>` (word form) | `pub.layers.expression.expression` (kind: `token`) | Tokens with byte offsets. `@offset` → `token.textSpan.byteStart`; `@length` → derived from text; `@sent` → sentence grouping. The import pipeline converts character offsets to byte offsets at import time. |
+| `<wf>` (word form) | `pub.layers.expression.expression` (kind: `word`) | Tokens with byte offsets. `@offset` → `anchor.textSpan.byteStart`; `@length` → derived from text; `@sent` → sentence grouping. The import pipeline converts character offsets to byte offsets at import time. |
 
 ### Terms Layer
 
@@ -53,7 +53,7 @@ NAF is a layered stand-off annotation format designed for NLP pipeline interoper
 |---|---|---|
 | `<deps>` layer | `annotationLayer(kind="graph", subkind="dependency")` | Dependency parse. |
 | `<dep @rfunc>` | `annotation.label` | Dependency relation label. |
-| `<dep @from @to>` | `annotation.headIndex` / `annotation.tokenIndex` | Governor and dependent. |
+| `<dep @from @to>` | `annotation.headIndex` / `annotation.targetIndex` | Governor and dependent. |
 
 ### Constituency Layer
 
@@ -79,7 +79,7 @@ NAF is a layered stand-off annotation format designed for NLP pipeline interoper
 | `<srl>` layer | `annotationLayer(kind="span", subkind="frame")` | Semantic role labeling. |
 | `<predicate>` | `annotation` (frame instance) | `@uri` → `annotation.knowledgeRefs` (PropBank/NomBank). |
 | `<role @semRole>` | `argumentRef.role` | Semantic role label (ARG0, ARG1, ARGM-TMP, etc.). |
-| `<role><span>` | `argumentRef.annotationId` → span annotation | The span filling the role. |
+| `<role><span>` | `argumentRef.target` (an objectRef) → span annotation | The span filling the role. |
 
 ### Coreference Layer
 
@@ -87,7 +87,7 @@ NAF is a layered stand-off annotation format designed for NLP pipeline interoper
 |---|---|---|
 | `<coreferences>` layer | `pub.layers.annotation.clusterSet(kind="coreference")` | Coreference chains. |
 | `<coref>` | `cluster` | A coreference chain. `@type` → `cluster.features`. |
-| `<span>` (within coref) | `cluster.memberIds` → annotation UUIDs | Mentions in the chain. |
+| `<span>` (within coref) | `cluster.members` → array of objectRef referencing annotations | Mentions in the chain. |
 
 ### Opinion Layer
 

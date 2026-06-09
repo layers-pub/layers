@@ -9,7 +9,7 @@ Layers integrates with external systems at two levels: data model compatibility 
 
 ## Data Model Integration
 
-Layers maps the data models of 16 annotation frameworks to its lexicon system. Each mapping demonstrates that Layers' primitives can represent the framework's output without information loss. See [Data Models](./data-models/) for the full list.
+Layers maps the data models of 18 annotation frameworks to its lexicon system. Each mapping demonstrates that Layers' primitives can represent the framework's output without information loss. See [Data Models](./data-models/) for the full list.
 
 ## ATProto Ecosystem
 

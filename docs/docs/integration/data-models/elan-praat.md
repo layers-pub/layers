@@ -52,7 +52,7 @@ ELAN and Praat are the two most widely used tools for time-aligned linguistic an
 
 | ELAN Feature | Layers Equivalent | Notes |
 |---|---|---|
-| Media descriptors | `pub.layers.media.media` record | Audio/video file references. ELAN's `MEDIA_DESCRIPTOR` → `media.externalUri` or `media.blob`. Audio metadata (`sampleRate`, `channels`, `bitDepth`, `codec`, `speakerCount`) is stored as first-class fields. `transcriptRef` links to the expression containing the transcript; `segmentationRef` links to its segmentation. |
+| Media descriptors | `pub.layers.media.media` record | Audio/video file references. ELAN's `MEDIA_DESCRIPTOR` → `media.externalUri` or `media.blob`. Audio metadata (`sampleRate`, `channels`, `bitDepth`, `codec`, `speakerCount`) is stored in the composable `audioInfo` object on the media record's `audio` field. `transcriptRef` links to the expression containing the transcript; `segmentationRef` links to its segmentation (both also in `audioInfo`). |
 | Linked files | `pub.layers.expression.features` or `sourceRef` | Additional linked resources. |
 | Author/date | `pub.layers.defs#annotationMetadata` | Creation metadata. |
 | License | `pub.layers.corpus.corpus.license` (at corpus level) | Licensing information. |

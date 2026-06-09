@@ -26,7 +26,7 @@ NIF is an RDF/Linked Data-based format for representing NLP annotations as web r
 | `nif:Context` | `pub.layers.expression.expression` | The document/text being annotated. NIF's `nif:isString` → `expression.text`. |
 | `nif:String` (base class) | `pub.layers.annotation.defs#annotation` | Any annotated substring. NIF identifies strings by URI (offset-based); Layers uses UUID + character span anchoring. |
 | `nif:RFC5147String` / `nif:OffsetBasedString` | `pub.layers.defs#span` | Offset-based string identification. NIF's `nif:beginIndex`/`nif:endIndex` → `span.byteStart`/`span.byteEnd`. The import pipeline converts character offsets to UTF-8 byte offsets at import time. |
-| `nif:Word` | `pub.layers.expression.expression` (kind: `token`) | Word-level string. |
+| `nif:Word` | `pub.layers.expression.expression` (kind: `word`) | Word-level string. |
 | `nif:Sentence` | `pub.layers.expression.expression` (kind: `sentence`) | Sentence-level string. |
 | `nif:Phrase` | `pub.layers.annotation.defs#annotation` with `kind="span"` | Phrase/constituent annotation. |
 | `nif:Title` / `nif:Paragraph` | `pub.layers.expression.expression` (kind: `section`) | Document structure elements. |
@@ -50,7 +50,7 @@ NIF is an RDF/Linked Data-based format for representing NLP annotations as web r
 
 | NIF Feature | Layers Equivalent | Notes |
 |---|---|---|
-| `itsrdf:taIdentRef` (entity linking) | `annotation.knowledgeRefs` with `source="wikidata"` or `source="dbpedia"` | Entity linking to Linked Data resources. NIF's DBpedia/Wikidata URIs → Layers `knowledgeRef.uri` + `knowledgeRef.identifier`. |
+| `itsrdf:taIdentRef` (entity linking) | `annotation.knowledgeRefs` with `source="wikidata"` (or `source="custom"` for DBpedia, with the DBpedia URI in `knowledgeRef.uri`) | Entity linking to Linked Data resources. NIF's Wikidata URIs → Layers `knowledgeRef.uri` + `knowledgeRef.identifier`; DBpedia URIs use the `custom` source slug since DBpedia is not a recognized source value. |
 | `itsrdf:taClassRef` | `annotation.ontologyTypeRef` + `knowledgeRefs` | Entity type from an ontology. |
 | `itsrdf:taConfidence` | `annotation.confidence` | Entity linking confidence (scaled 0-1000). |
 | OLiA ontology references | `annotationLayer.ontologyRef` or `annotation.knowledgeRefs` | Links to the Ontologies of Linguistic Annotation for tagset normalization. |

@@ -17,6 +17,7 @@ This project follows [Semantic Versioning](https://semver.org/).
 - Corrected `featureMap` examples across the judgment-data, knowledge-grounding, and psycholinguistic-data guides to the `entries` array of string-valued features.
 - Added a recommended anonymized crowd-worker id convention (salted keyed hash) to the judgment-data guide.
 - Updated the `defs`, `judgment`, and `persona` lexicon reference docs for the `digest` convention and the `guidelinesFormat` field.
+- Comprehensive accuracy audit of all 71 documentation pages against the lexicons, correcting 188 verified discrepancies across 54 files: stale field names (e.g. `record.lang` -> `language`, `segmentation`/`sourceUrl` -> `expression`/`tokenizationId`), wrong types and scales (confidence is an integer 0-1000, not a 0-1 float), incorrect `knownValues` (uppercase/underscore link types corrected to kebab-case; non-existent enum members removed), the `anchor` primitive's true polymorphic shape, and out-of-date counts and cross-references.
 
 ## [0.6.0] - 2026-03-19
 

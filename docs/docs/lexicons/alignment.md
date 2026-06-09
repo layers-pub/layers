@@ -42,17 +42,18 @@ Retrieve a single alignment record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the alignment record. |
 
-**Output**: The alignment record object.
+**Output**: `{ uri, cid, value }` where `value` is the alignment record object.
 
 ### listAlignments
 **NSID:** `pub.layers.alignment.listAlignments`
 
-List alignment records in a repository with pagination.
+List alignments for a given expression context (required `expression` AT-URI) with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `expression` | at-uri (required) | The AT-URI of the expression context to list alignments for. |
+| `kind` | string | Filter by alignment kind slug (maxLength 128). |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: alignment[], cursor?: string }`
+**Output**: `{ records: { uri, cid, value }[], cursor?: string }` where `value` is the alignment record.

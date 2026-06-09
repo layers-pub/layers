@@ -24,7 +24,7 @@ A linguistic resource entry: a lexical item, frame element filler, morphological
 | `features` | ref | Open-ended features: pos, morphological features, frequency, register, etc. Ref: `pub.layers.defs#featureMap` |
 | `components` | array | For multi-word expressions: the component words. Array of ref: `pub.layers.resource.defs#mweComponent` |
 | `mweKindUri` | at-uri | AT-URI of the MWE kind definition node. Community-expandable via knowledge graph. |
-| `mweKind` | string | MWE kind slug (fallback). Known values: `compound`, `phrasal-verb`, `idiom`, `light-verb`, `inherently-reflexive`, `verb-particle`, `collocation`, `custom` |
+| `mweKind` | string | MWE kind slug (fallback). Known values: `compound`, `phrasal-verb`, `idiom`, `light-verb`, `named-entity`, `collocation`, `custom` |
 | `sourceRef` | at-uri | AT-URI of the source record this entry was derived from. |
 | `metadata` | ref | Provenance: who created this entry, with what tool. Ref: `pub.layers.defs#annotationMetadata` |
 | `createdAt` | datetime | Record creation timestamp. |
@@ -144,12 +144,10 @@ A composition of templates into sequences or trees. Enables building complex sti
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `name` | string | Human-readable name for this composition. |
-| `description` | string | Description of the composition. |
 | `compositionTypeUri` | at-uri | AT-URI of the composition type definition node. Community-expandable via knowledge graph. |
-| `compositionType` | string | Composition type slug (fallback). Known values: `sequence`, `tree`, `custom` |
+| `compositionType` | string | Composition type slug (fallback). Known values: `sequence`, `tree`, `parallel`, `alternation`, `custom` |
 | `members` | array | The template members in order. Array of ref: `pub.layers.resource.defs#templateMember` |
-| `constraints` | array | Cross-member constraints. Array of ref: `pub.layers.defs#constraint` |
+| `experimentRef` | at-uri | Reference to the experiment this composition was designed for. |
 | `metadata` | ref | Ref: `pub.layers.defs#annotationMetadata` |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
@@ -166,7 +164,6 @@ A single member in a template composition, referencing a template or another com
 | `compositionRef` | at-uri | AT-URI of a nested templateComposition (for tree structures). |
 | `label` | string | Label for this member's role in the composition (e.g., 'context', 'target', 'question'). |
 | `ordinal` | integer | Position in the sequence. |
-| `required` | boolean | Whether this member must be present. |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 
 ### mweComponent
@@ -203,7 +200,8 @@ List resource entry records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `repo` | at-identifier (required) | DID or handle of the repository. |
+| `language` | string | Optional filter by BCP-47 language tag. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
@@ -227,7 +225,7 @@ List collection records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `repo` | at-identifier (required) | DID or handle of the repository. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
@@ -251,7 +249,7 @@ List template records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `repo` | at-identifier (required) | DID or handle of the repository. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
@@ -275,7 +273,8 @@ List filling records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `templateRef` | at-uri (required) | AT-URI of the template whose fillings to list. |
+| `strategy` | string | Optional filter by filling strategy. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
@@ -299,7 +298,7 @@ List template composition records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `repo` | at-identifier (required) | DID or handle of the repository. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
@@ -323,7 +322,7 @@ List collection membership records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `collectionRef` | at-uri (required) | AT-URI of the collection whose memberships to list. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 

@@ -28,7 +28,7 @@ Format: `T{id}\t{type} {start} {end}\t{text}`
 | T-annotation | `pub.layers.annotation.defs#annotation` with `anchor.textSpan` | A labeled span of text. `{type}` → `annotation.label`; `{start}/{end}` → `anchor.textSpan.byteStart`/`anchor.textSpan.byteEnd`. The import pipeline converts character offsets to byte offsets at import time. |
 | Discontinuous spans | `anchor.tokenRefSequence` with non-contiguous indices | brat represents discontinuous spans as `{start1} {end1};{start2} {end2}`. Layers uses `tokenRefSequence` with non-contiguous `tokenIndexes`, or multiple character spans in features. |
 | Entity annotations | `annotationLayer(kind="span", subkind="entity-mention")` | Named entities, gene mentions, chemical names, etc. |
-| Trigger annotations | `annotationLayer(kind="span", subkind="event-mention")` | Event triggers (the text that evokes an event). |
+| Trigger annotations | `annotationLayer(kind="span", subkind="frame")` | Event triggers (the text that evokes an event). |
 
 ### Events (E)
 
@@ -36,10 +36,10 @@ Format: `E{id}\t{type}:{trigger} {role1}:{arg1} {role2}:{arg2}...`
 
 | brat Feature | Layers Equivalent | Notes |
 |---|---|---|
-| Event | `pub.layers.annotation.defs#annotation` with `kind="span"`, `subkind="event-mention"` or `subkind="frame"` | Event instance with trigger span and argument roles. |
+| Event | `pub.layers.annotation.defs#annotation` with `kind="span"`, `subkind="frame"` or `subkind="predicate"` | Event instance with trigger span and argument roles. |
 | Event type | `annotation.label` | Event type (e.g., `Phosphorylation`, `Binding`, `Gene_expression`). |
 | Event trigger | `annotation.anchor` | The text span that triggers/evokes the event. |
-| Event arguments | `annotation.arguments[]` as `argumentRef` | `{role}:{arg}` pairs map to `argumentRef.role` and `argumentRef.annotationId`. |
+| Event arguments | `annotation.arguments[]` as `argumentRef` | `{role}:{arg}` pairs map to `argumentRef.role` and `argumentRef.target` (an objectRef, using localId for same-layer or recordRef+objectId for cross-layer references). |
 | Nested events | `argumentRef` pointing to another event annotation | brat allows events as arguments to other events. Layers's `argumentRef` can reference any annotation by UUID, supporting arbitrary nesting. |
 
 ### Attributes (A)
@@ -70,7 +70,7 @@ Format: `*\t{type} {id1} {id2} ...`
 
 | brat Feature | Layers Equivalent | Notes |
 |---|---|---|
-| Equivalence set | `pub.layers.annotation.clusterSet` | Groups of equivalent annotations (coreference, etc.). `{type}` → `clusterSet.kind`; `{id1} {id2}...` → `cluster.memberIds`. |
+| Equivalence set | `pub.layers.annotation.clusterSet` | Groups of equivalent annotations (coreference, etc.). `{type}` → `clusterSet.kind`; `{id1} {id2}...` → `cluster.members` (an array of objectRef). |
 
 ### Normalization (N)
 
@@ -102,7 +102,7 @@ Format: `#{id}\t{type} {target}\t{text}`
 A brat `.ann` file converts to Layers records as follows:
 
 1. The `.txt` file becomes a `pub.layers.expression.expression` record
-2. T-annotations become annotations in appropriate layers (entity-mention, event-mention, etc.), grouped by type
+2. T-annotations become annotations in appropriate layers (entity-mention, frame, etc.), grouped by type
 3. E-annotations become annotations with `kind="span"` and `arguments` referencing trigger and argument annotations
 4. A-annotations become features on their target annotations
 5. R-annotations become annotations in a relation layer or `pub.layers.graph.defs#graphEdgeEntry` entries

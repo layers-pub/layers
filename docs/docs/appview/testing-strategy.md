@@ -162,7 +162,7 @@ For each of the 26 record types:
 
 ### XRPC Protocol Compliance
 
-For each of the 38+ XRPC query endpoints:
+For each of the 53+ XRPC query endpoints:
 1. Verify correct parameter validation (required fields, type checking)
 2. Verify correct error codes (404 for missing records, 400 for invalid params)
 3. Verify cursor-based pagination produces complete, non-overlapping result sets

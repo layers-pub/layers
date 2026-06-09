@@ -11,19 +11,19 @@ Layers is guided by ten principles that ensure it remains modular, interoperable
 
 Layers makes no commitment to any linguistic theory. All labels, categories, types, and formalisms are represented as **data values**, not schema. This allows researchers working in different theoretical frameworks to use the same schema to represent their annotations.
 
-> A part-of-speech tag is stored as a string value (e.g., `"NOUN"`, `"V_TRANS"`, `"PART_SPEECH"`) with an optional `typeUri` pointing to an authority record. The schema does not privilege one tagset (Penn Treebank, Universal Dependencies, EAGLES) over another.
+> A part-of-speech tag is stored as a string value (e.g., `"NOUN"`, `"V_TRANS"`, `"PART_SPEECH"`) with an optional `ontologyTypeRef` pointing to a type definition in a pub.layers.ontology. The schema does not privilege one tagset (Penn Treebank, Universal Dependencies, EAGLES) over another.
 
 ## 2. Abstract and Modular
 
 Rather than defining dozens of specialized record types (OneRecord for POS tagging, AnotherRecord for NER, ThirdRecord for SRL), Layers defines a **single annotation type** discriminated by enumerated `kind` and `subkind` fields. All annotation logic flows through the same schema, reducing duplication and making composition transparent.
 
-> A token-level POS tag, a span-level named entity, and a sentence-level sentiment annotation all use the same `pub.layers.annotation.annotationLayer` record type, differing only in `kind` ("token", "span", "sentence"), `subkind` ("pos-tag", "named-entity", "sentiment"), and their anchors.
+> A token-level POS tag, a span-level named entity, and a sentence-level sentiment annotation all use the same `pub.layers.annotation.annotationLayer` record type, differing only in `kind` ("token-tag", "span", "document-tag"), `subkind` ("pos", "ner", "sentiment"), and their anchors.
 
 ## 3. Stand-Off Architecture
 
 Annotations never modify source text or assume a mutable document. Instead, annotations **reference source by offset, UUID, or temporal span**. This ensures source data remains immutable and annotations can accumulate, contradict, and coexist without conflicts.
 
-> A token annotation references its source via an anchor specifying text offsets `{start: 45, end: 52}` in a source document. A revision to the source document gets a new UUID; annotations can track both the source UUID and the offsets for robustness.
+> A token annotation references its source via an anchor specifying text offsets `{byteStart: 45, byteEnd: 52}` in a source document. A revision to the source document gets a new UUID; annotations can track both the source UUID and the offsets for robustness.
 
 ## 4. Recursive Composition
 
@@ -35,7 +35,7 @@ Annotations can reference other annotations across layers and records. This allo
 
 Annotations apply to text, audio, video, image, and paged documents through a **polymorphic anchor type**. The same annotation schema works across modalities by switching the anchor kind (textSpan, temporalSpan, spatioTemporalAnchor, pageAnchor, etc.). See the [Multimodal Annotation guide](../guides/multimodal-annotation.md) for practical examples.
 
-> A speech transcription uses temporal anchors `{start: 12.5, end: 15.3}` in seconds, and a POS tag in that transcription anchors to the same time span. An image analysis uses spatial anchors `{x: 100, y: 50, width: 200, height: 150}`, and a caption annotation anchors the same way.
+> A speech transcription uses temporal anchors `{start: 12500, ending: 15300}` in milliseconds, and a POS tag in that transcription anchors to the same time span. An image analysis uses spatial anchors `{x: 100, y: 50, width: 200, height: 150}`, and a caption annotation anchors the same way.
 
 ## 6. Knowledge-Grounded
 
@@ -47,7 +47,7 @@ Every major annotation type includes a `knowledgeRefs` field for linking to exte
 
 Layers integrates with eprint platforms (including chive.pub, a decentralized eprint service built on ATProto). Annotation datasets and corpus releases are published as eprints; individual annotations can reference back to associated publications. Researchers can find annotation datasets by searching for papers, or browse all annotations on a paper.
 
-> A named entity corpus release is published as an eprint with full metadata (authors, abstract, publication venue). Annotation records link back to the eprint via an `eprintUri`. Researchers can discover the corpus by searching the publication platform.
+> A named entity corpus release is published as an eprint with full metadata (authors, abstract, publication venue). Annotation datasets link back to the eprint via `eprintRefs` (corpus records) or `eprintRef` (expression records). Researchers can discover the corpus by searching the publication platform.
 
 ## 8. Interoperable
 

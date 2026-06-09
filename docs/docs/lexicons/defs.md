@@ -197,7 +197,7 @@ Anchor to a specific page and region in a paged document (PDF, etc.). Compatible
 |-------|------|-------------|
 | `page` | integer | 0-indexed page number. |
 | `boundingBox` | ref | Ref: `#boundingBox` |
-| `textSpan` | ref | UTF-8 byte offsets within the page text. Ref: `#span` |
+| `textSpan` | ref | Character offsets within the page text. Ref: `#span` |
 
 ### textQuoteSelector
 **Type:** Object
@@ -251,7 +251,7 @@ Abstract anchor: how an annotation attaches to its source data. This is a polymo
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `textSpan` | ref | Byte-offset span in the expression text. Ref: `#span` |
+| `textSpan` | ref | Character-offset span in the expression text. Ref: `#span` |
 | `tokenRef` | ref | Single token reference. Ref: `#tokenRef` |
 | `tokenRefSequence` | ref | Sequence of token references (possibly non-contiguous). Ref: `#tokenRefSequence` |
 | `temporalSpan` | ref | Temporal span in audio/video. Ref: `#temporalSpan` |

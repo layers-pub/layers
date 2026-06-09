@@ -42,7 +42,7 @@ Retrieve a single persona record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the persona record. |
 
-**Output**: The persona record object.
+**Output**: An object `{ uri, cid, value: persona }` where `value` is the persona record.
 
 ### listPersonas
 **NSID:** `pub.layers.persona.listPersonas`
@@ -51,8 +51,10 @@ List persona records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `repo` | at-identifier (required) | The DID or handle of the repository. |
+| `domain` | string | Optional filter by domain slug. |
+| `kind` | string | Optional filter by persona kind slug. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: persona[], cursor?: string }`
+**Output**: `{ records: { uri, cid, value: persona }[], cursor?: string }` (each entry is a recordView wrapping the persona).

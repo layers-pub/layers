@@ -56,7 +56,7 @@ A Seams annotation targeting the same URL looks like:
 }
 ```
 
-Seams' `textQuoteSelector` is structurally compatible with Layers' `pub.layers.defs#textQuoteSelector` (`exact`, `prefix`, `suffix`) and `pub.layers.defs#textPositionSelector` (`start`, `end`). This means text regions identified by Seams annotations and Layers segmentations can be aligned without lossy conversion.
+Seams' `textQuoteSelector` is structurally compatible with Layers' `pub.layers.defs#textQuoteSelector` (`exact`, `prefix`, `suffix`) and `pub.layers.defs#textPositionSelector` (`byteStart`, `byteEnd`). This means text regions identified by Seams annotations and Layers segmentations can be aligned without lossy conversion.
 
 ## Layers Types Involved
 
@@ -65,7 +65,7 @@ Seams' `textQuoteSelector` is structurally compatible with Layers' `pub.layers.d
 | `pub.layers.expression.expression` | `sourceUrl` matches the Seams annotation target URL |
 | `pub.layers.defs#externalTarget` | References the same external web resource |
 | `pub.layers.defs#textQuoteSelector` | W3C-compatible text selection, structurally matches Seams selectors |
-| `pub.layers.defs#textPositionSelector` | W3C-compatible offset selection (`start`/`end`) |
+| `pub.layers.defs#textPositionSelector` | W3C-compatible offset selection (`byteStart`/`byteEnd`) |
 | `pub.layers.annotation.annotationLayer` | Linguistic annotation layers over the same content |
 
 ## Discovery

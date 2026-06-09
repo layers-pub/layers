@@ -167,7 +167,7 @@ Any linguistic unit, from a single morpheme to a full document, with recursive n
 
 **Used by**: All downstream layers
 
-**Directory**: `schemas/pub/layers/expression/` (expression.json, defs.json, get/list queries)
+**Directory**: `schemas/pub/layers/expression/` (expression.json, get/list queries)
 
 ### pub.layers.segmentation (Tokenization)
 
@@ -307,7 +307,7 @@ Agent personas, theoretical frameworks, methodological backgrounds:
 
 **Depends on**: `pub.layers.defs`
 
-**Used by**: `pub.layers.annotation` (via agentRef.personaRef)
+**Used by**: `pub.layers.annotation` (via annotationMetadata.personaRef)
 
 **Directory**: `schemas/pub/layers/persona/` (persona.json, get/list queries)
 
@@ -384,7 +384,7 @@ For each record NSID `pub.layers.<namespace>.<record>`, two query lexicons are g
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository to list records from |
+| `repo` | at-identifier (required) | The DID or handle of the repository to list records from |
 | `limit` | integer | Maximum number of records to return (1-100, default 50) |
 | `cursor` | string | Pagination cursor from previous response |
 

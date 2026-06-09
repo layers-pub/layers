@@ -29,9 +29,11 @@ Semble records live in user PDSes under the `network.cosmik.*` namespace. Layers
 ```json
 {
   "$type": "pub.layers.expression.expression",
+  "id": "abc123",
   "sourceRef": "at://did:plc:researcher/network.cosmik.item/abc123",
   "text": "...",
-  "kind": "document"
+  "kind": "document",
+  "createdAt": "2026-01-01T00:00:00Z"
 }
 ```
 

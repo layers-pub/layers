@@ -27,7 +27,7 @@ Salt is a graph-based meta-model for linguistic annotation that serves as the co
 | `SDocumentGraph` | All annotation layers + expression hierarchy + segmentation (tokenization) for an expression | The set of all annotations over a document. Structural hierarchy is represented by expression records with `parentRef`; tokenization is in segmentation records. |
 | `SCorpus` | `pub.layers.corpus.corpus` | Corpus container. |
 | `SCorpusGraph` | Corpus membership records | Corpus hierarchy. |
-| `STextualDS` (textual data source) | `pub.layers.expression.text` | Primary text data. The SofA. |
+| `STextualDS` (textual data source) | `pub.layers.expression.expression` (`text` field) | Primary text data. The SofA. |
 | `SMedialDS` (media data source) | `pub.layers.media.media` | Audio/video primary data. |
 | `STimeline` | Implicit in `pub.layers.defs#temporalSpan` | Salt's timeline for spoken data alignment. Time points map to millisecond values. |
 
@@ -35,7 +35,7 @@ Salt is a graph-based meta-model for linguistic annotation that serves as the co
 
 | Salt Node Type | Layers Equivalent | Notes |
 |---|---|---|
-| `SToken` | `pub.layers.expression.expression` (kind: `token`) | Token node with text span. |
+| `SToken` | `pub.layers.segmentation.defs#token` | Token node with text span (a token within a tokenization). |
 | `SSpan` | `pub.layers.annotation.defs#annotation` with `anchor.tokenRefSequence` | Span over tokens (e.g., NP, entity mention). |
 | `SStructure` | `pub.layers.annotation.defs#annotation` with `parentId`/`childIds` | Hierarchical node (constituency tree node, discourse unit). |
 
@@ -67,7 +67,7 @@ Salt explicitly supports multiple annotation layers over the same primary data, 
 | Salt Pattern | Layers Pattern | Notes |
 |---|---|---|
 | Multiple `SLayer` over same `STextualDS` | Multiple `annotationLayer` records referencing same `expression` | Independent annotation layers from different sources. |
-| Cross-layer references | `argumentRef.layerRef` + `argumentRef.objectId` | Salt allows edges between nodes in different layers; Layers supports this via cross-layer argument references. |
+| Cross-layer references | `argumentRef.target.recordRef` + `argumentRef.target.objectId` | Salt allows edges between nodes in different layers; Layers supports this via cross-layer argument references. |
 | Layer-specific node types | `annotationLayer.kind`/`subkind` | Salt layers can contain different node types; Layers discriminates by kind/subkind. |
 
 ### PAULA XML Elements

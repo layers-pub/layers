@@ -65,12 +65,17 @@ A segmentation record defines the regions of interest:
 {
   "$type": "pub.layers.segmentation.segmentation",
   "expression": "at://did:plc:researcher/pub.layers.expression.expression/item-42",
-  "kind": "region",
-  "tokens": [
-    { "text": "The cat", "byteStart": 0, "byteEnd": 7 },
-    { "text": "chased", "byteStart": 8, "byteEnd": 14 },
-    { "text": "the mouse", "byteStart": 15, "byteEnd": 24 },
-    { "text": "across the garden", "byteStart": 25, "byteEnd": 42 }
+  "tokenizations": [
+    {
+      "uuid": { "value": "regions-item-42" },
+      "kind": "custom",
+      "tokens": [
+        { "tokenIndex": 0, "text": "The cat", "textSpan": { "byteStart": 0, "byteEnd": 7 } },
+        { "tokenIndex": 1, "text": "chased", "textSpan": { "byteStart": 8, "byteEnd": 14 } },
+        { "tokenIndex": 2, "text": "the mouse", "textSpan": { "byteStart": 15, "byteEnd": 24 } },
+        { "tokenIndex": 3, "text": "across the garden", "textSpan": { "byteStart": 25, "byteEnd": 42 } }
+      ]
+    }
   ]
 }
 ```
@@ -159,7 +164,7 @@ Fixations are annotations with `temporalSpan` anchors on the stimulus expression
   "subkind": "fixation",
   "annotations": [
     {
-      "uuid": "fix-001",
+      "uuid": { "value": "fix-001" },
       "anchor": {
         "kind": "textSpan",
         "textSpan": { "byteStart": 8, "byteEnd": 14 }
@@ -176,7 +181,7 @@ Fixations are annotations with `temporalSpan` anchors on the stimulus expression
       }
     },
     {
-      "uuid": "fix-002",
+      "uuid": { "value": "fix-002" },
       "anchor": {
         "kind": "textSpan",
         "textSpan": { "byteStart": 15, "byteEnd": 24 }
@@ -203,8 +208,8 @@ Saccades are represented as graph edges between consecutive fixation annotations
 ```json
 {
   "$type": "pub.layers.graph.graphEdge",
-  "source": { "localId": "fix-001" },
-  "target": { "localId": "fix-002" },
+  "source": { "localId": { "value": "fix-001" } },
+  "target": { "localId": { "value": "fix-002" } },
   "edgeType": "saccade",
   "properties": {
     "entries": [
@@ -285,7 +290,7 @@ Each electrode's spatial position is represented using `spatialExpression` with 
   "subkind": "electrode-montage",
   "annotations": [
     {
-      "uuid": "electrode-Cz",
+      "uuid": { "value": "electrode-Cz" },
       "label": "Cz",
       "spatial": {
         "type": "location",
@@ -306,7 +311,7 @@ Each electrode's spatial position is represented using `spatialExpression` with 
       ]
     },
     {
-      "uuid": "electrode-Pz",
+      "uuid": { "value": "electrode-Pz" },
       "label": "Pz",
       "spatial": {
         "type": "location",
@@ -335,10 +340,10 @@ Event-related potential components are annotations with temporal anchors specify
   "subkind": "erp-component",
   "annotations": [
     {
-      "uuid": "n400-item42",
+      "uuid": { "value": "n400-item42" },
       "anchor": {
         "kind": "temporalSpan",
-        "temporalSpan": { "start": 300, "end": 500 }
+        "temporalSpan": { "start": 300, "ending": 500 }
       },
       "label": "N400",
       "confidence": 850,
@@ -362,10 +367,10 @@ Event-related potential components are annotations with temporal anchors specify
       ]
     },
     {
-      "uuid": "p600-item42",
+      "uuid": { "value": "p600-item42" },
       "anchor": {
         "kind": "temporalSpan",
-        "temporalSpan": { "start": 500, "end": 800 }
+        "temporalSpan": { "start": 500, "ending": 800 }
       },
       "label": "P600",
       "confidence": 720,
@@ -384,9 +389,9 @@ Event-related potential components are annotations with temporal anchors specify
   ],
   "metadata": {
     "agent": {
-      "name": "ERP Analysis Pipeline",
-      "tool": { "name": "MNE-Python", "version": "1.6.0" }
+      "name": "ERP Analysis Pipeline"
     },
+    "tool": "MNE-Python 1.6.0",
     "timestamp": "2024-03-15T14:30:00Z"
   }
 }
@@ -469,7 +474,7 @@ Source-localized MEG data uses `spatialExpression` with MNI brain coordinates:
       "label": "left-temporal-activation",
       "anchor": {
         "kind": "temporalSpan",
-        "temporalSpan": { "start": 300, "end": 500 }
+        "temporalSpan": { "start": 300, "ending": 500 }
       },
       "spatial": {
         "type": "location",
@@ -544,7 +549,7 @@ Regions of interest are annotations with `spatialExpression` referencing brain a
   "subkind": "roi",
   "annotations": [
     {
-      "uuid": "roi-lifg",
+      "uuid": { "value": "roi-lifg" },
       "label": "Left Inferior Frontal Gyrus",
       "spatial": {
         "type": "region",
@@ -597,7 +602,7 @@ BOLD activation differences between conditions are annotation layers with both s
       "label": "anomalous > plausible",
       "anchor": {
         "kind": "temporalSpan",
-        "temporalSpan": { "start": 4000, "end": 10000 }
+        "temporalSpan": { "start": 4000, "ending": 10000 }
       },
       "spatial": {
         "type": "region",
@@ -622,9 +627,9 @@ BOLD activation differences between conditions are annotation layers with both s
   ],
   "metadata": {
     "agent": {
-      "name": "fMRI Analysis Pipeline",
-      "tool": { "name": "SPM", "version": "12" }
+      "name": "fMRI Analysis Pipeline"
     },
+    "tool": "SPM 12",
     "timestamp": "2024-04-01T10:00:00Z"
   }
 }

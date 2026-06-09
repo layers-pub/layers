@@ -45,7 +45,7 @@ Retrieve a single expression record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the expression record. |
 
-**Output**: The expression record object.
+**Output**: `{ uri: at-uri, cid: cid, value: expression }` where `value` is the expression record.
 
 ### listExpressions
 **NSID:** `pub.layers.expression.listExpressions`
@@ -54,8 +54,8 @@ List expression records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `repo` | at-identifier (required) | The handle or DID of the repository. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: expression[], cursor?: string }`
+**Output**: `{ records: { uri: at-uri, cid: cid, value: expression }[], cursor?: string }` (each record is a recordView wrapping the expression in `value`).

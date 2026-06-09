@@ -18,11 +18,11 @@ A link between a Layers data record and an eprint.
 |-------|------|-------------|
 | `eprintIdentifier` | string | The eprint identifier (DOI, arXiv ID, ACL Anthology ID, etc.). |
 | `eprintIdentifierTypeUri` | at-uri | AT-URI of the identifier type definition node. Community-expandable via knowledge graph. |
-| `eprintIdentifierType` | string | Identifier type slug (fallback). Known values: `doi`, `arxiv`, `acl-anthology`, `semantic-scholar`, `pubmed`, `isbn`, `url`, `chive-pub`, `custom` |
+| `eprintIdentifierType` | string | Identifier type slug (fallback). Known values: `doi`, `arxiv`, `acl-anthology`, `semantic-scholar`, `pubmed`, `isbn`, `url`, `at-uri`, `custom` |
 | `eprintUri` | uri | Full URI of the eprint. |
 | `platformEprintRef` | at-uri | AT-URI of the eprint record on its publication platform (e.g., chive.pub, institutional repository). |
 | `linkTypeUri` | at-uri | AT-URI of the link type definition node. Community-expandable via knowledge graph. |
-| `linkType` | string | Link type slug (fallback). Known values: `PRODUCED_BY`, `DESCRIBED_IN`, `EVALUATED_IN`, `REPLICATED_FROM`, `EXTENDS`, `SUPPLEMENTS`, `CITED_IN`, `ANNOTATES`, `TRAINING_DATA_FOR`, `TEST_DATA_FOR` |
+| `linkType` | string | Link type slug (fallback). Known values: `produced-by`, `described-in`, `evaluated-in`, `replicated-from`, `extends`, `supplements`, `cited-in`, `annotates`, `training-data-for`, `test-data-for` |
 | `expressionRefs` | array | References to Layers expressions linked to this eprint. Array of at-uri |
 | `annotationRefs` | array | References to specific annotation records linked to this eprint. Array of at-uri |
 | `corpusRef` | at-uri | Reference to a corpus record. |
@@ -43,7 +43,7 @@ A link from an eprint to the Layers data it produced or is associated with. Crea
 | `eprintUri` | at-uri | AT-URI of the eprint on its publication platform. |
 | `eprintDid` | did | DID of the eprint author/owner on the publication platform. |
 | `dataKindUri` | at-uri | AT-URI of the data kind definition node. Community-expandable via knowledge graph. |
-| `dataKind` | string | Data kind slug (fallback). Known values: `CORPUS`, `ANNOTATION_LAYER`, `MODEL_OUTPUT`, `GOLD_STANDARD`, `EVALUATION_DATA`, `SUPPLEMENTARY`, `REPLICATION` |
+| `dataKind` | string | Data kind slug (fallback). Known values: `corpus`, `annotation-layer`, `model-output`, `gold-standard`, `evaluation-data`, `supplementary`, `replication` |
 | `corpusRef` | at-uri | Reference to a Layers corpus. |
 | `expressionRefs` | array | References to specific Layers expressions. Array of at-uri |
 | `annotationRefs` | array | References to specific annotation records. Array of at-uri |
@@ -87,7 +87,9 @@ List eprint records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `repo` | at-identifier (required) | AT-identifier (DID or handle) of the repository. |
+| `linkType` | string | Filter by link type slug. |
+| `eprintIdentifierType` | string | Filter by identifier type slug. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
@@ -107,11 +109,12 @@ Retrieve a single data link record by AT-URI.
 ### listDataLinks
 **NSID:** `pub.layers.eprint.listDataLinks`
 
-List data link records in a repository with pagination.
+List data link records for a given eprint with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `eprintUri` | at-uri (required) | AT-URI of the eprint to list data links for. |
+| `dataKind` | string | Filter by data kind slug. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 

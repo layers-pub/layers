@@ -171,7 +171,9 @@ List experiment definition records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `repo` | at-identifier (required) | The handle or DID of the repository. |
+| `measureType` | string | Filter by measure type. |
+| `taskType` | string | Filter by task type. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
@@ -195,7 +197,7 @@ List judgment set records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `experimentRef` | at-uri (required) | The AT-URI of the experiment whose judgment sets to list. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
@@ -219,7 +221,8 @@ List agreement report records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `experimentRef` | at-uri (required) | The AT-URI of the experiment whose agreement reports to list. |
+| `metric` | string | Filter by metric slug. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 

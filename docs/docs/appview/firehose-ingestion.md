@@ -226,7 +226,7 @@ flowchart LR
     A --> C["clusterSet"]
 ```
 
-An `annotationLayer` references both an `expression` (via `sourceUrl`) and a `segmentation` (via `segSourceUrl`). If an annotation arrives on the firehose before its expression, the handler cannot resolve the cross-reference or validate span offsets.
+An `annotationLayer` references its `expression` (via the `expression` AT-URI field) and, for token-aligned layers, a tokenization via `tokenizationId`. If an annotation arrives on the firehose before its expression, the handler cannot resolve the cross-reference or validate span offsets.
 
 The dependency resolution strategy:
 
@@ -298,10 +298,9 @@ const expressionHandler: RecordHandler<Expression> = {
         did,
         rkey,
         text: record.text,
-        lang: record.lang,
-        media_type: record.mediaType ?? 'text/plain',
+        language: record.language,
         source_url: record.sourceUrl ?? null,
-        context_url: record.contextUrl ?? null,
+        source_ref: record.sourceRef ?? null,
         created_at: record.createdAt,
         indexed_at: new Date(),
       },
@@ -316,8 +315,7 @@ const expressionHandler: RecordHandler<Expression> = {
         uri: `at://${did}/pub.layers.expression.expression/${rkey}`,
         did,
         text: record.text,
-        lang: record.lang,
-        media_type: record.mediaType ?? 'text/plain',
+        language: record.language,
         created_at: record.createdAt,
       },
     };
@@ -329,7 +327,7 @@ const expressionHandler: RecordHandler<Expression> = {
       {
         type: 'MERGE_NODE',
         label: 'Expression',
-        properties: { uri, did, lang: record.lang },
+        properties: { uri, did, language: record.language },
       },
     ];
 
@@ -353,8 +351,8 @@ const expressionHandler: RecordHandler<Expression> = {
     if (record.sourceUrl) {
       refs.push({ fromUri: uri, toUri: record.sourceUrl, refType: 'sourceUrl' });
     }
-    if (record.contextUrl) {
-      refs.push({ fromUri: uri, toUri: record.contextUrl, refType: 'contextUrl' });
+    if (record.sourceRef) {
+      refs.push({ fromUri: uri, toUri: record.sourceRef, refType: 'sourceRef' });
     }
 
     return refs;

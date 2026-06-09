@@ -108,7 +108,7 @@ A batch of typed, directed edges for efficient bulk operations. All edges in the
 |-------|------|-------------|
 | `expression` | at-uri | Optional primary expression context. |
 | `edgeTypeUri` | at-uri | AT-URI of the edge type definition node. Community-expandable via knowledge graph. |
-| `edgeType` | string | Edge type slug shared by all edges in this set (fallback). Same categories as `graphEdge.edgeType`. |
+| `edgeType` | string | Edge type slug shared by all edges in this set (fallback). Known values cover only the Semantic, Argumentation, Discourse, Temporal, Aspectual, and Spatial categories plus `custom`; the Communication, Ontological, and Meta categories that `graphEdge.edgeType` allows are excluded. |
 | `edges` | array | The edges. Array of ref: `pub.layers.graph.defs#graphEdgeEntry` |
 | `metadata` | ref | Ref: `pub.layers.defs#annotationMetadata` |
 | `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
@@ -151,7 +151,7 @@ List graph node records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `repo` | at-identifier (required) | The DID or handle of the repository. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
@@ -175,7 +175,7 @@ List graph edge records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `repo` | at-identifier (required) | The DID or handle of the repository. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
@@ -199,7 +199,7 @@ List graph edge set records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `repo` | at-identifier (required) | The DID or handle of the repository. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 

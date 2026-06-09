@@ -12,7 +12,7 @@ Annotation ontology definitions. Defines the types, labels, and relationships us
 **NSID:** `pub.layers.ontology.ontology`
 **Type:** Record
 
-An annotation ontology: a collection of typed definitions (entity types, event types, role types, relation types) that together form a complete annotation framework.
+An annotation ontology: a collection of typed definitions (entity types, situation types, role types, relation types) that together form a complete annotation framework.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -30,7 +30,7 @@ An annotation ontology: a collection of typed definitions (entity types, event t
 **NSID:** `pub.layers.ontology.typeDef`
 **Type:** Record
 
-A type definition within an ontology. Covers entity types, event types, role types, and relation types in a single unified model.
+A type definition within an ontology. Covers entity types, situation types, role types, and relation types in a single unified model.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -40,7 +40,7 @@ A type definition within an ontology. Covers entity types, event types, role typ
 | `typeKind` | string | Type kind slug (fallback when typeKindUri unavailable). Known values: `entity-type`, `situation-type`, `role-type`, `relation-type`, `attribute-type` |
 | `gloss` | string | Rich text definition/gloss of this type. May include references to other types and Wikidata entities. |
 | `parentTypeRef` | at-uri | Reference to a parent type (for type hierarchies/inheritance). |
-| `allowedRoles` | array | For frame/event types: the roles that can be filled. Array of ref: `pub.layers.ontology.defs#roleSlot` |
+| `allowedRoles` | array | For frame/situation types: the roles that can be filled. Array of ref: `pub.layers.ontology.defs#roleSlot` |
 | `allowedValues` | array | For attribute types: enumerated allowed values. Array of strings |
 | `knowledgeRefs` | array | Knowledge graph groundings (Wikidata, chive.pub, FrameNet, etc.). Array of ref: `pub.layers.defs#knowledgeRef` |
 | `features` | ref | Open-ended features. For `relation-type` typeDefs, standardized feature keys include: `symmetric` (boolean, if true A→B implies B→A), `transitive` (boolean, if true A→B and B→C implies A→C), `reflexive` (boolean, if true A→A is valid), `inverse` (AT-URI of the inverse relation typeDef), `domain` (AT-URI of required source type), `range` (AT-URI of required target type). Ref: `pub.layers.defs#featureMap` |
@@ -75,7 +75,7 @@ Retrieve a single ontology record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the ontology record. |
 
-**Output**: The ontology record object.
+**Output**: `{ uri, cid, value: ontology }`
 
 ### listOntologies
 **NSID:** `pub.layers.ontology.listOntologies`
@@ -84,11 +84,12 @@ List ontology records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `repo` | at-identifier (required) | The handle or DID of the repository. |
+| `domain` | string | Filter ontologies by domain slug. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: ontology[], cursor?: string }`
+**Output**: `{ records: { uri, cid, value: ontology }[], cursor?: string }`
 
 ### getTypeDef
 **NSID:** `pub.layers.ontology.getTypeDef`
@@ -99,7 +100,7 @@ Retrieve a single type definition record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the type definition record. |
 
-**Output**: The type definition record object.
+**Output**: `{ uri, cid, value: typeDef }`
 
 ### listTypeDefs
 **NSID:** `pub.layers.ontology.listTypeDefs`
@@ -108,8 +109,9 @@ List type definition records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `ontologyRef` | at-uri (required) | The AT-URI of the ontology whose type definitions to list. |
+| `typeKind` | string | Filter by type kind. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: typeDef[], cursor?: string }`
+**Output**: `{ records: { uri, cid, value: typeDef }[], cursor?: string }`

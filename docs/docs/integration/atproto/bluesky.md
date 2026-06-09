@@ -29,9 +29,11 @@ An `expression` record sets `sourceRef` to the AT-URI of a Bluesky post. Annotat
 ```json
 {
   "$type": "pub.layers.expression.expression",
+  "id": "bsky-post-3k2a5b",
   "sourceRef": "at://did:plc:alice/app.bsky.feed.post/3k2a5b",
   "text": "the full post text",
-  "kind": "social-media"
+  "kind": "social-media",
+  "createdAt": "2026-06-09T00:00:00Z"
 }
 ```
 
