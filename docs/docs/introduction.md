@@ -36,7 +36,7 @@ Layers solves this by:
 
 ## Status
 
-Layers is in **[v0.5.0 draft](https://github.com/layers-pub/layers/releases/tag/v0.5.0)** status, in active development and accepting comments and discussion. File issues or participate on GitHub: https://github.com/layers-pub/layers
+Layers is in **[v0.7.0 draft](https://github.com/layers-pub/layers/releases/tag/v0.7.0)** status, in active development and accepting comments and discussion. File issues or participate on GitHub: https://github.com/layers-pub/layers
 
 ## Architecture Overview
 
