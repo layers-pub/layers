@@ -11,7 +11,7 @@ Traditional schema design uses fixed enums to constrain field values:
 
 ```typescript
 annotation = {
-  kindEnum: "token" | "span" | "sentence" | "document"
+  kindEnum: "token-tag" | "span" | "relation" | "tree" | "graph" | "tier" | "document-tag"
   // If you need a new kind, update the schema
 }
 ```
@@ -30,10 +30,10 @@ Layers solves this with a **dual pattern** for every enumerated field:
 ```typescript
 annotation = {
   // Canonical reference: AT-URI to a knowledge graph node
-  kindUri?: string              // e.g., "at://did:plc:layers/kinds/token"
+  kindUri?: string              // e.g., "at://did:plc:layers/kinds/span"
 
   // Fallback slug: human-readable string with known values documented
-  kind: string                  // e.g., "token", "span", "custom-kind"
+  kind: string                  // e.g., "span", "tree", "custom-kind"
 }
 ```
 
@@ -53,7 +53,7 @@ annotation = {
 ```typescript
 annotation = {
   kindUri?: string  // @uri
-  kind: string      // knownValues: "token" | "span" | "sentence" | "document"
+  kind: string      // knownValues: "token-tag" | "span" | "relation" | "tree" | "graph" | "tier" | "document-tag"
 }
 ```
 
@@ -83,14 +83,12 @@ Tools that recognize the URI handle it accordingly. Tools that don't understand 
 
 ### Tag Sets
 
-The same pattern applies to tag sets. A POS tagger trained on Penn Treebank uses:
+The same pattern applies to label sets. A POS tagger trained on Penn Treebank emits annotations whose `label` carries the tag, while the enclosing layer records the `labelSet`:
 
 ```json
 {
-  "typeUri": "at://did:plc:ptb/pos-tags",
-  "type": "NN",
-  "tagSetUri": "at://did:plc:ptb",
-  "tagSet": "penn-treebank"
+  "label": "NN",
+  "labelSet": "penn-treebank-pos"
 }
 ```
 
@@ -98,10 +96,8 @@ A different tagger trained on Universal Dependencies uses:
 
 ```json
 {
-  "typeUri": "at://did:plc:ud/pos-tags",
-  "type": "NOUN",
-  "tagSetUri": "at://did:plc:ud",
-  "tagSet": "universal-dependencies"
+  "label": "NOUN",
+  "labelSet": "universal-pos"
 }
 ```
 
@@ -157,10 +153,9 @@ This pattern is systematic across Layers:
 
 | Field | URI Field | Slug Field | Known Values |
 |-------|-----------|-----------|---------------|
-| kind | kindUri | kind | "token", "span", "sentence", "document" |
+| kind | kindUri | kind | "token-tag", "span", "relation", "tree", "graph", "tier", "document-tag" |
 | type | typeUri | type | Depends on context (POS, entity type, etc.) |
-| format | formatUri | format | "json", "xml", "text", "binary" |
-| role | roleUri | role | "agent", "patient", "theme", ... |
+| geometry format | geometryFormatUri | geometryFormat | "wkt", "geojson", "svg-path", "coco-polygon", "coco-rle", "custom" |
 | measureType | measureTypeUri | measureType | "acceptability", "inference", "reading-time", ... |
 | taskType | taskTypeUri | taskType | "ordinal-scale", "binary", "forced-choice", ... |
 | presentation method | methodUri | method | "rsvp", "self-paced", "whole-sentence", "auditory", ... |
@@ -185,7 +180,7 @@ When generating types from Layers lexicons, represent this pattern:
 // TypeScript
 export interface Annotation {
   kindUri?: string;  // @uri
-  kind: string;  // @knownValues ["token", "span", "sentence", "document"]
+  kind: string;  // @knownValues ["token-tag", "span", "relation", "tree", "graph", "tier", "document-tag"]
 }
 
 // JSON Schema
@@ -193,7 +188,7 @@ export interface Annotation {
   "type": "object",
   "properties": {
     "kindUri": {"type": "string", "format": "uri"},
-    "kind": {"type": "string", "enum": ["token", "span", "sentence", "document"]}
+    "kind": {"type": "string", "enum": ["token-tag", "span", "relation", "tree", "graph", "tier", "document-tag"]}
   },
   "required": ["kind"]
 }

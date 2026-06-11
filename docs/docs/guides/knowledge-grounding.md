@@ -52,7 +52,7 @@ A [`graphNode`](../lexicons/graph.md#graphnode) represents a standalone entity o
   "nodeType": "entity",
   "label": "Barack Obama",
   "properties": {
-    "features": [
+    "entries": [
       { "key": "birth-year", "value": "1961" },
       { "key": "nationality", "value": "American" }
     ]
@@ -77,7 +77,7 @@ A [`graphEdge`](../lexicons/graph.md#graphedge) is a typed, directed relationshi
 
 ```json
 {
-  "source": { "recordRef": "at://did:plc:.../pub.layers.annotation.annotationLayer/layer1", "objectId": "mention-uuid" },
+  "source": { "recordRef": "at://did:plc:.../pub.layers.annotation.annotationLayer/layer1", "objectId": { "value": "mention-uuid" } },
   "target": { "recordRef": "at://did:plc:.../pub.layers.graph.graphNode/obama" },
   "edgeType": "grounding",
   "confidence": 950
@@ -168,7 +168,7 @@ The [`pub.layers.persona`](../lexicons/persona.md) lexicon defines annotator per
 }
 ```
 
-Personas are referenced from annotations via [`agentRef.personaRef`](../foundations/primitives.md#agentref), enabling:
+Personas are referenced from annotations via the `personaRef` field on [`annotationMetadata`](../foundations/primitives.md#annotationmetadata), enabling:
 
 - **Multi-perspective annotation**: The same text annotated by different personas with different ontologies
 - **Model attribution**: ML models as personas with their training data and framework documented
@@ -183,7 +183,7 @@ A typical entity grounding pipeline in Layers:
    annotation (subkind="entity-mention", label="PERSON", text="Obama")
 
 2. Coreference Resolution
-   clusterSet (kind="entity-coreference")
+   clusterSet (kind="coreference")
      cluster: [mention-1-uuid, mention-2-uuid, mention-3-uuid]
 
 3. Entity Node Creation
@@ -228,8 +228,8 @@ For predicate-argument structures (PropBank, FrameNet, VerbNet), grounding conne
         { "source": "framenet", "identifier": "Destroying" }
       ],
       "arguments": [
-        { "role": "Destroyer", "target": { "localId": "arg0-uuid" } },
-        { "role": "Patient", "target": { "localId": "arg1-uuid" } }
+        { "role": "Destroyer", "target": { "localId": { "value": "arg0-uuid" } } },
+        { "role": "Patient", "target": { "localId": { "value": "arg1-uuid" } } }
       ]
     }
   ]

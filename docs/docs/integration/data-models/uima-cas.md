@@ -24,7 +24,7 @@ UIMA is a framework for building text analytics pipelines. The Common Analysis S
 | UIMA/CAS Concept | Layers Equivalent | Notes |
 |---|---|---|
 | **CAS** (document container) | `pub.layers.expression.expression` (record) | The CAS contains one or more SofAs plus all annotations. A Layers expression is the equivalent root container. |
-| **SofA** (Subject of Analysis) | `pub.layers.expression.text` + `pub.layers.media.media` | UIMA supports multiple SofAs (e.g., original text + translation + audio). Layers handles this with separate `expression` records linked by `pub.layers.alignment.alignment` for parallel text, and `mediaRef` for multimedia. |
+| **SofA** (Subject of Analysis) | `pub.layers.expression.expression` (its `text` field) + `pub.layers.media.media` | UIMA supports multiple SofAs (e.g., original text + translation + audio). Layers handles this with separate `expression` records linked by `pub.layers.alignment.alignment` for parallel text, and `mediaRef` for multimedia. |
 | **View** (named perspective) | `pub.layers.persona.persona` + separate annotation layers | UIMA views partition annotations by perspective. Layers achieves this through persona-specific annotation layers with `metadata.personaRef`. |
 | **Type System** | `pub.layers.ontology.ontology` | UIMA's type system descriptor defines annotation types with inheritance. Layers's `ontology` with `typeDef` and `parentTypeRef` provides equivalent type hierarchies. |
 | **Type** | `pub.layers.ontology.typeDef` | A named type with features and parent type. `typeKind` + `allowedRoles` + `allowedValues` cover UIMA's feature declarations. |

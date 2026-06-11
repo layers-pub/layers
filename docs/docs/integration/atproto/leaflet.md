@@ -29,9 +29,11 @@ An `expression` record sets `sourceRef` to the AT-URI of a Leaflet post. The app
 ```json
 {
   "$type": "pub.layers.expression.expression",
-  "sourceRef": "at://did:plc:author/site.standard.post/abc123",
+  "id": "leaflet-post-abc123",
+  "sourceRef": "at://did:plc:author/site.standard.document/abc123",
   "text": "...",
-  "kind": "article"
+  "kind": "article",
+  "createdAt": "2026-01-01T00:00:00Z"
 }
 ```
 

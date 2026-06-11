@@ -399,10 +399,10 @@ A CoNLL-U file like:
 produces the following Layers records:
 
 1. **`expression.expression`**: `{ text: "The cat sat on the mat.", language: "en", kind: "sentence" }`
-2. **`segmentation.segmentation`**: `{ expression: <expression-uri>, kind: "token", segments: [{ text: "The", startChar: 0, endChar: 3 }, ...] }`
+2. **`segmentation.segmentation`**: `{ expression: <expression-uri>, tokenizations: [{ uuid, kind: "whitespace", tokens: [{ tokenIndex: 0, text: "The", textSpan: { byteStart: 0, byteEnd: 3 } }, ...] }], createdAt }`
 3. **`annotation.annotationLayer`** (POS): `{ expression: <expression-uri>, kind: "token-tag", subkind: "pos", formalism: "universal-dependencies", annotations: [{ tokenIndex: 0, label: "DET" }, ...] }`
 4. **`annotation.annotationLayer`** (lemma): `{ expression: <expression-uri>, kind: "token-tag", subkind: "lemma", annotations: [{ tokenIndex: 0, label: "the" }, ...] }`
-5. **`annotation.annotationLayer`** (deps): `{ expression: <expression-uri>, kind: "relation", subkind: "dependency", formalism: "universal-dependencies", annotations: [{ headIndex: 2, depIndex: 0, label: "det" }, ...] }`
+5. **`annotation.annotationLayer`** (deps): `{ expression: <expression-uri>, kind: "relation", subkind: "dependency", formalism: "universal-dependencies", annotations: [{ headIndex: 2, targetIndex: 0, label: "det" }, ...] }`
 
 ## Harvester Interface
 

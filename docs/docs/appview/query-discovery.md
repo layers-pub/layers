@@ -98,7 +98,7 @@ The three-dimensional annotation search (kind, subkind, formalism) uses ES term 
       "filter": [
         { "term": { "kind": "span" } },
         { "term": { "subkind": "ner" } },
-        { "term": { "formalism": "ontonotes" } }
+        { "term": { "labelSet": "ontonotes-ner" } }
       ]
     }
   },
@@ -165,7 +165,7 @@ All three fields are keyword-indexed in Elasticsearch, enabling combinatorial fi
 | Query | ES Filter |
 |---|---|
 | All POS layers | `kind = "token-tag"` AND `subkind = "pos"` |
-| All NER layers in OntoNotes | `subkind = "ner"` AND `formalism = "ontonotes"` |
+| All NER layers in OntoNotes | `subkind = "ner"` AND `labelSet = "ontonotes-ner"` |
 | All dependency parses | `kind = "relation"` AND `subkind = "dependency"` |
 | All UD layers | `formalism = "universal-dependencies"` |
 

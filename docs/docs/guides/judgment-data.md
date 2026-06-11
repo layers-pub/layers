@@ -155,7 +155,7 @@ Participants pick one or more options from a set. Responses go in `behavioralDat
 {
   "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/tuple-8" },
   "behavioralData": {
-    "features": [
+    "entries": [
       { "key": "best", "value": "item-a" },
       { "key": "worst", "value": "item-c" }
     ]
@@ -604,9 +604,9 @@ The `experimentDef` record specifies the full experimental design, including lis
         "kind": "latin-square",
         "targetProperty": "condition",
         "parameters": {
-          "features": [
-            { "key": "numConditions", "value": 4 },
-            { "key": "numLists", "value": 4 }
+          "entries": [
+            { "key": "numConditions", "value": "4" },
+            { "key": "numLists", "value": "4" }
           ]
         }
       },
@@ -614,16 +614,16 @@ The `experimentDef` record specifies the full experimental design, including lis
         "kind": "no-adjacent-same-condition",
         "targetProperty": "condition",
         "parameters": {
-          "features": [{ "key": "minDistance", "value": 2 }]
+          "entries": [{ "key": "minDistance", "value": "2" }]
         }
       },
       {
         "kind": "balanced-frequency",
         "targetProperty": "itemType",
         "parameters": {
-          "features": [
-            { "key": "experimental", "value": 24 },
-            { "key": "filler", "value": 48 }
+          "entries": [
+            { "key": "experimental", "value": "24" },
+            { "key": "filler", "value": "48" }
           ]
         }
       }
@@ -639,7 +639,7 @@ The `experimentDef` record specifies the full experimental design, including lis
 | `latin-square` | Each participant sees one condition per item; all conditions equally represented | `numConditions`, `numLists` |
 | `no-adjacent-same-condition` | Prevent consecutive items from the same condition | `minDistance` |
 | `balanced-frequency` | Control the ratio of experimental to filler items | Per-type counts |
-| `min-distance` | Minimum distance between items of the same type | `minDistance`, `targetProperty` |
+| `minimum-distance` | Minimum distance between items of the same type | `minDistance`, `targetProperty` |
 
 ### Distribution and Item Order
 
@@ -663,11 +663,11 @@ The `responseTimeMs` field captures reaction time in milliseconds. For multi-reg
   "scalarValue": 5,
   "responseTimeMs": 1842,
   "behavioralData": {
-    "features": [
-      { "key": "region.0.rt", "value": 312 },
-      { "key": "region.1.rt", "value": 287 },
-      { "key": "region.2.rt", "value": 445 },
-      { "key": "region.3.rt", "value": 398 }
+    "entries": [
+      { "key": "region.0.rt", "value": "312" },
+      { "key": "region.1.rt", "value": "287" },
+      { "key": "region.2.rt", "value": "445" },
+      { "key": "region.3.rt", "value": "398" }
     ]
   }
 }
@@ -680,11 +680,11 @@ Eye-tracking data collected during a judgment task can be stored alongside the j
 ```json
 {
   "behavioralData": {
-    "features": [
-      { "key": "eyetracking.totalFixationTime", "value": 2340 },
-      { "key": "eyetracking.numFixations", "value": 8 },
-      { "key": "eyetracking.numRegressions", "value": 2 },
-      { "key": "eyetracking.firstFixationDuration", "value": 245 },
+    "entries": [
+      { "key": "eyetracking.totalFixationTime", "value": "2340" },
+      { "key": "eyetracking.numFixations", "value": "8" },
+      { "key": "eyetracking.numRegressions", "value": "2" },
+      { "key": "eyetracking.firstFixationDuration", "value": "245" },
       { "key": "eyetracking.gazeDataRef", "value": "at://did:plc:researcher/pub.layers.media.media/et-session-017" }
     ]
   }
@@ -700,12 +700,39 @@ Interaction data captured during web-based experiments:
 ```json
 {
   "behavioralData": {
-    "features": [
-      { "key": "mouse.numClicks", "value": 1 },
+    "entries": [
+      { "key": "mouse.numClicks", "value": "1" },
       { "key": "mouse.trajectory", "value": "[[0,400],[50,380],[120,350],[200,320]]" },
-      { "key": "mouse.maxDeviation", "value": 45 },
-      { "key": "keystroke.numBackspaces", "value": 3 },
-      { "key": "keystroke.typingSpeed", "value": 42 }
+      { "key": "mouse.maxDeviation", "value": "45" },
+      { "key": "keystroke.numBackspaces", "value": "3" },
+      { "key": "keystroke.typingSpeed", "value": "42" }
+    ]
+  }
+}
+```
+
+## Annotator Identity
+
+Every `judgmentSet` carries an `agent` ([agentRef](../foundations/primitives.md#agentref)). Use `did` for ATProto-native annotators, `knowledgeRef` for externally grounded agents (ORCID, model cards), and `id` for anonymized or platform-specific identifiers.
+
+### Anonymized Crowd Workers
+
+For crowd-sourced data (Prolific, MTurk, etc.), never publish raw platform participant ids: PDS records are public, and raw ids are linkable across studies. The recommended convention for `agent.id` is a salted keyed hash:
+
+```
+agent.id = "p-" + lowercase(base32(hmac_sha256(salt, platform_id)))[:12]
+```
+
+where `salt` is a per-project secret that is never published. This keeps the id stable within a project (the same participant maps to the same id across judgment sets, which agreement analysis requires) while preventing cross-project linkage. Twelve base32 characters (60 bits) is ample for study-scale populations. Record the platform as a feature on the judgment set rather than encoding it in the id:
+
+```json
+{
+  "$type": "pub.layers.judgment.judgmentSet",
+  "experimentRef": "at://did:plc:researcher/pub.layers.judgment.experimentDef/spr-study",
+  "agent": { "id": "p-k7dq3m9xv2tn" },
+  "features": {
+    "entries": [
+      { "key": "platform", "value": "prolific" }
     ]
   }
 }
@@ -726,7 +753,7 @@ The `agreementReport` record summarizes inter-annotator agreement across judgmen
     "at://did:plc:annotator2/pub.layers.judgment.judgmentSet/ner-batch1"
   ],
   "metric": "cohens-kappa",
-  "value": 8200,
+  "value": 820,
   "numAnnotators": 2,
   "numItems": 500
 }
@@ -744,7 +771,7 @@ The `agreementReport` record summarizes inter-annotator agreement across judgmen
     "at://did:plc:annotator3/pub.layers.judgment.judgmentSet/nat-batch1"
   ],
   "metric": "krippendorff-alpha",
-  "value": 7100,
+  "value": 710,
   "numAnnotators": 3,
   "numItems": 200
 }

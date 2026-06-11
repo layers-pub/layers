@@ -255,7 +255,7 @@ Retrieve a single media record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the media record. |
 
-**Output**: The media record object.
+**Output**: `{ uri: at-uri, cid: cid, value: media }` (the media record wrapped with its uri and cid).
 
 ### listMedia
 **NSID:** `pub.layers.media.listMedia`
@@ -264,8 +264,9 @@ List media records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `repo` | at-identifier (required) | The DID or handle of the repository. |
+| `kind` | string | Filter by media kind slug (maxLength 128). |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: media[], cursor?: string }`
+**Output**: `{ records: { uri, cid, value: media }[], cursor?: string }`

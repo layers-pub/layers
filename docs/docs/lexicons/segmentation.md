@@ -64,7 +64,7 @@ Retrieve a single segmentation record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the segmentation record. |
 
-**Output**: The segmentation record object.
+**Output**: `{ uri: at-uri, cid: cid, value: segmentation }` — the segmentation record wrapped with its AT-URI and CID.
 
 ### listSegmentations
 **NSID:** `pub.layers.segmentation.listSegmentations`
@@ -77,4 +77,4 @@ List segmentation records for a given expression.
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: segmentation[], cursor?: string }`
+**Output**: `{ records: { uri: at-uri, cid: cid, value: segmentation }[], cursor?: string }`

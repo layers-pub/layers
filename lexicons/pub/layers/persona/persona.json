@@ -62,6 +62,12 @@
             "description": "Annotation guidelines text.",
             "maxLength": 100000
           },
+          "guidelinesFormat": {
+            "type": "string",
+            "description": "Format of the guidelines text, so consumers can render it safely without sniffing. Defaults to plain when omitted.",
+            "knownValues": ["plain", "html", "markdown"],
+            "maxLength": 32
+          },
           "guidelinesBlob": {
             "type": "blob",
             "description": "Annotation guidelines document.",

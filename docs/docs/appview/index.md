@@ -125,8 +125,8 @@ Every `pub.layers.*` record type is indexed into one or more storage backends. P
 | `graph.graphEdge` | yes | — | yes | Primary Neo4j content |
 | `graph.graphEdgeSet` | yes | — | yes | Expanded to individual edges in Neo4j |
 | `persona.persona` | yes | yes | — | Searchable by domain and kind |
-| `media.media` | yes | yes | — | Searchable by modality |
-| `eprint.eprint` | yes | yes | — | Searchable by identifier, title |
+| `media.media` | yes | yes | — | Searchable by kind |
+| `eprint.eprint` | yes | yes | — | Searchable by eprintIdentifier, description/citation |
 | `eprint.dataLink` | yes | — | yes | Eprint-corpus edges in Neo4j |
 | `changelog.entry` | yes | yes | — | Searchable by subject, collection, version |
 

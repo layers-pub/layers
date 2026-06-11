@@ -66,7 +66,7 @@ UDS graphs have three layers: a syntactic layer (UD dependency trees), a semanti
 
 | Decomp/UDS Concept | Layers Equivalent | Notes |
 |---|---|---|
-| Real-valued node attributes (factuality, genericity, time, entity type, event structure) | `annotation.features` | Each UDS property becomes a `feature` entry: `key` = property name (e.g., `"factual"`, `"arg-particular"`, `"dur-hours"`), `value` = normalized score, `confidence` = annotator confidence. |
+| Real-valued node attributes (factuality, genericity, time, entity type, event structure) | `annotation.features` | Each UDS property becomes a `feature` entry: `key` = property name (e.g., `"factual"`, `"arg-particular"`, `"dur-hours"`) and `value` = normalized score (both strings). A feature has only `key` and `value`; per-annotator confidence is carried by `annotationMetadata.confidence` on the surrounding record, not on the feature itself. |
 | Semantic proto-role attributes (edge-level) | `argumentRef` features or `annotation.features` on the argument annotation | Proto-role properties (volition, awareness, sentience, etc.) are features on the argument reference or the argument annotation itself. |
 | Raw annotations (per-annotator) | `pub.layers.judgment.judgmentSet` + `pub.layers.judgment.defs#judgment` | Individual annotator responses. Each annotator's scalar rating for a property is a `judgment` record with `scalarValue` and `confidence`. |
 | Normalized annotations (aggregated) | `annotation.features` with aggregation metadata in `annotationMetadata` | Aggregated scores stored as features on the annotation. The `annotationMetadata.tool` field records the normalization method. |

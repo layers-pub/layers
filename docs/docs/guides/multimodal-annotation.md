@@ -8,7 +8,7 @@ Layers supports annotation across text, audio, video, image, and paged documents
 
 ## The Polymorphic Anchor
 
-Every annotation attaches to source data through an [`anchor`](../foundations/primitives.md#anchor). The anchor's `kind` field determines the modality:
+Every annotation attaches to source data through an [`anchor`](../foundations/primitives.md#anchor). The anchor is polymorphic: consumers dispatch on which anchoring sub-field is populated (textSpan, tokenRef, temporalSpan, spatioTemporalAnchor, pageAnchor, externalTarget). There is no discriminator field. The populated sub-field determines the modality:
 
 | Anchor Kind | Modality | Value |
 |-------------|----------|-------|
@@ -16,11 +16,11 @@ Every annotation attaches to source data through an [`anchor`](../foundations/pr
 | `tokenRef` | Text | Single token identifier |
 | `tokenRefSequence` | Text | Ordered sequence of token references |
 | `temporalSpan` | Audio/Video | `{start, ending}` time in milliseconds |
-| `spatioTemporalAnchor` | Video | Keyframe-based bounding boxes over time |
-| `pageAnchor` | Paged documents | `{page, x, y, width, height}` |
+| `spatioTemporalAnchor` | Video | Requires a `temporalSpan`, optionally adds `keyframes` for spatial tracking over time |
+| `pageAnchor` | Paged documents | `{page, boundingBox, textSpan}` |
 | `externalTarget` | Web/External | URL or resource identifier |
 
-The same `pub.layers.annotation.defs#annotation` record type is used regardless of modality. A POS tag on a text token and a label on a video region differ only in their anchor kind.
+The same `pub.layers.annotation.defs#annotation` object is used within a `pub.layers.annotation.annotationLayer` record, regardless of modality. A POS tag on a text token and a label on a video region differ only in which anchor sub-field they populate.
 
 ## Expressions Across Modalities
 
@@ -43,8 +43,8 @@ Each expression can reference its parent via `parentRef` and specify how it atta
 ```
 Expression (kind="recording", text="Hello world")
     ├── mediaRef → Media (kind="audio", sampleRate=16000, codec="flac")
-    ├── Word (text="Hello", anchor={temporalSpan: {start: 0, end: 500}})
-    └── Word (text="world", anchor={temporalSpan: {start: 520, end: 1100}})
+    ├── Word (text="Hello", anchor={temporalSpan: {start: 0, ending: 500}})
+    └── Word (text="world", anchor={temporalSpan: {start: 520, ending: 1100}})
 ```
 
 Media records carry modality-specific metadata through composable info objects:
@@ -66,7 +66,6 @@ Text annotation uses `textSpan` or `tokenRef` anchors. UTF-8 byte offsets refere
   "annotations": [
     {
       "anchor": {
-        "kind": "textSpan",
         "textSpan": { "byteStart": 0, "byteEnd": 5 }
       },
       "label": "PERSON",
@@ -100,8 +99,7 @@ Audio annotation uses `temporalSpan` anchors with millisecond offsets. The expre
   "annotations": [
     {
       "anchor": {
-        "kind": "temporalSpan",
-        "temporalSpan": { "start": 0, "end": 3200 }
+        "temporalSpan": { "start": 0, "ending": 3200 }
       },
       "label": "SPK01",
       "text": "I went to the store yesterday"
@@ -120,7 +118,7 @@ Video annotation combines temporal and spatial dimensions. Two anchor types appl
 
 **Temporal only** (`temporalSpan`): For annotations that span a time range without spatial specificity, such as scene labels, speaker turns, and temporal events.
 
-**Spatiotemporal** (`spatioTemporalAnchor`): For tracking objects through video frames. Defined by keyframes, each with a timestamp and [bounding box](../foundations/primitives.md#spatialexpression):
+**Spatiotemporal** (`spatioTemporalAnchor`): For tracking objects through video frames. Requires a `temporalSpan` and optionally adds `keyframes` for spatial tracking over time, each keyframe carrying a timestamp and [bounding box](../foundations/primitives.md#spatialexpression):
 
 ```json
 {
@@ -129,8 +127,8 @@ Video annotation combines temporal and spatial dimensions. Two anchor types appl
   "annotations": [
     {
       "anchor": {
-        "kind": "spatioTemporalAnchor",
         "spatioTemporalAnchor": {
+          "temporalSpan": { "start": 0, "ending": 2000 },
           "keyframes": [
             { "timeMs": 0, "bbox": { "x": 100, "y": 50, "width": 200, "height": 300 } },
             { "timeMs": 1000, "bbox": { "x": 120, "y": 55, "width": 195, "height": 295 } },
@@ -161,7 +159,6 @@ Image annotation uses bounding boxes in pixel coordinates via the `spatial` fiel
   "annotations": [
     {
       "anchor": {
-        "kind": "textSpan",
         "textSpan": { "byteStart": 0, "byteEnd": 0 }
       },
       "label": "cat",
@@ -190,13 +187,9 @@ Paged documents (PDFs, scanned manuscripts) use `pageAnchor`:
   "annotations": [
     {
       "anchor": {
-        "kind": "pageAnchor",
         "pageAnchor": {
           "page": 3,
-          "x": 100,
-          "y": 200,
-          "width": 150,
-          "height": 20
+          "boundingBox": { "x": 100, "y": 200, "width": 150, "height": 20 }
         }
       },
       "label": "PERSON",
@@ -215,13 +208,14 @@ Web content uses `externalTarget` anchors combined with W3C selectors:
 ```json
 {
   "anchor": {
-    "kind": "externalTarget",
-    "sourceUri": "at://did:plc:.../pub.layers.expression.expression/...",
-    "selector": {
-      "type": "TextQuoteSelector",
-      "exact": "linguistic annotation",
-      "prefix": "the field of ",
-      "suffix": " has grown"
+    "externalTarget": {
+      "source": "https://example.org/article",
+      "selector": {
+        "type": "TextQuoteSelector",
+        "exact": "linguistic annotation",
+        "prefix": "the field of ",
+        "suffix": " has grown"
+      }
     }
   }
 }

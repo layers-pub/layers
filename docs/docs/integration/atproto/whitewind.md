@@ -29,9 +29,11 @@ An `expression` record sets `sourceRef` to the AT-URI of a WhiteWind blog entry.
 ```json
 {
   "$type": "pub.layers.expression.expression",
+  "id": "my-blog-entry",
   "sourceRef": "at://did:plc:author/com.whtwnd.blog.entry/abc123",
   "text": "...",
-  "kind": "article"
+  "kind": "article",
+  "createdAt": "2026-06-09T00:00:00Z"
 }
 ```
 

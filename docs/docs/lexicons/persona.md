@@ -25,6 +25,7 @@ A persona representing an annotator's role, expertise, and interpretive framewor
 | `parentRef` | at-uri | AT-URI of a parent persona this one specializes. |
 | `ontologyRefs` | array | Ontologies this persona uses for annotation. Array of at-uri |
 | `guidelines` | string | Annotation guidelines text. |
+| `guidelinesFormat` | string | Format of the guidelines text, so consumers can render it safely without sniffing. Defaults to `plain` when omitted. Known values: `plain`, `html`, `markdown` |
 | `guidelinesBlob` | blob | Annotation guidelines document (PDF, Markdown, or plain text). |
 | `knowledgeRefs` | array | Knowledge graph references (e.g., ORCID, institutional identifiers). Array of ref: `pub.layers.defs#knowledgeRef` |
 | `features` | ref | Open-ended features: expertise level, certification, language proficiency, reliability. Ref: `pub.layers.defs#featureMap` |
@@ -41,7 +42,7 @@ Retrieve a single persona record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the persona record. |
 
-**Output**: The persona record object.
+**Output**: An object `{ uri, cid, value: persona }` where `value` is the persona record.
 
 ### listPersonas
 **NSID:** `pub.layers.persona.listPersonas`
@@ -50,8 +51,10 @@ List persona records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `repo` | at-identifier (required) | The DID or handle of the repository. |
+| `domain` | string | Optional filter by domain slug. |
+| `kind` | string | Optional filter by persona kind slug. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: persona[], cursor?: string }`
+**Output**: `{ records: { uri, cid, value: persona }[], cursor?: string }` (each entry is a recordView wrapping the persona).

@@ -46,7 +46,7 @@ The W3C Web Annotation Data Model is the standard for annotating web resources. 
 | `oa:questioning` | `kind="span"` with custom `subkind` | Questioning content. |
 | `oa:replying` | Not a core Layers annotation type; handled via ATProto social graph (reply records) | Replies are social interactions, not linguistic annotations. |
 | `oa:moderating` | Appview-level functionality | Content moderation. |
-| `oa:assessing` | `pub.layers.judgment` | Quality/acceptability assessment. |
+| `oa:assessing` | `pub.layers.judgment.judgmentSet` | Quality/acceptability assessment. |
 
 ### Selector Types
 
@@ -57,8 +57,8 @@ Layers includes W3C-compatible selectors in `pub.layers.defs`:
 | `TextQuoteSelector` | `pub.layers.defs#textQuoteSelector` | Select by quoting text. `exact` → exact match; `prefix`/`suffix` → context. Direct mapping. |
 | `TextPositionSelector` | `pub.layers.defs#textPositionSelector` | Select by UTF-8 byte offsets. W3C `start`/`end` → `byteStart`/`byteEnd`. The import pipeline converts character offsets to byte offsets at import time. |
 | `FragmentSelector` | `pub.layers.defs#fragmentSelector` | Select by URI fragment. `value` → fragment identifier; `conformsTo` → fragment spec URI. Direct mapping. |
-| `CssSelector` | `pub.layers.defs#externalTarget.selector` (via features) | CSS selector string. Stored in `externalTarget` features when annotating web resources. |
-| `XPathSelector` | `pub.layers.defs#externalTarget.selector` (via features) | XPath expression. Stored in features. |
+| `CssSelector` | `pub.layers.defs#featureMap` (annotation `features`) | CSS selector string. Not representable on `externalTarget`, whose `selector` union accepts only `textQuoteSelector`/`textPositionSelector`/`fragmentSelector`. Store CSS selectors in the annotation's `features` map. |
+| `XPathSelector` | `pub.layers.defs#featureMap` (annotation `features`) | XPath expression. Not representable on `externalTarget`; store in the annotation's `features` map. |
 | `DataPositionSelector` | `pub.layers.defs#span` | UTF-8 byte offset selection. |
 | `SvgSelector` | `pub.layers.defs#boundingBox` or features | SVG-based spatial selection. Layers uses `boundingBox` for rectangular regions; arbitrary SVG shapes go in features. |
 | `RangeSelector` | Composite of two selectors | Start/end defined by two separate selectors. Representable by combining two anchor fields. |

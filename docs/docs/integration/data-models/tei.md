@@ -25,24 +25,24 @@ TEI is an XML-based standard for encoding literary and linguistic texts. It prov
 |---|---|---|
 | `<TEI>` | `pub.layers.expression.expression` (record) | Root document container. TEI's `@xml:id` maps to the record's AT-URI. |
 | `<teiHeader>` | `pub.layers.expression.expression` metadata fields + `features` | TEI header metadata (fileDesc, encodingDesc, profileDesc, revisionDesc) maps to expression-level fields and features. |
-| `<text>` | `pub.layers.expression.text` | Primary textual content. |
+| `<text>` | `pub.layers.expression.expression` `text` field | Primary textual content. |
 | `<body>` | Implicit in `pub.layers.expression.expression` hierarchy via `parentRef` | The body structure is captured by the expression hierarchy: divisions, paragraphs, and sentences are nested expressions with `parentRef` chains. Tokenization is handled separately via `pub.layers.segmentation.segmentation`. |
 | `<div>` (division) | `pub.layers.expression.expression` (kind: `section`) | Nested divisions map to sections with `kind` discriminating division types (chapter, part, act, scene, etc.). TEI's nested `<div>` structure is flattened into sections with parent-child relationships tracked via features or section ordering. |
-| `<p>` (paragraph) | `pub.layers.expression.expression` (kind: `section`) with `subkind="paragraph"` | Paragraph-level sections. |
+| `<p>` (paragraph) | `pub.layers.expression.expression` (kind: `paragraph`) | Paragraph-level sections. |
 | `<s>` (sentence) | `pub.layers.expression.expression` (kind: `sentence`) | Sentence segmentation. |
-| `<w>` (word) | `pub.layers.expression.expression` (kind: `token`) | Word-level tokenization. TEI's `@lemma`, `@pos`, `@msd` attributes map to separate annotation layers. |
-| `<c>` (character) | `pub.layers.expression.expression` (kind: `token`) in a `tokenization(kind="character")` | Character-level tokenization. |
-| `<pc>` (punctuation) | `pub.layers.expression.expression` (kind: `token`) with feature `isPunctuation=true` | Punctuation characters as tokens. |
+| `<w>` (word) | `pub.layers.expression.expression` (kind: `word`) | Word-level tokenization. TEI's `@lemma`, `@pos`, `@msd` attributes map to separate annotation layers. |
+| `<c>` (character) | `pub.layers.expression.expression` (kind: `character`) | Character-level tokenization. |
+| `<pc>` (punctuation) | `pub.layers.expression.expression` (kind: `word`) with feature `isPunctuation=true` | Punctuation characters as tokens. |
 
 ### Speaker and Dialogue
 
 | TEI Element | Layers Equivalent | Notes |
 |---|---|---|
-| `<sp>` (speech) | `pub.layers.expression.expression` (kind: `section`) with `subkind="turn"` + `speaker` | Dialogue turns with speaker identification. |
-| `<speaker>` | `expression.speaker` | Speaker identifier. |
-| `<stage>` (stage direction) | `pub.layers.expression.expression` (kind: `section`) with `subkind` set via `subkindUri` (e.g., `"stage-direction"`) | Stage directions as community-defined section kinds. |
-| `<lg>` (line group) | `pub.layers.expression.expression` (kind: `section`) with subkind via `subkindUri` (e.g., `"stanza"`) | Poetic stanzas. |
-| `<l>` (verse line) | `pub.layers.expression.expression` (kind: `section`) with subkind via `subkindUri` (e.g., `"verse-line"`) | Individual verse lines. |
+| `<sp>` (speech) | `pub.layers.expression.expression` (kind: `turn`) with speaker via `features` or an annotation layer (subkind `speaker`) | Dialogue turns with speaker identification. |
+| `<speaker>` | `pub.layers.expression.expression` `features` entry, or `annotationLayer(kind="span", subkind="speaker")` | Speaker identifier. |
+| `<stage>` (stage direction) | `pub.layers.expression.expression` with `kind` set via `kindUri` (e.g., `"stage-direction"`) | Stage directions as community-defined section kinds. |
+| `<lg>` (line group) | `pub.layers.expression.expression` with `kind` set via `kindUri` (e.g., `"stanza"`) | Poetic stanzas. |
+| `<l>` (verse line) | `pub.layers.expression.expression` with `kind` set via `kindUri` (e.g., `"verse-line"`) | Individual verse lines. |
 
 ### Linguistic Annotation
 

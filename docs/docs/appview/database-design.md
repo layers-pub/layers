@@ -160,7 +160,7 @@ CREATE TABLE annotation_layers (
     did               TEXT NOT NULL,
     rkey              TEXT NOT NULL,
     expression_ref    TEXT NOT NULL,   -- AT-URI of annotated expression
-    segmentation_ref  TEXT,            -- AT-URI of segmentation used
+    tokenization_id   TEXT,            -- UUID of bound tokenization (token-aligned layers)
     kind              TEXT NOT NULL,
     subkind           TEXT,
     formalism         TEXT,
@@ -198,7 +198,7 @@ CREATE TABLE annotations (
     start_offset  INTEGER,
     end_offset    INTEGER,
     token_index   INTEGER,
-    confidence    REAL,
+    confidence    INTEGER,       -- scaled 0-1000 (1000 = maximum confidence)
     record        JSONB NOT NULL,
 
     PRIMARY KEY (layer_uri, index)
@@ -393,7 +393,7 @@ Supports queries like: full-text search over expression text, faceted filtering 
           "label":        { "type": "keyword" },
           "value":        { "type": "text", "analyzer": "layers_text" },
           "anchor_type":  { "type": "keyword" },
-          "confidence":   { "type": "float" }
+          "confidence":   { "type": "integer" }
         }
       },
       "indexed_at":       { "type": "date" }
@@ -402,7 +402,7 @@ Supports queries like: full-text search over expression text, faceted filtering 
 }
 ```
 
-The `annotations` field uses Elasticsearch's `nested` type so that queries can filter on label-value pairs without cross-matching (e.g., find layers where at least one annotation has label "NNP" and confidence > 0.9, without accidentally matching label "NNP" from one annotation against confidence 0.9 from another).
+The `annotations` field uses Elasticsearch's `nested` type so that queries can filter on label-value pairs without cross-matching (e.g., find layers where at least one annotation has label "NNP" and confidence > 900, without accidentally matching label "NNP" from one annotation against confidence 900 from another). Confidence is stored on the 0-1000 integer scale used by the records (1000 = maximum confidence).
 
 ### Index: `ontologies`
 

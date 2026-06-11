@@ -25,7 +25,7 @@ FoLiA is a rich XML-based format for linguistic annotation developed at Radboud 
 |---|---|---|
 | `<FoLiA>` (document) | `pub.layers.expression.expression` | Root document. FoLiA's `@xml:id` → AT-URI. |
 | `<metadata>` | Expression fields + `features` | Document-level metadata. |
-| `<text>` | `pub.layers.expression.text` | Primary text content. |
+| `<text>` | `pub.layers.expression.expression` `text` field | Primary text content. |
 | `<div>` (division) | `pub.layers.expression.expression` (kind: `section`) | Document divisions. |
 | `<p>` (paragraph) | `pub.layers.expression.expression` (kind: `section`) with `subkind="paragraph"` | Paragraph sections. |
 | `<s>` (sentence) | `pub.layers.expression.expression` (kind: `sentence`) | Sentence boundaries. |
@@ -52,7 +52,7 @@ FoLiA is a rich XML-based format for linguistic annotation developed at Radboud 
 | `<statement>` | `annotationLayer(kind="span")` with custom `subkind` (e.g., `"attribution"`) | Attribution/statement annotation. |
 | `<observation>` | `annotationLayer(kind="span")` with custom `subkind` | Observation annotations. |
 | `<timesegment>` | `annotationLayer(kind="tier")` with `anchor.temporalSpan` | Time-aligned segments for speech. |
-| `<rawcontent>` | `pub.layers.expression.text` or `features` | Raw/original content before normalization. |
+| `<rawcontent>` | `pub.layers.expression.expression` `text` field or `features` | Raw/original content before normalization. |
 
 ### Corrections and Alternatives
 

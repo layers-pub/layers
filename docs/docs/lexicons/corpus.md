@@ -118,7 +118,7 @@ Retrieve a single corpus record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the corpus record. |
 
-**Output**: The corpus record object.
+**Output**: `{ uri, cid, value: corpus }`
 
 ### listCorpora
 **NSID:** `pub.layers.corpus.listCorpora`
@@ -127,11 +127,13 @@ List corpus records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `repo` | at-identifier (required) | The repository handle or DID (an at-identifier). |
+| `language` | string | Filter by primary language tag. |
+| `domain` | string | Filter by domain slug. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: corpus[], cursor?: string }`
+**Output**: `{ records: { uri, cid, value: corpus }[], cursor?: string }` (records required)
 
 ### getMembership
 **NSID:** `pub.layers.corpus.getMembership`
@@ -142,17 +144,18 @@ Retrieve a single membership record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the membership record. |
 
-**Output**: The membership record object.
+**Output**: `{ uri, cid, value: membership }`
 
 ### listMemberships
 **NSID:** `pub.layers.corpus.listMemberships`
 
-List membership records in a repository with pagination.
+List membership records for a given corpus (by `corpusRef`), optionally filtered by `split`, with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `corpusRef` | at-uri (required) | The AT-URI of the corpus. |
+| `split` | string | Filter by split slug. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: membership[], cursor?: string }`
+**Output**: `{ records: { uri, cid, value: membership }[], cursor?: string }` (records required)

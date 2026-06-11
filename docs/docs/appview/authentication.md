@@ -168,7 +168,7 @@ Role inheritance: `administrator` inherits from `corpus_manager` and `experiment
 
 ### Per-Corpus Permissions
 
-Beyond global roles, corpus owners can grant per-corpus permissions. A corpus owner can designate specific DIDs as annotators or adjudicators for their corpus. These permissions are stored in the `corpus.corpus` record's `annotationDesign` field and enforced at the API layer.
+Beyond global roles, the `corpus.corpus` record's `annotationDesign` field records the annotation project's design parameters (refs `pub.layers.corpus.defs#annotationDesign`): redundancy (annotators-per-item count and assignment-strategy slug), adjudication (method and agreement threshold), quality criteria, and references to the annotation guidelines. These are aggregate project-design parameters, not per-DID permission grants; the field does not designate specific annotator or adjudicator DIDs.
 
 ## Multi-Factor Authentication
 

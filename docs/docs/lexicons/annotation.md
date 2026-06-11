@@ -117,7 +117,7 @@ Retrieve a single annotation layer record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the annotation layer record. |
 
-**Output**: The annotation layer record object.
+**Output**: `{ uri, cid, value: annotationLayer }`
 
 ### listAnnotationLayers
 **NSID:** `pub.layers.annotation.listAnnotationLayers`
@@ -126,11 +126,13 @@ List annotation layer records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `expression` | at-uri (required) | The AT-URI of the expression whose annotation layers to list. |
+| `kind` | string | Filter by annotation kind slug. |
+| `subkind` | string | Filter by annotation subkind slug. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: annotationLayer[], cursor?: string }`
+**Output**: `{ records: { uri, cid, value: annotationLayer }[], cursor?: string }`
 
 ### getClusterSet
 **NSID:** `pub.layers.annotation.getClusterSet`
@@ -141,7 +143,7 @@ Retrieve a single cluster set record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the cluster set record. |
 
-**Output**: The cluster set record object.
+**Output**: `{ uri, cid, value: clusterSet }`
 
 ### listClusterSets
 **NSID:** `pub.layers.annotation.listClusterSets`
@@ -150,8 +152,9 @@ List cluster set records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `expression` | at-uri (required) | The AT-URI of the expression whose cluster sets to list. |
+| `kind` | string | Filter by clustering kind slug. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: clusterSet[], cursor?: string }`
+**Output**: `{ records: { uri, cid, value: clusterSet }[], cursor?: string }`

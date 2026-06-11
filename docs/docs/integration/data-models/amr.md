@@ -29,9 +29,9 @@ AMR represents sentence meaning as a rooted, directed, labeled graph. Nodes are 
 | Concept node | `pub.layers.annotation.defs#annotation` | Each AMR concept is an annotation with `label` = concept name (e.g., `want-01`, `boy`, `go-02`). `ontologyTypeRef` can point to the PropBank frameset definition. |
 | Root node | The annotation with no incoming `headIndex` | Or explicitly marked via features. |
 | Named entity | `annotation` with `label` = entity type + features containing `:name` and `:opN` values | AMR represents named entities as type + name structure. |
-| Edge (role) | `pub.layers.annotation.defs#argumentRef` | ARG0, ARG1, etc. map to `argumentRef.role`. The child concept maps to `argumentRef.annotationId`. |
+| Edge (role) | `pub.layers.annotation.defs#argumentRef` | ARG0, ARG1, etc. map to `argumentRef.role`. The child concept maps to `argumentRef.target` (a `pub.layers.defs#objectRef`; use `localId` for a same-layer UUID). |
 | Non-core relations | `argumentRef` with role = `:mod`, `:location`, `:time`, `:manner`, etc. | AMR's non-core relations use the same `argumentRef` mechanism with different role labels. |
-| Reentrancy (shared nodes) | Multiple `argumentRef` entries pointing to the same annotation UUID | AMR allows a concept to fill multiple roles. Layers handles this by having multiple `argumentRef` entries with the same `annotationId`. |
+| Reentrancy (shared nodes) | Multiple `argumentRef` entries pointing to the same annotation UUID | AMR allows a concept to fill multiple roles. Layers handles this by having multiple `argumentRef` entries whose `target` (an `objectRef`) resolves to the same annotation UUID (via `target.localId`). |
 | Constants | `annotation.value` | String/number constants (dates, quantities, etc.) stored in `value`. |
 | Polarity/negation | `annotation.features.polarity = "-"` | AMR's `:polarity -` maps to features. |
 | Alignment to tokens | `annotation.anchor.tokenRefSequence` or `annotation.tokenIndex` | AMR-to-token alignments (ISI aligner output) map to anchoring. |

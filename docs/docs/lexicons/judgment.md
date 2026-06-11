@@ -23,6 +23,7 @@ Definition of an annotation or judgment experiment.
 | `taskTypeUri` | at-uri | AT-URI of the response instrument definition node. Community-expandable via knowledge graph. |
 | `taskType` | string | Response instrument: how the response is collected (fallback). Known values: `forced-choice`, `multi-select`, `ordinal-scale`, `magnitude`, `binary`, `categorical`, `free-text`, `cloze`, `span-labeling`, `custom` |
 | `guidelines` | string | Task guidelines and instructions. |
+| `guidelinesFormat` | string | Format of the guidelines text, so consumers can render it safely without sniffing. Defaults to `plain` when omitted. Known values: `plain`, `html`, `markdown` |
 | `ontologyRef` | at-uri | Reference to the ontology used. |
 | `personaRef` | at-uri | Reference to the persona defining the annotation framework. |
 | `corpusRef` | at-uri | Reference to the corpus. |
@@ -170,7 +171,9 @@ List experiment definition records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `repo` | at-identifier (required) | The handle or DID of the repository. |
+| `measureType` | string | Filter by measure type. |
+| `taskType` | string | Filter by task type. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
@@ -194,7 +197,7 @@ List judgment set records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `experimentRef` | at-uri (required) | The AT-URI of the experiment whose judgment sets to list. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
@@ -218,7 +221,8 @@ List agreement report records in a repository with pagination.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `repo` | did (required) | The DID of the repository. |
+| `experimentRef` | at-uri (required) | The AT-URI of the experiment whose agreement reports to list. |
+| `metric` | string | Filter by metric slug. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 

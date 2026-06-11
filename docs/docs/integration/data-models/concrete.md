@@ -55,7 +55,7 @@ Concrete is a stand-off annotation data model originally defined via Apache Thri
 |---|---|---|
 | `EntityMentionSet` | `pub.layers.annotation.annotationLayer` with `kind="span"`, `subkind="entity-mention"` | Direct mapping. Concrete's `EntityMentionSet.mentionList` → `annotationLayer.annotations`. |
 | `EntityMention` | `pub.layers.annotation.defs#annotation` | `EntityMention.tokens` → `annotation.anchor.tokenRefSequence`; `EntityMention.entityType` → `annotation.label`; `EntityMention.phraseType` → `annotation.features.phraseType`. |
-| `Entity` | `pub.layers.annotation.clusterSet` with `kind="coreference"` | Concrete's `Entity` groups `EntityMention` objects into coreference chains. Layers uses `clusterSet` with `kind="coreference"` and `cluster.memberIds` pointing to annotation UUIDs. The `Entity.canonicalName` maps to `cluster.canonicalLabel`. |
+| `Entity` | `pub.layers.annotation.clusterSet` with `kind="coreference"` | Concrete's `Entity` groups `EntityMention` objects into coreference chains. Layers uses `clusterSet` with `kind="coreference"` and `cluster.members` (an array of `objectRef` references, using `localId` for same-layer members or `recordRef`+`objectId` for cross-layer/cross-document members). The `Entity.canonicalName` maps to `cluster.canonicalLabel`. |
 | `EntitySet` | `pub.layers.annotation.clusterSet` | One `clusterSet` per entity resolution output. |
 
 ### Situation Annotations
@@ -64,7 +64,7 @@ Concrete is a stand-off annotation data model originally defined via Apache Thri
 |---|---|---|
 | `SituationMentionSet` | `pub.layers.annotation.annotationLayer` with `kind="span"`, `subkind="situation-mention"` or `subkind="frame"` | Concrete's `SituationMention` is used for situations, frames, and states. Layers discriminates these by `subkind`. |
 | `SituationMention` | `pub.layers.annotation.defs#annotation` | `SituationMention.tokens` → `annotation.anchor`; `SituationMention.situationKind` → `annotation.label`. |
-| `MentionArgument` | `pub.layers.annotation.defs#argumentRef` | `MentionArgument.role` → `argumentRef.role`; `MentionArgument.entityMentionId` → `argumentRef.annotationId` (same-layer) or `argumentRef.layerRef` + `argumentRef.objectId` (cross-layer). |
+| `MentionArgument` | `pub.layers.annotation.defs#argumentRef` | `MentionArgument.role` → `argumentRef.role`; `MentionArgument.entityMentionId` → `argumentRef.target.localId` (same-layer) or `argumentRef.target.recordRef` + `argumentRef.target.objectId` (cross-layer). |
 | `Situation` | `pub.layers.annotation.clusterSet` with `kind="situation-coreference"` | Concrete's `Situation` groups `SituationMention` objects. Maps to Layers `clusterSet`. |
 | `SituationSet` | `pub.layers.annotation.clusterSet` | One `clusterSet` per situation resolution output. |
 
@@ -85,7 +85,7 @@ Concrete is a stand-off annotation data model originally defined via Apache Thri
 | `TheoryDependencies` | `pub.layers.defs#annotationMetadata.dependencies` | Concrete's `TheoryDependencies` tracks which upstream analyses an annotation depends on. Layers uses the `dependencies` array on `annotationMetadata`, containing `objectRef` references to upstream records. |
 | `kBest` | `pub.layers.annotation.annotationLayer.rank` + `alternativesRef` | Concrete supports k-best lists for parse trees and other analyses. Layers models this with `rank` (1 = best) and `alternativesRef` (points to the top-ranked layer) on `annotationLayer`. Each alternative is a separate layer record. |
 | `CommunicationTagging` | `pub.layers.annotation.annotationLayer` with `kind="document-tag"` | Concrete's document-level tagging maps to an annotation layer with `kind="document-tag"` on the expression. |
-| `LanguageIdentification` | `pub.layers.expression.languages` + `pub.layers.annotation.annotationLayer` with `subkind="language-id"` | Concrete's document-level language ID maps to `expression.language` (primary) and `expression.languages` (additional). Per-span language identification uses an annotation layer with `subkind="language-id"`. |
+| `LanguageIdentification` | `expression.language` / `expression.languages` + `pub.layers.annotation.annotationLayer` with `subkind="language-id"` | Concrete's document-level language ID maps to `expression.language` (primary) and `expression.languages` (additional). Per-span language identification uses an annotation layer with `subkind="language-id"`. |
 
 ### Cross-Document Features
 

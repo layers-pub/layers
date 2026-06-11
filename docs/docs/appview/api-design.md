@@ -35,7 +35,7 @@ Every record type follows the same `get` / `list` pattern defined by its lexicon
 | Query Type | Parameters | Response |
 |---|---|---|
 | `get<Record>` | `uri` (at-uri, required) | Single record object |
-| `list<Records>` | `repo` (did, required), `limit` (1-100), `cursor` | `{ records, cursor }` |
+| `list<Records>` | `repo` (at-identifier, required), `limit` (1-100), `cursor` | `{ records, cursor }` |
 
 ### Complete XRPC Reference
 

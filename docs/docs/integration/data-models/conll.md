@@ -23,8 +23,8 @@ CoNLL formats are tab-separated column-based annotation formats widely used in N
 
 | CoNLL-U Column | Layers Equivalent | Notes |
 |---|---|---|
-| `ID` | `pub.layers.expression.expression` token `tokenIndex` | Token position. CoNLL-U uses 1-based; Layers uses 0-based. |
-| `FORM` | `pub.layers.expression.expression` token `text` | Surface form. |
+| `ID` | `pub.layers.segmentation.defs#token` `tokenIndex` | Token position. CoNLL-U uses 1-based; Layers uses 0-based. |
+| `FORM` | `pub.layers.segmentation.defs#token` `text` | Surface form. |
 | `LEMMA` | `annotationLayer(kind="token-tag", subkind="lemma")` → `annotation.value` | Lemmatization layer. |
 | `UPOS` | `annotationLayer(kind="token-tag", subkind="pos")` → `annotation.label` | Universal POS tag. |
 | `XPOS` | `annotationLayer(kind="token-tag", subkind="xpos")` → `annotation.label` | Language-specific POS tag. |
@@ -41,8 +41,8 @@ CoNLL formats are tab-separated column-based annotation formats widely used in N
 | Multi-word tokens (e.g., `1-2 del`) | `pub.layers.defs#tokenRefSequence` | Multi-word token ranges are represented as a `tokenRefSequence` with `tokenIndexes` covering the component tokens. The surface form and span of the multi-word token are stored in features. |
 | Empty nodes (e.g., `2.1`) | `pub.layers.annotation.defs#annotation` with features | Empty nodes in enhanced UD are represented as annotations (not tokens) in the enhanced dependency layer, with `features` indicating they are empty/null nodes. Their position is tracked via decimal indices stored in features. |
 | Sentence boundaries | `pub.layers.expression.expression` (kind: `sentence`) with `parentRef` | CoNLL-U blank lines between sentences map to sentence-level expression records with `parentRef` pointing to the document expression. Tokenization for each sentence is a `pub.layers.segmentation.segmentation` record with `expressionRef` pointing to that sentence expression. |
-| `# text = ...` comment | `pub.layers.expression.expression` sentence `features` or `pub.layers.expression.text` | Sentence-level metadata from comments. |
-| `# sent_id = ...` comment | `pub.layers.expression.expression` sentence `uuid` | Sentence identifier. |
+| `# text = ...` comment | `pub.layers.expression.expression` sentence `text` (or `features`) | Sentence-level metadata from comments. |
+| `# sent_id = ...` comment | `pub.layers.expression.expression` sentence `id` | Sentence identifier. |
 | `# newpar` / `# newdoc` | `pub.layers.expression.expression` (kind: `section`) boundaries | Paragraph and document boundaries. |
 
 ## CoNLL-2003 (NER)
@@ -66,7 +66,7 @@ CoNLL formats are tab-separated column-based annotation formats widely used in N
 
 | CoNLL-2012 Feature | Layers Equivalent | Notes |
 |---|---|---|
-| Coreference column | `pub.layers.annotation.clusterSet` with `kind="coreference"` | Parenthetical coreference notation (e.g., `(12)`, `(12`, `12)`) maps to cluster membership. Each cluster ID becomes a `cluster` with `memberIds` pointing to span annotations. |
+| Coreference column | `pub.layers.annotation.clusterSet` with `kind="coreference"` | Parenthetical coreference notation (e.g., `(12)`, `(12`, `12)`) maps to cluster membership. Each cluster ID becomes a `cluster` whose `members` array holds `objectRef`s (localId for same-layer, recordRef+objectId for cross-layer/cross-document) pointing to span annotations. |
 | Speaker column | `annotationLayer(kind="token-tag", subkind="speaker")` | Speaker diarization. |
 | Named entity spans | `annotationLayer(kind="span", subkind="entity-mention")` | Entity mention spans. |
 

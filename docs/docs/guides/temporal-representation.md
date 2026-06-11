@@ -70,10 +70,9 @@ The `label` field on a temporal graphEdge can carry the linguistic signal/connec
 
 ## Composability Examples
 
-**Simple date annotation:**
+**Simple date annotation** (on an annotation layer carrying `subkind: "temporal-expression"`):
 ```json
 {
-  "subkind": "temporal-expression",
   "label": "DATE",
   "text": "March 15, 2024",
   "temporal": {
@@ -114,7 +113,7 @@ The `label` field on a temporal graphEdge can carry the linguistic signal/connec
     "type": "relative",
     "value": { "duration": "P3D" },
     "modifier": { "mod": "before" },
-    "anchorRef": { "localId": "dct-annotation-uuid" }
+    "anchorRef": { "localId": { "value": "dct-annotation-uuid" } }
   }
 }
 ```
