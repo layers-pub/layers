@@ -23,7 +23,7 @@ The observability module lives in `src/observability/`, matching Chive's layout:
 
 ### Pino Configuration
 
-The appview uses [Pino](https://getpino.io/) for structured JSON logging. Every log entry includes a request ID, timestamp, and OpenTelemetry trace/span IDs for correlation. The redaction list covers all sensitive field patterns matching Chive's comprehensive approach:
+The appview uses [Pino](https://getpino.io/) for structured JSON logging. Every log entry includes a request ID, timestamp, and OpenTelemetry trace/span IDs for correlation. The redaction list covers authorization headers, cookies, and common credential field names:
 
 ```typescript
 const logger = pino({
@@ -66,7 +66,7 @@ Every HTTP request gets a unique `requestId` (UUID v4) injected by the request c
 
 ### OpenTelemetry Setup
 
-The appview uses **OpenTelemetry 1.x** (stable SDK) to instrument all I/O boundaries. The OTel Logs bridge can route Pino logs through the OTel Collector for unified observability. **Grafana Alloy** is the recommended next-gen collector, replacing the legacy Grafana Agent:
+The appview uses **OpenTelemetry 1.x** (stable SDK) to instrument all I/O boundaries. The OTel Logs bridge can route Pino logs through the OTel Collector for unified observability. The collector is Grafana Alloy.
 
 | Instrumentation | Library | Traces |
 |---|---|---|
@@ -77,7 +77,7 @@ The appview uses **OpenTelemetry 1.x** (stable SDK) to instrument all I/O bounda
 | Neo4j | Custom instrumentation | Cypher query spans |
 | BullMQ | Custom instrumentation | Job processing spans |
 
-Traces are exported via OTLP HTTP to a collector (Jaeger in development, Grafana Tempo in production). A dedicated `MetricsService` class in `src/services/metrics/` provides a clean API for recording business metrics (view counts, search clicks, annotation activity).
+Traces are exported via OTLP HTTP to a collector (Jaeger in development, Grafana Tempo in production).
 
 ### Span Hierarchy
 
@@ -103,6 +103,8 @@ HTTP GET /api/v1/annotations?kind=span&subkind=ner
 Error traces are always captured regardless of sampling rate (tail-based sampling).
 
 ## Metrics
+
+A `MetricsService` class in `src/services/metrics/` records business metrics: view counts, search clicks, and annotation activity.
 
 ### Prometheus Exposition
 

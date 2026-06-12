@@ -157,7 +157,7 @@ src/
 
 ### Follow Chive's Proven Architecture
 
-The Layers appview follows [Chive](https://chive.pub)'s production architecture closely. Chive is a running ATProto appview for scholarly eprints that has already solved the hard infrastructure problems (firehose subscription with cursor-based resumption, multi-database indexing, dual XRPC/REST APIs, BullMQ job queues, and Kubernetes deployment). Layers adopts the same technology stack, patterns, and operational practices, including the two-process split, layered directory structure, storage adapter interfaces, and dependency injection via tsyringe.
+The Layers appview follows [Chive](https://chive.pub)'s production architecture closely. Chive is a running ATProto appview for scholarly eprints that already implements the core infrastructure (firehose subscription with cursor-based resumption, multi-database indexing, dual XRPC/REST APIs, BullMQ job queues, and Kubernetes deployment). Layers adopts the same technology stack, patterns, and operational practices, including the two-process split, layered directory structure, storage adapter interfaces, and dependency injection via tsyringe.
 
 ### Type-Safe Error Handling
 
@@ -182,7 +182,7 @@ Where Layers diverges from Chive:
 - **Format import pipeline** (CoNLL, BRAT, ELAN, TEI, etc.) extends the plugin system beyond Chive's harvester model
 - **Annotation workflow RBAC** (annotator, adjudicator, corpus manager) requires more granular authorization than Chive's publish/read model
 
-### Bleeding-Edge Infrastructure
+### Target Infrastructure (2026)
 
 The appview targets 2026 best practices:
 

@@ -133,9 +133,9 @@ m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act
 | Role | Description | Permissions |
 |---|---|---|
 | `reader` | Default for all authenticated users | Read all public records, search, browse |
-| `annotator` | Can create annotation data | Reader + create expressions, segmentations, annotation layers, alignments |
-| `corpus_manager` | Can organize corpora | Annotator + create/manage corpora, memberships, ontologies |
-| `experimenter` | Can run judgment experiments | Annotator + create experiment definitions, templates, fillings |
+| `annotator` | Can create annotation data | Reader + create expressions, segmentations, annotation layers, alignments, graph edges, personas |
+| `corpus_manager` | Can organize corpora | Annotator + create/manage corpora, memberships, ontologies, type definitions |
+| `experimenter` | Can run judgment experiments | Annotator + create experiment definitions, templates, fillings, judgment sets |
 | `administrator` | Full access | All operations including user management and system configuration |
 
 ### Policy Rules
@@ -219,7 +219,7 @@ No secrets are stored in code or version control. Production deployments use the
 
 ## Future Considerations
 
-- **Passkeys-first**: The industry is shifting toward passkeys as the primary authentication method (FIDO Alliance 2025 adoption milestones). The appview already supports WebAuthn and can transition to passkeys-first when adoption reaches critical mass.
+- **Passkeys-first**: The industry is shifting toward passkeys as the primary authentication method (FIDO Alliance 2025 adoption milestones). The appview already supports WebAuthn and can promote passkeys to the primary factor without protocol changes.
 - **DPoP tokens**: The emerging [DPoP](https://datatracker.ietf.org/doc/html/rfc9449) (Demonstrating Proof of Possession) standard binds tokens to specific clients, preventing token theft/replay. Monitor ATProto ecosystem adoption.
 
 ## See Also

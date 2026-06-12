@@ -136,8 +136,6 @@ CREATE TABLE segmentations (
     did             TEXT NOT NULL,
     rkey            TEXT NOT NULL,
     expression_ref  TEXT NOT NULL,  -- AT-URI of target expression
-    strategy        TEXT,
-    token_count     INTEGER,
     indexed_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
     record          JSONB NOT NULL,
 
@@ -146,7 +144,6 @@ CREATE TABLE segmentations (
 
 CREATE INDEX idx_segmentations_did ON segmentations (did);
 CREATE INDEX idx_segmentations_expression_ref ON segmentations (expression_ref);
-CREATE INDEX idx_segmentations_strategy ON segmentations (strategy);
 CREATE INDEX idx_segmentations_record ON segmentations USING GIN (record);
 ```
 
@@ -241,30 +238,30 @@ These tables store records from the parallel support lexicons. They follow the s
 | Table | Record Type | Key Extracted Columns |
 |-------|------------|----------------------|
 | `ontologies` | `ontology.ontology` | `name`, `domain`, `version` |
-| `type_defs` | `ontology.typeDef` | `ontology_ref`, `label`, `relation_type` |
+| `type_defs` | `ontology.typeDef` | `ontology_ref`, `name`, `type_kind` |
 | `corpora` | `corpus.corpus` | `name`, `language`, `license` |
 | `corpus_memberships` | `corpus.membership` | `corpus_ref`, `expression_ref` |
-| `resource_entries` | `resource.entry` | `lemma`, `form`, `language`, `collection_ref` |
-| `resource_collections` | `resource.collection` | `name`, `collection_type` |
+| `resource_entries` | `resource.entry` | `lemma`, `form`, `language` |
+| `resource_collections` | `resource.collection` | `name`, `kind` |
 | `collection_memberships` | `resource.collectionMembership` | `collection_ref`, `entry_ref` |
 | `templates` | `resource.template` | `name`, `slot_count` |
 | `fillings` | `resource.filling` | `template_ref`, `expression_ref` |
-| `template_compositions` | `resource.templateComposition` | `name`, `template_refs` (JSONB) |
-| `experiment_defs` | `judgment.experimentDef` | `measure`, `task_type`, `design_type` |
-| `judgment_sets` | `judgment.judgmentSet` | `experiment_ref`, `annotator_did` |
-| `agreement_reports` | `judgment.agreementReport` | `experiment_ref`, `metric`, `score` |
-| `alignments` | `alignment.alignment` | `source_ref`, `target_ref`, `alignment_type` |
+| `template_compositions` | `resource.templateComposition` | `composition_type`, `members` (JSONB) |
+| `experiment_defs` | `judgment.experimentDef` | `measure_type`, `task_type` |
+| `judgment_sets` | `judgment.judgmentSet` | `experiment_ref`, `annotator_did` (extracted from agent.did; null when agent uses id or knowledgeRef) |
+| `agreement_reports` | `judgment.agreementReport` | `experiment_ref`, `metric`, `value` (0-1000 integer scale) |
+| `alignments` | `alignment.alignment` | `source_ref`, `target_ref`, `kind`, `subkind` |
 
 ### Integration Tables
 
 | Table | Record Type | Key Extracted Columns |
 |-------|------------|----------------------|
-| `graph_nodes` | `graph.graphNode` | `kind`, `name`, `description`, `ontology_ref` |
-| `graph_edges` | `graph.graphEdge` | `source_ref`, `target_ref`, `edge_type`, `edge_set_ref` |
-| `graph_edge_sets` | `graph.graphEdgeSet` | `name`, `edge_type`, `edge_count` |
+| `graph_nodes` | `graph.graphNode` | `node_type`, `label` |
+| `graph_edges` | `graph.graphEdge` | `source_ref`, `target_ref`, `edge_type` |
+| `graph_edge_sets` | `graph.graphEdgeSet` | `edge_type`, `edge_count` |
 | `personas` | `persona.persona` | `name`, `domain`, `kind` |
-| `media_records` | `media.media` | `modality`, `mime_type`, `duration`, `expression_ref` |
-| `eprints` | `eprint.eprint` | `identifier`, `title`, `platform`, `doi` |
+| `media_records` | `media.media` | `kind`, `mime_type`, `duration_ms` |
+| `eprints` | `eprint.eprint` | `identifier`, `identifier_type`, `link_type`, `citation`, `description` |
 | `data_links` | `eprint.dataLink` | `eprint_ref`, `corpus_ref`, `link_type` |
 | `changelogs` | `changelog.entry` | `subject_uri`, `subject_collection`, `version`, `summary`, `sections` (JSONB) |
 
@@ -428,14 +425,12 @@ The `annotations` field uses Elasticsearch's `nested` type so that queries can f
 {
   "mappings": {
     "properties": {
-      "uri":          { "type": "keyword" },
-      "did":          { "type": "keyword" },
-      "kind":         { "type": "keyword" },
-      "name":         { "type": "text", "analyzer": "layers_linguistic",
-                        "fields": { "keyword": { "type": "keyword" } } },
-      "description":  { "type": "text", "analyzer": "layers_linguistic" },
-      "ontology_ref": { "type": "keyword" },
-      "indexed_at":   { "type": "date" }
+      "uri":        { "type": "keyword" },
+      "did":        { "type": "keyword" },
+      "node_type":  { "type": "keyword" },
+      "label":      { "type": "text", "analyzer": "layers_linguistic",
+                      "fields": { "keyword": { "type": "keyword" } } },
+      "indexed_at": { "type": "date" }
     }
   }
 }
@@ -447,14 +442,14 @@ The following indexes use simpler mappings with the same conventions (keyword fo
 
 | Index | Key Text Fields | Key Keyword Fields |
 |-------|----------------|-------------------|
-| `type_defs` | `label`, `description` | `ontology_ref`, `relation_type` |
+| `type_defs` | `name`, `description` | `ontology_ref`, `type_kind` |
 | `corpora` | `name`, `description` | `language`, `license` |
-| `resource_entries` | `lemma`, `form` | `language`, `collection_ref` |
-| `resource_collections` | `name` | `collection_type` |
-| `experiment_defs` | `name`, `description` | `measure`, `task_type`, `design_type` |
+| `resource_entries` | `lemma`, `form` | `language` |
+| `resource_collections` | `name` | `kind` |
+| `experiment_defs` | `name`, `description` | `measure_type`, `task_type` |
 | `personas` | `name`, `description` | `domain`, `kind` |
-| `media_records` | `description` | `modality`, `mime_type` |
-| `eprints` | `title`, `abstract` | `identifier`, `platform`, `doi` |
+| `media_records` | `description` | `kind`, `mime_type` |
+| `eprints` | `citation`, `description` | `identifier`, `identifier_type`, `link_type` |
 
 ## Neo4j Graph Model
 
@@ -471,14 +466,14 @@ Each indexed record type maps to a Neo4j node label. All nodes carry at minimum 
 | `Annotation` | `annotations` | `layer_uri`, `index`, `label`, `value`, `confidence` |
 | `ClusterSet` | `cluster_sets` | `uri`, `did`, `kind` |
 | `Ontology` | `ontologies` | `uri`, `did`, `name`, `domain` |
-| `TypeDef` | `type_defs` | `uri`, `did`, `label`, `relation_type` |
+| `TypeDef` | `type_defs` | `uri`, `did`, `name`, `type_kind` |
 | `Corpus` | `corpora` | `uri`, `did`, `name`, `language` |
-| `GraphNode` | `graph_nodes` | `uri`, `did`, `kind`, `name` |
+| `GraphNode` | `graph_nodes` | `uri`, `did`, `node_type`, `label` |
 | `GraphEdge` | `graph_edges` | `uri`, `did`, `edge_type` |
 | `Persona` | `personas` | `uri`, `did`, `name`, `kind` |
-| `Media` | `media_records` | `uri`, `did`, `modality` |
-| `Eprint` | `eprints` | `uri`, `did`, `identifier`, `title` |
-| `Alignment` | `alignments` | `uri`, `did`, `alignment_type` |
+| `Media` | `media_records` | `uri`, `did`, `kind` |
+| `Eprint` | `eprints` | `uri`, `did`, `identifier`, `identifier_type`, `link_type` |
+| `Alignment` | `alignments` | `uri`, `did`, `kind`, `subkind` |
 
 ### Relationship Types
 
@@ -557,7 +552,7 @@ CREATE CONSTRAINT graph_node_uri IF NOT EXISTS
 
 -- Full-text index for graph node search
 CREATE FULLTEXT INDEX graph_node_search IF NOT EXISTS
-    FOR (n:GraphNode) ON EACH [n.name, n.description];
+    FOR (n:GraphNode) ON EACH [n.node_type, n.label];
 ```
 
 ## Redis Data Model

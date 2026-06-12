@@ -136,9 +136,9 @@ const annotationLayer = fixtures.annotationLayer({
   subkind: 'pos',
   formalism: 'universal-dependencies',
   annotations: [
-    { tokenIndex: 0, label: 'DET' },
-    { tokenIndex: 1, label: 'NOUN' },
-    // ...
+    { uuid: 'a1b2c3d4-0000-0000-0000-000000000001', tokenIndex: 0, label: 'DET' },
+    { uuid: 'a1b2c3d4-0000-0000-0000-000000000002', tokenIndex: 1, label: 'NOUN' },
+    // ... (factory auto-assigns uuid to each annotation if omitted)
   ],
 });
 ```
@@ -187,8 +187,8 @@ Test fixtures include reference files from the [data model integration documenta
 
 | Format | Reference File | Records Expected |
 |---|---|---|
-| CoNLL-U | `test/fixtures/en_ewt-sample.conllu` | 1 expression, 1 segmentation, 3 annotation layers (POS, lemma, deps) |
-| BRAT | `test/fixtures/sample.ann` + `sample.txt` | 1 expression, 1 segmentation, 2 annotation layers (entities, relations) |
+| CoNLL-U | `test/fixtures/en_ewt-sample.conllu` | 1 document expression + 1 sentence expression per sentence, 1 segmentation per sentence, 3 annotation layers (POS, lemma, deps) |
+| BRAT | `test/fixtures/sample.ann` + `sample.txt` | 1 expression, 2 annotation layers (entities, relations) |
 | ELAN | `test/fixtures/sample.eaf` | 1 expression, 1 media, 2 segmentations, 4 annotation layers (per tier) |
 
 ## Performance Tests
@@ -203,7 +203,7 @@ Test fixtures include reference files from the [data model integration documenta
 | Record ingestion | Simulate firehose burst of 10,000 records/sec | < 100ms p99 handler latency |
 | Search queries | 100 concurrent faceted annotation searches | < 200ms p95 response time |
 | Graph traversal | 50 concurrent 3-hop neighborhood queries | < 500ms p95 response time |
-| Mixed workload | Realistic mix of reads (80%) and ingestion (20%) | No degradation from single-workload baselines |
+| Mixed workload | Realistic mix of reads (80%) and ingestion (20%) | < 20% p95 increase vs. single-workload baselines |
 
 ### Baseline Establishment
 

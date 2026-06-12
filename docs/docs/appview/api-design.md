@@ -34,8 +34,8 @@ Every record type follows the same `get` / `list` pattern defined by its lexicon
 
 | Query Type | Parameters | Response |
 |---|---|---|
-| `get<Record>` | `uri` (at-uri, required) | Single record object |
-| `list<Records>` | `repo` (at-identifier, required), `limit` (1-100), `cursor` | `{ records, cursor }` |
+| `get<Record>` | `uri` (at-uri, required) | `{ uri, cid, value }` envelope; the record itself is nested under `value` |
+| `list<Records>` | Required scoping parameter varies by query: repo-scoped lists (e.g. `listExpressions`, `listCorpora`) take `repo` (at-identifier); subject-scoped lists take a domain reference such as `expression` (at-uri), `corpusRef` (at-uri), `templateRef` (at-uri), `experimentRef` (at-uri), `eprintUri` (at-uri), `ontologyRef` (at-uri), `collection` (string NSID), or `subject` (at-uri). All list queries accept optional `limit` (integer, 1-100, default 50) and `cursor` (string). | `{ records, cursor }` |
 
 ### Complete XRPC Reference
 

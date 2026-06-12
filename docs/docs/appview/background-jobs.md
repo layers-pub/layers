@@ -63,7 +63,7 @@ All queue-based background work runs through [BullMQ](https://docs.bullmq.io/) q
 | `layers:judgment` | Index experiments, judgment sets, agreement reports | 5 |
 | `layers:alignment` | Index alignments | 5 |
 | `layers:graph` | Index graph nodes, edges, edge sets | 10 |
-| `layers:integration` | Index personas, media, eprints, data links, changelogs | 5 |
+| `layers:integration` | Index personas, media, eprints, data links | 5 |
 | `layers:enrichment` | Post-indexing enrichment tasks | 3 |
 | `layers:import` | Format import jobs (CoNLL, BRAT, ELAN, TEI) | 2 |
 | `layers:maintenance` | Scheduled maintenance and reconciliation | 1 |
@@ -98,7 +98,7 @@ For expressions where `language` is not set by the record author, a language det
 
 ### Knowledge Graph Linking
 
-When an annotation layer contains `knowledgeRefs` pointing to external knowledge bases (Wikidata, WordNet, FrameNet), an enrichment job resolves the external identifiers and creates or updates Neo4j nodes for the KB entities. This ensures the knowledge graph stays connected even when external references arrive before their target KB nodes are indexed.
+When an expression, media record, or annotation/cluster within a layer contains `knowledgeRefs` pointing to external knowledge bases (Wikidata, WordNet, FrameNet), an enrichment job resolves the external identifiers and creates or updates Neo4j nodes for the KB entities. This ensures the knowledge graph stays connected even when external references arrive before their target KB nodes are indexed.
 
 ### Media Metadata Extraction
 
@@ -135,10 +135,10 @@ flowchart LR
 |---|---|---|
 | CoNLL-U | `conll-importer` | expression + segmentation + annotationLayer (POS, lemma, deps) |
 | CoNLL-2003 | `conll-importer` | expression + segmentation + annotationLayer (NER) |
-| BRAT (.ann) | `brat-importer` | expression + segmentation + annotationLayer (entities, relations, events) |
-| ELAN (.eaf) | `elan-importer` | expression + media + segmentation + annotationLayer (per tier) |
+| BRAT (.ann) | `brat-importer` | expression + annotationLayer (entities, relations, events) |
+| ELAN (.eaf) | `elan-importer` | expression + media + annotationLayer (per tier) |
 | Praat (.TextGrid) | `praat-importer` | expression + media + segmentation + annotationLayer (intervals, points) |
-| TEI XML | `tei-importer` | expression + corpus + annotationLayer (inline annotations) |
+| TEI XML | `tei-importer` | expression + segmentation + annotationLayer (inline annotations) |
 
 Each importer is documented in the corresponding [data model integration page](../integration/data-models/).
 

@@ -11,10 +11,10 @@ Not all 26 record types have the same indexing requirements. They fall into four
 
 | Tier | Record Types | Expected Volume | Indexing Priority |
 |---|---|---|---|
-| High-volume | `annotationLayer`, `graphEdge`, `graphEdgeSet` | Millions per corpus | Batch-optimized writes, ES bulk API |
+| High-volume | `annotationLayer`, `graphNode`, `graphEdge`, `graphEdgeSet` | Millions per corpus | Batch-optimized writes, ES bulk API |
 | Moderate | `expression`, `segmentation`, `alignment`, `corpus.membership` | Thousands to hundreds of thousands | Standard indexing |
-| Low-volume | `corpus`, `ontology`, `typeDef`, `experimentDef`, `persona`, `media`, `eprint` | Hundreds to thousands total | Immediate indexing |
-| Structural | `resource.*`, `judgment.*`, `clusterSet`, `dataLink`, `collectionMembership`, `templateComposition`, `changelog.entry` | Hundreds | Immediate indexing |
+| Low-volume | `corpus`, `ontology`, `typeDef`, `persona`, `media`, `eprint` | Hundreds to thousands total | Immediate indexing |
+| Structural | `resource.*`, `judgment.*`, `clusterSet`, `dataLink`, `changelog.entry` | Hundreds | Immediate indexing |
 
 ## Indexing Infrastructure
 
@@ -58,7 +58,7 @@ Annotation indexing is the most complex operation because an `annotationLayer` r
 
 ```sql
 -- annotation_layers row
-INSERT INTO annotation_layers (uri, did, rkey, expression_ref, segmentation_ref,
+INSERT INTO annotation_layers (uri, did, rkey, expression_ref, tokenization_id,
   kind, subkind, formalism, ontology_ref, persona_ref, annotation_count, record)
 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);
 
@@ -83,7 +83,7 @@ FROM jsonb_array_elements($12->'annotations') WITH ORDINALITY AS t(elem, ordinal
 
 ### Ontology and TypeDef Indexing
 
-**PostgreSQL + Elasticsearch:** Ontologies are searchable by `name`, `domain`, and `description`. TypeDefs are searchable by `name`, `kind`, and parent ontology.
+**PostgreSQL + Elasticsearch:** Ontologies are searchable by `name`, `domain`, and `description`. TypeDefs are searchable by `name`, `typeKind`, and parent ontology.
 
 **Neo4j (TypeDef only):** TypeDefs form a type hierarchy via `parentTypeRef`. Each `typeDef` becomes a node with `SUBTYPE_OF` edges forming the hierarchy tree.
 
@@ -129,11 +129,11 @@ Changelog entries are indexed into PostgreSQL and Elasticsearch. The `subject` A
 
 ## Cross-Reference Index
 
-Every AT-URI reference field in every record is extracted and written to the `cross_references` table:
+Every external and AT-URI reference field in every record is extracted and written to the `cross_references` table:
 
 | ref_type | Source Record | Field |
 |---|---|---|
-| `sourceUrl` | expression | `sourceUrl` |
+| `sourceUrl` | expression | `sourceUrl` (web URI, format: uri; used for co-location discovery) |
 | `sourceRef` | expression | `sourceRef` |
 | `eprintRef` | expression | `eprintRef` |
 | `parentRef` | expression | `parentRef` |

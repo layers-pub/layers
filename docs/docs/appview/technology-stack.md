@@ -63,7 +63,7 @@ The appview exposes a **dual XRPC + REST API surface**:
 ```typescript
 const SearchParams = z.object({
   q: z.string().min(1).max(500),
-  kind: z.enum(['token', 'span', 'relation', 'sentence']).optional(),
+  kind: z.enum(['token-tag', 'span', 'relation', 'tree']).optional(),
   limit: z.number().int().min(1).max(100).default(25),
   cursor: z.string().optional(),
 })
@@ -157,7 +157,8 @@ CREATE TABLE expression (
   did         TEXT NOT NULL,
   rkey        TEXT NOT NULL,
   text        TEXT,
-  granularity TEXT NOT NULL,
+  kind        TEXT NOT NULL,
+  kind_uri    TEXT,
   parent_uri  TEXT REFERENCES expression(uri),
   eprint_ref  TEXT,
   metadata    JSONB,
@@ -165,7 +166,7 @@ CREATE TABLE expression (
   UNIQUE (did, rkey)
 );
 
-CREATE INDEX idx_expression_granularity ON expression(granularity);
+CREATE INDEX idx_expression_kind ON expression(kind);
 CREATE INDEX idx_expression_parent ON expression(parent_uri) WHERE parent_uri IS NOT NULL;
 CREATE INDEX idx_expression_metadata ON expression USING GIN (metadata);
 ```
@@ -226,7 +227,7 @@ LIMIT 100
 | Role | Session cache, rate limiting, BullMQ job queue backend, pub/sub |
 | Key features | In-memory performance, TTL-based expiry, Streams, pub/sub |
 
-Redis is accessed via **ioredis**, matching Chive's client choice for its cluster support, pipelining, and Lua scripting. Redis serves four distinct functions:
+Redis is accessed via **ioredis**, matching Chive's client choice for its cluster support, pipelining, and Lua scripting. Redis serves five distinct functions:
 
 1. **Session cache**: Stores authenticated user sessions with TTL-based expiry, avoiding per-request database lookups.
 2. **Rate limiting**: Implements sliding-window rate limiting using Redis sorted sets (`ZREMRANGEBYSCORE` + `ZCARD` + `ZADD` + `EXPIRE` pipeline), with tiered limits per user role (Anonymous 60/min, Authenticated 300/min, Premium 1000/min, Admin 5000/min) and a configurable fail-open/fail-closed mode.

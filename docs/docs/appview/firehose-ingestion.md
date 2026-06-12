@@ -138,7 +138,7 @@ The vast majority of firehose events are irrelevant to the Layers appview (Blues
 | 25 | `pub.layers.eprint.dataLink` |
 | 26 | `pub.layers.changelog.entry` |
 
-The filter is implemented as a `Set<string>` lookup on the operation's collection field. Non-matching operations are discarded with zero allocation overhead. Matching operations are decoded from DAG-CBOR and passed to the validation stage.
+The filter is implemented as a `Set<string>` lookup on the operation's collection field. Non-matching operations are discarded. Matching operations are decoded from DAG-CBOR and passed to the validation stage.
 
 ## Record Validation
 
@@ -155,7 +155,7 @@ Records that pass Lexicon validation are then checked against stricter Zod schem
 - Annotation spans must have `byteStart < byteEnd`
 - Segmentation token offsets must be monotonically increasing and within the expression's text length
 - Ontology `typeDef` records must reference an existing `ontology` AT-URI
-- Graph edges must reference valid `graphNode` AT-URIs
+- Graph edge source/target objectRefs that use recordRef must point to resolvable AT-URIs (any Layers record, not only graphNode); localId/knowledgeRef endpoints are validated structurally
 - Enum values must belong to their declared flexible enum domains
 
 ### Dead Letter Queue
@@ -205,7 +205,7 @@ Validated records are dispatched to BullMQ queues organized by namespace. Each q
 |---|---|---|---|
 | `layers:expression` | `expression` | HIGH | Must process before annotation/segmentation |
 | `layers:segmentation` | `segmentation` | HIGH | Must process before annotation |
-| `layers:annotation` | `annotationLayer`, `clusterSet` | HIGH | Core pipeline; depends on expression + segmentation |
+| `layers:annotation` | `annotationLayer`, `clusterSet` | HIGH | Core pipeline; annotationLayer depends on expression; clusterSet's expression/layerRef links are optional (cross-document clusterSets may depend on a corpus rather than a single expression) |
 | `layers:ontology` | `ontology`, `typeDef` | MEDIUM | Independent |
 | `layers:corpus` | `corpus`, `membership` | MEDIUM | Independent |
 | `layers:resource` | `entry`, `collection`, `collectionMembership`, `template`, `filling`, `templateComposition` | MEDIUM | Independent |
@@ -230,7 +230,7 @@ An `annotationLayer` references its `expression` (via the `expression` AT-URI fi
 
 The dependency resolution strategy:
 
-1. **Check existence**: The annotation handler queries PostgreSQL for the referenced expression and segmentation.
+1. **Check existence**: The annotation handler queries PostgreSQL for the referenced expression (the only resolvable AT-URI dependency on annotationLayer). Tokenization alignment is resolved by matching `tokenizationId` (a UUID) against tokenizations embedded in the expression's segmentation records, located indirectly via the expression, not by a direct segmentation AT-URI lookup.
 2. **If present**: Proceed with normal indexing.
 3. **If missing**: Re-queue the job with an exponential delay (`1s`, `4s`, `16s`) using BullMQ's built-in delay mechanism.
 4. **After 3 retries**: Move to the DLQ. The missing dependency likely indicates a data integrity issue (deleted expression, malformed AT-URI) rather than a timing issue.
@@ -331,13 +331,29 @@ const expressionHandler: RecordHandler<Expression> = {
       },
     ];
 
-    // If the expression references a source (e.g., a media record), create an edge
+    // sourceRef is an AT-URI to another ATProto record; create a graph edge
+    if (record.sourceRef) {
+      ops.push({
+        type: 'MERGE_EDGE',
+        from: uri,
+        to: record.sourceRef,
+        label: 'HAS_SOURCE',
+      });
+    }
+
+    // sourceUrl is an external web URI; merge as a web-resource node attribute,
+    // not an AT-URI cross-reference edge
     if (record.sourceUrl) {
+      ops.push({
+        type: 'MERGE_NODE',
+        label: 'WebResource',
+        properties: { uri: record.sourceUrl },
+      });
       ops.push({
         type: 'MERGE_EDGE',
         from: uri,
         to: record.sourceUrl,
-        label: 'HAS_SOURCE',
+        label: 'HAS_SOURCE_URL',
       });
     }
 
@@ -348,9 +364,7 @@ const expressionHandler: RecordHandler<Expression> = {
     const uri = `at://${did}/pub.layers.expression.expression/${rkey}`;
     const refs: CrossReference[] = [];
 
-    if (record.sourceUrl) {
-      refs.push({ fromUri: uri, toUri: record.sourceUrl, refType: 'sourceUrl' });
-    }
+    // Only sourceRef (at-uri) is an AT-URI cross-reference; sourceUrl (external uri) is not
     if (record.sourceRef) {
       refs.push({ fromUri: uri, toUri: record.sourceRef, refType: 'sourceRef' });
     }
@@ -376,7 +390,7 @@ VALUES ($1, $2, $3, NOW())
 ON CONFLICT (from_uri, to_uri, ref_type) DO NOTHING;
 ```
 
-This happens during the initial indexing pass. No additional processing is needed.
+This happens during the initial indexing pass.
 
 ### Back-References
 

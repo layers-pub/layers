@@ -74,18 +74,18 @@ Elasticsearch powers the `/api/v1/search` endpoint:
       "must": [
         { "multi_match": {
             "query": "syntactic ambiguity",
-            "fields": ["text^3", "text.stemmed"]
+            "fields": ["text"]
         }}
       ],
       "filter": [
-        { "term": { "lang": "en" } }
+        { "term": { "language": "en" } }
       ]
     }
   }
 }
 ```
 
-The `text` field uses a custom `layers_text` analyzer with ICU tokenization and Unicode normalization. The `text.stemmed` sub-field applies language-specific stemming.
+The `text` field uses a custom `layers_text` analyzer with ICU tokenization and Unicode normalization. Stemming for metadata fields is provided by the separate `layers_linguistic` analyzer.
 
 ### Faceted Annotation Search
 
@@ -98,7 +98,7 @@ The three-dimensional annotation search (kind, subkind, formalism) uses ES term 
       "filter": [
         { "term": { "kind": "span" } },
         { "term": { "subkind": "ner" } },
-        { "term": { "labelSet": "ontonotes-ner" } }
+        { "term": { "ontology_ref": "at://did:plc:ontonotes/pub.layers.ontology.ontology/ner" } }
       ]
     }
   },
@@ -131,17 +131,17 @@ LIMIT 100
 ### Forward References ("What does this record point to?")
 
 ```sql
-SELECT to_uri, ref_type
+SELECT target_uri, ref_type
 FROM cross_references
-WHERE from_uri = $1;
+WHERE source_uri = $1;
 ```
 
 ### Reverse References ("What points to this record?")
 
 ```sql
-SELECT from_uri, ref_type
+SELECT source_uri, ref_type
 FROM cross_references
-WHERE to_uri = $1;
+WHERE target_uri = $1;
 ```
 
 ### Transitive Closure ("All descendants of this expression")
@@ -165,7 +165,7 @@ All three fields are keyword-indexed in Elasticsearch, enabling combinatorial fi
 | Query | ES Filter |
 |---|---|
 | All POS layers | `kind = "token-tag"` AND `subkind = "pos"` |
-| All NER layers in OntoNotes | `subkind = "ner"` AND `labelSet = "ontonotes-ner"` |
+| All NER layers in OntoNotes | `subkind = "ner"` AND `ontology_ref = <ontonotes-ner AT-URI>` |
 | All dependency parses | `kind = "relation"` AND `subkind = "dependency"` |
 | All UD layers | `formalism = "universal-dependencies"` |
 
@@ -224,7 +224,7 @@ This finds annotations anchored to temporal regions (audio/video), as opposed to
 
 ```cypher
 MATCH (n {uri: $1})-[r]-(neighbor)
-RETURN type(r) AS edgeType, r.edgeType AS semanticType,
+RETURN type(r) AS edgeType, r.edge_type AS semanticType,
        neighbor.uri AS neighborUri, labels(neighbor) AS nodeLabels
 LIMIT 50
 ```
@@ -234,7 +234,7 @@ LIMIT 50
 Follow only edges of a specific type (e.g., only `denotes` edges):
 
 ```cypher
-MATCH (n {uri: $1})-[r:GRAPH_EDGE {edgeType: "denotes"}]->(target)
+MATCH (n {uri: $1})-[r:GRAPH_EDGE {edge_type: "denotes"}]->(target)
 RETURN target.uri, target.name
 ```
 
@@ -256,8 +256,8 @@ RETURN [n IN nodes(path) | n.uri] AS nodeUris,
 SELECT a.label, COUNT(*) AS count
 FROM annotations a
 JOIN annotation_layers al ON a.layer_uri = al.uri
-JOIN cross_references cr ON cr.from_uri = al.expression_ref
-JOIN corpus_memberships cm ON cm.expression_ref = cr.to_uri
+JOIN cross_references cr ON cr.source_uri = al.expression_ref
+JOIN corpus_memberships cm ON cm.expression_ref = cr.target_uri
 WHERE cm.corpus_ref = $1
 GROUP BY a.label
 ORDER BY count DESC;
