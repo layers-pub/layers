@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # ATProto Ecosystem Integration
 
-Layers is a native participant in the AT Protocol ecosystem. ATProto records are interlinked via AT-URIs, so Layers data can reference and be referenced by records from other ATProto applications without any bridge layer.
+ATProto records are interlinked via AT-URIs, so Layers data can reference and be referenced by records from other ATProto applications without any bridge layer.
 
 ## Applications
 

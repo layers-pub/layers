@@ -29,6 +29,9 @@ Seams annotations target web pages by URL and select text spans using W3C-style 
 ```json
 {
   "$type": "pub.layers.expression.expression",
+  "id": "https://example.com/article",
+  "kind": "article",
+  "createdAt": "2026-01-15T10:00:00Z",
   "sourceUrl": "https://example.com/article",
   "text": "...",
   "metadata": { ... }
@@ -46,7 +49,9 @@ A Seams annotation targeting the same URL looks like:
       "$type": "community.lexicon.annotation.annotation#textQuoteSelector",
       "exact": "highlighted passage",
       "prefix": "text before ",
-      "suffix": " text after",
+      "suffix": " text after"
+    }, {
+      "$type": "community.lexicon.annotation.annotation#textPositionSelector",
       "start": 120,
       "end": 140
     }]
@@ -56,7 +61,7 @@ A Seams annotation targeting the same URL looks like:
 }
 ```
 
-Seams' `textQuoteSelector` is structurally compatible with Layers' `pub.layers.defs#textQuoteSelector` (`exact`, `prefix`, `suffix`) and `pub.layers.defs#textPositionSelector` (`byteStart`, `byteEnd`). This means text regions identified by Seams annotations and Layers segmentations can be aligned without lossy conversion.
+Seams' `textQuoteSelector` is structurally compatible with Layers' `pub.layers.defs#textQuoteSelector` (`exact`, `prefix`, `suffix`). For position-based selection, Seams' `#textPositionSelector` uses character offsets (`start`/`end`), which correspond to Layers' optional `charStart`/`charEnd` fields on `pub.layers.defs#textPositionSelector`. Mapping to Layers' required `byteStart`/`byteEnd` (UTF-8 byte offsets) requires a conversion step that is lossless only when the full text of the target resource is available; for any content containing non-ASCII characters, character offsets and byte offsets are not interchangeable.
 
 ## Layers Types Involved
 

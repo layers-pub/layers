@@ -29,13 +29,14 @@ Label records can reference Layers annotations or expressions by AT-URI. This al
 ```json
 {
   "$type": "com.atproto.label.defs#label",
+  "src": "did:plc:labeler",
   "uri": "at://did:plc:annotator/pub.layers.annotation.annotationLayer/abc123",
   "val": "quality:gold-standard",
   "cts": "2025-01-15T10:00:00Z"
 }
 ```
 
-In the reverse direction, Layers annotations can reference label records via `knowledgeRefs` or `featureMap` to incorporate moderation signals into annotation metadata.
+In the reverse direction, a Layers annotation can point to a label record by AT-URI using `objectRef.recordRef`. Note that `knowledgeRefs` targets external knowledge bases (Wikidata, FrameNet, etc.) and does not accept ATProto label records as a source.
 
 ## Layers Types Involved
 
@@ -43,7 +44,7 @@ In the reverse direction, Layers annotations can reference label records via `kn
 |---|---|
 | `pub.layers.expression.expression` | Can be the target of a label (by AT-URI) |
 | `pub.layers.annotation.annotationLayer` | Can be the target of a label |
-| `pub.layers.defs#featureMap` | Can store label references as features |
+| `pub.layers.defs#featureMap` | Can store a label value as a string key-value feature |
 
 ## Discovery
 

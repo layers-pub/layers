@@ -29,6 +29,9 @@ Layers' `externalTarget` and W3C selectors (`textQuoteSelector`, `textPositionSe
 ```json
 {
   "$type": "pub.layers.expression.expression",
+  "id": "https://example.com/article",
+  "kind": "document",
+  "createdAt": "2026-01-01T00:00:00Z",
   "sourceUrl": "https://example.com/article",
   "text": "...",
   "metadata": { ... }

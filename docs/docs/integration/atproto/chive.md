@@ -34,6 +34,9 @@ Expressions can also reference eprints directly via `eprintRef`:
 ```json
 {
   "$type": "pub.layers.expression.expression",
+  "id": "doc-1",
+  "kind": "document",
+  "createdAt": "2026-01-01T00:00:00Z",
   "text": "...",
   "eprintRef": "at://did:plc:author/pub.chive.eprint/abc123"
 }
