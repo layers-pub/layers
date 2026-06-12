@@ -63,8 +63,8 @@ All annotation data lives in **user-controlled Personal Data Servers (PDSes)**. 
 
 ## 10. Community-Expandable Enums
 
-All enumerated fields use a **dual pattern**: a `fooUri` field pointing to an ATProto record (the canonical reference) and a `foo` string field containing a slug (for human readability and fallback). See [Flexible Enums](./flexible-enums.md) for a detailed explanation with examples. Consumers check the URI first; if not recognized, they fall back to the slug. Known values are documented but not enforced.
+Most community-expandable enumerated fields use a **dual pattern**: a `fooUri` field pointing to an ATProto record (the canonical reference) and a `foo` string field containing a slug (for human readability and fallback). See [Flexible Enums](./flexible-enums.md) for a detailed explanation with examples. Consumers check the URI first; if not recognized, they fall back to the slug. Known values are documented but not enforced.
 
 This allows the community to **mint new values without schema changes**: someone creates a new linguistic category as a knowledge graph node, uses its AT-URI in their annotations, and the schema accommodates it transparently.
 
-> A `kind` field always has a corresponding `kindUri`. Standard values like "token" have known URIs, but anyone can create a new kind node and use its URI. Consumers recognize both standard and custom kinds through the same mechanism.
+> A `kind` field always has a corresponding `kindUri`. Standard values like "token-tag" have known URIs, but anyone can create a new kind node and use its URI. Consumers recognize both standard and custom kinds through the same mechanism.

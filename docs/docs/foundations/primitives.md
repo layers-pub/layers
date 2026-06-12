@@ -289,15 +289,15 @@ textQuoteSelector = {
 }
 
 textPositionSelector = {
-  byteStart: number             // UTF-8 byte offset
-  byteEnd: number
-  charStart?: number            // Optional character offset (for character-offset datasets)
-  charEnd?: number
+  byteStart: integer            // UTF-8 byte offset
+  byteEnd: integer
+  charStart?: integer           // Optional character offset (for character-offset datasets)
+  charEnd?: integer
 }
 
 fragmentSelector = {
   value: string                 // Fragment identifier (e.g., "xywh=100,50,200,150")
-  conformsTo?: string           // Media type (e.g., "http://www.w3.org/TR/media-frags/")
+  conformsTo?: string           // Specification the fragment conforms to (URI), e.g. "http://www.w3.org/TR/media-frags/"
 }
 ```
 
