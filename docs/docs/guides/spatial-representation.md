@@ -4,7 +4,7 @@ sidebar_label: "Spatial Representation"
 
 # Spatial Representation
 
-Layers provides composable spatial primitives that fully subsume GeoJSON (RFC 7946), WKT/ISO 19125, ISO-Space (ISO 24617-7), SpatialML, RCC-8, DE-9IM, W3C spatial selectors, COCO/VOC/YOLO annotation formats, and SVG. This guide documents the spatial type system and maps each standard to Layers equivalents.
+Layers spatial primitives map GeoJSON (RFC 7946), WKT/ISO 19125, ISO-Space (ISO 24617-7), SpatialML, RCC-8, DE-9IM, W3C spatial selectors, COCO/VOC/YOLO formats, and SVG. This guide gives the per-standard mapping.
 
 ## Two Kinds of Space
 
@@ -27,7 +27,7 @@ The normalized spatial value. Consumers dispatch on which fields are populated:
 | Pattern | Fields | Example |
 |---------|--------|---------|
 | Pixel bounding box | `bbox` | `{x: 100, y: 50, width: 200, height: 150}` |
-| Geographic point | `geometry` + `type="point"` + `crs="wgs84"` | `"POINT(37.7749 -122.4194)"` |
+| Geographic point | `geometry` + `type="point"` + `crs="wgs84"` | `"POINT(-122.4194 37.7749)"` |
 | Polygon region | `geometry` + `type="polygon"` | `"POLYGON((0 0, 100 0, 100 100, 0 100, 0 0))"` |
 | Line/path | `geometry` + `type="line-string"` | `"LINESTRING(0 0, 50 50, 100 0)"` |
 | Circle | `geometry` + `type="circle"` | `"POINT(50 50)"` with radius in features |
@@ -126,36 +126,48 @@ The `label` field on spatial graphEdges can carry the linguistic spatial signal 
 
 ## Composability Examples
 
-**Simple pixel bounding box:**
+**Simple pixel bounding box** (the enclosing `annotationLayer` record carries `subkind="spatial-expression"`):
 ```json
 {
+  "kind": "span",
   "subkind": "spatial-expression",
-  "label": "person",
-  "spatial": {
-    "type": "region",
-    "value": {
-      "bbox": { "x": 100, "y": 50, "width": 200, "height": 150 },
-      "crs": "pixel"
+  "annotations": [
+    {
+      "uuid": { "value": "a1b2c3d4-0000-0000-0000-000000000001" },
+      "label": "person",
+      "spatial": {
+        "type": "region",
+        "value": {
+          "bbox": { "x": 100, "y": 50, "width": 200, "height": 150 },
+          "crs": "pixel"
+        }
+      }
     }
-  }
+  ]
 }
 ```
 
-**Geographic point ("located at 37.7749° N, 122.4194° W"):**
+**Geographic point ("located at 37.7749° N, 122.4194° W")** (the enclosing `annotationLayer` record carries `subkind="location-mention"`):
 ```json
 {
+  "kind": "span",
   "subkind": "location-mention",
-  "label": "San Francisco",
-  "text": "San Francisco",
-  "spatial": {
-    "type": "location",
-    "value": {
-      "geometry": "POINT(37.7749 -122.4194)",
-      "type": "point",
-      "geometryFormat": "wkt",
-      "crs": "wgs84"
+  "annotations": [
+    {
+      "uuid": { "value": "a1b2c3d4-0000-0000-0000-000000000002" },
+      "label": "San Francisco",
+      "text": "San Francisco",
+      "spatial": {
+        "type": "location",
+        "value": {
+          "geometry": "POINT(-122.4194 37.7749)",
+          "type": "point",
+          "geometryFormat": "wkt",
+          "crs": "wgs84"
+        }
+      }
     }
-  }
+  ]
 }
 ```
 
@@ -180,7 +192,7 @@ The `label` field on spatial graphEdges can carry the linguistic spatial signal 
   "spatial": {
     "type": "location",
     "value": {
-      "geometry": "POINT(35.6762 139.6503)",
+      "geometry": "POINT(139.6503 35.6762)",
       "type": "point",
       "crs": "wgs84",
       "uncertainty": "2km"
@@ -237,7 +249,8 @@ The `label` field on spatial graphEdges can carry the linguistic spatial signal 
   "target": { "recordRef": "at://did:plc:.../pub.layers.annotation.annotationLayer/...", "objectId": { "value": "place-2-uuid" } },
   "edgeType": "north-of",
   "label": "north of",
-  "confidence": 950
+  "confidence": 950,
+  "createdAt": "2024-01-01T00:00:00Z"
 }
 ```
 
@@ -260,7 +273,7 @@ GeoJSON is the standard JSON format for encoding geographic data structures. Lay
 | `GeometryCollection` | `spatialEntity` with `type="geometry-collection"`, `geometryFormat="geojson"` | Mixed geometry types |
 | `coordinates` | `spatialEntity.geometry` | The GeoJSON geometry object as a JSON string |
 | CRS (default WGS84) | `spatialEntity.crs="wgs84"` | GeoJSON defaults to WGS84 (EPSG:4326) |
-| `bbox` property | `spatialEntity.bbox` or features | Bounding box envelope |
+| `bbox` property | Polygon geometry or features | GeoJSON `bbox` is a geographic coordinate envelope (e.g., [minLon, minLat, maxLon, maxLat]); it does not map to `spatialEntity.bbox`, which is a pixel rectangle (`{x, y, width, height}`). Represent a geographic envelope as a Polygon geometry or via features. |
 | 3D coordinates | `spatialEntity.dimensions=3` | Longitude, latitude, altitude |
 
 **Completeness:** Full subsumption. Every GeoJSON geometry type has a direct mapping. The GeoJSON geometry object is stored as a JSON string in the `geometry` field with `geometryFormat="geojson"`.
@@ -271,7 +284,7 @@ WKT is the OGC standard text representation for geometry objects. It is the defa
 
 | WKT Type | Layers Equivalent | Example |
 |---|---|---|
-| `POINT` | `spatialEntity` with `type="point"` | `POINT(37.7749 -122.4194)` |
+| `POINT` | `spatialEntity` with `type="point"` | `POINT(-122.4194 37.7749)` |
 | `LINESTRING` | `spatialEntity` with `type="line-string"` | `LINESTRING(0 0, 50 50, 100 0)` |
 | `POLYGON` | `spatialEntity` with `type="polygon"` | `POLYGON((0 0, 100 0, 100 100, 0 100, 0 0))` |
 | `MULTIPOINT` | `spatialEntity` with `type="multi-point"` | `MULTIPOINT((0 0), (1 1))` |

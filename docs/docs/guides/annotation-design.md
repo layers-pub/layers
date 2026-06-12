@@ -4,7 +4,7 @@ sidebar_label: "Annotation Design"
 
 # Annotation Design
 
-Annotation projects (treebanks, sembanks, NER corpora, discourse annotation) have design metadata that is orthogonal to the linguistic content of the annotations themselves. Just as [`experimentDef`](../lexicons/judgment.md) captures four independent dimensions of experiment design, Layers captures annotation project design through composable, independent dimensions.
+Annotation projects (treebanks, sembanks, NER corpora, discourse annotation) have design metadata that is orthogonal to the linguistic content of the annotations themselves. Just as [`experimentDef`](../lexicons/judgment.md) captures three independent dimensions of experiment design, Layers captures annotation project design through composable, independent dimensions.
 
 ## Orthogonal Dimensions
 
@@ -44,6 +44,7 @@ The `sourceMethod` field on `annotationLayer` records how that specific layer wa
 | `converted` | Converted from another format or formalism (no human review) |
 | `converted-corrected` | Converted with human corrections |
 | `crowd-sourced` | Produced by crowd workers (e.g., Mechanical Turk, Prolific) |
+| `custom` | A custom or project-specific source method |
 
 All values are community-expandable via `sourceMethodUri`.
 
@@ -120,6 +121,7 @@ The `adjudication` field specifies how disagreements are resolved.
 | `intersection` | Only annotations agreed on by all annotators are kept |
 | `union` | All annotations from all annotators are kept |
 | `none` | No adjudication (single-annotator or independent annotations preserved) |
+| `custom` | A custom or project-specific adjudication method |
 
 All values are community-expandable via `methodUri`.
 

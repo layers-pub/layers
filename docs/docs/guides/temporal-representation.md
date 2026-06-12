@@ -4,7 +4,7 @@ sidebar_label: "Temporal Representation"
 
 # Temporal Representation
 
-Layers provides composable temporal primitives that fully subsume TimeML/ISO-TimeML, W3C OWL-Time, Allen's Interval Algebra, and ISO 8601. This guide documents the temporal type system and maps each standard to Layers equivalents.
+Layers represents temporal annotation with three composable primitives. This guide maps TimeML/ISO-TimeML, W3C OWL-Time, and Allen's Interval Algebra onto those primitives, and documents the ISO 8601 value formats they use.
 
 ## Two Kinds of Time
 
@@ -174,7 +174,7 @@ The `label` field on a temporal graphEdge can carry the linguistic signal/connec
 
 ### TimeML / ISO-TimeML (ISO 24617-1)
 
-TimeML is the ISO standard for temporal and event annotation. Layers fully subsumes TimeML through structured temporal primitives and graph edges.
+TimeML is the ISO standard for temporal and event annotation.
 
 | TimeML Element | Layers Equivalent | Notes |
 |---|---|---|
@@ -192,7 +192,7 @@ TimeML is the ISO standard for temporal and event annotation. Layers fully subsu
 | `ALINK` | `graphEdge` with aspectual `edgeType` | `INITIATES` to `initiates`, `CULMINATES` to `culminates`, `TERMINATES` to `terminates`, `CONTINUES` to `continues`, `REINITIATES` to `reinitiates` |
 | `SLINK` | `graphEdge` with `edgeType="discourse"` + `label` | Subordination links (modal, evidential, factive, conditional) are discourse relations |
 
-**Completeness:** Full subsumption. Every TimeML element and attribute has a direct mapping.
+**Completeness:** Every TimeML element and attribute in the table above has a corresponding Layers field or edge type.
 
 ### W3C OWL-Time
 
@@ -216,7 +216,7 @@ OWL-Time is the W3C ontology for temporal concepts. Layers maps its class hierar
 | Allen interval relations (`before`, `after`, etc.) | `graphEdge.edgeType` | All 13 as first-class edge types |
 | `hasInside` (Instant in Interval) | `graphEdge` with `edgeType="during"` | Instant during an interval |
 
-**Completeness:** Full subsumption. Every OWL-Time class and property has a mapping. The Layers representation is more compact (polymorphic object vs. class hierarchy) but equally expressive.
+**Completeness:** Every OWL-Time class and property in the table above has a corresponding Layers field or edge type. Layers collapses the OWL-Time class hierarchy into a single polymorphic `temporalEntity` whose populated fields determine the interpretation.
 
 ### Allen's Interval Algebra
 

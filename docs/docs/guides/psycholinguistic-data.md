@@ -50,6 +50,10 @@ Self-paced reading (SPR) experiments present text region-by-region and record re
 
 Stimuli are constructed via the template-filling pipeline (see the [Judgment Data guide](./judgment-data.md) for the full pipeline). Each item materializes as an expression with segmentation into regions:
 
+:::note
+All record examples in this guide elide required system fields (`id`, `createdAt`, and similar) for brevity. Real records must include every field marked required in the lexicon.
+:::
+
 ```json
 {
   "$type": "pub.layers.expression.expression",
@@ -154,7 +158,7 @@ Eye-tracking during reading produces fixation, saccade, and regression data over
 
 ### Fixation Data
 
-Fixations are annotations with `temporalSpan` anchors on the stimulus expression. Each fixation records its position in the text and its duration:
+Fixations are annotations with `textSpan` anchors on the stimulus expression. Each fixation records its position in the text and its duration:
 
 ```json
 {
@@ -166,7 +170,6 @@ Fixations are annotations with `temporalSpan` anchors on the stimulus expression
     {
       "uuid": { "value": "fix-001" },
       "anchor": {
-        "kind": "textSpan",
         "textSpan": { "byteStart": 8, "byteEnd": 14 }
       },
       "label": "fixation",
@@ -183,7 +186,6 @@ Fixations are annotations with `temporalSpan` anchors on the stimulus expression
     {
       "uuid": { "value": "fix-002" },
       "anchor": {
-        "kind": "textSpan",
         "textSpan": { "byteStart": 15, "byteEnd": 24 }
       },
       "label": "fixation",
@@ -342,7 +344,6 @@ Event-related potential components are annotations with temporal anchors specify
     {
       "uuid": { "value": "n400-item42" },
       "anchor": {
-        "kind": "temporalSpan",
         "temporalSpan": { "start": 300, "ending": 500 }
       },
       "label": "N400",
@@ -369,7 +370,6 @@ Event-related potential components are annotations with temporal anchors specify
     {
       "uuid": { "value": "p600-item42" },
       "anchor": {
-        "kind": "temporalSpan",
         "temporalSpan": { "start": 500, "ending": 800 }
       },
       "label": "P600",
@@ -473,7 +473,6 @@ Source-localized MEG data uses `spatialExpression` with MNI brain coordinates:
     {
       "label": "left-temporal-activation",
       "anchor": {
-        "kind": "temporalSpan",
         "temporalSpan": { "start": 300, "ending": 500 }
       },
       "spatial": {
@@ -601,7 +600,6 @@ BOLD activation differences between conditions are annotation layers with both s
     {
       "label": "anomalous > plausible",
       "anchor": {
-        "kind": "temporalSpan",
         "temporalSpan": { "start": 4000, "ending": 10000 }
       },
       "spatial": {
@@ -669,7 +667,7 @@ Event onsets linking fMRI volumes to stimulus presentations use alignment record
 
 ## Feature Key Conventions
 
-These feature keys follow the same `namespace.key` convention used in the [Media lexicon](../lexicons/media.md) for recording, speaker, and sensor metadata.
+These feature keys follow the same `namespace.key` convention used in the [Media lexicon](../lexicons/media.md) for recording and speaker metadata.
 
 ### EEG Features
 

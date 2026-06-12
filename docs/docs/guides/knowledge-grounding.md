@@ -4,7 +4,7 @@ sidebar_label: "Knowledge Grounding"
 
 # Knowledge Grounding
 
-Layers provides mechanisms for linking annotations to external knowledge bases, building typed property graphs, defining annotation ontologies, and tracking annotator perspectives. This guide explains how these pieces work together to ground linguistic annotations in structured knowledge.
+Layers provides mechanisms for linking annotations to external knowledge bases, building typed property graphs, defining annotation ontologies, and tracking annotator perspectives.
 
 ## The knowledgeRef Primitive
 
@@ -23,19 +23,22 @@ Every major annotation type includes a `knowledgeRefs` array. This means any ann
 
 ### Supported Knowledge Bases
 
-The `source` field is a free-form string identifying the KB. Common values:
+The `source` field is an open-vocabulary string identifying the KB. The lexicon defines recognized slugs (`knownValues`) that the appview indexes natively; other free-form strings are permitted but not given first-class treatment. Recognized slugs:
 
 | Source | Example Identifier | Use Case |
 |--------|-------------------|----------|
+| `chive.pub` | `at://did:plc:.../pub.chive.node/some-node` | ATProto-native KB with AT-URI nodes |
 | `wikidata` | `Q76` | Entity grounding, concept linking |
-| `framenet` | `Destroying` | Frame semantic roles |
 | `wordnet` | `02084071-n` (synset) | Word sense disambiguation |
+| `framenet` | `Destroying` | Frame semantic roles |
 | `propbank` | `destroy.01` | Predicate-argument structures |
 | `verbnet` | `destroy-44` | Verb class identification |
-| `universal-dependencies` | `nsubj` | Dependency relation types |
-| `geonames` | `5391959` | Geographic entity grounding |
-| `orcid` | `0000-0002-1825-0097` | Researcher identification |
-| `doi` | `10.1162/coli_a_00478` | Publication references |
+| `unimorph` | `V;PST;3;SG` | Morphological feature bundles |
+| `glottolog` | `stan1293` | Language/dialect identification |
+| `cldr` | `en-US` | Locale and script data |
+| `custom` | _(user-defined)_ | User- or project-specific KBs |
+
+Other strings (e.g., `geonames`, `orcid`, `doi`) are valid free-form values but are not recognized `knownValues` slugs.
 
 The `sourceUri` field can point to an ATProto record representing the KB authority, enabling decentralized KB management.
 
@@ -150,6 +153,8 @@ An annotation layer references its ontology via `ontologyRef`:
 }
 ```
 
+Note: annotation objects require a `uuid` field (`{ "value": "..." }`); examples here elide required identifier fields for brevity.
+
 The `ontologyRef` on the layer identifies which type system is being used. Individual annotations can link to specific type definitions via `ontologyTypeRef`.
 
 ## Personas
@@ -235,6 +240,8 @@ For predicate-argument structures (PropBank, FrameNet, VerbNet), grounding conne
   ]
 }
 ```
+
+Note: annotation objects require a `uuid` field (`{ "value": "..." }`); examples here elide required identifier fields for brevity.
 
 The ontology's `typeDef` records define the frame with its `allowedRoles` (role slots), and `knowledgeRefs` link to FrameNet's canonical frame definitions.
 
