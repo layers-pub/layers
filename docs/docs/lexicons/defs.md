@@ -316,7 +316,7 @@ A reference to an external knowledge base entry. Supports ATProto-native knowled
 ### featureMap
 **Type:** Object
 
-An open-ended set of typed key-value features that can be attached to any annotation. Provides maximum extensibility without committing to any label set or linguistic theory.
+An open-ended set of typed key-value features that can be attached to any annotation, without committing to any label set or linguistic theory.
 
 | Field | Type | Description |
 |-------|------|-------------|

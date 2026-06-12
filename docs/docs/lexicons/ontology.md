@@ -50,7 +50,7 @@ A type definition within an ontology. Covers entity types, situation types, role
 **NSID:** `pub.layers.ontology.defs#roleSlot`
 **Type:** Object
 
-A role/argument slot in a frame or event type definition. Structurally parallel to `pub.layers.resource.defs#slot`: both represent named positions with type constraints.
+A role/argument slot in a frame or situation type definition. Structurally parallel to `pub.layers.resource.defs#slot`: both represent named positions with type constraints.
 
 | Field | Type | Description |
 |-------|------|-------------|

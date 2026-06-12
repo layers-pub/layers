@@ -197,7 +197,7 @@ A changelog entry for changes to an experiment definition, targeting specific co
         {
           "description": "Increased stimulus display duration from 2000ms to 3000ms",
           "changeType": "changed",
-          "fieldPath": "design/presentationSpec/displayTimeMs",
+          "fieldPath": "design/presentationSpec/timingMs",
           "previousValue": "2000",
           "newValue": "3000"
         },
@@ -243,7 +243,7 @@ Retrieve a single changelog entry by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the changelog entry record. |
 
-**Output**: The changelog entry record object.
+**Output**: `{ uri: at-uri, cid: cid, value: entry }` where `value` is the changelog entry record.
 
 ### listEntries
 **NSID:** `pub.layers.changelog.listEntries`
@@ -256,7 +256,7 @@ List changelog entries for a specific subject record, ordered newest first.
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ entries: entry[], cursor?: string }`
+**Output**: `{ entries: recordView[], cursor?: string }` where `recordView = { uri, cid, value }` and `value` is the changelog entry record.
 
 ### listByCollection
 **NSID:** `pub.layers.changelog.listByCollection`
@@ -269,4 +269,4 @@ List recent changelog entries across all records of a given collection type, ord
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ entries: entry[], cursor?: string }`
+**Output**: `{ entries: recordView[], cursor?: string }` where `recordView = { uri, cid, value }` and `value` is the changelog entry record.

@@ -191,7 +191,7 @@ Retrieve a single resource entry record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the entry record. |
 
-**Output**: The entry record object.
+**Output**: `{ uri, cid, value: entry }` — the record is nested under `value`.
 
 ### listEntries
 **NSID:** `pub.layers.resource.listEntries`
@@ -205,7 +205,7 @@ List resource entry records in a repository with pagination.
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: entry[], cursor?: string }`
+**Output**: `{ records: { uri, cid, value: entry }[], cursor?: string }`
 
 ### getCollection
 **NSID:** `pub.layers.resource.getCollection`
@@ -216,7 +216,7 @@ Retrieve a single collection record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the collection record. |
 
-**Output**: The collection record object.
+**Output**: `{ uri, cid, value: collection }` — the record is nested under `value`.
 
 ### listCollections
 **NSID:** `pub.layers.resource.listCollections`
@@ -226,10 +226,12 @@ List collection records in a repository with pagination.
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `repo` | at-identifier (required) | DID or handle of the repository. |
+| `kind` | string | Optional filter by collection kind. |
+| `language` | string | Optional filter by BCP-47 language tag. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: collection[], cursor?: string }`
+**Output**: `{ records: { uri, cid, value: collection }[], cursor?: string }`
 
 ### getTemplate
 **NSID:** `pub.layers.resource.getTemplate`
@@ -240,7 +242,7 @@ Retrieve a single template record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the template record. |
 
-**Output**: The template record object.
+**Output**: `{ uri, cid, value: template }` — the record is nested under `value`.
 
 ### listTemplates
 **NSID:** `pub.layers.resource.listTemplates`
@@ -250,10 +252,11 @@ List template records in a repository with pagination.
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `repo` | at-identifier (required) | DID or handle of the repository. |
+| `language` | string | Optional filter by BCP-47 language tag. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: template[], cursor?: string }`
+**Output**: `{ records: { uri, cid, value: template }[], cursor?: string }`
 
 ### getFilling
 **NSID:** `pub.layers.resource.getFilling`
@@ -264,7 +267,7 @@ Retrieve a single filling record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the filling record. |
 
-**Output**: The filling record object.
+**Output**: `{ uri, cid, value: filling }` — the record is nested under `value`.
 
 ### listFillings
 **NSID:** `pub.layers.resource.listFillings`
@@ -278,7 +281,7 @@ List filling records in a repository with pagination.
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: filling[], cursor?: string }`
+**Output**: `{ records: { uri, cid, value: filling }[], cursor?: string }`
 
 ### getTemplateComposition
 **NSID:** `pub.layers.resource.getTemplateComposition`
@@ -289,7 +292,7 @@ Retrieve a single template composition record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the template composition record. |
 
-**Output**: The template composition record object.
+**Output**: `{ uri, cid, value: templateComposition }` — the record is nested under `value`.
 
 ### listTemplateCompositions
 **NSID:** `pub.layers.resource.listTemplateCompositions`
@@ -299,10 +302,11 @@ List template composition records in a repository with pagination.
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `repo` | at-identifier (required) | DID or handle of the repository. |
+| `compositionType` | string | Optional filter by composition type. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: templateComposition[], cursor?: string }`
+**Output**: `{ records: { uri, cid, value: templateComposition }[], cursor?: string }`
 
 ### getCollectionMembership
 **NSID:** `pub.layers.resource.getCollectionMembership`
@@ -313,7 +317,7 @@ Retrieve a single collection membership record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the collection membership record. |
 
-**Output**: The collection membership record object.
+**Output**: `{ uri, cid, value: collectionMembership }` — the record is nested under `value`.
 
 ### listCollectionMemberships
 **NSID:** `pub.layers.resource.listCollectionMemberships`
@@ -326,4 +330,4 @@ List collection membership records in a repository with pagination.
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: collectionMembership[], cursor?: string }`
+**Output**: `{ records: { uri, cid, value: collectionMembership }[], cursor?: string }`

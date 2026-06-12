@@ -99,7 +99,7 @@ A constraint on how experimental items are distributed into lists (e.g., Latin s
 | Field | Type | Description |
 |-------|------|-------------|
 | `kindUri` | at-uri | AT-URI of the constraint kind definition node. Community-expandable via knowledge graph. |
-| `kind` | string | Constraint kind slug (fallback). Known values: `latin-square`, `no-adjacent-same-condition`, `balanced-frequency`, `min-distance`, `custom` |
+| `kind` | string | Constraint kind slug (fallback). Known values: `latin-square`, `no-adjacent-same-condition`, `balanced-frequency`, `minimum-distance`, `custom` |
 | `targetProperty` | string | The property being constrained (e.g., 'condition', 'verb-type', 'length'). |
 | `parameters` | ref | Ref: `pub.layers.defs#featureMap` |
 | `constraint` | ref | Formal constraint expression. Ref: `pub.layers.defs#constraint` |

@@ -55,6 +55,9 @@ List expression records in a repository with pagination.
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `repo` | at-identifier (required) | The handle or DID of the repository. |
+| `language` | string | Filter to expressions with this BCP-47 language tag (max 32 characters). |
+| `kind` | string | Filter to expressions of this kind slug (max 128 characters). |
+| `parentRef` | at-uri | Filter to child expressions of the given parent expression. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
