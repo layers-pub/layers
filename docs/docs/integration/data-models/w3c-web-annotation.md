@@ -15,7 +15,7 @@
 
 ## Overview
 
-The W3C Web Annotation Data Model is the standard for annotating web resources. It defines a target-body-motivation architecture where annotations select parts of resources (targets) and associate them with descriptive content (bodies). The model defines a rich vocabulary of selectors for pinpointing regions within resources. The at.margin (Semble/Cosmik) ATProto lexicons implement this model on ATProto.
+The W3C Web Annotation Data Model is the standard for annotating web resources. It defines a target-body-motivation architecture where annotations select parts of resources (targets) and associate them with descriptive content (bodies). The model defines a set of selector types for identifying regions within resources (see the Selector Types table below). The at.margin (Semble/Cosmik) ATProto lexicons implement this model on ATProto.
 
 ## Core Architecture Mapping
 
@@ -27,7 +27,8 @@ The W3C Web Annotation Data Model is the standard for annotating web resources. 
 | `Target` | `annotation.anchor` | What the annotation is about: the selected region of a resource. |
 | `Body` | `annotation.label`, `annotation.value`, `annotation.features`, `annotation.arguments` | The content of the annotation. Layers distributes body content across typed fields rather than using a generic body object. |
 | `Motivation` | `annotationLayer.kind` + `annotationLayer.subkind` | Why the annotation was created. W3C motivations (commenting, highlighting, tagging, describing, etc.) map to Layers kind/subkind discriminators. |
-| `Creator` | `pub.layers.defs#annotationMetadata.tool` + ATProto DID | The annotation creator. In ATProto, the record's DID identifies the creator. |
+| `Creator` | `pub.layers.defs#annotationMetadata.agent` (agentRef.did / ATProto record DID) | The agent (human or software) that created the annotation. ATProto-native agents are identified via agentRef.did. |
+| `Generator` | `pub.layers.defs#annotationMetadata.tool` | The software that generated the serialization. Distinct from creator (agent) per the W3C model. |
 | `Created`/`Modified` | `annotationMetadata.timestamp` + `createdAt` | Timestamps. |
 
 ### W3C Motivations → Layers Kind/Subkind
@@ -62,7 +63,7 @@ Layers includes W3C-compatible selectors in `pub.layers.defs`:
 | `DataPositionSelector` | `pub.layers.defs#span` | UTF-8 byte offset selection. |
 | `SvgSelector` | `pub.layers.defs#boundingBox` or features | SVG-based spatial selection. Layers uses `boundingBox` for rectangular regions; arbitrary SVG shapes go in features. |
 | `RangeSelector` | Composite of two selectors | Start/end defined by two separate selectors. Representable by combining two anchor fields. |
-| `TimeSelector` (Media Fragments) | `pub.layers.defs#temporalSpan` | Media fragment time selection. `start`/`end` in seconds → `temporalSpan.start`/`temporalSpan.ending` in milliseconds. |
+| `FragmentSelector` (Media Fragments URI, e.g. `#t=10,20`) | `pub.layers.defs#temporalSpan` | W3C time selection uses a FragmentSelector whose `conformsTo` references the Media Fragments URI spec (http://www.w3.org/TR/media-frags/). Maps to `temporalSpan.start`/`temporalSpan.ending` in milliseconds. |
 
 ### Target Types
 

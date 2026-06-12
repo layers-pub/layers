@@ -15,7 +15,7 @@
 
 ## Overview
 
-TEI is an XML-based standard for encoding literary and linguistic texts. It provides extremely rich document structure modeling (divisions, paragraphs, lines, speakers, stage directions), critical apparatus for manuscript traditions, metadata headers, and both inline and stand-off annotation. TEI is the dominant format in digital humanities and historical linguistics.
+TEI is an XML-based standard for encoding literary and linguistic texts. It models document structure (divisions, paragraphs, lines, speakers, stage directions), critical apparatus for manuscript traditions, metadata headers, and both inline and stand-off annotation. TEI is the dominant format in digital humanities and historical linguistics.
 
 ## Type-by-Type Mapping
 
@@ -55,7 +55,7 @@ TEI is an XML-based standard for encoding literary and linguistic texts. It prov
 | `<cl>` (clause) | `annotationLayer(kind="span", subkind="discourse-unit")` | Clause annotation. |
 | `<name>` / `<persName>` / `<placeName>` / `<orgName>` | `annotationLayer(kind="span", subkind="entity-mention")` | Named entity spans. TEI's entity type (`persName` vs `placeName`) maps to `annotation.label`. |
 | `<rs>` (referring string) | `annotationLayer(kind="span", subkind="entity-mention")` | Referring expressions with `@type` → `annotation.label`. |
-| `<date>` / `<time>` | `annotationLayer(kind="span", subkind="temporal-expression")` | Temporal expressions with `@when` → `annotation.value` (normalized form). |
+| `<date>` / `<time>` | `annotationLayer(kind="span", subkind="temporal-expression")` | Temporal expressions: map TEI `@when`/`@from`/`@to`/`@notBefore`/`@notAfter` to the structured `annotation.temporal` field (`pub.layers.defs#temporalExpression`, e.g. `temporal.value.instant` for point-in-time values). Reserve `annotation.value` only for cases where a structured normalization is unavailable. |
 
 ### Critical Apparatus and Manuscript Traditions
 
@@ -88,7 +88,7 @@ TEI supports stand-off annotation via `@xml:id` references and `<spanGrp>`/`<spa
 | TEI Stand-Off Element | Layers Equivalent | Notes |
 |---|---|---|
 | `<spanGrp>` | `pub.layers.annotation.annotationLayer` | Group of stand-off spans. |
-| `<span @from @to>` | `pub.layers.annotation.defs#annotation` with `anchor.textSpan` | Stand-off span with character offsets. |
+| `<span @from @to>` | `pub.layers.annotation.defs#annotation` with `anchor.textSpan` | Stand-off span. TEI `@from`/`@to` are data.pointer values referencing anchor `@xml:id` targets; they must be resolved to byte/character offsets before populating `anchor.textSpan` (`pub.layers.defs#span` `byteStart`/`byteEnd`). They are not character offsets directly. |
 | `<link>` / `<linkGrp>` | `pub.layers.graph.graphEdge` | Typed links between elements. |
 | `<interp>` / `<interpGrp>` | `pub.layers.annotation.annotationLayer` | Interpretive annotation groups. |
 

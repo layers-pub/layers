@@ -25,10 +25,10 @@ NIF is an RDF/Linked Data-based format for representing NLP annotations as web r
 |---|---|---|
 | `nif:Context` | `pub.layers.expression.expression` | The document/text being annotated. NIF's `nif:isString` → `expression.text`. |
 | `nif:String` (base class) | `pub.layers.annotation.defs#annotation` | Any annotated substring. NIF identifies strings by URI (offset-based); Layers uses UUID + character span anchoring. |
-| `nif:RFC5147String` / `nif:OffsetBasedString` | `pub.layers.defs#span` | Offset-based string identification. NIF's `nif:beginIndex`/`nif:endIndex` → `span.byteStart`/`span.byteEnd`. The import pipeline converts character offsets to UTF-8 byte offsets at import time. |
+| `nif:RFC5147String` / `nif:OffsetBasedString` | `pub.layers.defs#span` | Offset-based string identification. NIF's `nif:beginIndex`/`nif:endIndex` are character offsets; they map to `span.charStart`/`span.charEnd`, which are provided specifically for compatibility with character-offset datasets, giving a lossless round-trip back to NIF. If the consumer requires UTF-8 byte offsets, the pipeline also computes `span.byteStart`/`span.byteEnd` at import time. |
 | `nif:Word` | `pub.layers.expression.expression` (kind: `word`) | Word-level string. |
 | `nif:Sentence` | `pub.layers.expression.expression` (kind: `sentence`) | Sentence-level string. |
-| `nif:Phrase` | `pub.layers.annotation.defs#annotation` with `kind="span"` | Phrase/constituent annotation. |
+| `nif:Phrase` | `annotationLayer(kind="span") -> annotation` | Phrase/constituent annotation. |
 | `nif:Title` / `nif:Paragraph` | `pub.layers.expression.expression` (kind: `section`) | Document structure elements. |
 
 ### NIF Annotation Properties
@@ -36,7 +36,7 @@ NIF is an RDF/Linked Data-based format for representing NLP annotations as web r
 | NIF Property | Layers Equivalent | Notes |
 |---|---|---|
 | `nif:anchorOf` | `token.text` or derived from `expression.text` + offsets | The surface string. |
-| `nif:beginIndex` / `nif:endIndex` | `anchor.textSpan.byteStart` / `anchor.textSpan.byteEnd` | UTF-8 byte offsets (0-based, exclusive end). The import pipeline converts character offsets to byte offsets at import time. |
+| `nif:beginIndex` / `nif:endIndex` | `anchor.textSpan.charStart` / `anchor.textSpan.charEnd` | Character offsets (0-based, exclusive end), preserved losslessly via the span's dedicated character-offset fields. The pipeline also populates `anchor.textSpan.byteStart`/`anchor.textSpan.byteEnd` (UTF-8 byte offsets) for consumers that require byte addressing. |
 | `nif:referenceContext` | Annotation layer's `expression` reference | The document context. |
 | `nif:posTag` | `annotationLayer(kind="token-tag", subkind="pos")` → `annotation.label` | POS tag. |
 | `nif:lemma` | `annotationLayer(kind="token-tag", subkind="lemma")` → `annotation.value` | Lemma. |
@@ -54,7 +54,7 @@ NIF is an RDF/Linked Data-based format for representing NLP annotations as web r
 | `itsrdf:taClassRef` | `annotation.ontologyTypeRef` + `knowledgeRefs` | Entity type from an ontology. |
 | `itsrdf:taConfidence` | `annotation.confidence` | Entity linking confidence (scaled 0-1000). |
 | OLiA ontology references | `annotationLayer.ontologyRef` or `annotation.knowledgeRefs` | Links to the Ontologies of Linguistic Annotation for tagset normalization. |
-| `nif:sourceUrl` | `pub.layers.expression.sourceUrl` | Source document URL. |
+| `nif:sourceUrl` | `pub.layers.expression.expression.sourceUrl` | Source document URL. |
 
 ### NIF Provenance
 

@@ -15,7 +15,7 @@
 
 ## Overview
 
-CoNLL formats are tab-separated column-based annotation formats widely used in NLP shared tasks. CoNLL-U (Universal Dependencies) is the most widely used variant. Each line represents a token with multiple annotation columns. CoNLL formats are flat, single-file representations optimized for machine learning pipelines.
+CoNLL formats are tab-separated column-based annotation formats widely used in NLP shared tasks. CoNLL-U (Universal Dependencies) is the most widely used variant. Each line represents a token with multiple annotation columns. CoNLL formats are flat, single-file, one-token-per-line representations.
 
 ## CoNLL-U (Universal Dependencies)
 
@@ -29,18 +29,18 @@ CoNLL formats are tab-separated column-based annotation formats widely used in N
 | `UPOS` | `annotationLayer(kind="token-tag", subkind="pos")` → `annotation.label` | Universal POS tag. |
 | `XPOS` | `annotationLayer(kind="token-tag", subkind="xpos")` → `annotation.label` | Language-specific POS tag. |
 | `FEATS` | `annotationLayer(kind="token-tag", subkind="morph")` → `annotation.features` | Morphological features (e.g., `Case=Nom\|Number=Sing`). Each feature key-value pair maps to a `feature` entry. |
-| `HEAD` | `annotationLayer(kind="graph", subkind="dependency")` → `annotation.headIndex` | Governor token index. CoNLL-U's `0` (root) maps to `headIndex` absent or a sentinel. |
+| `HEAD` | `annotationLayer(kind="graph", subkind="dependency")` → `annotation.headIndex` | Governor token index. CoNLL-U's `0` (root) maps to `headIndex = -1` (the schema's defined root sentinel). |
 | `DEPREL` | Same dependency layer → `annotation.label` | Dependency relation label. |
 | `DEPS` | `annotationLayer(kind="graph", subkind="enhanced-dependency")` | Enhanced dependencies (multiple heads). Each `head:deprel` pair creates a separate annotation in the enhanced layer. |
-| `MISC` | `pub.layers.defs#featureMap` on the token or annotation | Catch-all for `SpaceAfter=No`, `Translit=...`, etc. |
+| `MISC` | `pub.layers.defs#featureMap` on an annotation (e.g., a token-tag annotation) | Catch-all for `SpaceAfter=No`, `Translit=...`, etc. Tokens carry no `features` field; MISC key-value pairs map to `annotation.features` on a token-level annotation for that token. |
 
 ### Special Token Types
 
 | CoNLL-U Feature | Layers Equivalent | Notes |
 |---|---|---|
-| Multi-word tokens (e.g., `1-2 del`) | `pub.layers.defs#tokenRefSequence` | Multi-word token ranges are represented as a `tokenRefSequence` with `tokenIndexes` covering the component tokens. The surface form and span of the multi-word token are stored in features. |
+| Multi-word tokens (e.g., `1-2 del`) | `pub.layers.annotation.defs#annotation` with `anchor.tokenRefSequence` | Multi-word token ranges are represented as an annotation whose `anchor` contains a `tokenRefSequence` with `tokenIndexes` covering the component tokens. The surface form is stored in `annotation.text`; additional properties (e.g., the MWT span) can be stored in `annotation.features`. |
 | Empty nodes (e.g., `2.1`) | `pub.layers.annotation.defs#annotation` with features | Empty nodes in enhanced UD are represented as annotations (not tokens) in the enhanced dependency layer, with `features` indicating they are empty/null nodes. Their position is tracked via decimal indices stored in features. |
-| Sentence boundaries | `pub.layers.expression.expression` (kind: `sentence`) with `parentRef` | CoNLL-U blank lines between sentences map to sentence-level expression records with `parentRef` pointing to the document expression. Tokenization for each sentence is a `pub.layers.segmentation.segmentation` record with `expressionRef` pointing to that sentence expression. |
+| Sentence boundaries | `pub.layers.expression.expression` (kind: `sentence`) with `parentRef` | CoNLL-U blank lines between sentences map to sentence-level expression records with `parentRef` pointing to the document expression. Tokenization for each sentence is a `pub.layers.segmentation.segmentation` record whose `expression` field (an AT-URI) points to that sentence expression; individual tokenizations within the segmentation may scope to a sub-expression via `tokenization.expressionRef`. |
 | `# text = ...` comment | `pub.layers.expression.expression` sentence `text` (or `features`) | Sentence-level metadata from comments. |
 | `# sent_id = ...` comment | `pub.layers.expression.expression` sentence `id` | Sentence identifier. |
 | `# newpar` / `# newdoc` | `pub.layers.expression.expression` (kind: `section`) boundaries | Paragraph and document boundaries. |
@@ -59,7 +59,7 @@ CoNLL formats are tab-separated column-based annotation formats widely used in N
 | CoNLL-200x Column | Layers Equivalent | Notes |
 |---|---|---|
 | Predicate | `annotationLayer(kind="span", subkind="predicate")` | Predicate identification. |
-| Predicate sense | `annotationLayer(kind="span", subkind="frame", formalism="PropBank")` → `annotation.label` | PropBank sense (roleset ID). |
+| Predicate sense | `annotationLayer(kind="span", subkind="frame", formalism="propbank")` → `annotation.label` | PropBank sense (roleset ID). |
 | Argument columns | `annotation.arguments[]` with `argumentRef.role` | Each argument column (ARG0, ARG1, ARGM-TMP, etc.) becomes an `argumentRef` on the frame annotation. |
 
 ## CoNLL-2012 (OntoNotes Coreference)
@@ -76,7 +76,7 @@ CoNLL formats are flat, token-per-line representations. Converting to Layers req
 
 1. Create a document-level `pub.layers.expression.expression` with `kind="document"`
 2. For each sentence (blank-line delimited), create a `pub.layers.expression.expression` with `kind="sentence"` and `parentRef` pointing to the document expression
-3. For each sentence, create a `pub.layers.segmentation.segmentation` record with the tokenization (`kind="whitespace"` or appropriate strategy) and `expressionRef` pointing to the sentence expression
+3. For each sentence, create a `pub.layers.segmentation.segmentation` record with the tokenization (`kind="whitespace"` or appropriate strategy) and `expression` pointing to the sentence expression; scope individual tokenizations to a sub-expression via `tokenization.expressionRef` if needed
 4. For each annotation column, create a separate `annotationLayer` with appropriate `kind`/`subkind`
 5. IOB/BILOU tags can remain as token-tags or be converted to span annotations. Layers supports both.
 

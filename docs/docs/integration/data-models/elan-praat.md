@@ -27,7 +27,7 @@ ELAN and Praat are the two most widely used tools for time-aligned linguistic an
 | **Tier** | `pub.layers.annotation.annotationLayer` with `kind="tier"` | Each ELAN tier maps to an annotation layer with `kind="tier"`. The `subkind` (via `subkindUri`) can specify the tier's semantic type (e.g., `"transcription"`, `"gesture"`, `"translation"`). |
 | **Tier @LINGUISTIC_TYPE_REF** | `annotationLayer.ontologyRef` or `subkindUri` | ELAN's linguistic types (symbolic association, time subdivision, included in, etc.) define how tiers relate to each other. |
 | **Tier @PARENT_REF** | `annotationLayer.parentLayerRef` | ELAN's parent-child tier relationships map directly to `parentLayerRef`. |
-| **Tier @PARTICIPANT** | `annotationLayer.metadata.personaRef` or `features.participant` | Speaker/participant association. |
+| **Tier @PARTICIPANT** | `annotationLayer.metadata.personaRef` (or per-annotation features) | Speaker/participant association. |
 | **Controlled Vocabulary** | `pub.layers.ontology.ontology` | ELAN's controlled vocabularies map to Layers ontology `typeDef` entries. |
 
 ### Annotation Types
@@ -53,7 +53,7 @@ ELAN and Praat are the two most widely used tools for time-aligned linguistic an
 | ELAN Feature | Layers Equivalent | Notes |
 |---|---|---|
 | Media descriptors | `pub.layers.media.media` record | Audio/video file references. ELAN's `MEDIA_DESCRIPTOR` → `media.externalUri` or `media.blob`. Audio metadata (`sampleRate`, `channels`, `bitDepth`, `codec`, `speakerCount`) is stored in the composable `audioInfo` object on the media record's `audio` field. `transcriptRef` links to the expression containing the transcript; `segmentationRef` links to its segmentation (both also in `audioInfo`). |
-| Linked files | `pub.layers.expression.features` or `sourceRef` | Additional linked resources. |
+| Linked files | `expression.features` or `expression.sourceRef` | Additional linked resources. |
 | Author/date | `pub.layers.defs#annotationMetadata` | Creation metadata. |
 | License | `pub.layers.corpus.corpus.license` (at corpus level) | Licensing information. |
 
@@ -82,7 +82,7 @@ ELAN and Praat are the two most widely used tools for time-aligned linguistic an
 
 ### Praat ↔ ELAN Correspondence
 
-Both ELAN and Praat tiers map to the same Layers representation (`annotationLayer` with `kind="tier"`), making it straightforward to combine annotations from both tools on the same expression.
+Both ELAN and Praat tiers map to the same Layers representation (`annotationLayer` with `kind="tier"`), so annotations from both tools can coexist on a single expression's layers.
 
 ## Interlinear Glossing in ELAN
 
@@ -90,8 +90,8 @@ ELAN is commonly used for interlinear glossed text in language documentation. Th
 
 | ELAN IGT Tier | Layers Equivalent | Notes |
 |---|---|---|
-| Transcription tier (utterance) | `annotationLayer(kind="tier")` for utterance text + `tokenization(kind="whitespace")` for words | Time-aligned transcription. |
-| Morpheme break tier | `tokenization(kind="morphological")` | Morpheme-level tokenization (child of word tokenization via `pub.layers.alignment.alignment`). |
+| Transcription tier (utterance) | `annotationLayer(kind="tier")` for utterance text + a `pub.layers.segmentation.segmentation` record with a `tokenization(kind="whitespace")` for words | Time-aligned transcription. |
+| Morpheme break tier | a `pub.layers.segmentation.segmentation` record with a `tokenization(kind="morphological")` | Morpheme-level tokenization (child of word tokenization via `pub.layers.alignment.alignment`). |
 | Gloss tier | `annotationLayer(kind="token-tag", subkind="gloss")` on morphological tokenization | Leipzig-style glosses on morphemes. |
 | POS tier | `annotationLayer(kind="token-tag", subkind="pos")` | Part-of-speech tags. |
 | Free translation tier | `pub.layers.alignment.alignment(kind="parallel-text")` or annotation layer | Sentence-level translation. |

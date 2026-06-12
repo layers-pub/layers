@@ -25,7 +25,7 @@ UDS graphs have three layers: a syntactic layer (UD dependency trees), a semanti
 
 | Decomp/UDS Concept | Layers Equivalent | Notes |
 |---|---|---|
-| `UDSCorpus` | `pub.layers.resource.collection` + `pub.layers.expression.expression` records | A UDS corpus is a versioned collection of sentence analyses. The collection record holds corpus metadata (name, version, license); each sentence's source text is an expression. |
+| `UDSCorpus` | `pub.layers.resource.collection` + `pub.layers.expression.expression` records | A UDS corpus is a versioned collection of sentence analyses. The collection record holds corpus metadata (name, version); license information has no dedicated field and must be stored as a `collection.features` entry. Each sentence's source text is an expression. |
 | Document (within corpus) | `pub.layers.expression.expression` | Source text for a sentence or document. |
 | Corpus split (train/dev/test) | `pub.layers.resource.collection` per split, or `collection.features` | Each split can be a separate collection, or splits can be tracked as features on a parent collection. |
 
@@ -34,7 +34,7 @@ UDS graphs have three layers: a syntactic layer (UD dependency trees), a semanti
 | Decomp/UDS Concept | Layers Equivalent | Notes |
 |---|---|---|
 | UD dependency tree | `annotationLayer(kind="graph", subkind="dependency")` | The underlying Universal Dependencies parse. Each token-to-token dependency becomes an `annotation` with `headIndex` and `label` (the dependency relation). |
-| Syntax node (`ewt-train-12-syntax-3`) | `pub.layers.expression.expression` (kind: `token`) | Tokens with position indices, surface forms, lemmas. |
+| Syntax node (`ewt-train-12-syntax-3`) | `pub.layers.segmentation.defs#token` entry within a `pub.layers.segmentation.segmentation` record | Tokens with position indices (`tokenIndex`) and surface forms (`text`). Lemmas are a separate token-tag layer (subkind: `lemma`), not stored on the token object. |
 | Root node (`ewt-train-12-root-0`) | `annotation` with sentinel `headIndex` | The root of the dependency tree, as in standard UD representation. |
 | Node attributes (form, lemma, POS, feats) | `annotationLayer(kind="token-tag", subkind="pos")`, `annotationLayer(kind="token-tag", subkind="lemma")`, etc. | Standard token-level annotation layers, same as the [CoNLL](./conll) mapping. |
 
@@ -83,7 +83,7 @@ UDS graphs have three layers: a syntactic layer (UD dependency trees), a semanti
 
 A UDS corpus converts to Layers records as follows:
 
-1. Create a `pub.layers.resource.collection` for the corpus with version and license metadata
+1. Create a `pub.layers.resource.collection` for the corpus with version metadata; store license information under `collection.features` (no dedicated license field exists)
 2. For each sentence, create a `pub.layers.expression.expression` record with the source text
 3. Create a `pub.layers.segmentation.segmentation` record with the tokenization from the UD parse, with `expressionRef` pointing to the sentence expression
 4. Create an `annotationLayer(kind="graph", subkind="dependency")` from the UD dependency tree

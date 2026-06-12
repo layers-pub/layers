@@ -46,9 +46,9 @@ bead defines abstract interfaces that unify heterogeneous frame ontology resourc
 |---|---|---|
 | Frame instance (SRL) | `pub.layers.annotation.annotationLayer` with `kind="span"`, `subkind="frame"` | Frame instances annotated in text. `annotation.label` holds the frame name; `annotation.ontologyTypeRef` points to the `typeDef`. |
 | Role filler | `pub.layers.annotation.defs#argumentRef` | `argumentRef.role` is the role label; `argumentRef.target` (a `pub.layers.defs#objectRef`) points to the filler span annotation, using `localId` for same-layer or `recordRef`+`objectId` for cross-layer references. |
-| PropBank-style SRL | `formalism="PropBank"` on the annotationLayer | `annotation.label` = roleset ID (e.g., `buy.01`); arguments use ARG0, ARG1, etc. |
-| FrameNet-style SRL | `formalism="FrameNet"` on the annotationLayer | `annotation.label` = frame name; arguments use frame element names. |
-| VerbNet-style | `formalism="VerbNet"` on the annotationLayer | `annotation.label` = verb class; arguments use thematic role names. |
+| PropBank-style SRL | `formalism="propbank"` on the annotationLayer | `annotation.label` = roleset ID (e.g., `buy.01`); arguments use ARG0, ARG1, etc. |
+| FrameNet-style SRL | `formalism="framenet"` on the annotationLayer | `annotation.label` = frame name; arguments use frame element names. |
+| VerbNet-style | `formalism="verbnet"` on the annotationLayer | `annotation.label` = verb class; arguments use thematic role names. |
 
 ### Unified Access Pattern
 
@@ -77,7 +77,7 @@ The glazing companion package provides unified Pydantic models for FrameNet 1.7,
 
 ### bead's Approach
 
-bead provides a rich system for constructing experimental stimuli:
+bead's stimulus-construction system comprises the following components:
 
 - **Template**: A text pattern with named `{variable}` slots, per-slot constraints, cross-slot constraints, and a language tag
 - **Slot**: A named variable position with a constraint expression (DSL), required flag, default value, and reference to a lexicon of allowed fillers

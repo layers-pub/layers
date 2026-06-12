@@ -44,8 +44,8 @@ FOVEA separates **ontology types** (what kinds of things exist) from **world ins
 | `EntityTypeAssignment` | `pub.layers.annotation.defs#annotation.ontologyTypeRef` | Persona-specific type assignments are handled by creating separate `annotationLayer` records per persona, each with its own `ontologyRef`. |
 | `EventInterpretation` | `pub.layers.annotation.defs#annotation` with `ontologyTypeRef` + `arguments` | Per-persona situation interpretation with typed participants via `argumentRef`. |
 | `Location` | `pub.layers.defs#spatialExpression` with `type="location"` or `pub.layers.defs#boundingBox` | Geographic coordinates (GPS, cartesian) use `spatialExpression` with `spatialEntity.geometry` as WKT POINT and `crs="wgs84"`. For spatial annotations in images/video, Layers uses `boundingBox` and `spatioTemporalAnchor`. |
-| `EntityCollection` | `pub.layers.annotation.clusterSet` with appropriate `kind` | FOVEA's collection types (`group`, `kind`, `functional`, `stage`, `portion`, `variant`) map to `clusterSet.kind` (community-expandable via `kindUri`). `aggregateProperties` → `features`. |
-| `EventCollection` | `pub.layers.annotation.clusterSet` + `features` | Situation groupings with structure. `EventStructureNode` hierarchies can be represented via nested features or graph relations. |
+| `EntityCollection` | `pub.layers.annotation.clusterSet` with appropriate `kind` | FOVEA's collection types (`group`, `kind`, `functional`, `stage`, `portion`, `variant`) map to `clusterSet.kind` (community-expandable via `kindUri`). `aggregateProperties` maps to the per-cluster `features` field on `pub.layers.annotation.defs#cluster`; collection-level metadata can be stored in `clusterSet.metadata`. |
+| `EventCollection` | `pub.layers.annotation.clusterSet` | Situation groupings with structure. `EventStructureNode` hierarchies can be represented via nested graph relations. Per-cluster properties (including structure metadata) use the `features` field on each `pub.layers.annotation.defs#cluster` object. |
 
 ### Temporal Model
 
@@ -58,7 +58,7 @@ FOVEA separates **ontology types** (what kinds of things exist) from **world ins
 | `RecurrenceRule` (RFC 5545) | `pub.layers.defs#temporalEntity.recurrence` | ISO 8601 repeating intervals (e.g., `R/P1W` for weekly). More complex RFC 5545 rules use `features`. |
 | `HabitualPattern` | `pub.layers.defs#temporalEntity.recurrence` + `features` | Habitual frequency as repeating interval; typicality in features. |
 | `CyclicalPattern` | `pub.layers.defs#temporalEntity.recurrence` + `features` | Phase-based temporal patterns. Recurrence captures the cycle; phase metadata in features. |
-| `TimeCollection` | `pub.layers.annotation.clusterSet` + `features` | Collections of temporal references with pattern metadata. |
+| `TimeCollection` | `pub.layers.annotation.clusterSet` | Collections of temporal references with pattern metadata. Pattern metadata is stored in the `features` field on each `pub.layers.annotation.defs#cluster` object; collection-level metadata uses `clusterSet.metadata`. |
 
 ### Spatial Model and Video Annotation
 
@@ -74,12 +74,12 @@ FOVEA separates **ontology types** (what kinds of things exist) from **world ins
 
 | FOVEA Type | Layers Equivalent | Notes |
 |---|---|---|
-| `Claim` | `pub.layers.annotation.defs#annotation` with `kind="span"` and appropriate `subkind` | Claims are text spans with structured metadata. The `subkind` can be community-defined (e.g., `"claim"`, `"proposition"`, `"hypothesis"`). `text` → `annotation.text`; `gloss` → `annotation.features`; `confidence` → `annotation.confidence`. |
+| `Claim` | `pub.layers.annotation.defs#annotation` in an `annotationLayer` whose `kind="span"` with appropriate `subkind` | Claims are text spans with structured metadata. The `subkind` (a field on the enclosing `annotationLayer`, not on the annotation object) can be community-defined (e.g., `"claim"`, `"proposition"`, `"hypothesis"`). `text` → `annotation.text`; `gloss` → `annotation.features`; `confidence` → `annotation.confidence`. |
 | `Claim.parentClaimId` | `annotation.parentId` + `annotation.childIds` | Claim hierarchies use the same tree structure as constituency parses. |
 | `Claim.claimerType`/`claimerGloss` | `annotation.arguments` with `role="claimer"` | The claimer is a semantic argument of the claim, modeled via `argumentRef`. |
 | `Claim.textSpans` (discontiguous) | `anchor.tokenRefSequence` | Discontiguous spans use `tokenRefSequence.tokenIndexes`. |
 | `Claim` (as graph node) | `pub.layers.graph.graphNode` with `nodeType="claim"` | Claims can also be modeled as standalone graph nodes when they represent propositions that exist independently of specific text spans. Properties store claim metadata. |
-| `ClaimRelation` | `pub.layers.graph.graphEdge` or `pub.layers.annotation.defs#annotation` with `kind="relation"` | Typed relations between claims (supports, contradicts, refines, generalizes) map to graph edges or relation-type annotations. Edge types include `supports`, `contradicts`, and community-defined types via `edgeTypeUri`. |
+| `ClaimRelation` | `pub.layers.graph.graphEdge` or `pub.layers.annotation.defs#annotation` in an `annotationLayer` whose `kind="relation"` | Typed relations between claims (supports, contradicts, refines, generalizes) map to graph edges or relation-type annotations. Edge types include `supports`, `contradicts`, and community-defined types via `edgeTypeUri`. |
 | `VideoSummary` | `pub.layers.expression.expression` + `pub.layers.annotation` layers | A summary is itself an expression with annotations linking it to the source video and extracted claims. |
 
 ### Collaboration Model

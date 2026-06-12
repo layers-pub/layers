@@ -23,9 +23,9 @@ LAF is the ISO standard for linguistic annotation interchange. It defines a thre
 
 | LAF Layer | Layers Equivalent | Notes |
 |---|---|---|
-| Media layer (primary data) | `pub.layers.expression.expression` + `pub.layers.media.media` | The expression record holds text; media records hold audio/video/image. |
+| Media layer (primary data) | `pub.layers.expression.expression` + `pub.layers.media.media` | The expression record holds text; media records hold audio/video/image/document sources (including PDFs). |
 | Anchoring layer (regions) | `pub.layers.defs#anchor` (polymorphic) | LAF's anchoring to regions of primary data maps to Layers's polymorphic `anchor` type: `textSpan` (UTF-8 byte offsets), `tokenRef`, `tokenRefSequence`, `temporalSpan`, `spatioTemporalAnchor`, `pageAnchor`, `externalTarget`. |
-| Annotation layer (graph) | `pub.layers.annotation.annotationLayer` + `pub.layers.graph` | Labeled nodes and edges. Layers provides both within-layer graph structures (`annotation` with `parentId`/`childIds`/`headIndex`/`arguments`) and cross-layer/cross-document graph structures (`pub.layers.graph.graphEdgeSet`). |
+| Annotation layer (graph) | `pub.layers.annotation.annotationLayer` + `pub.layers.graph.graphEdge` / `pub.layers.graph.graphEdgeSet` | Labeled nodes and edges. Layers provides both within-layer graph structures (`annotation` with `parentId`/`childIds`/`headIndex`/`arguments`) and cross-layer/cross-document graph structures (`pub.layers.graph.graphEdgeSet`). |
 
 ### LAF Data Model Primitives
 
@@ -33,7 +33,7 @@ LAF is the ISO standard for linguistic annotation interchange. It defines a thre
 |---|---|---|
 | **Region** | `pub.layers.defs#anchor` | A contiguous area of primary data. LAF regions are defined by anchors into the media layer. Layers's `span`, `temporalSpan`, `pageAnchor` etc. serve the same purpose. |
 | **Node** | `pub.layers.annotation.defs#annotation` | A labeled point in the annotation graph. In Layers, each annotation is a node with optional anchoring and feature structure. |
-| **Edge** | `annotation.headIndex`, `annotation.parentId`, `annotation.arguments`, or `pub.layers.graph.graphEdge` | Directed connections between nodes. Within a single annotation layer, edges are represented via `headIndex` (dependency), `parentId`/`childIds` (constituency), or `argumentRef` (predicate-argument). Across layers, `pub.layers.graph.graphEdge` provides typed directed edges. |
+| **Edge** | `annotation.headIndex`, `annotation.parentId`, `annotation.arguments`, or `pub.layers.graph.graphEdge` | Directed connections between nodes. Within a single annotation layer, edges are represented via `headIndex` (dependency), `parentId`/`childIds` (constituency), or `arguments` (predicate-argument, each entry an `argumentRef`). Across layers, `pub.layers.graph.graphEdge` provides typed directed edges. |
 | **Feature Structure** | `pub.layers.defs#featureMap` | LAF's attribute-value feature structures on nodes and edges map to Layers's `featureMap` (typed key-value pairs). |
 | **Annotation** | `pub.layers.annotation.defs#annotation` | A node-feature structure pair. The `label`, `value`, `features`, and typed fields (`tokenIndex`, `anchor`, etc.) on a Layers annotation constitute its feature structure. |
 | **Annotation Space** | `pub.layers.annotation.annotationLayer` | LAF annotation spaces (sets of nodes/edges from a single producer) map to annotation layers. Multiple layers can coexist over the same expression. |
@@ -46,7 +46,7 @@ LAF is the ISO standard for linguistic annotation interchange. It defines a thre
 |---|---|---|
 | `<graph>` | `pub.layers.annotation.annotationLayer` | Root element of an annotation document. |
 | `<node xml:id="...">` | `pub.layers.annotation.defs#annotation` with `uuid` | Identified annotation node. |
-| `<edge from="..." to="...">` | `annotation.headIndex`, `argumentRef`, or `graphEdge` | Directed edge between nodes. |
+| `<edge from="..." to="...">` | `annotation.headIndex`, `annotation.arguments`, or `graphEdge` | Directed edge between nodes. |
 | `<link targets="...">` | `annotation.anchor` | Associates a node with regions of primary data. |
 | `<region anchors="...">` | `pub.layers.defs#span` or other anchor type | Specifies offsets into primary data. |
 | `<fs>` (feature structure) | `pub.layers.defs#featureMap` | Attribute-value pairs on nodes. |
@@ -57,7 +57,7 @@ LAF is the ISO standard for linguistic annotation interchange. It defines a thre
 
 LAF mandates that annotations are stored separately from primary data, referencing it by anchors. Layers follows this principle exactly:
 
-1. Primary data is in `pub.layers.expression.expression` (text) and `pub.layers.media.media` (audio/video/image)
+1. Primary data is in `pub.layers.expression.expression` (text) and `pub.layers.media.media` (audio/video/image/document)
 2. Document structure (sections, sentences, paragraphs) is expressed via `pub.layers.expression.expression` records with `parentRef` chains, separate from primary data
 3. Tokenization is in `pub.layers.segmentation.segmentation` records, with optional `expressionRef` scoping each tokenization to a specific sub-expression
 4. All annotations are in `pub.layers.annotation.annotationLayer` records, referencing primary data via `anchor` objects

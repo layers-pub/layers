@@ -15,7 +15,7 @@
 
 ## Overview
 
-brat is a web-based annotation tool that uses a simple standoff annotation format. Annotations are stored in `.ann` files separate from the source text (`.txt` files). The format defines five annotation types: text-bound annotations (T), events (E), attributes (A), relations (R), and equivalences (*). brat's format is widely used in biomedical NLP shared tasks (BioNLP-ST, GENIA, etc.).
+brat is a web-based annotation tool that uses a simple standoff annotation format. Annotations are stored in `.ann` files separate from the source text (`.txt` files). The core annotation types are text-bound (T), events (E), attributes (A), relations (R), and equivalences (*); brat also defines normalization (N) and note (#) lines (covered below). brat's format is widely used in biomedical NLP shared tasks (BioNLP-ST, GENIA, etc.).
 
 ## Type-by-Type Mapping
 
@@ -74,11 +74,12 @@ Format: `*\t{type} {id1} {id2} ...`
 
 ### Normalization (N)
 
-Format: `N{id}\t{type} {target} {ref_db}:{ref_id}\t{text}`
+Format: `N{id}\tReference {target} {ref_db}:{ref_id}\t{text}`
 
 | brat Feature | Layers Equivalent | Notes |
 |---|---|---|
 | Normalization | `annotation.knowledgeRefs` | Links annotations to external databases. `{ref_db}` → `knowledgeRef.source`; `{ref_id}` → `knowledgeRef.identifier`. Used for gene/protein database links (UniProt, NCBI Gene, etc.). |
+| Canonical label | `knowledgeRef.label` | The trailing `{text}` field (e.g., `Barack Obama` in a Wikipedia normalization) maps to `knowledgeRef.label`. |
 
 ### Notes (#)
 

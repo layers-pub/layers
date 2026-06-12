@@ -17,7 +17,7 @@
 
 TimeML is the ISO standard markup language for temporal and event expressions in natural language text. It provides four main tag types (TIMEX3, EVENT, SIGNAL, LINK) for annotating temporal expressions, events with temporal attributes, temporal signals/connectives, and temporal/aspectual/subordination relations. TimeBank is the primary annotated corpus.
 
-Layers fully subsumes TimeML through three mechanisms:
+Layers maps the TimeML tag set onto Layers constructs through three mechanisms:
 1. **Structured temporal annotations.** `temporalExpression`, `temporalEntity`, and `temporalModifier` in `pub.layers.defs` capture all TIMEX3 attributes.
 2. **Annotation subkinds.** `temporal-expression`, `temporal-signal`, `situation-mention` discriminate TimeML tag types.
 3. **Graph edges.** Allen's 13 interval relations plus aspectual relations as `graphEdge.edgeType` values capture all TLINK and ALINK relations.
@@ -69,7 +69,7 @@ Layers fully subsumes TimeML through three mechanisms:
 | `relType` | `graphEdge.edgeType` | See relation mapping below |
 | `timeID` / `eventInstanceID` (source) | `graphEdge.source` | `objectRef` to source annotation |
 | `relatedToTime` / `relatedToEventInstance` (target) | `graphEdge.target` | `objectRef` to target annotation |
-| `signalID` | `graphEdge.label` or `graphEdge.properties` | Reference to the signal annotation |
+| `signalID` | `graphEdge.label` or `graphEdge.properties` | Signal annotation UUID stored as an untyped string (lossy projection; no typed `objectRef` is preserved) |
 
 **Relation mapping:**
 
@@ -89,8 +89,8 @@ Layers fully subsumes TimeML through three mechanisms:
 | `IDENTITY` | `equals` |
 | `DURING` | `during` |
 | `DURING_INV` | `contains` |
-| `OVERLAP` | `overlaps` |
-| `OVERLAPPED_BY` | `overlapped-by` |
+| `OVERLAP` | `overlaps` | TempEval/Allen extension; not in ISO-TimeML 1.2.1 |
+| `OVERLAPPED_BY` | `overlapped-by` | TempEval/Allen extension; not in ISO-TimeML 1.2.1 |
 
 ### Aspectual Links (ALINK)
 
@@ -100,7 +100,7 @@ Layers fully subsumes TimeML through three mechanisms:
 | `relType` | `graphEdge.edgeType` | `INITIATES` to `initiates`, `CULMINATES` to `culminates`, `TERMINATES` to `terminates`, `CONTINUES` to `continues`, `REINITIATES` to `reinitiates` |
 | `eventInstanceID` | `graphEdge.source` | Source event |
 | `relatedToEventInstance` | `graphEdge.target` | Target event |
-| `signalID` | `graphEdge.label` or `graphEdge.properties` | Signal reference |
+| `signalID` | `graphEdge.label` or `graphEdge.properties` | Signal annotation UUID stored as an untyped string (lossy projection; no typed `objectRef` is preserved) |
 
 ### Subordination Links (SLINK)
 
@@ -123,5 +123,5 @@ A TimeML-annotated document can be converted to Layers records as follows:
 6. For each `ALINK`, create a `graphEdge` with the mapped aspectual relation as `edgeType`
 7. For each `SLINK`, create a `graphEdge` with `edgeType="discourse"` and the subordination type as `label`
 
-All TimeML IDs (tid, eid, sid, lid) map to Layers UUIDs. Cross-references use `objectRef` with `localId` (same record) or `recordRef` + `objectId` (cross-record).
+TimeML TIMEX3/EVENT/SIGNAL IDs (tid, eid, sid) map to Layers annotation UUIDs; TLINK/ALINK/SLINK `lid` values map to graphEdge record keys (TIDs). Cross-references use `objectRef` with `localId` (same record) or `recordRef` + `objectId` (cross-record).
 

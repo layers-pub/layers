@@ -15,7 +15,7 @@
 
 ## Overview
 
-Salt is a graph-based meta-model for linguistic annotation that serves as the common intermediate representation for the Pepper converter framework and the ANNIS corpus search system. PAULA is Salt's XML serialization. Salt models annotations as a directed, labeled graph with multiple annotation layers over shared primary data (text or audio). Salt explicitly supports multiple concurrent annotation layers, timeline-based alignment for spoken data, and hierarchical/relational structures.
+Salt is a graph-based meta-model for linguistic annotation that serves as the common intermediate representation for the Pepper converter framework and the ANNIS corpus search system. PAULA is a standoff-XML annotation format that the Pepper framework converts to and from the Salt meta-model; Salt's own native serialization is SaltXML. Salt models annotations as a directed, labeled graph with multiple annotation layers over shared primary data (text or audio). Salt explicitly supports multiple concurrent annotation layers, timeline-based alignment for spoken data, and hierarchical/relational structures.
 
 ## Salt Meta-Model Mapping
 
@@ -47,7 +47,7 @@ Salt is a graph-based meta-model for linguistic annotation that serves as the co
 | `STimelineRelation` | Temporal anchoring via `annotation.anchor.temporalSpan` | Token-to-timeline anchoring for spoken data. |
 | `SSpanningRelation` | `annotation.anchor.tokenRefSequence` | Span-to-token membership. |
 | `SDominanceRelation` | `annotation.parentId`/`annotation.childIds` | Parent-child edges in hierarchical structures (constituency trees). |
-| `SPointingRelation` | `pub.layers.graph.graphEdge` or `annotation.headIndex`/`argumentRef` | Directed edge between nodes (dependency arcs, coreference links, discourse relations). |
+| `SPointingRelation` | `pub.layers.graph.graphEdge` or `annotation.headIndex`/`annotation.arguments` | Directed edge between nodes (dependency arcs, coreference links, discourse relations). Each argument is an `#argumentRef`. |
 | `SOrderRelation` | Token ordering via `tokenIndex` | Sequential ordering of tokens. |
 | `SMedialRelation` | `annotation.anchor.temporalSpan` | Node-to-media timeline anchoring. |
 
@@ -58,11 +58,11 @@ Salt is a graph-based meta-model for linguistic annotation that serves as the co
 | `SAnnotation` (on node) | `annotation.label`, `annotation.value`, or `annotation.features` | Key-value annotations on nodes. |
 | `SAnnotation` (on edge) | `graphEdge.properties` or `annotation.label` (for dependency labels) | Key-value annotations on edges. |
 | `SMetaAnnotation` | `pub.layers.defs#annotationMetadata` + `featureMap` | Document and corpus-level metadata. |
-| `SLayer` | `pub.layers.annotation.annotationLayer` | Named annotation layers grouping nodes and edges. Salt layers map directly to Layers annotation layers. |
+| `SLayer` | `pub.layers.annotation.annotationLayer` | Named annotation layers grouping nodes and edges. |
 
 ### Multi-Layer Architecture
 
-Salt explicitly supports multiple annotation layers over the same primary data, which is the core of Layers's design:
+Salt's multiple SLayer objects over one STextualDS map to multiple annotationLayer records over one expression:
 
 | Salt Pattern | Layers Pattern | Notes |
 |---|---|---|
