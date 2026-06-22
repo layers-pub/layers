@@ -15,7 +15,7 @@ Layers is a set of ATProto Lexicon schemas for representing, sharing, and interl
 
 - **Offline judgment and experiment data**: judgment types (acceptability, inference, similarity, preference, and others) collected via independent response instruments (ordinal scales, forced choice, categorical selection, span labeling, free text, and others), together with parameterized stimulus templates, experimental designs (Latin square, blocked, adaptive), behavioral analytics, and inter-annotator agreement reports. See the [Judgment Data guide](./guides/judgment-data.md) for the full experiment lifecycle.
 
-Layers subsumes 15+ major annotation data models (including CoNLL, brat, ELAN, PropBank, Universal Dependencies, and others) while maintaining a theory-neutral, modular architecture. All data lives in user-controlled Personal Data Servers (PDSes); Layers provides the schema and protocols for interoperability.
+Layers subsumes 15+ major annotation data models (including CoNLL, brat, ELAN, TEI, Universal Dependencies, and others) while maintaining a theory-neutral, modular architecture. All data lives in user-controlled Personal Data Servers (PDSes); Layers provides the schema and protocols for interoperability.
 
 ## Why Layers?
 
@@ -36,7 +36,7 @@ Layers solves this by:
 
 ## Status
 
-Layers is in **[v0.7.0 draft](https://github.com/layers-pub/layers/releases/tag/v0.7.0)** status, in active development and accepting comments and discussion. File issues or participate on GitHub: https://github.com/layers-pub/layers
+Layers is in **[v0.5.0 draft](https://github.com/layers-pub/layers/releases/tag/v0.5.0)** status, in active development and accepting comments and discussion. File issues or participate on GitHub: https://github.com/layers-pub/layers
 
 ## Architecture Overview
 
@@ -57,8 +57,8 @@ flowchart TD
     AL["<b>Alignment</b><br/><i>cross-lingual, cross-modal,<br/>signal-to-stimulus</i>"]
 
     G["<b>Graph</b><br/><i>knowledge representation,<br/>typed relations</i>"]
-    M["<b>Media</b><br/><i>audio, video, image,<br/>document</i>"]
-    EP["<b>Eprint</b><br/><i>scholarly metadata,<br/>publication links</i>"]
+    M["<b>Media</b><br/><i>audio, video, image,<br/>EEG, MEG, fMRI</i>"]
+    EP["<b>Eprint</b><br/><i>structured citations,<br/>publication links</i>"]
     P["<b>Persona</b><br/><i>annotator frameworks,<br/>tool attribution</i>"]
 
     O -.-> A
@@ -84,7 +84,7 @@ flowchart TD
 
 **Parallel tracks** (purple): Ontologies defines label systems and theoretical frameworks. Corpora collects expressions with annotation project design metadata (redundancy, adjudication, quality criteria). Resources provides lexical entries and stimulus templates. Judgments captures experiment definitions with four orthogonal dimensions (measure type, task type, presentation, recording). Alignment links structures across languages, modalities, and records.
 
-**Integration layers** (green): Graphs provide typed property graphs for knowledge representation. Media stores raw audio, video, image, and document blobs. Eprint connects to scholarly metadata. Persona tracks annotator frameworks and tool attribution.
+**Integration layers** (green): Graphs provide typed property graphs for knowledge representation. Media stores raw signals (audio, video, EEG, fMRI). Eprint connects to scholarly metadata through structured citations (CSL-JSON/DataCite fields, authors grounded via ORCID/ROR/OpenAlex); most produces link their papers through an always-array `eprintRefs` field and carry shared structured `licensing` (single, dual, composite, or component-scoped terms via an SPDX expression). Persona tracks annotator frameworks and tool attribution.
 
 ## License
 

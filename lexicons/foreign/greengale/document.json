@@ -1,0 +1,109 @@
+{
+  "id": "app.greengale.document",
+  "defs": {
+    "main": {
+      "key": "tid",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "content",
+          "url",
+          "path",
+          "title",
+          "publishedAt"
+        ],
+        "properties": {
+          "ogp": {
+            "ref": "app.greengale.blog.defs#ogp",
+            "type": "ref"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 2048,
+            "description": "Base publication URL (e.g., https://greengale.app)"
+          },
+          "path": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "Document path relative to the publication URL (e.g., /handle/rkey)"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 100,
+              "maxGraphemes": 50
+            },
+            "maxLength": 100,
+            "description": "Optional array of strings to tag/categorize the document. Avoid prepending with hashtags."
+          },
+          "blobs": {
+            "type": "array",
+            "items": {
+              "ref": "app.greengale.blog.defs#blobMetadata",
+              "type": "ref"
+            }
+          },
+          "latex": {
+            "type": "boolean",
+            "default": false,
+            "description": "Legacy field for LaTeX math rendering. LaTeX is now always enabled for GreenGale posts; this field is kept for backward compatibility."
+          },
+          "theme": {
+            "ref": "app.greengale.blog.defs#theme",
+            "type": "ref"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 1000,
+            "description": "Document title"
+          },
+          "content": {
+            "type": "string",
+            "maxLength": 100000,
+            "description": "Markdown content of the document"
+          },
+          "subtitle": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "visibility": {
+            "enum": [
+              "public",
+              "url",
+              "author"
+            ],
+            "type": "string",
+            "default": "public",
+            "maxLength": 16,
+            "description": "Controls who can view this document"
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Publication timestamp"
+          }
+        }
+      },
+      "description": "A markdown document with extended theme and LaTeX support."
+    },
+    "contentRef": {
+      "type": "object",
+      "required": [
+        "uri"
+      ],
+      "properties": {
+        "uri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI pointing to the full document content"
+        }
+      },
+      "description": "Reference to external content via AT-URI. Used in site.standard.document content union."
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

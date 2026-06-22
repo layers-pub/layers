@@ -1,0 +1,53 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.integration.listExternal",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "List foreign records the appview indexed via the cross-family pipeline. Filter by NSID prefix, owning DID, or both. Used to discover idiolect community records, leaflet documents, margin annotations, and semble cards alongside Layers records.",
+      "parameters": {
+        "type": "params",
+        "properties": {
+          "nsid": {
+            "type": "string",
+            "description": "Optional exact NSID filter (e.g. `dev.idiolect.community`)."
+          },
+          "nsidPrefix": {
+            "type": "string",
+            "description": "Optional NSID prefix filter (e.g. `dev.idiolect.`)."
+          },
+          "did": {
+            "type": "string",
+            "format": "did",
+            "description": "Optional repo DID filter."
+          },
+          "cursor": { "type": "string" },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 200, "default": 50 }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["records"],
+          "properties": {
+            "records": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["uri", "nsid", "value"],
+                "properties": {
+                  "uri":   { "type": "string", "format": "at-uri" },
+                  "cid":   { "type": "string" },
+                  "nsid":  { "type": "string" },
+                  "value": { "type": "unknown", "description": "Raw record body as published by the foreign appview." }
+                }
+              }
+            },
+            "cursor": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

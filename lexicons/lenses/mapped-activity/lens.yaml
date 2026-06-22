@@ -1,0 +1,18 @@
+id: pub.layers.lens.mapped.activity-to-resource-entry
+description: |
+  Lift a mapped.at activity-type (at.mapped.activity) into a
+  Layers resource.entry. Activity types are user-authored
+  taxonomy tokens (name + description) that distinguish trail
+  kinds (hike, bike, ski, etc.) — Layers entries are the right
+  surface for these typed-token records.
+
+  `name` is renamed to `form` (Layers' canonical "presentation
+  form" field on resource.entry). `description` survives.
+source: at.mapped.activity
+target: pub.layers.resource.entry
+steps:
+  - rename_field: { old: name, new: form }
+  - add_field:
+      name: createdAt
+      kind: string
+      default: "1970-01-01T00:00:00.000Z"

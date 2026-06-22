@@ -39,11 +39,11 @@ An `expression` record sets `sourceRef` to the AT-URI of a Leaflet post. The app
 
 ## Layers Types Involved
 
-| Type | Role |
-|---|---|
-| `pub.layers.expression.expression` | `sourceRef` points to `site.standard.*` AT-URI |
-| `pub.layers.segmentation.segmentation` | Tokenization of the post text |
-| `pub.layers.annotation.annotationLayer` | Linguistic annotation layers over the post |
+| Type                                    | Role                                           |
+| --------------------------------------- | ---------------------------------------------- |
+| `pub.layers.expression.expression`      | `sourceRef` points to `site.standard.*` AT-URI |
+| `pub.layers.segmentation.segmentation`  | Tokenization of the post text                  |
+| `pub.layers.annotation.annotationLayer` | Linguistic annotation layers over the post     |
 
 ## Discovery
 

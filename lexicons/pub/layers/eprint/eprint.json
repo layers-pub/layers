@@ -31,10 +31,14 @@
             "format": "uri",
             "description": "Full URI of the eprint."
           },
-          "platformEprintRef": {
-            "type": "string",
-            "format": "at-uri",
-            "description": "AT-URI of the eprint record on its publication platform (e.g., chive.pub, any ATProto-native publication service)."
+          "platformEprintRefs": {
+            "type": "array",
+            "description": "AT-URIs of the eprint record on its publication platforms (e.g., chive.pub, any ATProto-native publication service). An eprint may be mirrored on multiple platforms.",
+            "maxLength": 32,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
           },
           "linkTypeUri": {
             "type": "string",
@@ -87,9 +91,9 @@
             "maxLength": 10000
           },
           "citation": {
-            "type": "string",
-            "description": "Full citation string.",
-            "maxLength": 4096
+            "type": "ref",
+            "ref": "pub.layers.eprint.defs#citation",
+            "description": "Bibliographic citation for the eprint. Carries rendered metadata (authors, title, venue, year) as a raw string and/or structured CSL-JSON/DataCite fields; eprintIdentifier/eprintIdentifierType remain the canonical link key."
           },
           "knowledgeRefs": {
             "type": "array",

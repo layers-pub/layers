@@ -300,6 +300,44 @@ Metadata about who or what produced an annotation, when, and with what confidenc
 | `digest` | string | Content hash for integrity verification, in `<algorithm>:<lowercase-hex>` form (e.g. `sha256:9f86d081...`). sha256 recommended; verifiers dispatch on the algorithm prefix. |
 | `dependencies` | array | References to upstream records this annotation was derived from (provenance chain). Array of ref: `#objectRef` |
 
+### licenseRef
+**Type:** Object
+
+Detail for a single license. Follows the URI+slug pattern (`spdxUri` is the canonical knowledge-graph node, `spdx` is the human-readable fallback) and mirrors one entry of a DataCite rightsList (`rightsIdentifier` + `rightsURI`).
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `spdxUri` | at-uri | AT-URI of the license definition node. Community-expandable via knowledge graph. |
+| `spdx` | string | SPDX license identifier (fallback when spdxUri unavailable). Non-SPDX terms use `proprietary` or `custom` and ground the full text via spdxUri/url. Known values: `CC0-1.0`, `CC-BY-4.0`, `CC-BY-SA-4.0`, `CC-BY-NC-4.0`, `CC-BY-NC-SA-4.0`, `CC-BY-ND-4.0`, `CC-BY-NC-ND-4.0`, `MIT`, `Apache-2.0`, `BSD-3-Clause`, `GPL-3.0-only`, `LGPL-3.0-only`, `LDC-User-Agreement`, `ELRA-END-USER`, `proprietary`, `custom` |
+| `name` | string | Human-readable license name (e.g., 'Creative Commons Attribution 4.0 International'). |
+| `url` | uri | URL of the full license text (DataCite rightsURI). |
+| `attribution` | string | Required attribution / credit text for downstream users. |
+| `notes` | string | Additional licensing notes, restrictions, or usage terms. |
+| `appliesTo` | string | Component this license covers when an artifact mixes licenses by part (e.g., `annotations`, `underlying-text`, `code`, `media`). Omit when the license covers the whole artifact. |
+
+### licensing
+**Type:** Object
+
+Complete licensing terms for a released artifact. Represents single, dual/multi (choose-one), composite (all-apply), exception (WITH), and component-scoped licensing. The SPDX license expression encodes the boolean relationship between licenses; the licenses array carries per-license detail. Mirrors a DataCite rightsList.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `expression` | string | SPDX license expression encoding the relationship between licenses: `OR` for dual/multi-licensing (the licensee chooses one), `AND` for composite terms (all apply), `WITH` for exceptions. Examples: `MIT OR Apache-2.0`, `CC-BY-4.0 AND LicenseRef-LDC-User-Agreement`. Optional when a single license applies. |
+| `licenses` | array | The individual licenses named by the expression, or the single governing license. Each entry may scope itself to a component via `appliesTo`. Array of ref: `#licenseRef` |
+
+### reproducibilityInfo
+**Type:** Object
+
+Information about how to reproduce a dataset or the data produced from an eprint. Shared by data-producing produces (corpus, annotation layers, experiments) and eprint data links.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `codeUri` | uri | URI of the code repository. |
+| `commitHash` | string | Git commit hash for reproducibility. |
+| `command` | string | Command to reproduce the data. |
+| `environment` | string | Environment specification (Docker image, conda env, etc.). |
+| `randomSeed` | integer | Random seed used. |
+
 ### knowledgeRef
 **Type:** Object
 
@@ -308,7 +346,7 @@ A reference to an external knowledge base entry. Supports ATProto-native knowled
 | Field | Type | Description |
 |-------|------|-------------|
 | `sourceUri` | at-uri | AT-URI of the knowledge base type definition node. Community-expandable via knowledge graph. |
-| `source` | string | Knowledge base source slug (fallback when sourceUri unavailable). Known values: `chive.pub`, `wikidata`, `wordnet`, `framenet`, `propbank`, `verbnet`, `unimorph`, `glottolog`, `cldr`, `custom` |
+| `source` | string | Knowledge base source slug (fallback when sourceUri unavailable). Known values: `chive.pub`, `wikidata`, `wordnet`, `framenet`, `propbank`, `verbnet`, `unimorph`, `glottolog`, `cldr`, `orcid`, `ror`, `openalex`, `crossref`, `dblp`, `semantic-scholar`, `custom` |
 | `identifier` | string | The identifier within the knowledge base (e.g., Wikidata QID, chive.pub node URI, Glottolog languoid ID). |
 | `uri` | uri | Optional full URI for the knowledge base entry. |
 | `label` | string | Human-readable label for the referenced entity. |
@@ -316,7 +354,7 @@ A reference to an external knowledge base entry. Supports ATProto-native knowled
 ### featureMap
 **Type:** Object
 
-An open-ended set of typed key-value features that can be attached to any annotation, without committing to any label set or linguistic theory.
+An open-ended set of typed key-value features that can be attached to any annotation. Provides maximum extensibility without committing to any label set or linguistic theory.
 
 | Field | Type | Description |
 |-------|------|-------------|

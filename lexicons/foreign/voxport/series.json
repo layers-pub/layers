@@ -1,0 +1,80 @@
+{
+  "lexicon": 1,
+  "id": "com.voxport.podcast.series",
+  "revision": 1,
+  "description": "A podcast series/channel owned by a creator on VoxPort",
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["handle", "title", "createdAt"],
+        "properties": {
+          "handle": {
+            "type": "string",
+            "description": "Unique handle for this series",
+            "maxLength": 64,
+            "pattern": "^[a-zA-Z0-9_-]+$"
+          },
+          "title": {
+            "type": "string",
+            "description": "Display name of the podcast",
+            "maxLength": 256
+          },
+          "description": {
+            "type": "string",
+            "description": "Podcast description/summary",
+            "maxLength": 4000
+          },
+          "cover": {
+            "type": "blob",
+            "description": "Cover art image",
+            "accept": ["image/png", "image/jpeg"],
+            "maxSize": 2097152
+          },
+          "language": {
+            "type": "string",
+            "format": "language",
+            "description": "Primary language (ISO 639-1)",
+            "maxLength": 5
+          },
+          "categories": {
+            "type": "array",
+            "description": "Podcast categories (Apple Podcasts format)",
+            "items": { "type": "string", "maxLength": 64 },
+            "maxLength": 5
+          },
+          "explicit": {
+            "type": "boolean",
+            "description": "Whether content is explicit",
+            "default": false
+          },
+          "websiteUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "External website URL",
+            "maxLength": 2048
+          },
+          "author": {
+            "type": "string",
+            "description": "Author/creator name (if different from DID owner)"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Contact email for podcast"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

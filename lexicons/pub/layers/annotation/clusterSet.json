@@ -56,6 +56,25 @@
             "type": "ref",
             "ref": "pub.layers.defs#annotationMetadata"
           },
+          "licensing": {
+            "type": "ref",
+            "ref": "pub.layers.defs#licensing",
+            "description": "Licensing terms governing this cluster set (supports dual/multi/component licensing)."
+          },
+          "eprintRefs": {
+            "type": "array",
+            "description": "Eprint records (papers/preprints) describing or associated with this cluster set.",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "reproducibility": {
+            "type": "ref",
+            "ref": "pub.layers.defs#reproducibilityInfo",
+            "description": "How this cluster set was produced (code, commit, command, environment, seed)."
+          },
           "createdAt": {
             "type": "string",
             "format": "datetime"

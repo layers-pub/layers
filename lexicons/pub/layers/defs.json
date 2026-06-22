@@ -725,6 +725,106 @@
       }
     },
 
+    "licenseRef": {
+      "type": "object",
+      "description": "Detail for a single license. Follows the URI+slug pattern (spdxUri is the canonical knowledge-graph node, spdx is the human-readable fallback) and mirrors one entry of a DataCite rightsList (rightsIdentifier + rightsURI).",
+      "required": ["spdx"],
+      "properties": {
+        "spdxUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the license definition node. Community-expandable via knowledge graph."
+        },
+        "spdx": {
+          "type": "string",
+          "description": "SPDX license identifier (fallback when spdxUri unavailable). Non-SPDX terms use 'proprietary' or 'custom' and ground the full text via spdxUri/url.",
+          "knownValues": ["CC0-1.0", "CC-BY-4.0", "CC-BY-SA-4.0", "CC-BY-NC-4.0", "CC-BY-NC-SA-4.0", "CC-BY-ND-4.0", "CC-BY-NC-ND-4.0", "MIT", "Apache-2.0", "BSD-3-Clause", "GPL-3.0-only", "LGPL-3.0-only", "LDC-User-Agreement", "ELRA-END-USER", "proprietary", "custom"],
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable license name (e.g., 'Creative Commons Attribution 4.0 International').",
+          "maxLength": 256
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL of the full license text (DataCite rightsURI).",
+          "maxLength": 2048
+        },
+        "attribution": {
+          "type": "string",
+          "description": "Required attribution / credit text for downstream users.",
+          "maxLength": 2048
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional licensing notes, restrictions, or usage terms.",
+          "maxLength": 4096
+        },
+        "appliesTo": {
+          "type": "string",
+          "description": "Component this license covers when an artifact mixes licenses by part (e.g., 'annotations', 'underlying-text', 'code', 'media'). Omit when the license covers the whole artifact.",
+          "maxLength": 256
+        }
+      }
+    },
+
+    "licensing": {
+      "type": "object",
+      "description": "Complete licensing terms for a released artifact. Represents single, dual/multi (choose-one), composite (all-apply), exception (WITH), and component-scoped licensing. The SPDX license expression encodes the boolean relationship between licenses; the licenses array carries per-license detail.",
+      "required": ["licenses"],
+      "properties": {
+        "expression": {
+          "type": "string",
+          "description": "SPDX license expression encoding the relationship between licenses: OR for dual/multi-licensing (the licensee chooses one), AND for composite terms (all apply), WITH for exceptions. Examples: 'MIT OR Apache-2.0', 'CC-BY-4.0 AND LicenseRef-LDC-User-Agreement'. Optional when a single license applies.",
+          "maxLength": 512
+        },
+        "licenses": {
+          "type": "array",
+          "description": "The individual licenses named by the expression, or the single governing license. Each entry may scope itself to a component via appliesTo.",
+          "minLength": 1,
+          "maxLength": 32,
+          "items": {
+            "type": "ref",
+            "ref": "#licenseRef"
+          }
+        }
+      }
+    },
+
+    "reproducibilityInfo": {
+      "type": "object",
+      "description": "Information about how to reproduce a dataset or the data produced from an eprint. Shared by data-producing produces (corpus, annotation layers, experiments) and eprint data links.",
+      "properties": {
+        "codeUri": {
+          "type": "string",
+          "format": "uri",
+          "description": "URI of the code repository.",
+          "maxLength": 2048
+        },
+        "commitHash": {
+          "type": "string",
+          "description": "Git commit hash for reproducibility.",
+          "maxLength": 64
+        },
+        "command": {
+          "type": "string",
+          "description": "Command to reproduce the data.",
+          "maxLength": 4096
+        },
+        "environment": {
+          "type": "string",
+          "description": "Environment specification (Docker image, conda env, etc.).",
+          "maxLength": 2048
+        },
+        "randomSeed": {
+          "type": "integer",
+          "description": "Random seed used."
+        }
+      }
+    },
+
     "knowledgeRef": {
       "type": "object",
       "description": "A reference to an external knowledge base entry. Supports ATProto-native KBs (e.g., chive.pub with AT-URI nodes), external KBs (e.g., Wikidata with QIDs), and user/persona-specific KBs (AT-URIs in user PDSes).",
@@ -738,7 +838,7 @@
         "source": {
           "type": "string",
           "description": "Knowledge base source slug (fallback when sourceUri unavailable).",
-          "knownValues": ["chive.pub", "wikidata", "wordnet", "framenet", "propbank", "verbnet", "unimorph", "glottolog", "cldr", "custom"],
+          "knownValues": ["chive.pub", "wikidata", "wordnet", "framenet", "propbank", "verbnet", "unimorph", "glottolog", "cldr", "orcid", "ror", "openalex", "crossref", "dblp", "semantic-scholar", "custom"],
           "maxLength": 128
         },
         "identifier": {

@@ -18,7 +18,6 @@ A linguistic resource entry: a lexical item, frame element filler, morphological
 |-------|------|-------------|
 | `lemma` | string | Canonical/citation form. |
 | `form` | string | Surface form or string representation. |
-| `language` | string | BCP-47 language tag. |
 | `ontologyTypeRef` | at-uri | Reference to a `pub.layers.ontology.typeDef` classifying this entry. |
 | `knowledgeRefs` | array | Knowledge graph groundings (WordNet synset, FrameNet lexical unit, Wikidata, etc.). Array of ref: `pub.layers.defs#knowledgeRef` |
 | `features` | ref | Open-ended features: pos, morphological features, frequency, register, etc. Ref: `pub.layers.defs#featureMap` |
@@ -28,6 +27,7 @@ A linguistic resource entry: a lexical item, frame element filler, morphological
 | `sourceRef` | at-uri | AT-URI of the source record this entry was derived from. |
 | `metadata` | ref | Provenance: who created this entry, with what tool. Ref: `pub.layers.defs#annotationMetadata` |
 | `createdAt` | datetime | Record creation timestamp. |
+| `languages` | array | BCP-47 language tags this record covers. Empty when language is unspecified or unknown. Array of strings (max 128) |
 
 ### collection
 **NSID:** `pub.layers.resource.collection`
@@ -41,13 +41,15 @@ A named collection of linguistic resource entries. Abstract enough to represent 
 | `description` | string | Detailed description. |
 | `kindUri` | at-uri | AT-URI of the collection kind definition node. Community-expandable via knowledge graph. |
 | `kind` | string | Collection kind slug (fallback). Known values: `lexicon`, `frame-inventory`, `gazetteer`, `paradigm`, `stop-list`, `stimulus-pool`, `custom` |
-| `language` | string | BCP-47 language tag. |
 | `version` | string | Version string (e.g., 'FrameNet 1.7', 'PropBank 3.4'). |
 | `ontologyRef` | at-uri | Reference to a `pub.layers.ontology.ontology` defining the type system for entries. |
 | `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
 | `metadata` | ref | Provenance: who curated this collection. Ref: `pub.layers.defs#annotationMetadata` |
+| `licensing` | ref | Licensing terms governing this collection (supports dual/multi/component licensing). Ref: `pub.layers.defs#licensing` |
+| `eprintRefs` | array | Eprint records (papers/preprints) describing or associated with this collection. Array of at-uri (max 64) |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
+| `languages` | array | BCP-47 language tags this record covers. Empty when language is unspecified or unknown. Array of strings (max 128) |
 
 ### collectionMembership
 **NSID:** `pub.layers.resource.collectionMembership`
@@ -93,7 +95,6 @@ A parameterized text template with named variable slots. Generalizes stimulus ge
 |-------|------|-------------|
 | `name` | string | Human-readable template name. |
 | `text` | string | Template text with `{slotName}` placeholders. |
-| `language` | string | BCP-47 language tag. |
 | `slots` | array | The named slots in this template. Array of ref: `pub.layers.resource.defs#slot` |
 | `constraints` | array | Cross-slot constraints. Array of ref: `pub.layers.defs#constraint` |
 | `ontologyRef` | at-uri | Reference to the ontology defining the type system. |
@@ -102,6 +103,7 @@ A parameterized text template with named variable slots. Generalizes stimulus ge
 | `metadata` | ref | Provenance: who designed this template. Ref: `pub.layers.defs#annotationMetadata` |
 | `features` | ref | Open-ended features: measureType, taskType, category, domain, etc. Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
+| `languages` | array | BCP-47 language tags this record covers. Empty when language is unspecified or unknown. Array of strings (max 128) |
 
 ### slotFilling
 **NSID:** `pub.layers.resource.defs#slotFilling`
@@ -191,7 +193,7 @@ Retrieve a single resource entry record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the entry record. |
 
-**Output**: `{ uri, cid, value: entry }` — the record is nested under `value`.
+**Output**: The entry record object.
 
 ### listEntries
 **NSID:** `pub.layers.resource.listEntries`
@@ -201,11 +203,11 @@ List resource entry records in a repository with pagination.
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `repo` | at-identifier (required) | DID or handle of the repository. |
-| `language` | string | Optional filter by BCP-47 language tag. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
+| `languages` | array | Filter to records covering any of these BCP-47 language tags. Array of strings. |
 
-**Output**: `{ records: { uri, cid, value: entry }[], cursor?: string }`
+**Output**: `{ records: entry[], cursor?: string }`
 
 ### getCollection
 **NSID:** `pub.layers.resource.getCollection`
@@ -216,7 +218,7 @@ Retrieve a single collection record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the collection record. |
 
-**Output**: `{ uri, cid, value: collection }` — the record is nested under `value`.
+**Output**: The collection record object.
 
 ### listCollections
 **NSID:** `pub.layers.resource.listCollections`
@@ -226,12 +228,12 @@ List collection records in a repository with pagination.
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `repo` | at-identifier (required) | DID or handle of the repository. |
-| `kind` | string | Optional filter by collection kind. |
-| `language` | string | Optional filter by BCP-47 language tag. |
+| `kind` | string | Filter collections by kind slug. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
+| `languages` | array | Filter to records covering any of these BCP-47 language tags. Array of strings. |
 
-**Output**: `{ records: { uri, cid, value: collection }[], cursor?: string }`
+**Output**: `{ records: collection[], cursor?: string }`
 
 ### getTemplate
 **NSID:** `pub.layers.resource.getTemplate`
@@ -242,7 +244,7 @@ Retrieve a single template record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the template record. |
 
-**Output**: `{ uri, cid, value: template }` — the record is nested under `value`.
+**Output**: The template record object.
 
 ### listTemplates
 **NSID:** `pub.layers.resource.listTemplates`
@@ -252,11 +254,11 @@ List template records in a repository with pagination.
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `repo` | at-identifier (required) | DID or handle of the repository. |
-| `language` | string | Optional filter by BCP-47 language tag. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
+| `languages` | array | Filter to records covering any of these BCP-47 language tags. Array of strings. |
 
-**Output**: `{ records: { uri, cid, value: template }[], cursor?: string }`
+**Output**: `{ records: template[], cursor?: string }`
 
 ### getFilling
 **NSID:** `pub.layers.resource.getFilling`
@@ -267,7 +269,7 @@ Retrieve a single filling record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the filling record. |
 
-**Output**: `{ uri, cid, value: filling }` — the record is nested under `value`.
+**Output**: The filling record object.
 
 ### listFillings
 **NSID:** `pub.layers.resource.listFillings`
@@ -281,7 +283,7 @@ List filling records in a repository with pagination.
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: { uri, cid, value: filling }[], cursor?: string }`
+**Output**: `{ records: filling[], cursor?: string }`
 
 ### getTemplateComposition
 **NSID:** `pub.layers.resource.getTemplateComposition`
@@ -292,7 +294,7 @@ Retrieve a single template composition record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the template composition record. |
 
-**Output**: `{ uri, cid, value: templateComposition }` — the record is nested under `value`.
+**Output**: The template composition record object.
 
 ### listTemplateCompositions
 **NSID:** `pub.layers.resource.listTemplateCompositions`
@@ -302,11 +304,11 @@ List template composition records in a repository with pagination.
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `repo` | at-identifier (required) | DID or handle of the repository. |
-| `compositionType` | string | Optional filter by composition type. |
+| `compositionType` | string | Filter compositions by composition type slug. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: { uri, cid, value: templateComposition }[], cursor?: string }`
+**Output**: `{ records: templateComposition[], cursor?: string }`
 
 ### getCollectionMembership
 **NSID:** `pub.layers.resource.getCollectionMembership`
@@ -317,7 +319,7 @@ Retrieve a single collection membership record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the collection membership record. |
 
-**Output**: `{ uri, cid, value: collectionMembership }` — the record is nested under `value`.
+**Output**: The collection membership record object.
 
 ### listCollectionMemberships
 **NSID:** `pub.layers.resource.listCollectionMemberships`
@@ -330,4 +332,4 @@ List collection membership records in a repository with pagination.
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ records: { uri, cid, value: collectionMembership }[], cursor?: string }`
+**Output**: `{ records: collectionMembership[], cursor?: string }`

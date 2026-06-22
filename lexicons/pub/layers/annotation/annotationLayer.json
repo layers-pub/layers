@@ -8,7 +8,12 @@
       "key": "tid",
       "record": {
         "type": "object",
-        "required": ["expression", "kind", "annotations", "createdAt"],
+        "required": [
+          "expression",
+          "kind",
+          "annotations",
+          "createdAt"
+        ],
         "properties": {
           "expression": {
             "type": "string",
@@ -183,11 +188,6 @@
             "format": "at-uri",
             "description": "For dependent/subordinate layers: the parent layer this one subdivides or refines. Supports ELAN-style tier dependencies, error-correction pairs, etc."
           },
-          "language": {
-            "type": "string",
-            "description": "BCP-47 language tag for this annotation layer, if different from the expression's language.",
-            "maxLength": 64
-          },
           "annotations": {
             "type": "array",
             "description": "The annotations in this layer.",
@@ -200,9 +200,37 @@
             "type": "ref",
             "ref": "pub.layers.defs#annotationMetadata"
           },
+          "licensing": {
+            "type": "ref",
+            "ref": "pub.layers.defs#licensing",
+            "description": "Licensing terms governing this annotation layer (supports dual/multi/component licensing)."
+          },
+          "eprintRefs": {
+            "type": "array",
+            "description": "Eprint records (papers/preprints) describing or associated with this annotation layer.",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "reproducibility": {
+            "type": "ref",
+            "ref": "pub.layers.defs#reproducibilityInfo",
+            "description": "How this annotation layer was produced (code, commit, command, environment, seed)."
+          },
           "createdAt": {
             "type": "string",
             "format": "datetime"
+          },
+          "languages": {
+            "type": "array",
+            "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
+            "maxLength": 128,
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
           }
         }
       }

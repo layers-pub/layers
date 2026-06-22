@@ -1,0 +1,19 @@
+id: pub.layers.lens.tangled.repo-to-resource-collection
+description: |
+  Lift a Tangled repo (sh.tangled.repo) into a Layers
+  resource.collection.
+
+  `name` and `description` survive unchanged. `owner`, `knot`,
+  `source`, `spindle` (Tangled-specific code-hosting metadata)
+  drop from the typed surface. `kind` is fixed to `"code-repo"`.
+source: sh.tangled.repo
+target: pub.layers.resource.collection
+steps:
+  - remove_field: owner
+  - remove_field: knot
+  - remove_field: source
+  - remove_field: spindle
+  - add_field:
+      name: kind
+      kind: string
+      default: "code-repo"

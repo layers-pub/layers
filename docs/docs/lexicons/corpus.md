@@ -16,20 +16,20 @@ A corpus: a curated collection of expressions.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `name` | string | Corpus name. |
-| `description` | string | Detailed description of the corpus. |
-| `version` | string | Version string for the corpus release. |
-| `language` | string | Primary BCP-47 language tag. |
-| `languages` | array | All languages represented. Array of strings |
+| `name` | string | Corpus name. (required, max 512) |
+| `description` | string | Detailed description of the corpus. (max 50000) |
+| `version` | string | Version string for the corpus release. (max 64) |
+| `languages` | array | BCP-47 language tags this record covers. Empty when language is unspecified or unknown. Array of strings (max 128) |
 | `domainUri` | at-uri | AT-URI of the domain definition node. Community-expandable via knowledge graph. |
 | `domain` | string | Domain slug (fallback when domainUri unavailable). Known values: `news`, `biomedical`, `legal`, `social-media`, `dialogue`, `literary`, `scientific`, `web`, `spoken`, `custom` |
-| `license` | string | License identifier (e.g., 'CC-BY-4.0', 'LDC-User-Agreement'). |
+| `licensing` | ref | Licensing terms governing this corpus (supports dual/multi/component licensing). Ref: `pub.layers.defs#licensing` |
 | `ontologyRefs` | array | Ontologies used in this corpus. Array of at-uri |
-| `eprintRefs` | array | Eprint links for this corpus. Array of at-uri |
+| `eprintRefs` | array | Eprint records (papers/preprints) describing or associated with this corpus. Array of at-uri (max 64) |
+| `reproducibility` | ref | How this corpus was produced (code, commit, command, environment, seed). Ref: `pub.layers.defs#reproducibilityInfo` |
 | `expressionCount` | integer | Number of expressions in the corpus. |
 | `annotationDesign` | ref | Annotation project design: annotator assignment, adjudication, and quality criteria. Ref: `pub.layers.corpus.defs#annotationDesign` |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
-| `createdAt` | datetime | Record creation timestamp. |
+| `createdAt` | datetime | Record creation timestamp. (required) |
 
 ### annotationDesign
 **NSID:** `pub.layers.corpus.defs#annotationDesign`
@@ -98,14 +98,14 @@ A record indicating that an expression belongs to a corpus, with optional split 
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `corpusRef` | at-uri | AT-URI of the corpus. |
-| `expressionRef` | at-uri | AT-URI of the expression. |
+| `corpusRef` | at-uri | AT-URI of the corpus. (required) |
+| `expressionRef` | at-uri | AT-URI of the expression. (required) |
 | `splitUri` | at-uri | AT-URI of the split definition node. Community-expandable via knowledge graph. |
 | `split` | string | Split slug (fallback when splitUri unavailable). Known values: `train`, `dev`, `test`, `unlabeled` |
 | `ordinal` | integer | Ordering index within the corpus. |
 | `metadata` | ref | Provenance: who assigned this expression to this corpus, when, with what tool. Ref: `pub.layers.defs#annotationMetadata` |
 | `features` | ref | Open-ended features for this membership (e.g., source file, import batch, quality flags). Ref: `pub.layers.defs#featureMap` |
-| `createdAt` | datetime | Record creation timestamp. |
+| `createdAt` | datetime | Record creation timestamp. (required) |
 
 ## XRPC Queries
 
@@ -128,10 +128,10 @@ List corpus records in a repository with pagination.
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `repo` | at-identifier (required) | The repository handle or DID (an at-identifier). |
-| `language` | string | Filter by primary language tag. |
 | `domain` | string | Filter by domain slug. |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
+| `languages` | array | Filter to records covering any of these BCP-47 language tags. Array of strings |
 
 **Output**: `{ records: { uri, cid, value: corpus }[], cursor?: string }` (records required)
 

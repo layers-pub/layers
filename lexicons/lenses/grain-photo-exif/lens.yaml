@@ -1,0 +1,28 @@
+id: pub.layers.lens.grain.photo-exif-to-media
+description: |
+  Lift a Grain photo-EXIF record (social.grain.photo.exif) into a
+  Layers media record.
+
+  Grain's `photo` AT-URI becomes Layers' `externalUri`. `kind` is
+  fixed to `"photo"`. Camera-specific EXIF metadata fields
+  (dateTimeOriginal/exposureTime/fNumber/flash/focalLengthIn35mmFormat/
+  iSO/lensMake/lensModel/make/model) drop from the typed surface;
+  callers can re-attach them via metadata at runtime.
+source: social.grain.photo.exif
+target: pub.layers.media.media
+steps:
+  - rename_field: { old: photo, new: externalUri }
+  - remove_field: dateTimeOriginal
+  - remove_field: exposureTime
+  - remove_field: fNumber
+  - remove_field: flash
+  - remove_field: focalLengthIn35mmFormat
+  - remove_field: iSO
+  - remove_field: lensMake
+  - remove_field: lensModel
+  - remove_field: make
+  - remove_field: model
+  - add_field:
+      name: kind
+      kind: string
+      default: "photo"

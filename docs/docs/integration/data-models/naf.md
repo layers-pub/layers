@@ -23,8 +23,8 @@ NAF is a layered stand-off annotation format designed for NLP pipeline interoper
 
 | NAF Element | Layers Equivalent | Notes |
 |---|---|---|
-| `<text>` layer | `pub.layers.expression.expression` (`text` field) | Raw text. |
-| `<wf>` (word form) | `pub.layers.segmentation.defs#token` within `pub.layers.segmentation.segmentation` | Tokens with byte offsets. `@offset`/`@length` → `token.textSpan` (byteStart/byteEnd); surface form → `token.text`; ordinal → `token.tokenIndex`; `@sent` drives sentence-level expression grouping. The import pipeline converts character offsets to byte offsets at import time. |
+| `<text>` layer | `pub.layers.expression.text` | Raw text. |
+| `<wf>` (word form) | `pub.layers.expression.expression` (kind: `word`) | Tokens with byte offsets. `@offset` → `anchor.textSpan.byteStart`; `@length` → derived from text; `@sent` → sentence grouping. The import pipeline converts character offsets to byte offsets at import time. |
 
 ### Terms Layer
 
@@ -119,7 +119,7 @@ NAF is a layered stand-off annotation format designed for NLP pipeline interoper
 |---|---|---|
 | `<nafHeader>` | `pub.layers.expression.expression` metadata + `features` | Document metadata. |
 | `<linguisticProcessors>` | `pub.layers.defs#annotationMetadata.tool` per layer | Each layer records its producing tool. |
-| `<lp @name @version @timestamp>` | `annotationMetadata.tool` + `annotationMetadata.timestamp` | `@name` and `@version` are concatenated into the single `annotationMetadata.tool` string (e.g. 'name version'); `@timestamp` maps to `annotationMetadata.timestamp`. No separate `name` or `version` field exists. |
+| `<lp @name @version @timestamp>` | `annotationMetadata` fields | Tool name, version, and timestamp. |
 | `<fileDesc>` | Expression fields | File description. |
 | `<public>` | Expression `sourceUrl` | Public identifier/URI. |
 

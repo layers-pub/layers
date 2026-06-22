@@ -1,0 +1,28 @@
+id: pub.layers.lens.mapped.post-to-expression
+description: |
+  Lift a mapped.at trail post (at.mapped.post) into a Layers
+  expression. Posts carry an optional title + caption text plus
+  references to a parent trail and a base post.
+
+  `title` becomes Layers `id`. `text` (caption) becomes Layers
+  `text`. `trail` (parent strongRef) becomes `parentRef`.
+  `timestamp` becomes `createdAt`. `basePost`, `location`,
+  `activityType` drop from the typed surface — they're trail-app
+  metadata without Layers counterparts.
+source: at.mapped.post
+target: pub.layers.expression.expression
+steps:
+  - rename_field: { old: title, new: id }
+  - rename_field: { old: trail, new: parentRef }
+  - rename_field: { old: timestamp, new: createdAt }
+  - remove_field: basePost
+  - remove_field: location
+  - remove_field: activityType
+  - add_field:
+      name: kind
+      kind: string
+      default: "trail-post"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/expression-kinds#trail-post"

@@ -28,21 +28,19 @@ This approach fails for a community-driven, decentralized system:
 Layers solves this with a **dual pattern** for every enumerated field:
 
 ```typescript
-annotationLayer = {
+annotation = {
   // Canonical reference: AT-URI to a knowledge graph node
   kindUri?: string              // e.g., "at://did:plc:layers/kinds/span"
 
   // Fallback slug: human-readable string with known values documented
   kind: string                  // e.g., "span", "tree", "custom-kind"
-
-  annotations: [...]            // per-annotation objects; kind/kindUri apply to all of them
 }
 ```
 
 **How it works**:
 
-1. **Producers** (tools creating annotation layers) can use either:
-   - Standard `kindUri` + `kind` (e.g., `kindUri: "at://did:plc:layers/kinds/token-tag"`, `kind: "token-tag"`)
+1. **Producers** (tools creating annotations) can use either:
+   - Standard `kindUri` + `kind` (e.g., `kindUri: "at://did:plc:layers/kinds/token"`, `kind: "token"`)
    - Custom `kindUri` pointing to their own knowledge graph node (e.g., `kindUri: "at://did:plc:my-theory/kinds/noun-phrase"`, `kind: "noun-phrase"`)
 
 2. **Consumers** (tools reading annotations) check in order:
@@ -53,10 +51,9 @@ annotationLayer = {
 3. **Documentation** lists known values as `knownValues`, but does not enforce them:
 
 ```typescript
-annotationLayer = {
-  kindUri?: string  // @at-uri
+annotation = {
+  kindUri?: string  // @uri
   kind: string      // knownValues: "token-tag" | "span" | "relation" | "tree" | "graph" | "tier" | "document-tag"
-  annotations: [...]
 }
 ```
 
@@ -66,8 +63,8 @@ annotationLayer = {
 
 ```json
 {
-  "kindUri": "at://did:plc:layers/kinds/token-tag",
-  "kind": "token-tag"
+  "kindUri": "at://did:plc:layers/kinds/token",
+  "kind": "token"
 }
 ```
 
@@ -89,24 +86,18 @@ Tools that recognize the URI handle it accordingly. Tools that don't understand 
 The same pattern applies to label sets. A POS tagger trained on Penn Treebank emits annotations whose `label` carries the tag, while the enclosing layer records the `labelSet`:
 
 ```json
-// annotationLayer record
 {
-  "labelSet": "penn-treebank-pos",
-  "annotations": [
-    { "uuid": "...", "label": "NN" }
-  ]
+  "label": "NN",
+  "labelSet": "penn-treebank-pos"
 }
 ```
 
 A different tagger trained on Universal Dependencies uses:
 
 ```json
-// annotationLayer record
 {
-  "labelSet": "universal-pos",
-  "annotations": [
-    { "uuid": "...", "label": "NOUN" }
-  ]
+  "label": "NOUN",
+  "labelSet": "universal-pos"
 }
 ```
 
@@ -140,24 +131,17 @@ For machines to understand when two `kind` values are semantically equivalent, t
 
 - Each knowledge graph node for a kind (e.g., "token", "noun") links to external KBs (Wikidata, linguistic ontologies).
 - Tools can compare URIs or follow `knowledgeRef` links to determine equivalence.
-- A `knowledgeRefs` array on an annotation object explicitly grounds it in external authority, while the layer record carries `kindUri`/`kind`:
+- A `knowledgeRef` on an annotation explicitly grounds it in external authority:
 
 ```json
-// annotationLayer record
 {
-  "kindUri": "at://did:plc:my-theory/kinds/token-tag",
-  "kind": "token-tag",
-  "annotations": [
+  "kindUri": "at://did:plc:my-theory/kinds/token",
+  "kind": "token",
+  "knowledgeRefs": [
     {
-      "uuid": "...",
-      "label": "token",
-      "knowledgeRefs": [
-        {
-          "source": "wikidata",
-          "identifier": "Q2716717",
-          "uri": "https://www.wikidata.org/entity/Q2716717"
-        }
-      ]
+      "source": "wikidata",
+      "identifier": "Q2716717",  // Lexical token (Wikidata concept)
+      "uri": "https://www.wikidata.org/entity/Q2716717"
     }
   ]
 }
@@ -183,6 +167,10 @@ This pattern is systematic across Layers:
 | adjudication method | methodUri | method | "expert", "majority-vote", "discussion", "dawid-skene", ... |
 | quality metric | metricUri | metric | "cohens-kappa", "fleiss-kappa", "krippendorff-alpha", "f1", ... |
 | quality scope | scopeUri | scope | "item", "layer", "document", "corpus" |
+| license | spdxUri | spdx | "CC-BY-4.0", "CC0-1.0", "CC-BY-SA-4.0", "MIT", "Apache-2.0", "BSD-3-Clause", "LDC-User-Agreement", "proprietary", "custom" |
+| citation type | typeUri | type | "article-journal", "paper-conference", "book", "chapter", "thesis", "report", "dataset", "software", "preprint", ... |
+| creator role | roleUri | role | "author", "editor", "translator", "contributor", "illustrator", "director", "producer", "collector", "custom" |
+| creator nameType | nameTypeUri | nameType | "personal", "organizational" |
 
 Consumers should handle both fields transparently; producers should populate at least the slug.
 
@@ -193,22 +181,20 @@ Consumers should handle both fields transparently; producers should populate at 
 When generating types from Layers lexicons, represent this pattern:
 
 ```typescript
-// TypeScript (kindUri/kind live on the annotationLayer record, not the annotation object)
-export interface AnnotationLayer {
-  kindUri?: string;  // @at-uri
+// TypeScript
+export interface Annotation {
+  kindUri?: string;  // @uri
   kind: string;  // @knownValues ["token-tag", "span", "relation", "tree", "graph", "tier", "document-tag"]
-  annotations: Annotation[];
 }
 
 // JSON Schema
 {
   "type": "object",
   "properties": {
-    "kindUri": {"type": "string", "format": "at-uri"},
-    "kind": {"type": "string", "enum": ["token-tag", "span", "relation", "tree", "graph", "tier", "document-tag"]},
-    "annotations": {"type": "array"}
+    "kindUri": {"type": "string", "format": "uri"},
+    "kind": {"type": "string", "enum": ["token-tag", "span", "relation", "tree", "graph", "tier", "document-tag"]}
   },
-  "required": ["kind", "annotations"]
+  "required": ["kind"]
 }
 ```
 

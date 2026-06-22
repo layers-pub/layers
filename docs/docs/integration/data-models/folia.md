@@ -27,10 +27,10 @@ FoLiA is a rich XML-based format for linguistic annotation developed at Radboud 
 | `<metadata>` | Expression fields + `features` | Document-level metadata. |
 | `<text>` | `pub.layers.expression.expression` `text` field | Primary text content. |
 | `<div>` (division) | `pub.layers.expression.expression` (kind: `section`) | Document divisions. |
-| `<p>` (paragraph) | `pub.layers.expression.expression` (kind: `paragraph`) | Paragraph sections. |
+| `<p>` (paragraph) | `pub.layers.expression.expression` (kind: `section`) with `subkind="paragraph"` | Paragraph sections. |
 | `<s>` (sentence) | `pub.layers.expression.expression` (kind: `sentence`) | Sentence boundaries. |
-| `<w>` (word) | `pub.layers.expression.expression` (kind: `word`) | Word tokens. |
-| `<morpheme>` | `pub.layers.expression.expression` (kind: `morpheme`) in a `tokenization(kind="morphological")` | Morpheme-level tokens within a word, linked by `pub.layers.alignment.alignment`. |
+| `<w>` (word) | `pub.layers.expression.expression` (kind: `token`) | Word tokens. |
+| `<morpheme>` | `pub.layers.expression.expression` (kind: `token`) in a `tokenization(kind="morphological")` | Morpheme-level tokens within a word, linked by `pub.layers.alignment.alignment`. |
 
 ### Annotation Layers
 
@@ -38,10 +38,10 @@ FoLiA is a rich XML-based format for linguistic annotation developed at Radboud 
 |---|---|---|
 | `<pos>` | `annotationLayer(kind="token-tag", subkind="pos")` | POS tagging. FoLiA's `@class` → `annotation.label`; `@set` → `annotationLayer.labelSet`. |
 | `<lemma>` | `annotationLayer(kind="token-tag", subkind="lemma")` | Lemmatization. |
-| `<sense>` | `annotationLayer(kind="token-tag", subkind="sense")` | Word sense disambiguation. `@class` → `annotation.label`; the `synset` feature (subset) → `annotation.knowledgeRefs` (WordNet). |
+| `<sense>` | `annotationLayer(kind="token-tag", subkind="sense")` | Word sense disambiguation. `@class` → `annotation.label`; `@synset` → `annotation.knowledgeRefs` (WordNet). |
 | `<domain>` | `annotationLayer(kind="token-tag")` with custom `subkind` | Domain/register classification. |
 | `<lang>` | `annotationLayer(kind="token-tag", subkind="language-id")` | Per-token language identification. |
-| `<phonology>` / `<ph>` / `<phoneme>` | `annotationLayer(kind="token-tag", subkind="phonetic")` | Phonetic transcription (`<ph>`) and phonological segmentation (`<phoneme>`). |
+| `<phonology>` / `<phon>` | `annotationLayer(kind="token-tag", subkind="phonetic")` | Phonetic transcription. |
 | `<entity>` | `annotationLayer(kind="span", subkind="entity-mention")` | Named entity spans. FoLiA's `@class` → `annotation.label` (entity type). |
 | `<chunking>` / `<chunk>` | `annotationLayer(kind="token-tag", subkind="chunk")` or `annotationLayer(kind="span")` | Chunking. IOB token tags or span annotations. |
 | `<dependency>` | `annotationLayer(kind="graph", subkind="dependency")` | Dependency relations. `<dep>` → dependent token; `<hd>` → head token; `@class` → relation label. |
@@ -52,7 +52,7 @@ FoLiA is a rich XML-based format for linguistic annotation developed at Radboud 
 | `<statement>` | `annotationLayer(kind="span")` with custom `subkind` (e.g., `"attribution"`) | Attribution/statement annotation. |
 | `<observation>` | `annotationLayer(kind="span")` with custom `subkind` | Observation annotations. |
 | `<timesegment>` | `annotationLayer(kind="tier")` with `anchor.temporalSpan` | Time-aligned segments for speech. |
-| `<content>` | `pub.layers.expression.expression` `text` field or `features` | Raw/original content before normalization. |
+| `<rawcontent>` | `pub.layers.expression.expression` `text` field or `features` | Raw/original content before normalization. |
 
 ### Corrections and Alternatives
 
@@ -65,7 +65,7 @@ FoLiA has a sophisticated system for representing corrections, alternatives, and
 | `<new>` (within correction) | The annotation in the correction-subkind layer | The corrected form. |
 | `<current>` | Active annotation (default layer) | The current/accepted form. |
 | `<suggestion>` | Additional annotation with lower confidence | Suggested alternatives stored as annotations with confidence scores. |
-| `<alternative>` | Separate `annotationLayer` with same `kind`/`subkind` | Alternative analyses (e.g., two possible POS tags). Each alternative is a separate annotation layer. Multiple layers with the same `kind`/`subkind` on the same expression represent alternatives. |
+| `<alternative>` | Separate `annotationLayer` with same `kind`/`subkind` | Alternative analyzes (e.g., two possible POS tags). Each alternative is a separate annotation layer. Multiple layers with the same `kind`/`subkind` on the same expression represent alternatives. |
 
 ### Provenance and Sets
 

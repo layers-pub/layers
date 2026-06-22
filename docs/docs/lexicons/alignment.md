@@ -28,6 +28,9 @@ An alignment between two parallel sequences. The sequences can be tokenizations,
 | `links` | array | The alignment links. Array of ref: `pub.layers.defs#alignmentLink` |
 | `metadata` | ref | Ref: `pub.layers.defs#annotationMetadata` |
 | `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
+| `licensing` | ref | Licensing terms governing this alignment (supports dual/multi/component licensing). Ref: `pub.layers.defs#licensing` |
+| `eprintRefs` | array | Eprint records (papers/preprints) describing or associated with this alignment. Array of at-uri (max 64) |
+| `reproducibility` | ref | How this alignment was produced (code, commit, command, environment, seed). Ref: `pub.layers.defs#reproducibilityInfo` |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
 

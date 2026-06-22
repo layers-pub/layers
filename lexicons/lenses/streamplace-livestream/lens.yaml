@@ -1,0 +1,31 @@
+id: pub.layers.lens.streamplace.livestream-to-expression
+description: |
+  Lift a Streamplace livestream (place.stream.livestream) into a
+  Layers expression.
+
+  `title` becomes the Layers `id` and `text`. `url` is renamed to
+  `sourceRef`. `endedAt`, `lastSeenAt`, `idleTimeoutSeconds`,
+  `agent`, `canonicalUrl`, `post`, `thumb`, `notificationSettings`
+  drop from the typed surface — they're livestream-operational
+  fields without Layers counterparts.
+source: place.stream.livestream
+target: pub.layers.expression.expression
+steps:
+  - rename_field: { old: title, new: id }
+  - rename_field: { old: url, new: sourceRef }
+  - remove_field: endedAt
+  - remove_field: lastSeenAt
+  - remove_field: idleTimeoutSeconds
+  - remove_field: agent
+  - remove_field: canonicalUrl
+  - remove_field: post
+  - remove_field: thumb
+  - remove_field: notificationSettings
+  - add_field:
+      name: kind
+      kind: string
+      default: "livestream"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/expression-kinds#livestream"

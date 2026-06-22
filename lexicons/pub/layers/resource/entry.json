@@ -8,7 +8,10 @@
       "key": "tid",
       "record": {
         "type": "object",
-        "required": ["form", "createdAt"],
+        "required": [
+          "form",
+          "createdAt"
+        ],
         "properties": {
           "lemma": {
             "type": "string",
@@ -19,11 +22,6 @@
             "type": "string",
             "description": "Surface form or string representation.",
             "maxLength": 4096
-          },
-          "language": {
-            "type": "string",
-            "description": "BCP-47 language tag.",
-            "maxLength": 32
           },
           "ontologyTypeRef": {
             "type": "string",
@@ -61,7 +59,15 @@
           "mweKind": {
             "type": "string",
             "description": "MWE kind slug (fallback when mweKindUri unavailable).",
-            "knownValues": ["compound", "phrasal-verb", "idiom", "light-verb", "named-entity", "collocation", "custom"],
+            "knownValues": [
+              "compound",
+              "phrasal-verb",
+              "idiom",
+              "light-verb",
+              "named-entity",
+              "collocation",
+              "custom"
+            ],
             "maxLength": 128
           },
           "sourceRef": {
@@ -77,6 +83,15 @@
           "createdAt": {
             "type": "string",
             "format": "datetime"
+          },
+          "languages": {
+            "type": "array",
+            "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
+            "maxLength": 128,
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
           }
         }
       }

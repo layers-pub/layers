@@ -129,6 +129,25 @@
               "ref": "pub.layers.defs#knowledgeRef"
             }
           },
+          "licensing": {
+            "type": "ref",
+            "ref": "pub.layers.defs#licensing",
+            "description": "Licensing terms governing this experiment definition (supports dual/multi/component licensing)."
+          },
+          "eprintRefs": {
+            "type": "array",
+            "description": "Eprint records (papers/preprints) describing or associated with this experiment.",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "reproducibility": {
+            "type": "ref",
+            "ref": "pub.layers.defs#reproducibilityInfo",
+            "description": "How this experiment dataset was produced (code, commit, command, environment, seed)."
+          },
           "presentation": {
             "type": "ref",
             "ref": "pub.layers.judgment.defs#presentationSpec",

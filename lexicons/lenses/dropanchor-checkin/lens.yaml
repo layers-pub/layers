@@ -1,0 +1,37 @@
+id: pub.layers.lens.dropanchor.checkin-to-expression
+description: |
+  Lift an Anchor checkin (app.dropanchor.checkin) into a Layers
+  expression. Checkins are user-authored text up to 3000 chars
+  anchored at a geographic location — language-bearing location
+  journal entries that fit Layers' expression model with a
+  `boundingBox` or `spatioTemporalAnchor` overlay at runtime.
+
+  `text` becomes the Layers `text`. The `geo` ref carries
+  latitude/longitude — preserved so downstream tooling can build a
+  geographic anchor; the geo vertex itself drops from the typed
+  surface. `address`, `image`, `category`, `categoryIcon`,
+  `categoryGroup`, `fsq` (Foursquare venue ref) drop from the
+  typed surface — all metadata not part of Layers' linguistic
+  expression model.
+source: app.dropanchor.checkin
+target: pub.layers.expression.expression
+steps:
+  - remove_field: fsq
+  - remove_field: geo
+  - remove_field: image
+  - remove_field: address
+  - remove_field: category
+  - remove_field: categoryIcon
+  - remove_field: categoryGroup
+  - add_field:
+      name: id
+      kind: string
+      default: "checkin"
+  - add_field:
+      name: kind
+      kind: string
+      default: "location-checkin"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/expression-kinds#location-checkin"

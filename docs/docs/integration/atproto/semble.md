@@ -30,7 +30,7 @@ Semble records live in user PDSes under the `network.cosmik.*` namespace. Layers
 {
   "$type": "pub.layers.expression.expression",
   "id": "abc123",
-  "sourceRef": "at://did:plc:researcher/network.cosmik.card/abc123",
+  "sourceRef": "at://did:plc:researcher/network.cosmik.item/abc123",
   "text": "...",
   "kind": "document",
   "createdAt": "2026-01-01T00:00:00Z"
@@ -39,9 +39,9 @@ Semble records live in user PDSes under the `network.cosmik.*` namespace. Layers
 
 ## Layers Types Involved
 
-| Type | Role |
-|---|---|
-| `pub.layers.expression.expression` | `sourceRef` points to a Semble record |
+| Type                                    | Role                                                 |
+| --------------------------------------- | ---------------------------------------------------- |
+| `pub.layers.expression.expression`      | `sourceRef` points to a Semble record                |
 | `pub.layers.annotation.annotationLayer` | Linguistic annotation layers over referenced content |
 
 ## Discovery

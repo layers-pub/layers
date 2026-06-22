@@ -9,7 +9,11 @@
       "key": "tid",
       "record": {
         "type": "object",
-        "required": ["id", "kind", "createdAt"],
+        "required": [
+          "id",
+          "kind",
+          "createdAt"
+        ],
         "properties": {
           "id": {
             "type": "string",
@@ -24,7 +28,32 @@
           "kind": {
             "type": "string",
             "description": "Expression kind slug (fallback when kindUri unavailable).",
-            "knownValues": ["document", "transcript", "dialogue", "social-media", "email", "article", "recording", "video", "multimodal", "code", "section", "paragraph", "chapter", "turn", "utterance", "heading", "list", "sentence", "clause", "phrase", "word", "morpheme", "character", "other"],
+            "knownValues": [
+              "document",
+              "transcript",
+              "dialogue",
+              "social-media",
+              "email",
+              "article",
+              "recording",
+              "video",
+              "multimodal",
+              "code",
+              "section",
+              "paragraph",
+              "chapter",
+              "turn",
+              "utterance",
+              "heading",
+              "list",
+              "sentence",
+              "clause",
+              "phrase",
+              "word",
+              "morpheme",
+              "character",
+              "other"
+            ],
             "maxLength": 128
           },
           "text": {
@@ -50,22 +79,12 @@
           "mediaBlob": {
             "type": "blob",
             "description": "Optional inline media blob.",
-            "accept": ["audio/*", "video/*", "image/*"],
+            "accept": [
+              "audio/*",
+              "video/*",
+              "image/*"
+            ],
             "maxSize": 52428800
-          },
-          "language": {
-            "type": "string",
-            "description": "BCP-47 language tag for the primary language.",
-            "maxLength": 32
-          },
-          "languages": {
-            "type": "array",
-            "description": "Additional BCP-47 tags for multilingual or code-switching expressions.",
-            "maxLength": 64,
-            "items": {
-              "type": "string",
-              "maxLength": 32
-            }
           },
           "metadata": {
             "type": "ref",
@@ -87,10 +106,14 @@
             "format": "at-uri",
             "description": "AT-URI of an external ATProto record this expression is derived from or annotates (e.g., a standard.site Leaflet post, a com.whtwnd blog entry, an app.bsky.feed.post, an at.margin.bookmark)."
           },
-          "eprintRef": {
-            "type": "string",
-            "format": "at-uri",
-            "description": "Reference to an eprint record that this expression is associated with."
+          "eprintRefs": {
+            "type": "array",
+            "description": "Eprint records (papers/preprints) describing or associated with this expression.",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
           },
           "knowledgeRefs": {
             "type": "array",
@@ -104,6 +127,15 @@
           "createdAt": {
             "type": "string",
             "format": "datetime"
+          },
+          "languages": {
+            "type": "array",
+            "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
+            "maxLength": 128,
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
           }
         }
       }

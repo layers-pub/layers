@@ -1,0 +1,35 @@
+id: pub.layers.lens.idiolect.belief-to-annotation-layer
+description: |
+  Lift an idiolect belief (dev.idiolect.belief) into a Layers
+  annotation layer. A signed claim about a record IS an annotation;
+  the subject ref becomes the parent.
+
+  `subject` (a strongRef) becomes `parentLayerRef`. `annotations`
+  (the source's free-text annotation field) is preserved for the
+  runtime to fold into the Layers `annotations` array. `holder`,
+  `basis`, `visibility`, `occurredAt` drop from the typed surface.
+source: dev.idiolect.belief
+target: pub.layers.annotation.annotationLayer
+steps:
+  - rename_field: { old: subject, new: parentLayerRef }
+  - rename_field: { old: occurredAt, new: createdAt }
+  - remove_field: holder
+  - remove_field: basis
+  - remove_field: visibility
+  - remove_field: annotations
+  - add_field:
+      name: kind
+      kind: string
+      default: "asserting"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/oa-motivation"
+  - add_field:
+      name: annotations
+      kind: array
+      default: []
+  - add_field:
+      name: expression
+      kind: string
+      default: ""

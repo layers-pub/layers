@@ -1,10 +1,10 @@
 ---
-sidebar_label: "Annotation Design"
+sidebar_label: 'Annotation Design'
 ---
 
 # Annotation Design
 
-Annotation projects (treebanks, sembanks, NER corpora, discourse annotation) have design metadata that is orthogonal to the linguistic content of the annotations themselves. Just as [`experimentDef`](../lexicons/judgment.md) captures three independent dimensions of experiment design, Layers captures annotation project design through composable, independent dimensions.
+Annotation projects (treebanks, sembanks, NER corpora, discourse annotation) have design metadata that is orthogonal to the linguistic content of the annotations themselves. Just as [`experimentDef`](../lexicons/judgment.md) captures four independent dimensions of experiment design, Layers captures annotation project design through composable, independent dimensions.
 
 ## Orthogonal Dimensions
 
@@ -20,31 +20,30 @@ Every annotation project can be described along four independent axes:
 
 These are fully independent. A manually annotated treebank can use single annotation with no adjudication, or double annotation with expert adjudication and a kappa threshold. A crowd-sourced NER corpus can use 5-way redundancy with majority vote and F1-based quality control. The source method, redundancy, adjudication, and quality criteria compose freely.
 
-| Project Type | `sourceMethod` | Redundancy | Adjudication | Quality |
-|---|---|---|---|---|
-| UD treebank (native) | `manual-native` | 1 annotator | `none` | per-release review |
-| OntoNotes NER | `manual-native` | 2 annotators, round-robin | `expert` | kappa >= 0.90 |
-| AMR sembank | `manual-native` | 1-2 annotators | `expert` | SMATCH |
-| Silver treebank | `automatic` | 0 (model only) | `none` | confidence threshold |
-| Gold-from-silver | `automatic-corrected` | 1 corrector | `none` | spot-check |
-| Crowd-sourced NER | `crowd-sourced` | 5 annotators, random | `majority-vote` | kappa + qualification |
-| Converted treebank | `converted-corrected` | 1 corrector | `none` | validation script |
-| Sembank (double) | `manual-native` | 2 annotators | `discussion` | SMATCH >= 0.80 |
+| Project Type         | `sourceMethod`        | Redundancy                | Adjudication    | Quality               |
+| -------------------- | --------------------- | ------------------------- | --------------- | --------------------- |
+| UD treebank (native) | `manual-native`       | 1 annotator               | `none`          | per-release review    |
+| OntoNotes NER        | `manual-native`       | 2 annotators, round-robin | `expert`        | kappa >= 0.90         |
+| AMR sembank          | `manual-native`       | 1-2 annotators            | `expert`        | SMATCH                |
+| Silver treebank      | `automatic`           | 0 (model only)            | `none`          | confidence threshold  |
+| Gold-from-silver     | `automatic-corrected` | 1 corrector               | `none`          | spot-check            |
+| Crowd-sourced NER    | `crowd-sourced`       | 5 annotators, random      | `majority-vote` | kappa + qualification |
+| Converted treebank   | `converted-corrected` | 1 corrector               | `none`          | validation script     |
+| Sembank (double)     | `manual-native`       | 2 annotators              | `discussion`    | SMATCH >= 0.80        |
 
 ## Source Method
 
 The `sourceMethod` field on `annotationLayer` records how that specific layer was produced. This follows Universal Dependencies' practice of tracking annotation source per layer (e.g., UPOS: `manual native`, Lemmas: `automatic with corrections`).
 
-| Value | Description |
-|-------|-------------|
-| `manual-native` | Annotated from scratch by human annotators |
-| `manual-corrected` | Human-corrected output from another source |
-| `automatic` | Fully automatic (model output, no human review) |
-| `automatic-corrected` | Automatic annotation with human corrections |
-| `converted` | Converted from another format or formalism (no human review) |
-| `converted-corrected` | Converted with human corrections |
-| `crowd-sourced` | Produced by crowd workers (e.g., Mechanical Turk, Prolific) |
-| `custom` | A custom or project-specific source method |
+| Value                 | Description                                                  |
+| --------------------- | ------------------------------------------------------------ |
+| `manual-native`       | Annotated from scratch by human annotators                   |
+| `manual-corrected`    | Human-corrected output from another source                   |
+| `automatic`           | Fully automatic (model output, no human review)              |
+| `automatic-corrected` | Automatic annotation with human corrections                  |
+| `converted`           | Converted from another format or formalism (no human review) |
+| `converted-corrected` | Converted with human corrections                             |
+| `crowd-sourced`       | Produced by crowd workers (e.g., Mechanical Turk, Prolific)  |
 
 All values are community-expandable via `sourceMethodUri`.
 
@@ -65,15 +64,18 @@ Different layers on the same expression can have different source methods:
 ```json
 [
   {
-    "kind": "token-tag", "subkind": "pos",
+    "kind": "token-tag",
+    "subkind": "pos",
     "sourceMethod": "manual-native"
   },
   {
-    "kind": "token-tag", "subkind": "lemma",
+    "kind": "token-tag",
+    "subkind": "lemma",
     "sourceMethod": "automatic-corrected"
   },
   {
-    "kind": "tree", "subkind": "dependency",
+    "kind": "tree",
+    "subkind": "dependency",
     "sourceMethod": "manual-native"
   }
 ]
@@ -83,16 +85,18 @@ Different layers on the same expression can have different source methods:
 
 The project-level design dimensions live in the `annotationDesign` field on [`corpus`](../lexicons/corpus.md). This is analogous to how `experimentDef.design` captures distribution strategy, item order, and list constraints.
 
+Alongside the design metadata, every corpus release carries shared structured `licensing` (single, dual/choose-one, composite, or component-scoped terms; see [Primitives](../foundations/primitives.md#licensing--licenseref)), an always-array `eprintRefs` linking the papers that describe or produced it, and `reproducibility` (code repository, commit, command, environment, random seed). The same three fields appear on each [`annotationLayer`](../lexicons/annotation.md), so a layer derived from a model can record its own license and reproduction recipe independently of the corpus.
+
 ### Redundancy
 
 The `redundancy` field specifies how annotators are assigned to items.
 
-| Field | Description |
-|-------|-------------|
-| `count` | Number of independent annotators per item (0 for fully automatic, 1 for single annotation, 2+ for multi-annotation) |
-| `assignmentStrategy` | How annotators are assigned: `random`, `round-robin`, `stratified`, `expertise-based`, `custom` |
-| `annotatorPool` | Total number of annotators in the project |
-| `features` | Additional parameters (e.g., annotator qualification requirements, language requirements) |
+| Field                | Description                                                                                                         |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `count`              | Number of independent annotators per item (0 for fully automatic, 1 for single annotation, 2+ for multi-annotation) |
+| `assignmentStrategy` | How annotators are assigned: `random`, `round-robin`, `stratified`, `expertise-based`, `custom`                     |
+| `annotatorPool`      | Total number of annotators in the project                                                                           |
+| `features`           | Additional parameters (e.g., annotator qualification requirements, language requirements)                           |
 
 All values are community-expandable via `assignmentStrategyUri`.
 
@@ -110,18 +114,17 @@ All values are community-expandable via `assignmentStrategyUri`.
 
 The `adjudication` field specifies how disagreements are resolved.
 
-| Value | Description |
-|-------|-------------|
-| `expert` | A designated expert reviews and resolves all disagreements |
-| `majority-vote` | The majority label wins (requires odd redundancy or tie-breaking rule) |
-| `unanimous` | Only items with full agreement are accepted; others are re-annotated or discarded |
-| `discussion` | Annotators discuss and reach consensus |
-| `dawid-skene` | Probabilistic aggregation modeling annotator reliability |
-| `automatic-merge` | Algorithmic merge (e.g., union of spans, intersection of labels) |
-| `intersection` | Only annotations agreed on by all annotators are kept |
-| `union` | All annotations from all annotators are kept |
-| `none` | No adjudication (single-annotator or independent annotations preserved) |
-| `custom` | A custom or project-specific adjudication method |
+| Value             | Description                                                                       |
+| ----------------- | --------------------------------------------------------------------------------- |
+| `expert`          | A designated expert reviews and resolves all disagreements                        |
+| `majority-vote`   | The majority label wins (requires odd redundancy or tie-breaking rule)            |
+| `unanimous`       | Only items with full agreement are accepted; others are re-annotated or discarded |
+| `discussion`      | Annotators discuss and reach consensus                                            |
+| `dawid-skene`     | Probabilistic aggregation modeling annotator reliability                          |
+| `automatic-merge` | Algorithmic merge (e.g., union of spans, intersection of labels)                  |
+| `intersection`    | Only annotations agreed on by all annotators are kept                             |
+| `union`           | All annotations from all annotators are kept                                      |
+| `none`            | No adjudication (single-annotator or independent annotations preserved)           |
 
 All values are community-expandable via `methodUri`.
 
@@ -141,12 +144,12 @@ The `agreementThreshold` (0-1000 scale) specifies the agreement level above whic
 
 The `qualityCriteria` array specifies acceptance criteria, analogous to how `experimentDesign.listConstraints` specifies structural constraints on item lists. A project can have multiple criteria.
 
-| Field | Description |
-|-------|-------------|
-| `metric` | Agreement or quality metric: `cohens-kappa`, `fleiss-kappa`, `krippendorff-alpha`, `percent-agreement`, `f1`, `smatch`, `uas`, `las`, `correlation`, `custom` |
-| `threshold` | Minimum acceptable value (0-1000 scale) |
-| `scope` | Evaluation scope: `item`, `layer`, `document`, `corpus`, `custom` |
-| `features` | Additional parameters (e.g., label subset, confidence interval) |
+| Field       | Description                                                                                                                                                   |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `metric`    | Agreement or quality metric: `cohens-kappa`, `fleiss-kappa`, `krippendorff-alpha`, `percent-agreement`, `f1`, `smatch`, `uas`, `las`, `correlation`, `custom` |
+| `threshold` | Minimum acceptable value (0-1000 scale)                                                                                                                       |
+| `scope`     | Evaluation scope: `item`, `layer`, `document`, `corpus`, `custom`                                                                                             |
+| `features`  | Additional parameters (e.g., label subset, confidence interval)                                                                                               |
 
 All metric and scope values are community-expandable via `metricUri` and `scopeUri`.
 
@@ -189,10 +192,9 @@ A UD-style treebank with double annotation and expert adjudication:
   "version": "2.14",
   "language": "en",
   "domain": "web",
-  "license": "CC-BY-SA-4.0",
-  "ontologyRefs": [
-    "at://did:plc:ud/pub.layers.ontology.ontology/universal-dependencies-v2"
-  ],
+  "licensing": { "licenses": [{ "spdx": "CC-BY-SA-4.0" }] },
+  "eprintRefs": ["at://did:plc:ud/pub.layers.eprint.eprint/ewt-release-paper"],
+  "ontologyRefs": ["at://did:plc:ud/pub.layers.ontology.ontology/universal-dependencies-v2"],
   "annotationDesign": {
     "redundancy": {
       "count": 2,
@@ -259,7 +261,14 @@ An AMR sembank with discussion-based reconciliation:
   "name": "AMR 3.0",
   "language": "en",
   "domain": "news",
-  "license": "LDC-User-Agreement",
+  "licensing": {
+    "expression": "CC-BY-SA-4.0 AND LicenseRef-LDC-User-Agreement",
+    "licenses": [
+      { "spdx": "CC-BY-SA-4.0", "appliesTo": "annotations" },
+      { "spdx": "LDC-User-Agreement", "appliesTo": "underlying-text" }
+    ]
+  },
+  "reproducibility": { "codeUri": "https://github.com/example/amr-pipeline", "commitHash": "a1b2c3d" },
   "annotationDesign": {
     "redundancy": {
       "count": 2,

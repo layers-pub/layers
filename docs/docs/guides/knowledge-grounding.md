@@ -4,7 +4,7 @@ sidebar_label: "Knowledge Grounding"
 
 # Knowledge Grounding
 
-Layers provides mechanisms for linking annotations to external knowledge bases, building typed property graphs, defining annotation ontologies, and tracking annotator perspectives.
+Layers provides mechanisms for linking annotations to external knowledge bases, building typed property graphs, defining annotation ontologies, and tracking annotator perspectives. This guide explains how these pieces work together to ground linguistic annotations in structured knowledge.
 
 ## The knowledgeRef Primitive
 
@@ -23,24 +23,62 @@ Every major annotation type includes a `knowledgeRefs` array. This means any ann
 
 ### Supported Knowledge Bases
 
-The `source` field is an open-vocabulary string identifying the KB. The lexicon defines recognized slugs (`knownValues`) that the appview indexes natively; other free-form strings are permitted but not given first-class treatment. Recognized slugs:
+The `source` field is a free-form string identifying the KB. Common values:
 
 | Source | Example Identifier | Use Case |
 |--------|-------------------|----------|
-| `chive.pub` | `at://did:plc:.../pub.chive.node/some-node` | ATProto-native KB with AT-URI nodes |
 | `wikidata` | `Q76` | Entity grounding, concept linking |
-| `wordnet` | `02084071-n` (synset) | Word sense disambiguation |
 | `framenet` | `Destroying` | Frame semantic roles |
+| `wordnet` | `02084071-n` (synset) | Word sense disambiguation |
 | `propbank` | `destroy.01` | Predicate-argument structures |
 | `verbnet` | `destroy-44` | Verb class identification |
-| `unimorph` | `V;PST;3;SG` | Morphological feature bundles |
-| `glottolog` | `stan1293` | Language/dialect identification |
-| `cldr` | `en-US` | Locale and script data |
-| `custom` | _(user-defined)_ | User- or project-specific KBs |
-
-Other strings (e.g., `geonames`, `orcid`, `doi`) are valid free-form values but are not recognized `knownValues` slugs.
+| `universal-dependencies` | `nsubj` | Dependency relation types |
+| `geonames` | `5391959` | Geographic entity grounding |
+| `orcid` | `0000-0002-1825-0097` | Researcher identification |
+| `ror` | `02mhbdp94` | Research organization identification |
+| `openalex` | `A5023888391` | Author, work, or venue identification |
+| `crossref` | `10.18653/v1/2020.acl-main.1` | Work and venue metadata |
+| `dblp` | `conf/acl/2020` | Bibliographic record identification |
+| `semantic-scholar` | `204e3073` | Paper and author corpus identification |
+| `doi` | `10.1162/coli_a_00478` | Publication references |
 
 The `sourceUri` field can point to an ATProto record representing the KB authority, enabling decentralized KB management.
+
+## Grounding Bibliographic Creators
+
+The same `knowledgeRef` primitive grounds the people, organizations, works, and venues in a bibliographic citation. The [`pub.layers.eprint.defs#citation`](../lexicons/eprint.md) type carries structured CSL-JSON/DataCite fields, and each `creator` (author, editor, translator, etc.) can be grounded two ways:
+
+- **`agent`** ([agentRef](../foundations/primitives.md#agentref)) grounds an ATProto-native creator by DID, linking the author to their ATProto identity.
+- **`knowledgeRef`** grounds a creator in an external authority: `source: "orcid"` for a person, `source: "ror"` for an organization, `source: "openalex"` for an OpenAlex author id.
+
+```json
+{
+  "type": "paper-conference",
+  "title": "A theory of linguistic annotation",
+  "creators": [
+    {
+      "role": "author",
+      "nameType": "personal",
+      "family": "Chen",
+      "given": "Alice",
+      "agent": { "did": "did:plc:alice" },
+      "knowledgeRef": { "source": "orcid", "identifier": "0000-0002-1825-0097" }
+    },
+    {
+      "role": "author",
+      "nameType": "organizational",
+      "literal": "Linguistic Data Consortium",
+      "knowledgeRef": { "source": "ror", "identifier": "02mhbdp94" }
+    }
+  ],
+  "knowledgeRefs": [
+    { "source": "openalex", "identifier": "W4385245074" },
+    { "source": "dblp", "identifier": "conf/acl/ChenX20" }
+  ]
+}
+```
+
+The citation's own `knowledgeRefs` array grounds the work or venue (Crossref, OpenAlex, DBLP, Semantic Scholar), so a consumer can resolve both the authors and the publication to canonical records.
 
 ## The Typed Property Graph
 
@@ -153,8 +191,6 @@ An annotation layer references its ontology via `ontologyRef`:
 }
 ```
 
-Note: annotation objects require a `uuid` field (`{ "value": "..." }`); examples here elide required identifier fields for brevity.
-
 The `ontologyRef` on the layer identifies which type system is being used. Individual annotations can link to specific type definitions via `ontologyTypeRef`.
 
 ## Personas
@@ -240,8 +276,6 @@ For predicate-argument structures (PropBank, FrameNet, VerbNet), grounding conne
   ]
 }
 ```
-
-Note: annotation objects require a `uuid` field (`{ "value": "..." }`); examples here elide required identifier fields for brevity.
 
 The ontology's `typeDef` records define the frame with its `allowedRoles` (role slots), and `knowledgeRefs` link to FrameNet's canonical frame definitions.
 

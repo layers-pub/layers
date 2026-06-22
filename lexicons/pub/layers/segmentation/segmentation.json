@@ -42,6 +42,25 @@
             "ref": "pub.layers.defs#featureMap",
             "description": "Open-ended features (e.g., tokenizer version, parameters, language model used)."
           },
+          "licensing": {
+            "type": "ref",
+            "ref": "pub.layers.defs#licensing",
+            "description": "Licensing terms governing this segmentation (supports dual/multi/component licensing)."
+          },
+          "eprintRefs": {
+            "type": "array",
+            "description": "Eprint records (papers/preprints) describing or associated with this segmentation.",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "reproducibility": {
+            "type": "ref",
+            "ref": "pub.layers.defs#reproducibilityInfo",
+            "description": "How this segmentation was produced (code, commit, command, environment, seed)."
+          },
           "createdAt": {
             "type": "string",
             "format": "datetime"

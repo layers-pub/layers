@@ -1,0 +1,15 @@
+id: pub.layers.lens.margin.collection-item-to-membership
+description: |
+  Lift a Margin collectionItem (at.margin.collectionItem) into a
+  Layers resource.collectionMembership.
+
+  `collection` is renamed to `collectionRef`. The annotation's AT-URI
+  in `annotation` is renamed to `entryRef` (Layers' membership uses
+  entryRef as the canonical pointer). `position` (integer) is renamed
+  to `ordinal`. createdAt survives unchanged.
+source: at.margin.collectionItem
+target: pub.layers.resource.collectionMembership
+steps:
+  - rename_field: { old: collection, new: collectionRef }
+  - rename_field: { old: annotation, new: entryRef }
+  - rename_field: { old: position, new: ordinal }

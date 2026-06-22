@@ -131,6 +131,52 @@ annotationMetadata = {
 - Provenance chain: a semantic role annotation lists its dependency parse and POS tagger outputs in `dependencies`, enabling reproducibility and invalidation tracking.
 - Adjudication: notes on why annotators agreed/disagreed go in the annotation's own `features` featureMap.
 
+## licensing / licenseRef
+
+Complete licensing terms for a released artifact. Most top-level produces (corpus, annotation layer, experiment definition, persona, etc.) carry a `licensing` value; the expression record is the exception, linking papers via `eprintRefs` without its own licensing. It represents single, dual/choose-one, composite (all-apply), exception (WITH), and component-scoped licensing via an SPDX license expression plus per-license detail, mirroring a DataCite rightsList.
+
+```typescript
+licensing = {
+  expression?: string           // SPDX license expression encoding the relationship between licenses (OR for choose-one, AND for composite, WITH for exceptions), e.g. "MIT OR Apache-2.0", "CC-BY-4.0 AND LicenseRef-LDC-User-Agreement". Optional when a single license applies.
+  licenses: licenseRef[]         // The licenses named by the expression, or the single governing license (>= 1)
+}
+
+licenseRef = {
+  spdx: string                  // SPDX identifier slug (required); knownValues include "CC0-1.0", "CC-BY-4.0", "CC-BY-SA-4.0", "MIT", "Apache-2.0", "BSD-3-Clause", "LDC-User-Agreement", "proprietary", "custom"
+  spdxUri?: AtUri               // Canonical AT-URI of the license definition node (URI+slug pattern; spdxUri is authoritative, spdx is the fallback)
+  name?: string                 // Human-readable license name
+  url?: string                  // URL of the full license text (DataCite rightsURI)
+  attribution?: string          // Required attribution/credit text for downstream users
+  notes?: string                // Additional licensing notes, restrictions, or usage terms
+  appliesTo?: string            // Component this license covers when an artifact mixes licenses by part (e.g., "annotations", "underlying-text", "code", "media"); omit when it covers the whole artifact
+}
+```
+
+**Use cases**:
+- Single license: `{licenses: [{spdx: "CC-BY-4.0"}]}`.
+- Dual/choose-one: `{expression: "MIT OR Apache-2.0", licenses: [{spdx: "MIT"}, {spdx: "Apache-2.0"}]}`.
+- Composite: `{expression: "CC-BY-4.0 AND LicenseRef-LDC-User-Agreement", licenses: [{spdx: "CC-BY-4.0", appliesTo: "annotations"}, {spdx: "LDC-User-Agreement", appliesTo: "underlying-text"}]}`.
+
+`spdx`/`spdxUri` follow the same [URI+slug pattern](./flexible-enums.md) as every other enumerated field: consumers check `spdxUri` first and fall back to the `spdx` slug.
+
+## reproducibilityInfo
+
+How to reproduce a dataset or the data produced from an eprint. Data-producing releases (corpus, annotation layer, cluster set, segmentation, alignment, experiment definition, graph edge set) carry a `reproducibility` value; eprint data links reuse the same type.
+
+```typescript
+reproducibilityInfo = {
+  codeUri?: string              // URI of the code repository
+  commitHash?: string           // Git commit hash
+  command?: string              // Command to reproduce the data
+  environment?: string          // Environment specification (Docker image, conda env, etc.)
+  randomSeed?: integer          // Random seed used
+}
+```
+
+**Use cases**:
+- A silver treebank records the model code repository, commit, and the exact decode command in `reproducibility`.
+- An experiment definition records the conda environment and random seed used to generate its stimulus lists.
+
 ## temporalExpression
 
 Composable temporal annotation that separates **what time**, **how precise**, and **what role** into independent pieces. Fully subsumes TimeML/ISO-TimeML TIMEX3, OWL-Time, Allen's Interval Algebra, and ISO 8601. See the [Temporal Representation guide](../guides/temporal-representation.md) for full coverage with standards mapping tables.
@@ -217,13 +263,15 @@ Reference to an external knowledge base (Wikidata, FrameNet, WordNet, etc.). See
 
 ```typescript
 knowledgeRef = {
-  source: string                // KB name (e.g., "wikidata", "framenet", "wordnet")
+  source: string                // KB name; knownValues include "wikidata", "framenet", "wordnet", "propbank", "verbnet", "unimorph", "glottolog", "cldr", "orcid", "ror", "openalex", "crossref", "dblp", "semantic-scholar", "custom"
   sourceUri?: AtUri             // URI to KB authority record
   identifier: string            // KB-specific identifier (e.g., "Q76" for Wikidata)
   uri?: string                  // Full URI (e.g., "http://www.wikidata.org/entity/Q76")
   label?: string                // Human-readable label from KB
 }
 ```
+
+The bibliographic sources (`orcid`, `ror`, `openalex`, `crossref`, `dblp`, `semantic-scholar`) ground researchers, organizations, works, and venues, so the same primitive that links a named entity to Wikidata links a citation's author to their ORCID record. See [Knowledge Grounding](../guides/knowledge-grounding.md#grounding-bibliographic-creators) for the bibliographic workflow.
 
 **Example**:
 ```json
@@ -289,15 +337,15 @@ textQuoteSelector = {
 }
 
 textPositionSelector = {
-  byteStart: integer            // UTF-8 byte offset
-  byteEnd: integer
-  charStart?: integer           // Optional character offset (for character-offset datasets)
-  charEnd?: integer
+  byteStart: number             // UTF-8 byte offset
+  byteEnd: number
+  charStart?: number            // Optional character offset (for character-offset datasets)
+  charEnd?: number
 }
 
 fragmentSelector = {
   value: string                 // Fragment identifier (e.g., "xywh=100,50,200,150")
-  conformsTo?: string           // Specification the fragment conforms to (URI), e.g. "http://www.w3.org/TR/media-frags/"
+  conformsTo?: string           // Media type (e.g., "http://www.w3.org/TR/media-frags/")
 }
 ```
 

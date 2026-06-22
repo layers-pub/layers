@@ -29,11 +29,14 @@ A named layer of annotations over an expression. All annotation types use this s
 | `ontologyRef` | at-uri | Reference to a `pub.layers.ontology.ontology` defining the types used in this layer. |
 | `tokenizationId` | ref | For token-aligned layers: the tokenization these annotations are aligned to. Ref: `pub.layers.defs#uuid` |
 | `parentLayerRef` | at-uri | For dependent/subordinate layers: the parent layer this one subdivides or refines. |
-| `language` | string | BCP-47 language tag for this annotation layer, if different from the expression's language. |
+| `languages` | array | BCP-47 language tags this record covers. Empty when language is unspecified or unknown. Array of strings |
 | `annotations` | array | The annotations in this layer. Array of ref: `pub.layers.annotation.defs#annotation` |
 | `rank` | integer | Rank among k-best alternatives (1 = best). Absent if this is the only/primary analysis. |
 | `alternativesRef` | at-uri | Reference to the top-ranked (rank=1) layer in a k-best group. Absent on the top-ranked layer itself. |
 | `metadata` | ref | Ref: `pub.layers.defs#annotationMetadata` |
+| `licensing` | ref | Licensing terms governing this annotation layer (supports dual/multi/component licensing). Ref: `pub.layers.defs#licensing` |
+| `eprintRefs` | array | Eprint records (papers/preprints) describing or associated with this annotation layer. Array of at-uri (max 64) |
+| `reproducibility` | ref | How this annotation layer was produced (code, commit, command, environment, seed). Ref: `pub.layers.defs#reproducibilityInfo` |
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### annotation
@@ -90,6 +93,9 @@ Groups annotations into equivalence classes. Used for coreference resolution, br
 | `layerRef` | at-uri | The annotation layer whose annotations these clusters group. |
 | `clusters` | array | The clusters. Array of ref: `pub.layers.annotation.defs#cluster` |
 | `metadata` | ref | Ref: `pub.layers.defs#annotationMetadata` |
+| `licensing` | ref | Licensing terms governing this cluster set (supports dual/multi/component licensing). Ref: `pub.layers.defs#licensing` |
+| `eprintRefs` | array | Eprint records (papers/preprints) describing or associated with this cluster set. Array of at-uri (max 64) |
+| `reproducibility` | ref | How this cluster set was produced (code, commit, command, environment, seed). Ref: `pub.layers.defs#reproducibilityInfo` |
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### cluster

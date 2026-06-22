@@ -29,9 +29,6 @@ Layers' `externalTarget` and W3C selectors (`textQuoteSelector`, `textPositionSe
 ```json
 {
   "$type": "pub.layers.expression.expression",
-  "id": "https://example.com/article",
-  "kind": "document",
-  "createdAt": "2026-01-01T00:00:00Z",
   "sourceUrl": "https://example.com/article",
   "text": "...",
   "metadata": { ... }
@@ -42,13 +39,13 @@ An at.margin annotation targeting the same URL can be correlated by the appview 
 
 ## Layers Types Involved
 
-| Type | Role |
-|---|---|
-| `pub.layers.expression.expression` | `sourceUrl` matches the at.margin target URL |
-| `pub.layers.defs#externalTarget` | References the same external resource |
-| `pub.layers.defs#textQuoteSelector` | W3C-compatible text selection |
-| `pub.layers.defs#textPositionSelector` | W3C-compatible offset selection |
-| `pub.layers.defs#fragmentSelector` | W3C-compatible fragment selection |
+| Type                                   | Role                                         |
+| -------------------------------------- | -------------------------------------------- |
+| `pub.layers.expression.expression`     | `sourceUrl` matches the at.margin target URL |
+| `pub.layers.defs#externalTarget`       | References the same external resource        |
+| `pub.layers.defs#textQuoteSelector`    | W3C-compatible text selection                |
+| `pub.layers.defs#textPositionSelector` | W3C-compatible offset selection              |
+| `pub.layers.defs#fragmentSelector`     | W3C-compatible fragment selection            |
 
 ## Discovery
 

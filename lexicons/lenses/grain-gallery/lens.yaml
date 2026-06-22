@@ -1,0 +1,23 @@
+id: pub.layers.lens.grain.gallery-to-resource-collection
+description: |
+  Lift a Grain gallery (social.grain.gallery) into a Layers
+  resource.collection.
+
+  `title` (Grain) is renamed to `name` (Layers). `description`
+  survives unchanged. Geographic and tagging metadata
+  (`location`, `address`, `labels`, `facets`, `updatedAt`) drop
+  out of the typed record surface. `kind` is fixed to
+  `"photo-gallery"`.
+source: social.grain.gallery
+target: pub.layers.resource.collection
+steps:
+  - rename_field: { old: title, new: name }
+  - remove_field: facets
+  - remove_field: labels
+  - remove_field: location
+  - remove_field: address
+  - remove_field: updatedAt
+  - add_field:
+      name: kind
+      kind: string
+      default: "photo-gallery"

@@ -14,15 +14,15 @@ Generic typed property graph for knowledge representation and cross-referencing.
 
 A standalone graph node for entities, concepts, situations, or other objects that don't have another Layers record. Existing Layers records (expressions, annotations, typeDefs) are implicitly nodes via `objectRef`. This record is only needed for nodes that exist purely in the graph.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `nodeType` | string | required | Node type slug. Known values: `entity`, `concept`, `situation`, `state`, `time`, `location`, `claim`, `proposition`, `custom` |
-| `createdAt` | datetime | required | Record creation timestamp. |
-| `nodeTypeUri` | at-uri | optional | AT-URI of the node type definition node. Community-expandable via knowledge graph. Upgrades the slug to a community-graph reference. |
-| `label` | string | optional | Human-readable node label. |
-| `properties` | ref | optional | Ref: `pub.layers.defs#featureMap` |
-| `knowledgeRefs` | array | optional | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
-| `metadata` | ref | optional | Ref: `pub.layers.defs#annotationMetadata` |
+| Field | Type | Description |
+|-------|------|-------------|
+| `nodeTypeUri` | at-uri | AT-URI of the node type definition node. Community-expandable via knowledge graph. |
+| `nodeType` | string | Node type slug (fallback). Known values: `entity`, `concept`, `situation`, `state`, `time`, `location`, `claim`, `proposition`, `custom` |
+| `label` | string | Human-readable node label. |
+| `properties` | ref | Ref: `pub.layers.defs#featureMap` |
+| `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
+| `metadata` | ref | Ref: `pub.layers.defs#annotationMetadata` |
+| `createdAt` | datetime | Record creation timestamp. |
 
 ### graphEdge
 **NSID:** `pub.layers.graph.graphEdge`
@@ -30,18 +30,18 @@ A standalone graph node for entities, concepts, situations, or other objects tha
 
 A single directed, typed edge between any two Layers objects. Supports multidigraphs (multiple edges between the same pair of nodes) and cycles. Source and target can be any combination of local annotations (by UUID), remote records (by AT-URI), or external knowledge graph nodes (by `knowledgeRef`).
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `source` | ref | required | Source node. Ref: `pub.layers.defs#objectRef` |
-| `target` | ref | required | Target node. Ref: `pub.layers.defs#objectRef` |
-| `edgeType` | string | required | Edge type slug. See edge type categories below. |
-| `createdAt` | datetime | required | Record creation timestamp. |
-| `edgeTypeUri` | at-uri | optional | AT-URI of the edge type definition node. Community-expandable via knowledge graph. Upgrades the slug to a community-graph reference. |
-| `label` | string | optional | Optional edge label. For temporal edges, can carry the linguistic signal/connective (e.g., "before", "since"). For spatial edges, can carry the spatial signal (e.g., "in", "near", "above"). |
-| `ordinal` | integer | optional | Optional ordering among edges of the same type (minimum 0). |
-| `confidence` | integer | optional | Confidence score 0-1000. |
-| `properties` | ref | optional | Ref: `pub.layers.defs#featureMap` |
-| `metadata` | ref | optional | Ref: `pub.layers.defs#annotationMetadata` |
+| Field | Type | Description |
+|-------|------|-------------|
+| `source` | ref | Source node. Ref: `pub.layers.defs#objectRef` |
+| `target` | ref | Target node. Ref: `pub.layers.defs#objectRef` |
+| `edgeTypeUri` | at-uri | AT-URI of the edge type definition node. Community-expandable via knowledge graph. |
+| `edgeType` | string | Edge type slug (fallback). See edge type categories below. |
+| `label` | string | Optional edge label. For temporal edges, can carry the linguistic signal/connective (e.g., "before", "since"). For spatial edges, can carry the spatial signal (e.g., "in", "near", "above"). |
+| `ordinal` | integer | Optional ordering among edges of the same type from the same source. |
+| `confidence` | integer | Confidence score 0-1000. |
+| `properties` | ref | Ref: `pub.layers.defs#featureMap` |
+| `metadata` | ref | Ref: `pub.layers.defs#annotationMetadata` |
+| `createdAt` | datetime | Record creation timestamp. |
 
 #### Edge type categories
 
@@ -102,34 +102,37 @@ A single directed, typed edge between any two Layers objects. Supports multidigr
 **NSID:** `pub.layers.graph.graphEdgeSet`
 **Type:** Record
 
-A batch of typed, directed edges for efficient bulk operations. Edges in the set typically share the same edge type (the set-level default), but any entry may override it via its own `edgeType`/`edgeTypeUri`. Use `graphEdge` for individual edges; use `graphEdgeSet` for bulk imports, model outputs, or annotations that produce many edges at once.
+A batch of typed, directed edges for efficient bulk operations. All edges in the set share the same edge type and optional expression context. Use `graphEdge` for individual edges; use `graphEdgeSet` for bulk imports, model outputs, or annotations that produce many edges at once.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `edges` | array | required | The edges. Array of ref: `pub.layers.graph.defs#graphEdgeEntry` |
-| `createdAt` | datetime | required | Record creation timestamp. |
-| `expression` | at-uri | optional | Optional primary expression context. |
-| `edgeTypeUri` | at-uri | optional | AT-URI of the edge type definition node. Community-expandable via knowledge graph. |
-| `edgeType` | string | optional | Edge type slug serving as the default for all edges in this set. Known values cover only the Semantic, Argumentation, Discourse, Temporal, Aspectual, and Spatial categories plus `custom`; the Communication, Ontological, and Meta categories that `graphEdge.edgeType` allows are excluded. |
-| `metadata` | ref | optional | Ref: `pub.layers.defs#annotationMetadata` |
-| `knowledgeRefs` | array | optional | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
-| `features` | ref | optional | Open-ended features (e.g., extraction method, model version). Ref: `pub.layers.defs#featureMap` |
+| Field | Type | Description |
+|-------|------|-------------|
+| `expression` | at-uri | Optional primary expression context. |
+| `edgeTypeUri` | at-uri | AT-URI of the edge type definition node. Community-expandable via knowledge graph. |
+| `edgeType` | string | Edge type slug shared by all edges in this set (fallback). Known values cover only the Semantic, Argumentation, Discourse, Temporal, Aspectual, and Spatial categories plus `custom`; the Communication, Ontological, and Meta categories that `graphEdge.edgeType` allows are excluded. |
+| `edges` | array | The edges. Array of ref: `pub.layers.graph.defs#graphEdgeEntry` |
+| `metadata` | ref | Ref: `pub.layers.defs#annotationMetadata` |
+| `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
+| `licensing` | ref | Licensing terms governing this edge set (supports dual/multi/component licensing). Ref: `pub.layers.defs#licensing` |
+| `eprintRefs` | array | Eprint records (papers/preprints) describing or associated with this edge set. Array of at-uri (max 64) |
+| `reproducibility` | ref | How this edge set was produced (code, commit, command, environment, seed). Ref: `pub.layers.defs#reproducibilityInfo` |
+| `features` | ref | Open-ended features (e.g., extraction method, model version). Ref: `pub.layers.defs#featureMap` |
+| `createdAt` | datetime | Record creation timestamp. |
 
 ### graphEdgeEntry
 **NSID:** `pub.layers.graph.defs#graphEdgeEntry`
 **Type:** Object
 
-A single directed edge within a `graphEdgeSet`. Each entry must specify its own `uuid`, `source`, `target`, and `edgeType`; the `edgeType` is required per-entry and may differ from (override) the set-level default.
+A single directed edge within a `graphEdgeSet`. Can optionally override the set-level edge type.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `uuid` | ref | required | Ref: `pub.layers.defs#uuid` |
-| `source` | ref | required | Source node. Ref: `pub.layers.defs#objectRef` |
-| `target` | ref | required | Target node. Ref: `pub.layers.defs#objectRef` |
-| `edgeType` | string | required | Edge type slug. Overrides the set-level edgeType if different. |
-| `edgeTypeUri` | at-uri | optional | AT-URI of the edge type definition node. Overrides the set-level edgeType. Community-expandable via knowledge graph. |
-| `confidence` | integer | optional | Confidence score 0-1000. |
-| `features` | ref | optional | Ref: `pub.layers.defs#featureMap` |
+| Field | Type | Description |
+|-------|------|-------------|
+| `uuid` | ref | Ref: `pub.layers.defs#uuid` |
+| `edgeTypeUri` | at-uri | AT-URI of the edge type definition node. Overrides the set-level type if present. Community-expandable via knowledge graph. |
+| `edgeType` | string | Edge type slug (fallback). |
+| `source` | ref | Source node. Ref: `pub.layers.defs#objectRef` |
+| `target` | ref | Target node. Ref: `pub.layers.defs#objectRef` |
+| `confidence` | integer | Confidence score 0-1000. |
+| `features` | ref | Ref: `pub.layers.defs#featureMap` |
 
 ## XRPC Queries
 
