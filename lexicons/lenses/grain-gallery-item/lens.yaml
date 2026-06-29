@@ -1,0 +1,14 @@
+id: pub.layers.lens.grain.gallery-item-to-membership
+description: |
+  Lift a Grain gallery item (social.grain.gallery.item) into a
+  Layers resource.collectionMembership.
+
+  `gallery` is renamed to `collectionRef`. `item` (the photo's
+  AT-URI) is renamed to `entryRef`. `position` is renamed to
+  `ordinal`. createdAt survives.
+source: social.grain.gallery.item
+target: pub.layers.resource.collectionMembership
+steps:
+  - rename_field: { old: gallery, new: collectionRef }
+  - rename_field: { old: item, new: entryRef }
+  - rename_field: { old: position, new: ordinal }

@@ -1,0 +1,46 @@
+{
+  "lexicon": 1,
+  "id": "dev.idiolect.belief",
+  "description": "A signed doxastic claim that a referenced record is true or applicable. Belief records are how third parties represent what *they* think about *another* record without flattening provenance — the `subject` strong-ref pins the exact referenced record, the `holder` names the party whose attitude is represented, and the `basis` names what grounds it.",
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "tid",
+      "description": "A doxastic attitude about another record. Common use: a labeler publishes a permission / encounter / attribution record in its own repo and then a belief record pointing to it, naming the DID whose attitude the labeler is attributing and on what basis. A consumer resolving the belief sees both the referenced record (via `subject`) and the provenance that produced it (via `holder` + `basis`).",
+      "record": {
+        "type": "object",
+        "required": ["subject", "occurredAt"],
+        "properties": {
+          "subject": {
+            "type": "ref",
+            "ref": "dev.idiolect.defs#strongRecordRef",
+            "description": "Strong reference (AT-URI + CID) to the record the belief is about. Pinning via CID means a later revision of that record does not silently change what this belief asserts."
+          },
+          "holder": {
+            "type": "string",
+            "format": "did",
+            "description": "DID of the party whose attitude is being represented. Omit when the repo owner holds the belief themselves; set explicitly when a third party (a labeler, a reviewer, a researcher) is attributing a belief to someone else."
+          },
+          "basis": {
+            "type": "ref",
+            "ref": "dev.idiolect.defs#basis",
+            "description": "Grounding for the belief: selfAsserted, communityPolicy, externalSignal, or derivedFromRecord. Especially load-bearing when `holder` differs from the repo owner, since consumers need to know what warrant the record has."
+          },
+          "annotations": {
+            "type": "string",
+            "maxGraphemes": 4000,
+            "description": "Narrative commentary on the belief. Not consumed by machine matchers."
+          },
+          "visibility": {
+            "type": "ref",
+            "ref": "dev.idiolect.defs#visibility"
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

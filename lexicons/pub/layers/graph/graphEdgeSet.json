@@ -63,6 +63,25 @@
               "ref": "pub.layers.defs#knowledgeRef"
             }
           },
+          "licensing": {
+            "type": "ref",
+            "ref": "pub.layers.defs#licensing",
+            "description": "Licensing terms governing this edge set (supports dual/multi/component licensing)."
+          },
+          "eprintRefs": {
+            "type": "array",
+            "description": "Eprint records (papers/preprints) describing or associated with this edge set.",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "reproducibility": {
+            "type": "ref",
+            "ref": "pub.layers.defs#reproducibilityInfo",
+            "description": "How this edge set was produced (code, commit, command, environment, seed)."
+          },
           "features": {
             "type": "ref",
             "ref": "pub.layers.defs#featureMap",

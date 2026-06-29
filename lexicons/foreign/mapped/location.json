@@ -1,0 +1,34 @@
+{
+  "id": "at.mapped.location",
+  "defs": {
+    "main": {
+      "type": "object",
+      "required": [
+        "latitude",
+        "longitude"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "The name of the location."
+        },
+        "altitude": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "latitude": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "longitude": {
+          "type": "string",
+          "maxLength": 20
+        }
+      },
+      "description": "A physical location in the form of a WGS84 coordinate."
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

@@ -1,0 +1,19 @@
+id: pub.layers.lens.cosmik.collection-to-resource-collection
+description: |
+  Lift a Semble/Cosmik collection (network.cosmik.collection) into a
+  Layers resource.collection.
+
+  `name` and `description` survive unchanged. `accessType` (one of
+  private/unlisted/public/collaborative), `collaborators` (DID
+  array), `updatedAt` drop from the typed record surface. `kind` is
+  fixed to `"card-collection"`.
+source: network.cosmik.collection
+target: pub.layers.resource.collection
+steps:
+  - remove_field: accessType
+  - remove_field: collaborators
+  - remove_field: updatedAt
+  - add_field:
+      name: kind
+      kind: string
+      default: "card-collection"

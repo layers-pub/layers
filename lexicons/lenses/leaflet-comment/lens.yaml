@@ -1,0 +1,36 @@
+id: pub.layers.lens.leaflet.comment-to-annotation-layer
+description: |
+  Lift a Leaflet comment (pub.leaflet.comment) into a Layers
+  annotation layer.
+
+  Leaflet's `subject` (the document AT-URI) becomes the layer's
+  `parentLayerRef` so traversals from a document hit every
+  comment annotating it. `plaintext` is preserved on the
+  annotations array (materialised at runtime). `onPage` (the page
+  id within the document the comment targets), `reply`,
+  `attachment`, and `facets` are dropped from the typed surface.
+source: pub.leaflet.comment
+target: pub.layers.annotation.annotationLayer
+steps:
+  - rename_field: { old: subject, new: parentLayerRef }
+  - remove_field: plaintext
+  - remove_field: facets
+  - remove_field: onPage
+  - remove_field: reply
+  - remove_field: attachment
+  - add_field:
+      name: kind
+      kind: string
+      default: "commenting"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/oa-motivation"
+  - add_field:
+      name: annotations
+      kind: array
+      default: []
+  - add_field:
+      name: expression
+      kind: string
+      default: ""

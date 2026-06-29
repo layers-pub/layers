@@ -1,0 +1,24 @@
+id: pub.layers.lens.tangled.repo-issue-to-expression
+description: |
+  Lift a Tangled issue (sh.tangled.repo.issue) into a Layers
+  expression.
+
+  `title` becomes the Layers `id`. `body` (markdown) is renamed
+  to `text`. The numeric `issueId`, `owner`, `repo` drop from the
+  typed surface. `kind` is fixed to `"issue"`.
+source: sh.tangled.repo.issue
+target: pub.layers.expression.expression
+steps:
+  - rename_field: { old: title, new: id }
+  - rename_field: { old: body, new: text }
+  - remove_field: issueId
+  - remove_field: owner
+  - remove_field: repo
+  - add_field:
+      name: kind
+      kind: string
+      default: "issue"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/expression-kinds#tangled-issue"

@@ -15,7 +15,7 @@
 
 ## Overview
 
-TEI is an XML-based standard for encoding literary and linguistic texts. It models document structure (divisions, paragraphs, lines, speakers, stage directions), critical apparatus for manuscript traditions, metadata headers, and both inline and stand-off annotation. TEI is the dominant format in digital humanities and historical linguistics.
+TEI is an XML-based standard for encoding literary and linguistic texts. It provides extremely rich document structure modeling (divisions, paragraphs, lines, speakers, stage directions), critical apparatus for manuscript traditions, metadata headers, and both inline and stand-off annotation. TEI is the dominant format in digital humanities and historical linguistics.
 
 ## Type-by-Type Mapping
 
@@ -55,7 +55,7 @@ TEI is an XML-based standard for encoding literary and linguistic texts. It mode
 | `<cl>` (clause) | `annotationLayer(kind="span", subkind="discourse-unit")` | Clause annotation. |
 | `<name>` / `<persName>` / `<placeName>` / `<orgName>` | `annotationLayer(kind="span", subkind="entity-mention")` | Named entity spans. TEI's entity type (`persName` vs `placeName`) maps to `annotation.label`. |
 | `<rs>` (referring string) | `annotationLayer(kind="span", subkind="entity-mention")` | Referring expressions with `@type` → `annotation.label`. |
-| `<date>` / `<time>` | `annotationLayer(kind="span", subkind="temporal-expression")` | Temporal expressions: map TEI `@when`/`@from`/`@to`/`@notBefore`/`@notAfter` to the structured `annotation.temporal` field (`pub.layers.defs#temporalExpression`, e.g. `temporal.value.instant` for point-in-time values). Reserve `annotation.value` only for cases where a structured normalization is unavailable. |
+| `<date>` / `<time>` | `annotationLayer(kind="span", subkind="temporal-expression")` | Temporal expressions with `@when` → `annotation.value` (normalized form). |
 
 ### Critical Apparatus and Manuscript Traditions
 
@@ -75,7 +75,8 @@ TEI is an XML-based standard for encoding literary and linguistic texts. It mode
 |---|---|---|
 | `<fileDesc>` | `pub.layers.expression.expression` fields + `features` | File description metadata. |
 | `<sourceDesc>` | `pub.layers.expression.sourceUrl` + `sourceRef` | Source document references. |
-| `<bibl>` / `<biblStruct>` | `pub.layers.eprint.eprint` | Bibliographic references link to eprint records. |
+| `<bibl>` / `<biblStruct>` | `pub.layers.eprint.eprint` with `citation` (`pub.layers.eprint.defs#citation`) | Bibliographic references link to eprint records. The structured fields of `<biblStruct>` (`<author>`, `<title>`, `<imprint>`, `<biblScope>`) populate the CSL-JSON/DataCite `citation` (creators, title, container/publisher, volume/issue/page); `<idno type="DOI">` maps to `citation.doi` and to the eprint's `eprintIdentifier`. See [CSL-JSON, BibTeX, and DataCite](./csl-datacite). |
+| `<availability>` / `<licence>` | `pub.layers.defs#licensing` (and `pub.layers.defs#licenseRef`) | Licensing and access terms. `<licence target="...">` maps to `licenseRef.url`; an SPDX-identifiable license maps to `licenseRef.spdx`; multiple licenses (or component-scoped terms) use the SPDX `licensing.expression`. Applied where an artifact is released, e.g. the `licensing` field on `pub.layers.corpus.corpus`. |
 | `<respStmt>` | `pub.layers.defs#annotationMetadata` | Responsibility statements map to annotation metadata. |
 | `<encodingDesc>` | `pub.layers.ontology.ontology` + annotation layer metadata | Encoding description (tagset declarations, etc.) maps to ontology definitions. |
 | `<taxonomy>` / `<category>` | `pub.layers.ontology.typeDef` hierarchy | Classification taxonomies. |
@@ -88,7 +89,7 @@ TEI supports stand-off annotation via `@xml:id` references and `<spanGrp>`/`<spa
 | TEI Stand-Off Element | Layers Equivalent | Notes |
 |---|---|---|
 | `<spanGrp>` | `pub.layers.annotation.annotationLayer` | Group of stand-off spans. |
-| `<span @from @to>` | `pub.layers.annotation.defs#annotation` with `anchor.textSpan` | Stand-off span. TEI `@from`/`@to` are data.pointer values referencing anchor `@xml:id` targets; they must be resolved to byte/character offsets before populating `anchor.textSpan` (`pub.layers.defs#span` `byteStart`/`byteEnd`). They are not character offsets directly. |
+| `<span @from @to>` | `pub.layers.annotation.defs#annotation` with `anchor.textSpan` | Stand-off span with character offsets. |
 | `<link>` / `<linkGrp>` | `pub.layers.graph.graphEdge` | Typed links between elements. |
 | `<interp>` / `<interpGrp>` | `pub.layers.annotation.annotationLayer` | Interpretive annotation groups. |
 

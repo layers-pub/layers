@@ -1,0 +1,35 @@
+id: pub.layers.lens.greengale.document-to-expression
+description: |
+  Lift a GreenGale blog document (app.greengale.document) into a
+  Layers expression. GreenGale is a publishing app whose
+  document records carry markdown content with title/subtitle —
+  a near-direct match for site.standard.document.
+
+  `title` becomes Layers `id`. `content` (markdown body) becomes
+  Layers `text`. `url` becomes `sourceUrl`. `publishedAt` becomes
+  `createdAt`. `subtitle`, `path`, `tags`, `blobs`, `latex`,
+  `theme`, `ogp`, `visibility` drop from the typed surface —
+  GreenGale-specific theming and publishing metadata.
+source: app.greengale.document
+target: pub.layers.expression.expression
+steps:
+  - rename_field: { old: title, new: id }
+  - rename_field: { old: content, new: text }
+  - rename_field: { old: url, new: sourceUrl }
+  - rename_field: { old: publishedAt, new: createdAt }
+  - remove_field: subtitle
+  - remove_field: path
+  - remove_field: tags
+  - remove_field: blobs
+  - remove_field: latex
+  - remove_field: theme
+  - remove_field: ogp
+  - remove_field: visibility
+  - add_field:
+      name: kind
+      kind: string
+      default: "document"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/expression-kinds#document"

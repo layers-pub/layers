@@ -1,0 +1,31 @@
+id: pub.layers.lens.dropanchor.comment-to-annotation-layer
+description: |
+  Lift an Anchor comment (app.dropanchor.comment) into a Layers
+  annotation layer. Comments target a checkin URI (`checkinRef`)
+  and carry free-text reaction.
+
+  `checkinRef` becomes `parentLayerRef` so traversals from a
+  checkin hit every comment annotating it. `text` becomes the
+  annotation body via add_field for the runtime to materialise
+  into the annotations array.
+source: app.dropanchor.comment
+target: pub.layers.annotation.annotationLayer
+steps:
+  - rename_field: { old: checkinRef, new: parentLayerRef }
+  - remove_field: text
+  - add_field:
+      name: kind
+      kind: string
+      default: "commenting"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/oa-motivation"
+  - add_field:
+      name: annotations
+      kind: array
+      default: []
+  - add_field:
+      name: expression
+      kind: string
+      default: ""

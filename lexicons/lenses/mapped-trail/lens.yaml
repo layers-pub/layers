@@ -1,0 +1,25 @@
+id: pub.layers.lens.mapped.trail-to-resource-collection
+description: |
+  Lift a mapped.at trail (at.mapped.trail) into a Layers
+  resource.collection. Trails group posts the way Layers
+  collections group entries; the trail's name becomes the
+  collection name.
+
+  `polyline` (encoded route geometry), `locations` (waypoint
+  array), `activityType` ref drop from the typed surface —
+  geometry data isn't part of Layers' linguistic-collection
+  model.
+source: at.mapped.trail
+target: pub.layers.resource.collection
+steps:
+  - remove_field: polyline
+  - remove_field: locations
+  - remove_field: activityType
+  - add_field:
+      name: kind
+      kind: string
+      default: "trail"
+  - add_field:
+      name: createdAt
+      kind: string
+      default: "1970-01-01T00:00:00.000Z"

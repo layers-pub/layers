@@ -68,7 +68,7 @@ A media source record (audio, video, image, or document) that can be referenced 
 | Field | Type | Description |
 |-------|------|-------------|
 | `kindUri` | at-uri | AT-URI of the media kind definition node. Community-expandable via knowledge graph. |
-| `kind` | string | **Required.** Media kind slug (fallback when `kindUri` unavailable); must be present even when `kindUri` is supplied. Known values: `audio`, `video`, `image`, `document` |
+| `kind` | string | Media kind slug (fallback). Known values: `audio`, `video`, `image`, `document` |
 | `title` | string | Media title. |
 | `description` | string | Description of the media. |
 | `blob` | blob | The media blob. |
@@ -81,11 +81,13 @@ A media source record (audio, video, image, or document) that can be referenced 
 | `audio` | ref | Audio-specific metadata. Ref: `pub.layers.media.defs#audioInfo` |
 | `video` | ref | Video-specific metadata. Ref: `pub.layers.media.defs#videoInfo` |
 | `document` | ref | Document-specific metadata. Ref: `pub.layers.media.defs#documentInfo` |
-| `language` | string | BCP-47 language tag. |
+| `languages` | array | BCP-47 language tags this record covers. Empty when language is unspecified or unknown. Array of string (max 128) |
 | `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
+| `licensing` | ref | Distribution licensing terms governing this media (supports dual/multi/component licensing). Canonical license for the media; the `consent.license` feature, when present, records per-clip consent terms. Ref: `pub.layers.defs#licensing` |
+| `eprintRefs` | array | Eprint records (papers/preprints) describing or associated with this media. Array of at-uri (max 64) |
 | `metadata` | ref | Provenance: who created/uploaded this media record. Ref: `pub.layers.defs#annotationMetadata` |
 | `features` | ref | Open-ended features (see Feature Key Conventions below). Ref: `pub.layers.defs#featureMap` |
-| `createdAt` | datetime | **Required.** Record creation timestamp. |
+| `createdAt` | datetime | Record creation timestamp. |
 
 ## Feature Key Conventions
 
@@ -160,7 +162,7 @@ Speaker metadata uses the pattern `speaker.{id}.*` where `{id}` is a speaker ide
 | `consent.restrictions` | Free-text access restrictions or conditions. |
 | `consent.irb` | IRB/ethics committee approval identifier. |
 | `consent.culturalProtocol` | Cultural sensitivity notes (CARE principles, indigenous data sovereignty). |
-| `consent.license` | License identifier (e.g., 'CC-BY-4.0', 'CC-BY-NC-SA-4.0'). |
+| `consent.license` | Per-clip consent terms (e.g., 'CC-BY-4.0', 'CC-BY-NC-SA-4.0'). The top-level `licensing` field is the canonical distribution license for the media; use this key only to record consent-scoped terms that differ from it. |
 
 ### Format Conversion Provenance
 
@@ -238,8 +240,8 @@ Speaker metadata uses the pattern `speaker.{id}.*` where `{id}` is a speaker ide
 
 Several categories of metadata are better placed on other Layers record types:
 
-- **Segmentation** (VAD, IPUs, breath groups, turn boundaries) → `pub.layers.annotation` layers on the expression, using canonical `subkind` values such as `speaker` or `prosody`, or an application-defined slug supplied via `subkind`/`subkindUri` (the field is an open enum with a `custom` escape hatch)
-- **Derived acoustic measurements** (pitch tracks, formant tracks, spectrograms, intensity contours) → `pub.layers.annotation` layers with an appropriate `subkind` drawn from the canonical set (e.g., `phonetic`, `prosody`, `tobi`) or an application-defined value via `subkind`/`subkindUri`
+- **Segmentation** (VAD, IPUs, breath groups, turn boundaries) → `pub.layers.annotation` layers on the expression, with `subkind` values like `vad`, `ipu`, `breath-group`, `turn-boundary`, `diarization`
+- **Derived acoustic measurements** (pitch tracks, formant tracks, spectrograms, intensity contours) → `pub.layers.annotation` layers with appropriate `subkind` (e.g., `pitch`, `formant`, `intensity`, `spectrogram`)
 - **Analysis parameters** (Praat settings, window size, step size, frequency range) → `annotationMetadata.features` on the annotation layer that contains the derived measurements
 - **Corpus-level statistics** (total hours, speaker count, language distribution) → `pub.layers.corpus` features
 - **Temporal alignment** (millisecond/frame/sample alignment of annotations to media) → handled by `pub.layers.defs#temporalSpan` and `pub.layers.defs#anchor`

@@ -1,5 +1,5 @@
 ---
-sidebar_label: "Psycholinguistic Data"
+sidebar_label: 'Psycholinguistic Data'
 ---
 
 # Psycholinguistic Data
@@ -31,14 +31,14 @@ graph LR
     class MEDIA,EXPR,ANN,JUDGE,ALIGN,GRAPH core
 ```
 
-| Component | Layers Lexicon | Role |
-|-----------|---------------|------|
-| Raw signal file | `pub.layers.media` | EEG `.edf`, fMRI `.nii`, eye-tracking `.edf`, audio `.wav`, etc. with modality-specific feature keys |
-| Experimental context | `pub.layers.expression` | Stimulus text, trial structure, block/session hierarchy |
-| Derived measures | `pub.layers.annotation` | ERP components, fixation events, ROI activations, contrast maps |
-| Behavioral responses | `pub.layers.judgment` | Reading times, accuracy, confidence ratings, button presses |
-| Signal-stimulus linking | `pub.layers.alignment` | Maps epochs to stimuli, fixations to text regions, TRs to events |
-| Event relationships | `pub.layers.graph` | Saccade sequences, temporal ordering between neural events |
+| Component               | Layers Lexicon          | Role                                                                                                 |
+| ----------------------- | ----------------------- | ---------------------------------------------------------------------------------------------------- |
+| Raw signal file         | `pub.layers.media`      | EEG `.edf`, fMRI `.nii`, eye-tracking `.edf`, audio `.wav`, etc. with modality-specific feature keys |
+| Experimental context    | `pub.layers.expression` | Stimulus text, trial structure, block/session hierarchy                                              |
+| Derived measures        | `pub.layers.annotation` | ERP components, fixation events, ROI activations, contrast maps                                      |
+| Behavioral responses    | `pub.layers.judgment`   | Reading times, accuracy, confidence ratings, button presses                                          |
+| Signal-stimulus linking | `pub.layers.alignment`  | Maps epochs to stimuli, fixations to text regions, TRs to events                                     |
+| Event relationships     | `pub.layers.graph`      | Saccade sequences, temporal ordering between neural events                                           |
 
 Psycholinguistic data is just another form of multimodal annotation: signals are media, experimental items are expressions, measurements are annotations, and behavioral responses are judgments.
 
@@ -49,10 +49,6 @@ Self-paced reading (SPR) experiments present text region-by-region and record re
 ### Stimuli
 
 Stimuli are constructed via the template-filling pipeline (see the [Judgment Data guide](./judgment-data.md) for the full pipeline). Each item materializes as an expression with segmentation into regions:
-
-:::note
-All record examples in this guide elide required system fields (`id`, `createdAt`, and similar) for brevity. Real records must include every field marked required in the lexicon.
-:::
 
 ```json
 {
@@ -129,9 +125,7 @@ The experiment definition specifies measure type, presentation method, recording
     "cumulative": false,
     "maskChar": "-"
   },
-  "recordingMethods": [
-    { "method": "keyboard" }
-  ],
+  "recordingMethods": [{ "method": "keyboard" }],
   "guidelines": "Read each sentence at your own pace by pressing the spacebar...",
   "templateRefs": ["at://did:plc:researcher/pub.layers.resource.template/gp-template"],
   "design": {
@@ -158,7 +152,7 @@ Eye-tracking during reading produces fixation, saccade, and regression data over
 
 ### Fixation Data
 
-Fixations are annotations with `textSpan` anchors on the stimulus expression. Each fixation records its position in the text and its duration:
+Fixations are annotations with `temporalSpan` anchors on the stimulus expression. Each fixation records its position in the text and its duration:
 
 ```json
 {
@@ -170,6 +164,7 @@ Fixations are annotations with `textSpan` anchors on the stimulus expression. Ea
     {
       "uuid": { "value": "fix-001" },
       "anchor": {
+        "kind": "textSpan",
         "textSpan": { "byteStart": 8, "byteEnd": 14 }
       },
       "label": "fixation",
@@ -186,6 +181,7 @@ Fixations are annotations with `textSpan` anchors on the stimulus expression. Ea
     {
       "uuid": { "value": "fix-002" },
       "anchor": {
+        "kind": "textSpan",
         "textSpan": { "byteStart": 15, "byteEnd": 24 }
       },
       "label": "fixation",
@@ -344,6 +340,7 @@ Event-related potential components are annotations with temporal anchors specify
     {
       "uuid": { "value": "n400-item42" },
       "anchor": {
+        "kind": "temporalSpan",
         "temporalSpan": { "start": 300, "ending": 500 }
       },
       "label": "N400",
@@ -370,6 +367,7 @@ Event-related potential components are annotations with temporal anchors specify
     {
       "uuid": { "value": "p600-item42" },
       "anchor": {
+        "kind": "temporalSpan",
         "temporalSpan": { "start": 500, "ending": 800 }
       },
       "label": "P600",
@@ -473,6 +471,7 @@ Source-localized MEG data uses `spatialExpression` with MNI brain coordinates:
     {
       "label": "left-temporal-activation",
       "anchor": {
+        "kind": "temporalSpan",
         "temporalSpan": { "start": 300, "ending": 500 }
       },
       "spatial": {
@@ -600,6 +599,7 @@ BOLD activation differences between conditions are annotation layers with both s
     {
       "label": "anomalous > plausible",
       "anchor": {
+        "kind": "temporalSpan",
         "temporalSpan": { "start": 4000, "ending": 10000 }
       },
       "spatial": {
@@ -667,66 +667,66 @@ Event onsets linking fMRI volumes to stimulus presentations use alignment record
 
 ## Feature Key Conventions
 
-These feature keys follow the same `namespace.key` convention used in the [Media lexicon](../lexicons/media.md) for recording and speaker metadata.
+These feature keys follow the same `namespace.key` convention used in the [Media lexicon](../lexicons/media.md) for recording, speaker, and sensor metadata.
 
 ### EEG Features
 
-| Key | Type | Description |
-|-----|------|-------------|
-| `eeg.sampleRate` | integer | Sampling rate in Hz (e.g., 256, 512, 1024) |
-| `eeg.numChannels` | integer | Number of EEG channels |
-| `eeg.referenceScheme` | string | Reference scheme: `average`, `linked-mastoids`, `Cz`, `nose`, `REST` |
-| `eeg.montage` | string | Electrode layout: `biosemi-64`, `10-20`, `10-10`, `geodesic-128` |
-| `eeg.filterHighpass` | number | High-pass filter cutoff in Hz |
-| `eeg.filterLowpass` | number | Low-pass filter cutoff in Hz |
-| `eeg.notchFilter` | number | Notch filter frequency in Hz (50 or 60) |
-| `eeg.impedanceThreshold` | string | Maximum impedance threshold (e.g., `5kOhm`) |
-| `eeg.groundElectrode` | string | Ground electrode position |
-| `eeg.epochMs` | string | Epoch window relative to trigger (e.g., `-200:1000`) |
-| `eeg.baselineMs` | string | Baseline correction window (e.g., `-200:0`) |
-| `eeg.artifactRejection` | string | Rejection method: `threshold`, `ICA`, `ASR`, `manual` |
-| `eeg.artifactThreshold` | string | Rejection threshold (e.g., `100uV`) |
+| Key                      | Type    | Description                                                          |
+| ------------------------ | ------- | -------------------------------------------------------------------- |
+| `eeg.sampleRate`         | integer | Sampling rate in Hz (e.g., 256, 512, 1024)                           |
+| `eeg.numChannels`        | integer | Number of EEG channels                                               |
+| `eeg.referenceScheme`    | string  | Reference scheme: `average`, `linked-mastoids`, `Cz`, `nose`, `REST` |
+| `eeg.montage`            | string  | Electrode layout: `biosemi-64`, `10-20`, `10-10`, `geodesic-128`     |
+| `eeg.filterHighpass`     | number  | High-pass filter cutoff in Hz                                        |
+| `eeg.filterLowpass`      | number  | Low-pass filter cutoff in Hz                                         |
+| `eeg.notchFilter`        | number  | Notch filter frequency in Hz (50 or 60)                              |
+| `eeg.impedanceThreshold` | string  | Maximum impedance threshold (e.g., `5kOhm`)                          |
+| `eeg.groundElectrode`    | string  | Ground electrode position                                            |
+| `eeg.epochMs`            | string  | Epoch window relative to trigger (e.g., `-200:1000`)                 |
+| `eeg.baselineMs`         | string  | Baseline correction window (e.g., `-200:0`)                          |
+| `eeg.artifactRejection`  | string  | Rejection method: `threshold`, `ICA`, `ASR`, `manual`                |
+| `eeg.artifactThreshold`  | string  | Rejection threshold (e.g., `100uV`)                                  |
 
 ### MEG Features
 
-| Key | Type | Description |
-|-----|------|-------------|
-| `meg.sampleRate` | integer | Sampling rate in Hz |
-| `meg.numMagnetometers` | integer | Number of magnetometer channels |
-| `meg.numGradiometers` | integer | Number of gradiometer channels |
-| `meg.system` | string | MEG system: `Elekta Neuromag`, `CTF`, `KIT`, `4D/BTi` |
-| `meg.headPositionIndicator` | boolean | Whether continuous HPI was used |
-| `meg.maxFilter` | boolean | Whether Maxwell filtering was applied |
-| `meg.sssMethod` | string | Signal space separation method: `SSS`, `tSSS` |
+| Key                         | Type    | Description                                           |
+| --------------------------- | ------- | ----------------------------------------------------- |
+| `meg.sampleRate`            | integer | Sampling rate in Hz                                   |
+| `meg.numMagnetometers`      | integer | Number of magnetometer channels                       |
+| `meg.numGradiometers`       | integer | Number of gradiometer channels                        |
+| `meg.system`                | string  | MEG system: `Elekta Neuromag`, `CTF`, `KIT`, `4D/BTi` |
+| `meg.headPositionIndicator` | boolean | Whether continuous HPI was used                       |
+| `meg.maxFilter`             | boolean | Whether Maxwell filtering was applied                 |
+| `meg.sssMethod`             | string  | Signal space separation method: `SSS`, `tSSS`         |
 
 ### fMRI Features
 
-| Key | Type | Description |
-|-----|------|-------------|
-| `fmri.repetitionTime` | integer | Repetition time (TR) in milliseconds |
-| `fmri.echoTime` | number | Echo time (TE) in milliseconds |
-| `fmri.fieldStrength` | number | Magnetic field strength in Tesla (e.g., 1.5, 3.0, 7.0) |
-| `fmri.voxelSize` | string | Voxel dimensions (e.g., `2x2x2mm`, `3x3x3mm`) |
-| `fmri.matrixSize` | string | Acquisition matrix (e.g., `96x96x72`) |
-| `fmri.numVolumes` | integer | Number of volumes in the run |
-| `fmri.sliceOrder` | string | Slice acquisition order: `sequential`, `interleaved`, `multiband` |
-| `fmri.phaseEncoding` | string | Phase encoding direction: `AP`, `PA`, `LR`, `RL` |
-| `fmri.multibandFactor` | integer | Multiband/SMS acceleration factor |
-| `fmri.atlas` | string | Brain atlas used: `MNI-152`, `Talairach`, `native` |
-| `fmri.smoothingFwhm` | number | Spatial smoothing kernel FWHM in mm |
-| `fmri.motionCorrection` | string | Motion correction method |
+| Key                     | Type    | Description                                                       |
+| ----------------------- | ------- | ----------------------------------------------------------------- |
+| `fmri.repetitionTime`   | integer | Repetition time (TR) in milliseconds                              |
+| `fmri.echoTime`         | number  | Echo time (TE) in milliseconds                                    |
+| `fmri.fieldStrength`    | number  | Magnetic field strength in Tesla (e.g., 1.5, 3.0, 7.0)            |
+| `fmri.voxelSize`        | string  | Voxel dimensions (e.g., `2x2x2mm`, `3x3x3mm`)                     |
+| `fmri.matrixSize`       | string  | Acquisition matrix (e.g., `96x96x72`)                             |
+| `fmri.numVolumes`       | integer | Number of volumes in the run                                      |
+| `fmri.sliceOrder`       | string  | Slice acquisition order: `sequential`, `interleaved`, `multiband` |
+| `fmri.phaseEncoding`    | string  | Phase encoding direction: `AP`, `PA`, `LR`, `RL`                  |
+| `fmri.multibandFactor`  | integer | Multiband/SMS acceleration factor                                 |
+| `fmri.atlas`            | string  | Brain atlas used: `MNI-152`, `Talairach`, `native`                |
+| `fmri.smoothingFwhm`    | number  | Spatial smoothing kernel FWHM in mm                               |
+| `fmri.motionCorrection` | string  | Motion correction method                                          |
 
 ### Eye-Tracking Features
 
-| Key | Type | Description |
-|-----|------|-------------|
-| `eyetracking.device` | string | Hardware: `EyeLink 1000`, `Tobii Pro Spectrum`, `SMI RED` |
-| `eyetracking.sampleRate` | integer | Sampling rate in Hz (e.g., 250, 500, 1000, 2000) |
-| `eyetracking.trackingMode` | string | `monocular-left`, `monocular-right`, `binocular` |
-| `eyetracking.calibration` | string | Calibration type: `5-point`, `9-point`, `13-point` |
-| `eyetracking.displayResolution` | string | Screen resolution (e.g., `1920x1080`) |
-| `eyetracking.viewingDistance` | string | Distance from screen (e.g., `60cm`) |
-| `eyetracking.fixationAlgorithm` | string | Fixation detection algorithm: `velocity`, `dispersion`, `I-VT` |
+| Key                             | Type    | Description                                                    |
+| ------------------------------- | ------- | -------------------------------------------------------------- |
+| `eyetracking.device`            | string  | Hardware: `EyeLink 1000`, `Tobii Pro Spectrum`, `SMI RED`      |
+| `eyetracking.sampleRate`        | integer | Sampling rate in Hz (e.g., 250, 500, 1000, 2000)               |
+| `eyetracking.trackingMode`      | string  | `monocular-left`, `monocular-right`, `binocular`               |
+| `eyetracking.calibration`       | string  | Calibration type: `5-point`, `9-point`, `13-point`             |
+| `eyetracking.displayResolution` | string  | Screen resolution (e.g., `1920x1080`)                          |
+| `eyetracking.viewingDistance`   | string  | Distance from screen (e.g., `60cm`)                            |
+| `eyetracking.fixationAlgorithm` | string  | Fixation detection algorithm: `velocity`, `dispersion`, `I-VT` |
 
 ## See Also
 

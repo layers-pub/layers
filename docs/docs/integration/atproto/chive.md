@@ -26,19 +26,16 @@ Chive (chive.pub) is a decentralized eprint service built on ATProto. It hosts s
 
 Layers provides two integration points for Chive:
 
-- `pub.layers.eprint.eprint` connects Layers data (corpora, annotation layers, model outputs) to specific Chive eprints by identifier or AT-URI, and `pub.layers.eprint.dataLink` records reproducibility metadata (code URI, commit hash, random seed) for the data an eprint produced. (Chive-specific eprint linking previously in `pub.layers.chive#eprintDataLink` has been absorbed into the general-purpose `pub.layers.eprint` namespace.)
+- `pub.layers.eprint.eprint` connects Layers data (corpora, annotation layers, model outputs) to specific Chive eprints by identifier or AT-URI, and `pub.layers.eprint.dataLink` records reproducibility metadata (code URI, commit hash, random seed) for the data an eprint produced. (Chive-specific eprint linking previously in `pub.layers.chive#eprintDataLink` has been absorbed into the general-purpose `pub.layers.eprint` namespace.) The eprint record now carries a structured `citation` (`pub.layers.eprint.defs#citation`) alongside the identifier, holding rendered bibliographic metadata (authors, title, venue, year) as a raw string and/or structured CSL-JSON/DataCite fields. See [CSL-JSON, BibTeX, and DataCite](../data-models/csl-datacite) for the field mappings. The `eprintIdentifier`/`eprintIdentifierType` pair remains the canonical link key.
 - `pub.layers.graph.graphEdge` connects individual Layers objects (annotations, expressions) to Chive knowledge graph nodes via edges with types like `grounding`, `instance-of`, or `denotes`.
 
-Expressions can also reference eprints directly via `eprintRef`:
+Expressions can also reference eprints directly via `eprintRefs`, an array of AT-URIs:
 
 ```json
 {
   "$type": "pub.layers.expression.expression",
-  "id": "doc-1",
-  "kind": "document",
-  "createdAt": "2026-01-01T00:00:00Z",
   "text": "...",
-  "eprintRef": "at://did:plc:author/pub.chive.eprint/abc123"
+  "eprintRefs": ["at://did:plc:author/pub.chive.eprint/abc123"]
 }
 ```
 
@@ -50,8 +47,8 @@ The `pub.layers.eprint` namespace handles both Chive-specific and general-purpos
 |---|---|
 | `pub.layers.eprint.eprint` | Links corpus/annotation data to eprints (including Chive eprints) by AT-URI, DOI, arXiv ID, or other identifiers |
 | `pub.layers.graph.graphEdge` | Links a Layers object to a Chive knowledge graph node (via `target.knowledgeRef` with `source="chive.pub"`) |
-| `pub.layers.expression.expression` (field `eprintRef`) | Direct AT-URI reference from an expression to an eprint |
+| `pub.layers.expression.expression` (field `eprintRefs`) | Direct AT-URI references from an expression to one or more eprints |
 
 ## Discovery
 
-The appview indexes `expression.eprintRef` and `graphEdge` target references. Queries like "find all annotation data linked to this paper" resolve by looking up the eprint's AT-URI across all indexed Layers records. Knowledge graph links to Chive nodes are discoverable by indexing `graphEdge` targets with `knowledgeRef.source="chive.pub"`.
+The appview indexes `expression.eprintRefs` and `graphEdge` target references. Queries like "find all annotation data linked to this paper" resolve by looking up the eprint's AT-URI across all indexed Layers records. Knowledge graph links to Chive nodes are discoverable by indexing `graphEdge` targets with `knowledgeRef.source="chive.pub"`.

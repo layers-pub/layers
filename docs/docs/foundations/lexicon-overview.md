@@ -11,7 +11,7 @@ Layers consists of 14 lexicons organized into core pipeline layers, parallel tra
 
 | Namespace | Record NSIDs | Purpose |
 |-----------|-------------|---------|
-| [Definitions](../lexicons/defs.md) | `pub.layers.defs` | Core primitives: objectRef, anchor, constraint, agentRef, annotationMetadata, knowledgeRef, featureMap, alignmentLink |
+| [Definitions](../lexicons/defs.md) | `pub.layers.defs` | Core primitives: objectRef, anchor, constraint, agentRef, annotationMetadata, knowledgeRef, featureMap, alignmentLink, licensing, licenseRef, reproducibilityInfo |
 | [Expression](../lexicons/expression.md) | `pub.layers.expression.expression` | Any linguistic unit (document, paragraph, sentence, word, morpheme) with recursive nesting |
 | [Segmentation](../lexicons/segmentation.md) | `pub.layers.segmentation.segmentation`, `pub.layers.segmentation.defs` | Tokenization strategies, token sequences, sub-expression scoping |
 | [Annotation](../lexicons/annotation.md) | `pub.layers.annotation.annotationLayer`, `pub.layers.annotation.clusterSet`, `pub.layers.annotation.defs` | Linguistic labels and categories (POS, NER, SRL, discourse, etc.) |
@@ -104,6 +104,7 @@ graph TD
 
     ONTO --> ANN
     CORPUS --> EXPR
+    JUDGE --> ANN
     ALIGN --> ANN
 
     DEFS --> GRAPH
@@ -111,6 +112,7 @@ graph TD
     DEFS --> MEDIA
     DEFS --> EPRINT
 
+    GRAPH --> ONTO
     PERSONA --> ANN
     MEDIA --> EXPR
     EPRINT --> CORPUS
@@ -141,15 +143,17 @@ Foundation for all other lexicons. Defines abstract, composable primitives:
 - `constraint`: DSL-agnostic expressions
 - `agentRef`: agent identity
 - `annotationMetadata`: provenance tracking (including `dependencies` for provenance chains)
-- `knowledgeRef`: external KB references (ATProto-native, external, or user-specific)
-- `featureMap`: open key/value map for arbitrary additional attributes
+- `knowledgeRef`: external KB references (ATProto-native, external, or user-specific; includes bibliographic sources ORCID, ROR, OpenAlex, Crossref, DBLP, Semantic Scholar)
+- `featureMap`: open-ended extensibility
 - `alignmentLink`: sequence correspondence
+- `licensing` / `licenseRef`: SPDX-expression licensing terms shared by most produces (the expression record is the exception)
+- `reproducibilityInfo`: code, commit, command, environment, and random seed for data-producing releases
 
 **Depends on**: Nothing (foundational)
 
 **Used by**: All other lexicons
 
-**File**: `lexicons/pub/layers/defs.json`
+**File**: `schemas/pub/layers/defs.json`
 
 ### pub.layers.expression (Linguistic Units)
 
@@ -165,7 +169,7 @@ Any linguistic unit, from a single morpheme to a full document, with recursive n
 
 **Used by**: All downstream layers
 
-**Directory**: `lexicons/pub/layers/expression/` (expression.json, get/list queries)
+**Directory**: `schemas/pub/layers/expression/` (expression.json, get/list queries)
 
 ### pub.layers.segmentation (Tokenization)
 
@@ -174,13 +178,13 @@ Provides token-level decomposition of expressions:
 - Tokenization strategies (whitespace, BPE, morphological, etc.)
 - Multiple tokenizations per expression for interlinear glossing or alternative segmentation
 - Each tokenization can scope to a specific sub-expression via `expressionRef`
-- Index-based token access (tokens addressed by integer offset)
+- Index-based access for efficient token retrieval
 
 **Depends on**: `pub.layers.defs`, `pub.layers.expression`
 
 **Used by**: `pub.layers.annotation`
 
-**Directory**: `lexicons/pub/layers/segmentation/` (segmentation.json, defs.json, get/list queries)
+**Directory**: `schemas/pub/layers/segmentation/` (segmentation.json, defs.json, get/list queries)
 
 ### pub.layers.annotation (Linguistic Annotations)
 
@@ -193,11 +197,11 @@ Labels, categories, semantic roles, discourse relations:
 - Cluster sets for coreference and cross-document clustering
 - Metadata: confidence, provenance, source
 
-**Depends on**: `pub.layers.defs`, `pub.layers.expression`, `pub.layers.segmentation`, `pub.layers.ontology`, `pub.layers.persona`
+**Depends on**: `pub.layers.defs`, `pub.layers.expression`, `pub.layers.segmentation`, `pub.layers.ontology`, `pub.layers.judgment`, `pub.layers.persona`
 
 **Used by**: `pub.layers.alignment`, integration layers
 
-**Directory**: `lexicons/pub/layers/annotation/` (annotationLayer.json, clusterSet.json, defs.json, get/list queries)
+**Directory**: `schemas/pub/layers/annotation/` (annotationLayer.json, clusterSet.json, defs.json, get/list queries)
 
 ## Parallel Support Layers
 
@@ -207,29 +211,29 @@ Authority records for linguistic categories, tag sets, frameworks:
 
 - Label definitions (POS tagsets, NER schemes, SRL frames)
 - Theoretical framework definitions (generative syntax, construction grammar, etc.)
-- Type definitions (typeDef: name, typeKind, gloss, parentTypeRef, allowedRoles, allowedValues)
-- Ontology authority records (name, version, domain slug, parentRef, personaRef, knowledgeRefs)
+- Relation type properties (symmetric, transitive, reflexive, inverse, domain, range)
 - Linked data to external KBs (Wikidata, WordNet, FrameNet, etc.)
+- Authority records with versioning
 
 **Depends on**: `pub.layers.defs`
 
-**Used by**: `pub.layers.annotation`
+**Used by**: `pub.layers.annotation`, `pub.layers.graph`
 
-**Directory**: `lexicons/pub/layers/ontology/` (ontology.json, typeDef.json, defs.json, get/list queries)
+**Directory**: `schemas/pub/layers/ontology/` (ontology.json, typeDef.json, defs.json, get/list queries)
 
 ### pub.layers.corpus (Corpus Metadata)
 
 Corpus records, membership, and statistics:
 
-- Corpus definitions (name, description, license, citation)
+- Corpus definitions (name, description, `licensing`, `eprintRefs`, `reproducibility`)
 - Expression membership (which expressions belong to a corpus)
 - Corpus-level statistics and metadata
 
-**Depends on**: `pub.layers.defs`, `pub.layers.expression`
+**Depends on**: `pub.layers.defs` (including `#licensing` and `#reproducibilityInfo`), `pub.layers.expression`
 
 **Used by**: `pub.layers.annotation` (corpus context), `pub.layers.eprint`
 
-**Directory**: `lexicons/pub/layers/corpus/` (corpus.json, membership.json, defs.json, get/list queries)
+**Directory**: `schemas/pub/layers/corpus/` (corpus.json, membership.json, defs.json, get/list queries)
 
 ### pub.layers.resource (Lexical Resources & Templates)
 
@@ -245,7 +249,7 @@ Lexical entries, collections, stimulus templates, fillings, and compositions:
 
 **Used by**: `pub.layers.judgment` (stimulus generation)
 
-**Directory**: `lexicons/pub/layers/resource/` (entry.json, collection.json, template.json, filling.json, templateComposition.json, collectionMembership.json, defs.json, get/list queries)
+**Directory**: `schemas/pub/layers/resource/` (entry.json, collection.json, template.json, filling.json, templateComposition.json, collectionMembership.json, defs.json, get/list queries)
 
 ### pub.layers.judgment (Judgments & Experiments)
 
@@ -258,9 +262,9 @@ Human judgments, model predictions, experiment design:
 
 **Depends on**: `pub.layers.defs`
 
-**Used by**: Applications for filtering/ranking
+**Used by**: `pub.layers.annotation`, applications for filtering/ranking
 
-**Directory**: `lexicons/pub/layers/judgment/` (experimentDef.json, judgmentSet.json, agreementReport.json, defs.json, get/list queries)
+**Directory**: `schemas/pub/layers/judgment/` (experimentDef.json, judgmentSet.json, agreementReport.json, defs.json, get/list queries)
 
 ### pub.layers.alignment (Cross-Record Linking)
 
@@ -275,7 +279,7 @@ Linking annotations across records and layers:
 
 **Used by**: All layers (enables multi-layer composition)
 
-**Directory**: `lexicons/pub/layers/alignment/` (alignment.json, get/list queries)
+**Directory**: `schemas/pub/layers/alignment/` (alignment.json, get/list queries)
 
 ## Integration Layers
 
@@ -285,15 +289,15 @@ Generic typed property graph for knowledge representation and cross-referencing:
 
 - Standalone graph nodes (entities, concepts, events, states, claims, propositions)
 - Typed directed edges between any Layers objects (expressions, annotations, graph nodes, external KB nodes)
-- Edge sets that batch multiple edges into a single record
+- Batch edge sets for efficient bulk operations
 - Supports multidigraphs and cycles
 - Subsumes cross-document relations, knowledge grounding, expression graphs, and intertextual linking
 
-**Depends on**: `pub.layers.defs`
+**Depends on**: `pub.layers.defs`, `pub.layers.ontology`
 
 **Used by**: `pub.layers.annotation` (via knowledgeRef), all layers (via objectRef-based cross-referencing)
 
-**Directory**: `lexicons/pub/layers/graph/` (graphNode.json, graphEdge.json, graphEdgeSet.json, defs.json, get/list queries)
+**Directory**: `schemas/pub/layers/graph/` (graphNode.json, graphEdge.json, graphEdgeSet.json, defs.json, get/list queries)
 
 ### pub.layers.persona (Agent Personas)
 
@@ -301,13 +305,13 @@ Agent personas, theoretical frameworks, methodological backgrounds:
 
 - Persona records (annotator background, theoretical affiliation, expertise)
 - Framework records (generative syntax, dependency grammar, UD conventions, etc.)
-- Reproducibility metadata
+- Annotation guidelines and `licensing` for the persona's framework
 
 **Depends on**: `pub.layers.defs`
 
 **Used by**: `pub.layers.annotation` (via annotationMetadata.personaRef)
 
-**Directory**: `lexicons/pub/layers/persona/` (persona.json, get/list queries)
+**Directory**: `schemas/pub/layers/persona/` (persona.json, get/list queries)
 
 ### pub.layers.media (Multimodal References)
 
@@ -322,22 +326,22 @@ Audio, video, image, and paged document references:
 
 **Used by**: `pub.layers.expression` (source documents), `pub.layers.segmentation` (temporal/spatial anchors)
 
-**Directory**: `lexicons/pub/layers/media/` (media.json, defs.json, get/list queries)
+**Directory**: `schemas/pub/layers/media/` (media.json, defs.json, get/list queries)
 
 ### pub.layers.eprint (Eprint & Data Provenance)
 
-Eprint linkage, data provenance, reproducibility, and scholarly metadata:
+Eprint linkage, data provenance, and scholarly metadata:
 
-- Eprint links (DOI, arXiv, ACL Anthology, any platform)
+- Eprint links (DOI, arXiv, ACL Anthology, any platform), mirrored across platforms via `platformEprintRefs`
 - Data links connecting publications to the data they produced (corpora, annotations, model outputs)
-- Reproducibility information (code, commit hash, environment, random seed)
-- Citation metadata
+- Structured bibliographic citation (`eprint.defs#citation`): a raw formatted string and/or CSL-JSON/DataCite fields (type, title, creators, venue, dates, DOI), with creators grounded via ORCID/ROR/OpenAlex
+- Reproducibility information reuses the shared `pub.layers.defs#reproducibilityInfo` (code, commit hash, environment, random seed)
 
-**Depends on**: `pub.layers.defs`, `pub.layers.corpus`
+**Depends on**: `pub.layers.defs`, `pub.layers.corpus`, and its own `pub.layers.eprint.defs` (`citation`, `creator`, `date`)
 
-**Used by**: `pub.layers.expression` (eprintRef), discovery/search
+**Used by**: `pub.layers.expression` and every other data-producing record that carries `eprintRefs` (the persona record is the exception), discovery/search
 
-**Directory**: `lexicons/pub/layers/eprint/` (eprint.json, dataLink.json, defs.json, get/list queries)
+**Directory**: `schemas/pub/layers/eprint/` (eprint.json, dataLink.json, defs.json, get/list queries)
 
 ## Cross-Cutting Layer
 
@@ -355,11 +359,11 @@ Structured changelog records for tracking changes to any Layers record:
 
 **References**: All other namespaces (the `subject` field can point to any record type)
 
-**Directory**: `lexicons/pub/layers/changelog/` (entry.json, defs.json, get/list queries)
+**Directory**: `schemas/pub/layers/changelog/` (entry.json, defs.json, get/list queries)
 
 ## XRPC Queries
 
-Every record type in Layers has corresponding XRPC query lexicons following a consistent `get<Record>` / `list<Records>` pattern. Each record type is retrievable individually by AT-URI (get) and listable with pagination within a repository (list).
+Every record type in Layers has corresponding XRPC query lexicons following a consistent `get<Record>` / `list<Records>` pattern. These queries enable efficient retrieval of individual records by AT-URI and paginated listing of records within a repository.
 
 ### Query Pattern
 
@@ -376,7 +380,7 @@ For each record NSID `pub.layers.<namespace>.<record>`, two query lexicons are g
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the record to retrieve |
 
-**Output**: An object `{uri, cid, value}` where `uri` is the AT-URI, `cid` is the record CID, and `value` contains the record under its `#main` definition.
+**Output**: The full record object.
 
 ### List Query Parameters
 
@@ -386,7 +390,7 @@ For each record NSID `pub.layers.<namespace>.<record>`, two query lexicons are g
 | `limit` | integer | Maximum number of records to return (1-100, default 50) |
 | `cursor` | string | Pagination cursor from previous response |
 
-**Output**: An object with `records` (array of view objects `{uri, cid, value}`, each wrapping the record under `value`) and `cursor` (string, present if more results are available).
+**Output**: An object with `records` (array of record objects) and `cursor` (string, present if more results are available).
 
 ### Example: Annotation Queries
 

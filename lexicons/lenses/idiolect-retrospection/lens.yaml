@@ -1,0 +1,38 @@
+id: pub.layers.lens.idiolect.retrospection-to-annotation-layer
+description: |
+  Lift an idiolect retrospection (dev.idiolect.retrospection) into a
+  Layers annotation layer. A retrospection is a delayed annotation
+  on a prior encounter.
+
+  `encounter` (strongRef) becomes `parentLayerRef`. `occurredAt`
+  becomes `createdAt`. finding/latency/detectingParty/confidence/
+  disputedAttribution/basis/detectedAt drop from the typed surface;
+  callers reattach them via metadata at runtime.
+source: dev.idiolect.retrospection
+target: pub.layers.annotation.annotationLayer
+steps:
+  - rename_field: { old: encounter, new: parentLayerRef }
+  - rename_field: { old: occurredAt, new: createdAt }
+  - remove_field: finding
+  - remove_field: latency
+  - remove_field: detectingParty
+  - remove_field: confidence
+  - remove_field: disputedAttribution
+  - remove_field: basis
+  - remove_field: detectedAt
+  - add_field:
+      name: kind
+      kind: string
+      default: "retrospecting"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/oa-motivation"
+  - add_field:
+      name: annotations
+      kind: array
+      default: []
+  - add_field:
+      name: expression
+      kind: string
+      default: ""

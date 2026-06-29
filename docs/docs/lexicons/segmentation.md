@@ -23,6 +23,9 @@ A segmentation of an expression into tokenizations.
 | `metadata` | ref | Ref: `pub.layers.defs#annotationMetadata` |
 | `knowledgeRefs` | array | Knowledge graph references (e.g., tokenizer algorithm, sentence splitting model). Array of ref: `pub.layers.defs#knowledgeRef` |
 | `features` | ref | Open-ended features (e.g., tokenizer version, parameters, language model used). Ref: `pub.layers.defs#featureMap` |
+| `licensing` | ref | Licensing terms governing this segmentation (supports dual/multi/component licensing). Ref: `pub.layers.defs#licensing` |
+| `eprintRefs` | array | Eprint records (papers/preprints) describing or associated with this segmentation. Array of at-uri (max 64) |
+| `reproducibility` | ref | How this segmentation was produced (code, commit, command, environment, seed). Ref: `pub.layers.defs#reproducibilityInfo` |
 | `createdAt` | datetime | Record creation timestamp. |
 
 ### tokenization
@@ -64,7 +67,7 @@ Retrieve a single segmentation record by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the segmentation record. |
 
-**Output**: `{ uri: at-uri, cid: cid, value: segmentation }` — the segmentation record wrapped with its AT-URI and CID.
+**Output**: `{ uri: at-uri, cid: cid, value: segmentation }`: the segmentation record wrapped with its AT-URI and CID.
 
 ### listSegmentations
 **NSID:** `pub.layers.segmentation.listSegmentations`

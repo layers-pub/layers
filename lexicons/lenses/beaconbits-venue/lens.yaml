@@ -1,0 +1,20 @@
+id: pub.layers.lens.beaconbits.venue-to-resource-entry
+description: |
+  Lift a BeaconBits venue (app.beaconbits.venue) into a Layers
+  resource.entry. Venues are typed location entries with a name +
+  category + address and an OSM URI — the resource.entry surface
+  is the right home for them.
+
+  `name` becomes Layers `form` (canonical presentation form).
+  `osmUri` becomes `sourceRef`. `category` becomes `mweKind`.
+  `address`, `addressDetails`, `location` drop from the typed
+  surface.
+source: app.beaconbits.venue
+target: pub.layers.resource.entry
+steps:
+  - rename_field: { old: name, new: form }
+  - rename_field: { old: osmUri, new: sourceRef }
+  - rename_field: { old: category, new: mweKind }
+  - remove_field: address
+  - remove_field: addressDetails
+  - remove_field: location

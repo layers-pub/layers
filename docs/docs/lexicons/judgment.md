@@ -36,6 +36,9 @@ Definition of an annotation or judgment experiment.
 | `scaleMax` | integer | Maximum scale value. |
 | `labels` | array | Available labels for categorical judgments. Array of strings |
 | `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
+| `licensing` | ref | Licensing terms governing this experiment definition (supports dual/multi/component licensing). Ref: `pub.layers.defs#licensing` |
+| `eprintRefs` | array | Eprint records (papers/preprints) describing or associated with this experiment. Array of at-uri (max 64) |
+| `reproducibility` | ref | How this experiment dataset was produced (code, commit, command, environment, seed). Ref: `pub.layers.defs#reproducibilityInfo` |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
 

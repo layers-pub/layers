@@ -1,0 +1,32 @@
+id: pub.layers.lens.streamplace.segment-to-expression
+description: |
+  Lift a Streamplace recorded segment (place.stream.segment) into a
+  Layers expression.
+
+  Segments are recorded video chunks. The Streamplace-internal `id`
+  survives as the Layers `id`. `creator` (segment owner DID) is
+  dropped — provenance lives on the Layers record's owning DID.
+  startTime/duration/video/audio/size and rights/policy refs drop
+  from the typed surface; downstream tooling reattaches them via
+  metadata fields.
+source: place.stream.segment
+target: pub.layers.expression.expression
+steps:
+  - remove_field: creator
+  - remove_field: signingKey
+  - remove_field: startTime
+  - remove_field: duration
+  - remove_field: video
+  - remove_field: audio
+  - remove_field: size
+  - remove_field: contentWarnings
+  - remove_field: contentRights
+  - remove_field: distributionPolicy
+  - add_field:
+      name: kind
+      kind: string
+      default: "video-segment"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/expression-kinds#video-segment"

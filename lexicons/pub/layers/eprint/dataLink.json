@@ -73,7 +73,7 @@
           },
           "reproducibility": {
             "type": "ref",
-            "ref": "pub.layers.eprint.defs#reproducibilityInfo"
+            "ref": "pub.layers.defs#reproducibilityInfo"
           },
           "features": {
             "type": "ref",

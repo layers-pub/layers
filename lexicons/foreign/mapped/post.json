@@ -1,0 +1,55 @@
+{
+  "id": "at.mapped.post",
+  "defs": {
+    "main": {
+      "key": "tid",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "timestamp"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "Caption or description text for the post"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "Optional title for the post (especially useful for travel posts)"
+          },
+          "trail": {
+            "ref": "com.atproto.repo.strongRef",
+            "type": "ref",
+            "description": "Reference to a trail record with route geometry"
+          },
+          "basePost": {
+            "ref": "com.atproto.repo.strongRef",
+            "type": "ref",
+            "description": "Reference to another post that this post is based on (e.g. a travel post based on an activity post)"
+          },
+          "location": {
+            "ref": "com.atproto.repo.strongRef",
+            "type": "ref",
+            "description": "Reference to a location record"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When the post was created"
+          },
+          "activityType": {
+            "ref": "com.atproto.repo.strongRef",
+            "type": "ref",
+            "description": "Reference to an activityType record. If present, this is an activity post; if absent, it's a travel post"
+          }
+        }
+      },
+      "description": "A post representing either an activity or a travel experience"
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

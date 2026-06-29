@@ -1,0 +1,30 @@
+{
+  "id": "at.mapped.activity",
+  "defs": {
+    "main": {
+      "key": "tid",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "The name of the activity type"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 300,
+            "description": "Optional description of the activity type"
+          }
+        }
+      },
+      "description": "An activity like Hiking, Cycling, Kayaking"
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

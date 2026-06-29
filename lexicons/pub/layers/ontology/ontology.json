@@ -55,6 +55,20 @@
               "ref": "pub.layers.defs#knowledgeRef"
             }
           },
+          "licensing": {
+            "type": "ref",
+            "ref": "pub.layers.defs#licensing",
+            "description": "Licensing terms governing this ontology (supports dual/multi/component licensing)."
+          },
+          "eprintRefs": {
+            "type": "array",
+            "description": "Eprint records (papers/preprints) describing or associated with this ontology.",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
           "createdAt": {
             "type": "string",
             "format": "datetime"

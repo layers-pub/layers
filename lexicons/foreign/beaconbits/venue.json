@@ -1,0 +1,56 @@
+{
+  "id": "app.beaconbits.venue",
+  "defs": {
+    "main": {
+      "key": "tid",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "name",
+          "createdAt"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Display name of the venue",
+            "maxGraphemes": 64
+          },
+          "osmUri": {
+            "type": "string",
+            "format": "uri",
+            "description": "Link to underlying OpenStreetMap entity (osm://node/123)"
+          },
+          "address": {
+            "type": "string",
+            "description": "Human-readable address",
+            "maxGraphemes": 256
+          },
+          "category": {
+            "type": "string",
+            "description": "Venue category (bar, cafe, restaurant, etc.)",
+            "maxGraphemes": 64
+          },
+          "location": {
+            "ref": "community.lexicon.location.geo",
+            "type": "ref",
+            "description": "Structured location using community lexicon"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Timestamp when the venue was created"
+          },
+          "addressDetails": {
+            "ref": "community.lexicon.location.address",
+            "type": "ref",
+            "description": "Structured address using community lexicon"
+          }
+        }
+      },
+      "description": "A user-created venue definition"
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

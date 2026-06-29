@@ -44,11 +44,11 @@ This is relevant for multimodal annotation: audio/video files stored via ATFile 
 
 ## Layers Types Involved
 
-| Type | Role |
-|---|---|
-| `pub.layers.media.media` | `externalUri` points to `blue.zio.atfile.*` AT-URI |
+| Type                               | Role                                                         |
+| ---------------------------------- | ------------------------------------------------------------ |
+| `pub.layers.media.media`           | `externalUri` points to `blue.zio.atfile.*` AT-URI           |
 | `pub.layers.expression.expression` | `mediaRef` references a Layers media record backed by ATFile |
-| `pub.layers.defs#temporalSpan` | Temporal anchoring into ATFile-hosted audio/video |
+| `pub.layers.defs#temporalSpan`     | Temporal anchoring into ATFile-hosted audio/video            |
 
 ## Discovery
 

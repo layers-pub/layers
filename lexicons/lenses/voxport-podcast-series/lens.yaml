@@ -1,0 +1,27 @@
+id: pub.layers.lens.voxport.podcast-series-to-resource-collection
+description: |
+  Lift a VoxPort podcast series (com.voxport.podcast.series) into a
+  Layers resource.collection. A series groups episodes the same way
+  Layers' resource collections group entries.
+
+  `title` is renamed to `name`. `description` survives unchanged.
+  `language` survives (Layers collections carry a language field).
+  `handle`, `cover`, `categories`, `explicit`, `websiteUrl`,
+  `author`, `email`, `updatedAt` drop from the typed surface.
+  `kind` is fixed to `"podcast-series"`.
+source: com.voxport.podcast.series
+target: pub.layers.resource.collection
+steps:
+  - rename_field: { old: title, new: name }
+  - remove_field: handle
+  - remove_field: cover
+  - remove_field: categories
+  - remove_field: explicit
+  - remove_field: websiteUrl
+  - remove_field: author
+  - remove_field: email
+  - remove_field: updatedAt
+  - add_field:
+      name: kind
+      kind: string
+      default: "podcast-series"

@@ -1,0 +1,61 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.integration.applyLens",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "Import a foreign record on demand and project it into a `pub.layers.*` shape via the appview's registered panproto lens for the source NSID. Routes through `idiolect_lens::apply_lens` against a published `dev.panproto.schema.lens` record. Use this to lift a Margin note into an annotation layer, a Tangled issue into a corpus expression, etc., without writing the lensed record back to a PDS.",
+      "parameters": {
+        "type": "params",
+        "required": ["uri"],
+        "properties": {
+          "uri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the foreign record to project."
+          },
+          "fresh": {
+            "type": "boolean",
+            "default": false,
+            "description": "When true, bypass the local cache and refetch the source record."
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["source", "target"],
+          "properties": {
+            "source": {
+              "type": "object",
+              "description": "Imported source record view, identical to `getExternal`'s response.",
+              "required": ["uri", "nsid", "value", "fromCache"],
+              "properties": {
+                "uri":       { "type": "string", "format": "at-uri" },
+                "cid":       { "type": "string", "format": "cid" },
+                "nsid":      { "type": "string" },
+                "fromCache": { "type": "boolean" },
+                "value":     { "type": "unknown" }
+              }
+            },
+            "target": {
+              "type": "object",
+              "description": "Lensed target record + metadata.",
+              "required": ["targetNsid", "value", "lensUri"],
+              "properties": {
+                "targetNsid": { "type": "string", "description": "NSID of the projected record (always under `pub.layers.*`)." },
+                "value":      { "type": "unknown", "description": "Projected target record body." },
+                "lensUri":    { "type": "string", "format": "at-uri", "description": "AT-URI of the `dev.panproto.schema.lens` record that produced this output." }
+              }
+            }
+          }
+        }
+      },
+      "errors": [
+        { "name": "BadRequest" },
+        { "name": "InternalError" }
+      ]
+    }
+  }
+}

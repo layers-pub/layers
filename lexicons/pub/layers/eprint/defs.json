@@ -2,34 +2,245 @@
   "lexicon": 1,
   "id": "pub.layers.eprint.defs",
   "defs": {
-    "reproducibilityInfo": {
+    "citation": {
       "type": "object",
-      "description": "Information about how to reproduce the data from the eprint.",
+      "description": "A bibliographic citation, expressible as a raw formatted string (raw) and/or structured fields following CSL-JSON and DataCite conventions. Consumers prefer the structured fields when present and fall back to raw. Populate at least raw or title.",
       "properties": {
-        "codeUri": {
+        "raw": {
           "type": "string",
-          "format": "uri",
-          "description": "URI of the code repository.",
-          "maxLength": 2048
-        },
-        "commitHash": {
-          "type": "string",
-          "description": "Git commit hash for reproducibility.",
-          "maxLength": 64
-        },
-        "command": {
-          "type": "string",
-          "description": "Command to reproduce the data.",
+          "description": "Full formatted citation string (CSL fallback). Sufficient on its own when structured metadata is unavailable.",
           "maxLength": 4096
         },
-        "environment": {
+        "typeUri": {
           "type": "string",
-          "description": "Environment specification (Docker image, conda env, etc.).",
+          "format": "at-uri",
+          "description": "AT-URI of the bibliographic type definition node. Community-expandable via knowledge graph."
+        },
+        "type": {
+          "type": "string",
+          "description": "CSL-JSON item type slug (fallback when typeUri unavailable).",
+          "knownValues": ["article-journal", "paper-conference", "article", "book", "chapter", "thesis", "report", "dataset", "software", "manuscript", "webpage", "entry", "standard", "preprint", "custom"],
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the work (CSL 'title').",
           "maxLength": 2048
         },
-        "randomSeed": {
+        "creators": {
+          "type": "array",
+          "description": "Authors, editors, and other creators (CSL name variables; DataCite creators).",
+          "maxLength": 256,
+          "items": {
+            "type": "ref",
+            "ref": "#creator"
+          }
+        },
+        "containerTitle": {
+          "type": "string",
+          "description": "Title of the container: journal, book, or proceedings (CSL 'container-title').",
+          "maxLength": 2048
+        },
+        "publisher": {
+          "type": "string",
+          "description": "Publisher (CSL 'publisher'; DataCite publisher).",
+          "maxLength": 1024
+        },
+        "publisherPlace": {
+          "type": "string",
+          "description": "Publisher location (CSL 'publisher-place').",
+          "maxLength": 512
+        },
+        "issued": {
+          "type": "ref",
+          "ref": "#date",
+          "description": "Issue/publication date (CSL 'issued'; DataCite publicationYear)."
+        },
+        "accessed": {
+          "type": "ref",
+          "ref": "#date",
+          "description": "Date the work was accessed (CSL 'accessed')."
+        },
+        "volume": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "issue": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "page": {
+          "type": "string",
+          "description": "Page range (CSL 'page', e.g., '101-126').",
+          "maxLength": 64
+        },
+        "edition": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of the cited artifact (CSL 'version'; DataCite version).",
+          "maxLength": 64
+        },
+        "doi": {
+          "type": "string",
+          "description": "DOI (CSL 'DOI'), e.g., '10.18653/v1/2020.acl-main.1'.",
+          "maxLength": 256
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL (CSL 'URL').",
+          "maxLength": 2048
+        },
+        "isbn": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "issn": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "pmid": {
+          "type": "string",
+          "description": "PubMed ID (CSL 'PMID').",
+          "maxLength": 32
+        },
+        "abstract": {
+          "type": "string",
+          "description": "Abstract (CSL 'abstract'; DataCite Abstract description).",
+          "maxLength": 20000
+        },
+        "language": {
+          "type": "string",
+          "description": "BCP-47 language tag of the work (CSL 'language').",
+          "maxLength": 32
+        },
+        "knowledgeRefs": {
+          "type": "array",
+          "description": "External grounding for the work or venue (Crossref, OpenAlex, DBLP, Semantic Scholar).",
+          "maxLength": 32,
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#knowledgeRef"
+          }
+        }
+      }
+    },
+
+    "creator": {
+      "type": "object",
+      "description": "A bibliographic creator (author, editor, etc.). Name parts follow CSL-JSON; nameType and affiliation follow DataCite. ATProto-native creators additionally ground identity via agent (DID) or knowledgeRef (ORCID, ROR, OpenAlex).",
+      "properties": {
+        "roleUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the creator-role definition node. Community-expandable via knowledge graph."
+        },
+        "role": {
+          "type": "string",
+          "description": "Creator role slug (CSL contributor role / DataCite contributorType; fallback when roleUri unavailable).",
+          "knownValues": ["author", "editor", "translator", "contributor", "illustrator", "director", "producer", "collector", "custom"],
+          "maxLength": 128
+        },
+        "nameTypeUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the name-type definition node. Community-expandable via knowledge graph."
+        },
+        "nameType": {
+          "type": "string",
+          "description": "Whether the creator is a person or an organization (DataCite nameType; fallback when nameTypeUri unavailable).",
+          "knownValues": ["personal", "organizational"],
+          "maxLength": 64
+        },
+        "family": {
+          "type": "string",
+          "description": "Family/surname (CSL 'family').",
+          "maxLength": 512
+        },
+        "given": {
+          "type": "string",
+          "description": "Given name(s) (CSL 'given').",
+          "maxLength": 512
+        },
+        "droppingParticle": {
+          "type": "string",
+          "description": "Dropping particle (CSL 'dropping-particle').",
+          "maxLength": 128
+        },
+        "nonDroppingParticle": {
+          "type": "string",
+          "description": "Non-dropping particle (CSL 'non-dropping-particle').",
+          "maxLength": 128
+        },
+        "suffix": {
+          "type": "string",
+          "description": "Name suffix (CSL 'suffix', e.g., 'Jr.', 'III').",
+          "maxLength": 128
+        },
+        "literal": {
+          "type": "string",
+          "description": "Full name as a single string when parts are not separated, or an organization name (CSL 'literal').",
+          "maxLength": 1024
+        },
+        "affiliation": {
+          "type": "string",
+          "description": "Affiliation (DataCite affiliation).",
+          "maxLength": 1024
+        },
+        "sequence": {
           "type": "integer",
-          "description": "Random seed used."
+          "description": "Position of this creator in the creator list (1-based).",
+          "minimum": 1
+        },
+        "agent": {
+          "type": "ref",
+          "ref": "pub.layers.defs#agentRef",
+          "description": "ATProto-native identity grounding (DID) for the creator, if any."
+        },
+        "knowledgeRef": {
+          "type": "ref",
+          "ref": "pub.layers.defs#knowledgeRef",
+          "description": "External identity grounding (ORCID via source 'orcid', ROR for organizations, OpenAlex author id)."
+        }
+      }
+    },
+
+    "date": {
+      "type": "object",
+      "description": "A date in CSL-JSON style: structured year/month/day and/or a free-form literal. Maps to CSL 'date-parts' (when year/month/day are set) or 'literal'/'raw' (when only literal is set).",
+      "properties": {
+        "year": {
+          "type": "integer",
+          "description": "Four-digit year."
+        },
+        "month": {
+          "type": "integer",
+          "description": "Month (1-12).",
+          "minimum": 1,
+          "maximum": 12
+        },
+        "day": {
+          "type": "integer",
+          "description": "Day of month (1-31).",
+          "minimum": 1,
+          "maximum": 31
+        },
+        "season": {
+          "type": "string",
+          "description": "Season when the work was issued (CSL 'season').",
+          "maxLength": 32
+        },
+        "circa": {
+          "type": "boolean",
+          "description": "Whether the date is approximate (CSL 'circa')."
+        },
+        "literal": {
+          "type": "string",
+          "description": "Free-form date string when structured parts are unavailable (CSL 'literal'/'raw').",
+          "maxLength": 128
         }
       }
     }

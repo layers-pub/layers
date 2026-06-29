@@ -1,0 +1,38 @@
+id: pub.layers.lens.site-standard.document-to-expression
+description: |
+  Lift a site.standard.document (Leaflet, Pckt, Offsite, etc.) into a
+  Layers expression. The shared cross-platform document record is
+  the natural payload for Layers' long-form expression model.
+
+  `title` is renamed to `id` (Layers expressions key on `id`); the
+  same value also surfaces as the Layers `text` via the runtime
+  field-pass. `site` (the parent publication AT-URI) becomes
+  `sourceRef`. `publishedAt` (a required field on
+  site.standard.document) becomes `createdAt`. `textContent` (plain-
+  text rendering of the document) is renamed to `text`. Platform-
+  specific rich content blocks under the source `content` union, the
+  cover image blob, the bsky post ref, and the `path`/`tags`/
+  `description`/`updatedAt` survive only as metadata, dropped from
+  the typed record surface.
+source: site.standard.document
+target: pub.layers.expression.expression
+steps:
+  - rename_field: { old: title, new: id }
+  - rename_field: { old: site, new: sourceRef }
+  - rename_field: { old: textContent, new: text }
+  - rename_field: { old: publishedAt, new: createdAt }
+  - remove_field: path
+  - remove_field: tags
+  - remove_field: content
+  - remove_field: updatedAt
+  - remove_field: coverImage
+  - remove_field: bskyPostRef
+  - remove_field: description
+  - add_field:
+      name: kind
+      kind: string
+      default: "document"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/expression-kinds#document"

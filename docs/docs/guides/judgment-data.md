@@ -4,11 +4,11 @@ sidebar_label: "Judgment Data"
 
 # Judgment Data
 
-Layers represents the full lifecycle of linguistic judgment data, from experiment definition through stimulus construction, data collection, and agreement analysis. The [`pub.layers.judgment`](../lexicons/judgment.md) and [`pub.layers.resource`](../lexicons/resource.md) lexicons work together to model the judgment paradigms common in psycholinguistics and computational linguistics.
+Layers represents the full lifecycle of linguistic judgment data, from experiment definition through stimulus construction, data collection, and agreement analysis. The [`pub.layers.judgment`](../lexicons/judgment.md) and [`pub.layers.resource`](../lexicons/resource.md) lexicons work together to support all major judgment paradigms used in psycholinguistics and computational linguistics.
 
 ## Four Orthogonal Dimensions
 
-Building on [bead](../integration/data-models/bead.md)'s three orthogonal dimensions (measure type, task type, presentation), Layers adds a fourth: recording methods. Every experiment definition can specify four independent fields:
+Following [bead](../integration/data-models/bead.md)'s design, every experiment definition can specify four independent fields:
 
 **`measureType`**: What property or behavior is being measured.
 
@@ -447,7 +447,7 @@ fMRI with auditory narrative (passive):
 
 ## The Stimulus Pipeline
 
-Stimuli are built in four stages: template definition, slot filling, optional composition, and materialization into an expression.
+Layers provides a full pipeline from parameterized templates to materialized stimuli.
 
 ### Template Definition
 
@@ -542,17 +542,20 @@ Multi-part stimuli (context + target + question) use template compositions:
     {
       "templateRef": "at://did:plc:researcher/pub.layers.resource.template/context-paragraph",
       "label": "context",
-      "ordinal": 0
+      "ordinal": 0,
+      "required": true
     },
     {
       "templateRef": "at://did:plc:researcher/pub.layers.resource.template/target-sentence",
       "label": "target",
-      "ordinal": 1
+      "ordinal": 1,
+      "required": true
     },
     {
       "templateRef": "at://did:plc:researcher/pub.layers.resource.template/comprehension-question",
       "label": "question",
-      "ordinal": 2
+      "ordinal": 2,
+      "required": true
     }
   ],
   "experimentRef": "at://did:plc:researcher/pub.layers.judgment.experimentDef/spr-study"
@@ -565,7 +568,7 @@ The filling's `renderedText` becomes an expression's `text`. The `expressionRef`
 
 ## Experiment Design
 
-The `experimentDef` record specifies the full experimental design, including list construction constraints and item ordering.
+The `experimentDef` record specifies the full experimental design, including list construction constraints and item ordering. As a top-level produce it also carries shared structured `licensing` (terms for releasing the stimuli and design), an always-array `eprintRefs` linking the papers that describe or use the experiment, and `reproducibility` (code repository, commit, command, environment, random seed used to generate stimulus lists). See [Primitives](../foundations/primitives.md#licensing--licenseref) for the licensing and reproducibility types.
 
 ### Full Example
 
@@ -774,10 +777,6 @@ The `agreementReport` record summarizes inter-annotator agreement across judgmen
 }
 ```
 
-:::note
-All record-level examples above (`experimentDef`, `judgmentSet`, `agreementReport`) omit the required `createdAt` datetime field (and, for `judgmentSet`, the required `judgments` array) for brevity. Submitted records must include these fields to pass schema validation.
-:::
-
 ### Metrics
 
 | Metric | Use Case | Scale |
@@ -786,7 +785,7 @@ All record-level examples above (`experimentDef`, `judgmentSet`, `agreementRepor
 | `fleiss-kappa` | Multiple annotators, categorical data | 0-1000 |
 | `krippendorff-alpha` | Any number of annotators, any scale type | 0-1000 |
 | `percent-agreement` | Simple agreement percentage | 0-1000 |
-| `correlation` | Ordinal-scale judgments | 0-1000; note the value field (minimum 0) cannot represent negative correlations directly -- use an affine remap such as (r+1)/2 scaled to 0-1000, or store raw values in `features` |
+| `correlation` | Ordinal-scale judgments | 0-1000 (maps to 0.0-1.0) |
 | `f1` | Span labeling overlap | 0-1000 |
 
 All metric values use the 0-1000 integer scale for consistent representation without floating-point issues. The `metricUri` field allows community-defined metrics beyond these known values.

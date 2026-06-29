@@ -1,0 +1,126 @@
+{
+  "lexicon": 1,
+  "id": "com.voxport.podcast.episode",
+  "revision": 1,
+  "description": "A podcast episode belonging to a series",
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["series", "title", "createdAt"],
+        "properties": {
+          "series": {
+            "type": "ref",
+            "ref": "com.voxport.podcast.series",
+            "description": "Reference to parent series"
+          },
+          "title": {
+            "type": "string",
+            "description": "Episode title",
+            "maxLength": 256
+          },
+          "summary": {
+            "type": "string",
+            "description": "Episode description/show notes (supports markdown)",
+            "maxLength": 10000
+          },
+          "audio": {
+            "type": "blob",
+            "description": "Audio file reference",
+            "accept": ["audio/mpeg", "audio/mp4", "audio/wav", "audio/ogg", "audio/aac"],
+            "maxSize": 524288000
+          },
+          "audioUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "External audio URL (if not using blob)"
+          },
+          "duration": {
+            "type": "integer",
+            "description": "Duration in seconds",
+            "minimum": 0
+          },
+          "episodeNumber": {
+            "type": "integer",
+            "description": "Episode number in series",
+            "minimum": 1
+          },
+          "seasonNumber": {
+            "type": "integer",
+            "description": "Season number",
+            "minimum": 1
+          },
+          "episodeType": {
+            "type": "string",
+            "description": "Episode type per RSS spec",
+            "knownValues": ["full", "trailer", "bonus"],
+            "default": "full"
+          },
+          "explicit": {
+            "type": "boolean",
+            "description": "Whether episode is explicit"
+          },
+          "image": {
+            "type": "blob",
+            "description": "Episode-specific cover art",
+            "accept": ["image/png", "image/jpeg"],
+            "maxSize": 2097152
+          },
+          "tags": {
+            "type": "array",
+            "description": "Episode tags/keywords",
+            "items": { "type": "string", "maxLength": 64 },
+            "maxLength": 20
+          },
+          "chapters": {
+            "type": "array",
+            "description": "Episode chapters/timestamps",
+            "items": { "type": "ref", "ref": "#chapter" },
+            "maxLength": 100
+          },
+          "transcript": {
+            "type": "ref",
+            "ref": "#transcript",
+            "description": "Episode transcript"
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Publication date (null = draft)"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+    "chapter": {
+      "type": "object",
+      "required": ["title", "startTime"],
+      "properties": {
+        "title": { "type": "string", "maxLength": 256 },
+        "startTime": { "type": "integer", "description": "Start time in seconds" },
+        "endTime": { "type": "integer", "description": "End time in seconds (optional)" },
+        "image": { "type": "string", "format": "uri" }
+      }
+    },
+    "transcript": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "knownValues": ["text/plain", "text/html", "application/srt", "application/json"]
+        },
+        "url": { "type": "string", "format": "uri" },
+        "language": { "type": "string", "format": "language" }
+      }
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "lexicon": 1,
+  "id": "dev.idiolect.retrospection",
+  "description": "A signed annotation of a prior encounter with a delayed finding. Retrospections address silent-error latency: merges, migrations, and bitemporal reconciliations often surface failures only after long delay.",
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "tid",
+      "description": "Attribution and detection of a latent issue in a prior encounter. Causal claims are the publisher's judgment; disputes are themselves first-class records.",
+      "record": {
+        "type": "object",
+        "required": [
+          "encounter",
+          "finding",
+          "detectingParty",
+          "detectedAt",
+          "occurredAt"
+        ],
+        "properties": {
+          "encounter": {
+            "type": "ref",
+            "ref": "dev.idiolect.defs#encounterRef"
+          },
+          "finding": {
+            "type": "object",
+            "description": "Finding kind plus structured evidence and narrative detail. For kind=merge-divergence/data-loss/reconciliation-mismatch, `evidence` is the structured witness consumers can match on; for kind=other, evidence is optional and `detail` carries the whole finding.",
+            "required": ["kind", "detail"],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "maxLength": 256,
+                "knownValues": [
+                  "merge-divergence",
+                  "data-loss",
+                  "reconciliation-mismatch",
+                  "other"
+                ],
+                "description": "Open-enum finding-kind slug. Resolved against `kindVocab` when present."
+              },
+              "kindVocab": {
+                "type": "ref",
+                "ref": "dev.idiolect.defs#vocabRef",
+                "description": "Vocabulary the `kind` slug resolves against."
+              },
+              "detail": {
+                "type": "string",
+                "maxGraphemes": 8000,
+                "description": "Narrative detail. Human commentary; complements structured `evidence`."
+              },
+              "evidence": {
+                "type": "union",
+                "description": "Structured witness for the finding. See dev.idiolect.theory.finding.",
+                "refs": [
+                  "dev.idiolect.defs#evidenceDivergence",
+                  "dev.idiolect.defs#evidenceLoss",
+                  "dev.idiolect.defs#evidenceMismatch"
+                ]
+              }
+            }
+          },
+          "latency": {
+            "type": "integer",
+            "description": "Detection latency in seconds (detectedAt - encounter.occurredAt). Precomputed for easy aggregation; may be omitted for 'other' findings where latency is not meaningful."
+          },
+          "detectingParty": {
+            "type": "string",
+            "format": "did",
+            "description": "DID of the party that detected the issue."
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Optional confidence score in [0, 1]. Omit when the finding is unambiguous.",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "disputedAttribution": {
+            "type": "boolean",
+            "description": "True if the detecting party anticipates the causal attribution will be contested. A hint, not a fact; contest records are separate."
+          },
+          "basis": {
+            "type": "ref",
+            "ref": "dev.idiolect.defs#basis",
+            "description": "Grounding for the finding. Omit when self-asserted by the detecting party; set explicitly when a third party is attributing the detection or when the finding rests on an external analysis."
+          },
+          "detectedAt": {
+            "type": "string",
+            "format": "datetime"
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When this retrospection record was published."
+          }
+        }
+      }
+    }
+  }
+}

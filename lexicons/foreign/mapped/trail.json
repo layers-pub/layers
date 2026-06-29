@@ -1,0 +1,43 @@
+{
+  "id": "at.mapped.trail",
+  "defs": {
+    "main": {
+      "key": "tid",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "Display name of the trail or route"
+          },
+          "polyline": {
+            "type": "string",
+            "maxLength": 1000,
+            "description": "Encoded Polyline representing the trail geometry"
+          },
+          "locations": {
+            "type": "array",
+            "items": {
+              "ref": "at.mapped.location",
+              "type": "ref"
+            },
+            "description": "Optional array of location references along the trail"
+          },
+          "activityType": {
+            "ref": "com.atproto.repo.strongRef",
+            "type": "ref",
+            "description": "Reference to an activityType record"
+          }
+        }
+      },
+      "description": "A trail"
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

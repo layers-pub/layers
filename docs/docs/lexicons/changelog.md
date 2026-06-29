@@ -64,7 +64,7 @@ A group of changes under a single category.
 | `resource` | Changes to lexical entries, templates, slots, or fillings. |
 | `media` | Changes to media references or technical properties. |
 | `provenance` | Changes to authorship, agent attribution, persona, or tool metadata. |
-| `references` | Changes to knowledgeRefs, sourceRef, eprintRef, or other cross-references. |
+| `references` | Changes to knowledgeRefs, sourceRef, eprintRefs, or other cross-references. |
 | `corrections` | Error corrections. |
 | `other` | Uncategorized changes. |
 
@@ -197,7 +197,7 @@ A changelog entry for changes to an experiment definition, targeting specific co
         {
           "description": "Increased stimulus display duration from 2000ms to 3000ms",
           "changeType": "changed",
-          "fieldPath": "design/presentationSpec/timingMs",
+          "fieldPath": "design/presentationSpec/displayTimeMs",
           "previousValue": "2000",
           "newValue": "3000"
         },
@@ -243,7 +243,7 @@ Retrieve a single changelog entry by AT-URI.
 |-----------|------|-------------|
 | `uri` | at-uri (required) | The AT-URI of the changelog entry record. |
 
-**Output**: `{ uri: at-uri, cid: cid, value: entry }` where `value` is the changelog entry record.
+**Output**: The changelog entry record object.
 
 ### listEntries
 **NSID:** `pub.layers.changelog.listEntries`
@@ -256,7 +256,7 @@ List changelog entries for a specific subject record, ordered newest first.
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ entries: recordView[], cursor?: string }` where `recordView = { uri, cid, value }` and `value` is the changelog entry record.
+**Output**: `{ entries: entry[], cursor?: string }`
 
 ### listByCollection
 **NSID:** `pub.layers.changelog.listByCollection`
@@ -269,4 +269,4 @@ List recent changelog entries across all records of a given collection type, ord
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 
-**Output**: `{ entries: recordView[], cursor?: string }` where `recordView = { uri, cid, value }` and `value` is the changelog entry record.
+**Output**: `{ entries: entry[], cursor?: string }`

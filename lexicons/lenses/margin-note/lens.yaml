@@ -1,0 +1,38 @@
+id: pub.layers.lens.margin.note-to-annotation-layer
+description: |
+  Lift a Margin web annotation (at.margin.note) into a Layers
+  annotation layer (pub.layers.annotation.annotationLayer).
+
+  Margin's W3C-OpenAnnotation `motivation` token (one of
+  commenting/highlighting/bookmarking/tagging/...) becomes the Layers
+  `kind`. Margin's `target.source` URL is preserved on the Layers
+  annotation's anchor; selector fields (TextQuoteSelector's
+  exact/prefix/suffix or TextPositionSelector's start/end) survive
+  because the underlying selector vertex is renamed in place.
+
+  Margin-specific surface fields not represented in Layers
+  (color, generator, rights, labels, modifiedAt) drop out via
+  remove_field; the round-trip class is therefore `projection`.
+source: at.margin.note
+target: pub.layers.annotation.annotationLayer
+steps:
+  - rename_field: { old: motivation, new: kind }
+  - remove_field: color
+  - remove_field: generator
+  - remove_field: rights
+  - remove_field: labels
+  - remove_field: modifiedAt
+  - remove_field: facets
+  - remove_field: tags
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/oa-motivation"
+  - add_field:
+      name: annotations
+      kind: array
+      default: []
+  - add_field:
+      name: expression
+      kind: string
+      default: ""

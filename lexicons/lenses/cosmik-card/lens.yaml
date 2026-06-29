@@ -1,0 +1,24 @@
+id: pub.layers.lens.cosmik.card-to-entry
+description: |
+  Lift a Semble/Cosmik card (network.cosmik.card) into a Layers
+  resource.entry.
+
+  Cosmik cards are atomic resource items. `url` becomes `sourceRef`
+  (Layers' canonical "where this entry came from" pointer). `type`
+  becomes the Layers `mweKind` so downstream tooling can branch on
+  card kind. `content` (a union of card-kind-specific bodies),
+  `parentCard`, `originalCard`, `provenance` drop from the typed
+  surface.
+source: network.cosmik.card
+target: pub.layers.resource.entry
+steps:
+  - rename_field: { old: url, new: sourceRef }
+  - rename_field: { old: type, new: mweKind }
+  - remove_field: content
+  - remove_field: parentCard
+  - remove_field: originalCard
+  - remove_field: provenance
+  - add_field:
+      name: form
+      kind: string
+      default: ""

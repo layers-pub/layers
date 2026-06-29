@@ -1,0 +1,45 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.integration.getExternal",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "Fetch a foreign ATProto record on demand. Resolves the URI's DID to its `#atproto_pds` service, calls `com.atproto.repo.getRecord`, persists the result into `external_records`, and returns the imported view. Use this to lift one-off records from apps the indexer is not subscribed to (e.g. a single Bluesky video post, a Skylight clip, a Bluemotion video) into Layers without enabling a firehose subscription for the whole namespace.",
+      "parameters": {
+        "type": "params",
+        "required": ["uri"],
+        "properties": {
+          "uri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the record to import."
+          },
+          "fresh": {
+            "type": "boolean",
+            "default": false,
+            "description": "When true, bypass the local cache and refetch from the source PDS."
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["uri", "nsid", "value", "fromCache"],
+          "properties": {
+            "uri":       { "type": "string", "format": "at-uri" },
+            "cid":       { "type": "string", "format": "cid" },
+            "nsid":      { "type": "string" },
+            "fromCache": { "type": "boolean", "description": "True when served from `external_records` without a network fetch." },
+            "value":     { "type": "unknown", "description": "Foreign record body as published by the source." }
+          }
+        }
+      },
+      "errors": [
+        { "name": "BadRequest" },
+        { "name": "NotFound" },
+        { "name": "InternalError" }
+      ]
+    }
+  }
+}

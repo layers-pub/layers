@@ -1,0 +1,98 @@
+{
+  "lexicon": 1,
+  "id": "dev.idiolect.encounter",
+  "description": "A signed record of a single lens invocation. Encounters are the emergent-channel primitive: they record that a translation occurred, with enough context for aggregators (observations) and correctors to reason about it. `use` is a structured ThUse (see dev.idiolect.theory.use) covering action/material/purpose/actor; narrative commentary lives in `annotations`.",
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "tid",
+      "description": "One invocation of a lens on a source, producing an output. The invoker asserts a purposeful invocation: structured `purpose` records the decision-relevant action/material/actor triple, resolvable against a community vocabulary.",
+      "record": {
+        "type": "object",
+        "required": ["lens", "sourceSchema", "use", "kind", "visibility", "occurredAt"],
+        "properties": {
+          "lens": {
+            "type": "ref",
+            "ref": "dev.idiolect.defs#lensRef",
+            "description": "The lens that was invoked."
+          },
+          "sourceSchema": {
+            "type": "ref",
+            "ref": "dev.idiolect.defs#schemaRef",
+            "description": "The source schema the lens translated from."
+          },
+          "targetSchema": {
+            "type": "ref",
+            "ref": "dev.idiolect.defs#schemaRef",
+            "description": "The target schema produced by the lens. Often implied by the lens; may be elided when unambiguous."
+          },
+          "sourceInstance": {
+            "type": "cid-link",
+            "description": "Optional content-addressed reference to the source instance, when the publisher is willing to include it. Omit when visibility restricts publication of source data."
+          },
+          "producedOutput": {
+            "type": "cid-link",
+            "description": "Optional content-addressed reference to the produced output."
+          },
+          "use": {
+            "type": "ref",
+            "ref": "dev.idiolect.defs#use",
+            "description": "Structured record of the action performed, its material, its purpose, and its actor. Consumers match on action subsumption against the referenced vocabularies, not substring."
+          },
+          "downstreamResult": {
+            "type": "string",
+            "maxLength": 256,
+            "knownValues": ["success", "corrected", "rejected", "unknown"],
+            "description": "Open-enum outcome slug as assessed by the invoking party at record time. Resolved against `downstreamResultVocab` when present; `corrected` signals a follow-up correction record is expected or exists."
+          },
+          "downstreamResultVocab": {
+            "type": "ref",
+            "ref": "dev.idiolect.defs#vocabRef",
+            "description": "Vocabulary the `downstreamResult` slug resolves against."
+          },
+          "annotations": {
+            "type": "string",
+            "maxGraphemes": 4000,
+            "description": "Narrative notes from the invoking party. Human commentary; not consumed by machine matchers."
+          },
+          "holder": {
+            "type": "string",
+            "format": "did",
+            "description": "DID of the party the encounter is attributed to. Omit for first-party records (holder is implicit in the repo owner); set explicitly for third-party attestations such as a labeler recording someone else's invocation."
+          },
+          "basis": {
+            "type": "ref",
+            "ref": "dev.idiolect.defs#basis",
+            "description": "Structured grounding for the assertion. Useful when `holder` is a third party and the record must state on what basis the invocation is being attributed."
+          },
+          "kind": {
+            "type": "string",
+            "maxLength": 256,
+            "knownValues": [
+              "invocation-log",
+              "curated",
+              "roundtrip-verified",
+              "production",
+              "adversarial"
+            ],
+            "description": "Open-enum corpus-kind slug. Resolved against `kindVocab` when present; observers declare how they weight each kind."
+          },
+          "kindVocab": {
+            "type": "ref",
+            "ref": "dev.idiolect.defs#vocabRef",
+            "description": "Vocabulary the `kind` slug resolves against."
+          },
+          "visibility": {
+            "type": "ref",
+            "ref": "dev.idiolect.defs#visibility"
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When the lens invocation occurred. Distinct from the record's createdAt, which may be later."
+          }
+        }
+      }
+    }
+  }
+}

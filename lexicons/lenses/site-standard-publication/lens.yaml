@@ -1,0 +1,25 @@
+id: pub.layers.lens.site-standard.publication-to-resource-collection
+description: |
+  Lift a site.standard.publication (the cross-platform publication-
+  grouping record) into a Layers resource.collection.
+
+  `name` survives unchanged. `description` survives. `url` is
+  dropped (Layers collections don't carry a public URL today —
+  consumers reach the Layers expression via its AT-URI). `icon`,
+  `basicTheme`, `preferences` drop out as platform-specific.
+  `kind` is fixed to `"publication"`.
+source: site.standard.publication
+target: pub.layers.resource.collection
+steps:
+  - remove_field: url
+  - remove_field: icon
+  - remove_field: basicTheme
+  - remove_field: preferences
+  - add_field:
+      name: kind
+      kind: string
+      default: "publication"
+  - add_field:
+      name: createdAt
+      kind: string
+      default: "1970-01-01T00:00:00.000Z"

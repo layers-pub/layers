@@ -1,0 +1,27 @@
+id: pub.layers.lens.tangled.repo-pull-to-expression
+description: |
+  Lift a Tangled pull-request (sh.tangled.repo.pull) into a Layers
+  expression.
+
+  `title` becomes `id`. `body` becomes `text`. The diff `patch`
+  field, `pullId`, `targetBranch`, `targetRepo`, `source` drop
+  from the typed surface — they're tangled-specific code-collab
+  fields without Layers counterparts.
+source: sh.tangled.repo.pull
+target: pub.layers.expression.expression
+steps:
+  - rename_field: { old: title, new: id }
+  - rename_field: { old: body, new: text }
+  - remove_field: patch
+  - remove_field: pullId
+  - remove_field: targetBranch
+  - remove_field: targetRepo
+  - remove_field: source
+  - add_field:
+      name: kind
+      kind: string
+      default: "pull-request"
+  - add_field:
+      name: kindUri
+      kind: string
+      default: "at://did:plc:layers/pub.layers.ontology.ontology/expression-kinds#tangled-pull"

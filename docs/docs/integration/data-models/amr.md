@@ -25,7 +25,7 @@ AMR represents sentence meaning as a rooted, directed, labeled graph. Nodes are 
 
 | AMR Concept | Layers Equivalent | Notes |
 |---|---|---|
-| AMR graph | `pub.layers.annotation.annotationLayer` with `kind="graph"` and `formalism="amr"` | The entire AMR graph is one annotation layer. |
+| AMR graph | `pub.layers.annotation.annotationLayer` with `kind="graph"` and `formalism="AMR"` | The entire AMR graph is one annotation layer. |
 | Concept node | `pub.layers.annotation.defs#annotation` | Each AMR concept is an annotation with `label` = concept name (e.g., `want-01`, `boy`, `go-02`). `ontologyTypeRef` can point to the PropBank frameset definition. |
 | Root node | The annotation with no incoming `headIndex` | Or explicitly marked via features. |
 | Named entity | `annotation` with `label` = entity type + features containing `:name` and `:opN` values | AMR represents named entities as type + name structure. |
@@ -50,9 +50,9 @@ UCCA represents semantic structure using a directed acyclic graph (DAG) anchored
 
 | UCCA Concept | Layers Equivalent | Notes |
 |---|---|---|
-| UCCA graph | `annotationLayer(kind="graph")` with `formalism="ucca"` | DAG representation. |
-| Scene | `annotation` with `label="Scene"` and children | Scene-evoking unit (evoked by a Process or State main relation). |
-| Participant (A) | `argumentRef` with `role="A"` | Participant argument. |
+| UCCA graph | `annotationLayer(kind="graph")` with `formalism="UCCA"` | DAG representation. |
+| Scene (S) | `annotation` with `label="Scene"` and children | Scene-evoking node. |
+| Participant (A) | `argumentRef` with `role="A"` (Actor) | Participant argument. |
 | Process (P) | `argumentRef` with `role="P"` | Process predicate. |
 | State (S) | `argumentRef` with `role="S"` | State predicate. |
 | Center (C) / Elaborator (E) | `argumentRef` with appropriate role labels | UCCA edge categories map to argument roles. |
@@ -66,7 +66,7 @@ DRS provides box-based semantic representations with discourse referents and con
 
 | DRS Concept | Layers Equivalent | Notes |
 |---|---|---|
-| DRS box | `annotation` with `childIds` for its conditions and referents; place `kind="graph"` and `formalism`/`formalismUri` on the enclosing `annotationLayer` record | A discourse box. |
+| DRS box | `annotation` with `kind="graph"` and `formalism` via `formalismUri` | A discourse box. Children are conditions and referents. |
 | Discourse referent | `annotation` with `label` = variable name | Variables introduced in a box. |
 | Condition | `annotation` with `label` = predicate | Predicates over referents. |
 | Nested DRS (conditional, negation) | `annotation.childIds` containing sub-box annotations | Box embedding via parent-child structure. |
@@ -82,7 +82,7 @@ EDS and DMRS are graph-based representations derived from HPSG/MRS.
 | Predication node | `annotation` with `label` = predicate symbol | Each predication maps to an annotation. |
 | Argument edge | `argumentRef` | `ARG1`, `ARG2`, etc. |
 | Quantifier scope | `argumentRef` with `role="RSTR"` / `role="BODY"` | Scope relations. |
-| Token alignment | `annotation.anchor.tokenRefSequence` | Token-index-to-node alignment. For character-span alignment (cfrom/cto), use `annotation.anchor.textSpan`. |
+| Token alignment | `annotation.anchor.tokenRefSequence` | Character-span-to-node alignment. |
 
 ## Semantic Dependency Parsing (SDP)
 

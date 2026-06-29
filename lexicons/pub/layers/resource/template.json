@@ -8,7 +8,11 @@
       "key": "tid",
       "record": {
         "type": "object",
-        "required": ["text", "slots", "createdAt"],
+        "required": [
+          "text",
+          "slots",
+          "createdAt"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -19,11 +23,6 @@
             "type": "string",
             "description": "Template text with {slotName} placeholders (e.g., '{subject} {verb} the {object}').",
             "maxLength": 50000
-          },
-          "language": {
-            "type": "string",
-            "description": "BCP-47 language tag.",
-            "maxLength": 32
           },
           "slots": {
             "type": "array",
@@ -74,6 +73,15 @@
           "createdAt": {
             "type": "string",
             "format": "datetime"
+          },
+          "languages": {
+            "type": "array",
+            "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
+            "maxLength": 128,
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
           }
         }
       }

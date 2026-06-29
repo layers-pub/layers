@@ -83,6 +83,11 @@
               "ref": "pub.layers.defs#knowledgeRef"
             }
           },
+          "licensing": {
+            "type": "ref",
+            "ref": "pub.layers.defs#licensing",
+            "description": "Licensing terms governing this persona's guidelines and framework (supports dual/multi/component licensing)."
+          },
           "features": {
             "type": "ref",
             "ref": "pub.layers.defs#featureMap",

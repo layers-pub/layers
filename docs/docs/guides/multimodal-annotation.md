@@ -8,7 +8,7 @@ Layers supports annotation across text, audio, video, image, and paged documents
 
 ## The Polymorphic Anchor
 
-Every annotation attaches to source data through an [`anchor`](../foundations/primitives.md#anchor). The anchor is polymorphic: consumers dispatch on which anchoring sub-field is populated (textSpan, tokenRef, tokenRefSequence, temporalSpan, spatioTemporalAnchor, pageAnchor, externalTarget). There is no discriminator field. The populated sub-field determines the modality:
+Every annotation attaches to source data through an [`anchor`](../foundations/primitives.md#anchor). The anchor is polymorphic: consumers dispatch on which anchoring sub-field is populated (textSpan, tokenRef, temporalSpan, spatioTemporalAnchor, pageAnchor, externalTarget). There is no discriminator field. The populated sub-field determines the modality:
 
 | Anchor Kind | Modality | Value |
 |-------------|----------|-------|
@@ -42,22 +42,22 @@ Each expression can reference its parent via `parentRef` and specify how it atta
 
 ```
 Expression (kind="recording", text="Hello world")
-    ├── mediaRef → Media (kind="audio", audio={sampleRate:16000, codec:"flac"})
+    ├── mediaRef → Media (kind="audio", sampleRate=16000, codec="flac")
     ├── Word (text="Hello", anchor={temporalSpan: {start: 0, ending: 500}})
     └── Word (text="world", anchor={temporalSpan: {start: 520, ending: 1100}})
 ```
 
-Media records carry modality-specific metadata through composable info objects. The record fields are `audio`, `video`, and `document`, whose types are `audioInfo`, `videoInfo`, and `documentInfo` respectively:
+Media records carry modality-specific metadata through composable info objects:
 
-- **`audio`** (`audioInfo` type): sample rate, channels, bit depth, codec, speaker count
-- **`video`** (`videoInfo` type): resolution, frame rate, codec, aspect ratio, color space
-- **`document`** (`documentInfo` type): DPI, page count, script system, writing direction, OCR engine
+- **`audioInfo`**: sample rate, channels, bit depth, codec, speaker count
+- **`videoInfo`**: resolution, frame rate, codec, aspect ratio, color space
+- **`documentInfo`**: DPI, page count, script system, writing direction, OCR engine
 
-A video media record can carry both the `video` field and the `audio` field since video files typically contain an audio track.
+A video media record can carry both `videoInfo` and `audioInfo` since video files typically contain an audio track.
 
 ## Annotating Text
 
-Text annotation uses `textSpan` or `tokenRef` anchors. UTF-8 byte offsets reference the expression's `text` field. Note: annotation objects require a `uuid` field (`pub.layers.defs#uuid`); it is elided from the examples below for brevity.
+Text annotation uses `textSpan` or `tokenRef` anchors. UTF-8 byte offsets reference the expression's `text` field.
 
 ```json
 {
@@ -108,7 +108,7 @@ Audio annotation uses `temporalSpan` anchors with millisecond offsets. The expre
 }
 ```
 
-Multiple annotation layers (speaker turns, transcription, POS tags, prosody) can all reference the same temporal spans.
+Multiple annotation layers (speaker turns, transcription, POS tags, prosody) can all reference the same temporal spans, building up layers of analysis.
 
 For forced alignment between audio and text, use [`pub.layers.alignment.alignment`](../lexicons/alignment.md) with `kind="audio-to-text"`.
 
@@ -211,7 +211,7 @@ Web content uses `externalTarget` anchors combined with W3C selectors:
     "externalTarget": {
       "source": "https://example.org/article",
       "selector": {
-        "$type": "pub.layers.defs#textQuoteSelector",
+        "type": "TextQuoteSelector",
         "exact": "linguistic annotation",
         "prefix": "the field of ",
         "suffix": " has grown"

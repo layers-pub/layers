@@ -4,6 +4,29 @@ All notable changes to the Layers lexicon schemas will be documented in this fil
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.8.0] - 2026-06-29
+
+### Added
+
+- Shared licensing model: `pub.layers.defs#licensing` (dual and multi licensing via an SPDX license `expression` plus a structured `licenseRef[]` array with component `appliesTo`) and `pub.layers.defs#licenseRef` (`spdx`/`spdxUri` URI+slug pair, `name`, `url`, `attribution`, `notes`). Mirrors a DataCite rightsList.
+- Structured bibliographic citation: `pub.layers.eprint.defs#citation` (a raw formatted string and/or structured fields following CSL-JSON and DataCite), `pub.layers.eprint.defs#creator` (CSL name parts, DataCite `nameType`/`affiliation`, and ORCID/ROR/OpenAlex grounding via `agent`/`knowledgeRef`), and `pub.layers.eprint.defs#date` (a CSL-style date).
+- Flat `licensing` and always-array `eprintRefs` on every top-level produce: corpus, ontology, resource.collection, judgment.experimentDef, annotation.annotationLayer, annotation.clusterSet, segmentation, alignment, media, graph.graphEdgeSet. The expression record gains `eprintRefs`; the persona record gains `licensing`.
+- `reproducibility` (the shared `pub.layers.defs#reproducibilityInfo`) on data-producing produces: corpus, judgment.experimentDef, annotation.annotationLayer, annotation.clusterSet, segmentation, alignment, graph.graphEdgeSet.
+- `knowledgeRef.source` known values `orcid`, `ror`, `openalex`, `crossref`, `dblp`, `semantic-scholar` for bibliographic and identity grounding.
+- Six `pub.layers.auth*` OAuth permission-set lexicons: authReadOnly, authAnnotator, authExperimenter, authCorpusManager, authOntologyEditor, authFull.
+- `pub.layers.integration` appview method lexicons: `applyLens`, `getExternal`, `listExternal`.
+- Cross-app transform layer: vendored third-party app lexicons under `foreign/` (beaconbits, cosmik, dropanchor, grain, greengale, idiolect, leaflet, mapped, margin, site-standard, streamplace, tangled, voxport) and hand-authored panproto lens specs under `lenses/` that map their records into Layers.
+- Upstream format theory and lens modules under `upstream/` (AMR, CHILDES, PMB, UCCA, UDS, UMR) for converting established annotation corpora into Layers.
+- Expanded integration documentation, including a new CSL-JSON, BibTeX, and DataCite citation-interchange reference.
+
+### Changed (Breaking)
+
+- `pub.layers.corpus.corpus.license` (free string) is replaced by `licensing` (`pub.layers.defs#licensing`).
+- `pub.layers.expression.expression.eprintRef` (single at-uri) is replaced by `eprintRefs` (array of at-uri). All eprint references are now arrays.
+- `pub.layers.eprint.eprint.citation` (free string) is replaced by a ref to `pub.layers.eprint.defs#citation`; `platformEprintRef` (single) is replaced by `platformEprintRefs` (array).
+- `reproducibilityInfo` moves from `pub.layers.eprint.defs` to `pub.layers.defs`; `pub.layers.eprint.dataLink.reproducibility` now references it there.
+- Singular `language` fields are replaced by `languages` (arrays of BCP-47 tags) across records, including corpus, expression, resource.collection, the annotation layers, and media.
+
 ## [0.7.0] - 2026-06-10
 
 ### Added

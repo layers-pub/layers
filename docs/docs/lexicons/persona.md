@@ -28,6 +28,7 @@ A persona representing an annotator's role, expertise, and interpretive framewor
 | `guidelinesFormat` | string | Format of the guidelines text, so consumers can render it safely without sniffing. Defaults to `plain` when omitted. Known values: `plain`, `html`, `markdown` |
 | `guidelinesBlob` | blob | Annotation guidelines document (PDF, Markdown, or plain text). |
 | `knowledgeRefs` | array | Knowledge graph references (e.g., ORCID, institutional identifiers). Array of ref: `pub.layers.defs#knowledgeRef` |
+| `licensing` | ref | Licensing terms governing this persona's guidelines and framework (supports dual/multi/component licensing). Ref: `pub.layers.defs#licensing` |
 | `features` | ref | Open-ended features: expertise level, certification, language proficiency, reliability. Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
 

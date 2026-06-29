@@ -11,24 +11,25 @@ The goal is not to replicate each framework's API or file format, but to show th
 
 ## Frameworks
 
-| Framework | Origin | Primary Focus |
-|-----------|--------|---------------|
-| [Concrete](./concrete) | JHU HLTCOE | Multi-layer NLP pipeline output |
-| [bead](./bead) | FACTS.lab | Template-based judgment experiments |
-| [FOVEA](./fovea) | JHU HLTCOE | Persona/ontology-driven video event annotation |
-| [LAF/GrAF](./laf-graf) | ISO 24612 | Stand-off graph annotation |
-| [UIMA/CAS](./uima-cas) | Apache/OASIS | Type system-driven analysis |
-| [CoNLL](./conll) | CoNLL shared tasks | Column-based token annotation |
-| [TEI](./tei) | Text Encoding Initiative | XML document encoding |
-| [ELAN/Praat](./elan-praat) | MPI / University of Amsterdam | Time-aligned multimedia annotation |
-| [FoLiA](./folia) | Radboud University | XML linguistic annotation |
-| [NAF](./naf) | NewsReader project | NLP pipeline interchange |
-| [brat](./brat) | Tsujii Laboratory, University of Tokyo | Web-based text annotation |
-| [AMR / UCCA / DRS / EDS](./amr) | Various | Semantic graph formalisms |
-| [PAULA/Salt/ANNIS](./paula-salt) | Humboldt University / corpus-tools.org | Multi-layer corpus architecture |
-| [NIF](./nif) | AKSW, University of Leipzig | Linked Data NLP interchange |
-| [W3C Web Annotation](./w3c-web-annotation) | W3C Recommendation | Web-based annotation |
-| [Decomp / UDS](./decomp) | Decompositional Semantics Initiative | Real-valued semantic property graphs |
+| Framework                                  | Origin                                 | Primary Focus                             |
+| ------------------------------------------ | -------------------------------------- | ----------------------------------------- |
+| [Concrete](./concrete)                     | JHU HLTCOE                             | Multi-layer NLP pipeline output           |
+| [bead](./bead)                             | FACTS.lab                              | Template-based judgment experiments       |
+| [FOVEA](./fovea)                           | FACTS.lab                              | Persona-driven annotation with ontologies |
+| [LAF/GrAF](./laf-graf)                     | ISO 24612                              | Stand-off graph annotation                |
+| [UIMA/CAS](./uima-cas)                     | Apache/OASIS                           | Type system-driven analysis               |
+| [CoNLL](./conll)                           | CoNLL shared tasks                     | Column-based token annotation             |
+| [TEI](./tei)                               | Text Encoding Initiative               | XML document encoding                     |
+| [ELAN/Praat](./elan-praat)                 | MPI / University of Amsterdam          | Time-aligned multimedia annotation        |
+| [FoLiA](./folia)                           | Radboud University                     | XML linguistic annotation                 |
+| [NAF](./naf)                               | NewsReader project                     | NLP pipeline interchange                  |
+| [brat](./brat)                             | Tsujii Laboratory, University of Tokyo | Web-based text annotation                 |
+| [AMR / UCCA / DRS / EDS](./amr)            | Various                                | Semantic graph formalisms                 |
+| [PAULA/Salt/ANNIS](./paula-salt)           | Humboldt University / corpus-tools.org | Multi-layer corpus architecture           |
+| [NIF](./nif)                               | AKSW, University of Leipzig            | Linked Data NLP interchange               |
+| [W3C Web Annotation](./w3c-web-annotation) | W3C Recommendation                     | Web-based annotation                      |
+| [Decomp / UDS](./decomp)                   | Decompositional Semantics Initiative   | Real-valued semantic property graphs      |
+| [CSL-JSON / BibTeX / DataCite](./csl-datacite) | CSL project / BibTeX / DataCite e.V. | Bibliographic citation and licensing interchange |
 
 ## Methodology
 

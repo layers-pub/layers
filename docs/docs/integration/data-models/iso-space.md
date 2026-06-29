@@ -15,7 +15,7 @@
 
 ## Overview
 
-ISO-Space is the ISO standard framework for annotating spatial and spatiotemporal information in natural language text. It provides markup for places, spatial entities, spatial signals (prepositions and connectives), paths, motion events, and four types of spatial links: qualitative spatial links (QSLINK) using RCC-8 topological relations, orientation links (OLINK) for directional relations, measure links (MEASURELINK) for metric/distance relations, and motion links (MOVELINK) connecting motion events to their spatial arguments.
+ISO-Space is the ISO standard framework for annotating spatial and spatiotemporal information in natural language text. It provides markup for places, spatial entities, spatial signals (prepositions and connectives), paths, motion events, and four types of spatial links: qualitative spatial links (QSLINK) using RCC-8 topological relations, orientation links (OLINK) for directional relations, measure links (MEASURELINK) for metric/distance relations, and motion links (MLINK) connecting motion events to their paths.
 
 Layers fully subsumes ISO-Space through three mechanisms:
 1. **Structured spatial annotations.** `spatialExpression`, `spatialEntity`, and `spatialModifier` in `pub.layers.defs` capture all place and spatial entity attributes.
@@ -30,8 +30,8 @@ Layers fully subsumes ISO-Space through three mechanisms:
 |---|---|---|
 | `PLACE` | `annotation` with `subkind="location-mention"` + `spatial` field | Named/nominal place references. `spatial.type="location"`. Geo-coordinates in `spatial.value.geometry` with `crs="wgs84"`. Gazetteer references in `knowledgeRefs`. |
 | `PLACE.type` (COUNTRY, STATE, CITY, etc.) | `annotation.label` | The place type as the primary label |
-| `PLACE.gazref` | `annotation.knowledgeRefs` | Gazetteer reference as `knowledgeRef`; gazetteer systems such as GeoNames and OSM are not enumerated `source` slugs, so use `source="custom"` with a `sourceUri` pointing to the gazetteer's AT-URI type definition, or `uri` for the full entry URI |
-| `PLACE.latLong` | `spatialEntity.geometry` with `crs="wgs84"` | WKT POINT: `"POINT(lat lon)"` following the lexicon's lat-lon convention; note this is the reverse of standard WKT/OGC axis order (POINT(lon lat)) |
+| `PLACE.gazref` | `annotation.knowledgeRefs` | Gazetteer reference as `knowledgeRef` with appropriate `source` (e.g., `"geonames"`, `"osm"`) |
+| `PLACE.latLong` | `spatialEntity.geometry` with `crs="wgs84"` | WKT POINT: `"POINT(lat lon)"` |
 | `PLACE.dcl` (document creation location) | `spatialExpression.function="document-location"` | Parallel to TimeML's `functionInDocument` |
 | `SPATIAL_ENTITY` (non-place) | `annotation` with `subkind="spatial-expression"` + `spatial` field | Non-place spatial entities (objects with spatial extent). `spatial.type` varies by entity nature. |
 | `SPATIAL_ENTITY.dimensionality` | `spatialEntity.dimensions` | 2, 3, or 4 (minimum 2, maximum 4) |
@@ -78,10 +78,9 @@ Layers fully subsumes ISO-Space through three mechanisms:
 | `MEASURELINK.relType` (DISTANCE) | `graphEdge` with `edgeType="near"`, `"far"`, or `"adjacent"` | Qualitative distance; quantitative value in `properties` |
 | `MEASURELINK.value` | `graphEdge.properties` feature `distance` | Distance value as string (e.g., "50km", "3 miles") |
 | `MEASURELINK.unit` | `graphEdge.properties` feature `distance-unit` | Unit of measurement |
-| `MOVELINK` (motion link) | `pub.layers.graph.graphEdge` with `edgeType="causal"` or `"related-to"` | Links a motion event to its spatial arguments |
-| `MOVELINK.move` (trigger) | `graphEdge.properties` feature `trigger` | The motion event (verb/predicate) that triggers the link |
-| `MOVELINK.mover` | `graphEdge.source` | The entity undergoing motion |
-| `MOVELINK.goal` / `MOVELINK.source` / `MOVELINK.midPoint` / `MOVELINK.ground` | `graphEdge.target`; roles captured as MOTION annotation arguments with roles `goal`, `source`, `midpoint`, `ground` | Destination, origin, intermediate point, and reference ground of the motion |
+| `MLINK` (motion link) | `pub.layers.graph.graphEdge` with `edgeType="causal"` or `"related-to"` | Links between motion events and spatial entities/paths |
+| `MLINK.figure` | `graphEdge.source` | The moving entity |
+| `MLINK.ground` | `graphEdge.target` | The reference entity or path |
 
 ### Signals on Links
 
@@ -103,7 +102,7 @@ An ISO-Space-annotated document can be converted to Layers records as follows:
 7. For each `QSLINK`, create a `graphEdge` with the mapped RCC-8 relation as `edgeType`
 8. For each `OLINK`, create a `graphEdge` with the mapped directional relation as `edgeType`, with frame of reference in `properties`
 9. For each `MEASURELINK`, create a `graphEdge` with a distance `edgeType` and distance value in `properties`
-10. For each `MOVELINK`, create a `graphEdge` with `MOVELINK.mover` as `source`, the primary spatial target (goal, ground) as `target`, and `MOVELINK.move` (the trigger) in `graphEdge.properties` feature `trigger`; map remaining spatial arguments (source, midPoint, ground) as MOTION annotation arguments with their respective roles
+10. For each `MLINK`, create a `graphEdge` linking the motion event to its spatial arguments
 
 All ISO-Space IDs map to Layers UUIDs. Cross-references use `objectRef` with `localId` (same record) or `recordRef` + `objectId` (cross-record).
 

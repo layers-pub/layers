@@ -1,0 +1,50 @@
+{
+  "id": "app.beaconbits.report",
+  "defs": {
+    "main": {
+      "key": "tid",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "beaconUri",
+          "reason",
+          "createdAt"
+        ],
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "Reason for the report",
+            "knownValues": [
+              "spam",
+              "inappropriate_content",
+              "doxxing",
+              "harassment",
+              "impersonation",
+              "other"
+            ],
+            "maxGraphemes": 64
+          },
+          "details": {
+            "type": "string",
+            "description": "Additional context for the report",
+            "maxGraphemes": 500
+          },
+          "beaconUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT URI of the beacon being reported"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Timestamp when the report was created"
+          }
+        }
+      },
+      "description": "A report of inappropriate content on a beacon"
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

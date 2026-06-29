@@ -8,7 +8,10 @@
       "key": "tid",
       "record": {
         "type": "object",
-        "required": ["name", "createdAt"],
+        "required": [
+          "name",
+          "createdAt"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -27,13 +30,16 @@
           "kind": {
             "type": "string",
             "description": "Collection kind slug (fallback when kindUri unavailable).",
-            "knownValues": ["lexicon", "frame-inventory", "gazetteer", "paradigm", "stop-list", "stimulus-pool", "custom"],
+            "knownValues": [
+              "lexicon",
+              "frame-inventory",
+              "gazetteer",
+              "paradigm",
+              "stop-list",
+              "stimulus-pool",
+              "custom"
+            ],
             "maxLength": 128
-          },
-          "language": {
-            "type": "string",
-            "description": "BCP-47 language tag.",
-            "maxLength": 32
           },
           "version": {
             "type": "string",
@@ -58,6 +64,20 @@
             "ref": "pub.layers.defs#annotationMetadata",
             "description": "Provenance: who curated this collection, with what tool."
           },
+          "licensing": {
+            "type": "ref",
+            "ref": "pub.layers.defs#licensing",
+            "description": "Licensing terms governing this collection (supports dual/multi/component licensing)."
+          },
+          "eprintRefs": {
+            "type": "array",
+            "description": "Eprint records (papers/preprints) describing or associated with this collection.",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
           "features": {
             "type": "ref",
             "ref": "pub.layers.defs#featureMap"
@@ -65,6 +85,15 @@
           "createdAt": {
             "type": "string",
             "format": "datetime"
+          },
+          "languages": {
+            "type": "array",
+            "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
+            "maxLength": 128,
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
           }
         }
       }

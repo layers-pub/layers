@@ -1,5 +1,5 @@
 ---
-sidebar_label: "Design Principles"
+sidebar_label: 'Design Principles'
 sidebar_position: 2
 ---
 
@@ -39,15 +39,15 @@ Annotations apply to text, audio, video, image, and paged documents through a **
 
 ## 6. Knowledge-Grounded
 
-Every major annotation type includes a `knowledgeRefs` field for linking to external knowledge bases. A named entity annotation can link to a Wikidata entry, a frame label can link to FrameNet, and a dependency type can link to a Universal Dependencies authority record. See the [Knowledge Grounding guide](../guides/knowledge-grounding.md) for the full entity grounding workflow.
+Every major annotation type includes a `knowledgeRefs` field for linking to external knowledge bases. A named entity annotation can link to a Wikidata entry, a frame label can link to FrameNet, and a dependency type can link to a Universal Dependencies authority record. The same `knowledgeRef` grounds bibliographic creators: a citation's authors can carry ORCID, ROR, OpenAlex, Crossref, DBLP, or Semantic Scholar identifiers. See the [Knowledge Grounding guide](../guides/knowledge-grounding.md) for the full entity grounding workflow.
 
 > A named entity annotation with label "Obama" includes a knowledgeRef to Wikidata Q76 (Barack Hussein Obama). Tools can then resolve the entity to structured data, infer properties, or link to other corpora mentioning the same entity.
 
 ## 7. Eprint-Linked
 
-Layers integrates with eprint platforms (including chive.pub, a decentralized eprint service built on ATProto). Annotation datasets and corpus releases are published as eprints; individual annotations can reference back to associated publications. Researchers can find annotation datasets by searching for papers, or browse all annotations on a paper.
+Layers integrates with eprint platforms (including chive.pub, a decentralized eprint service built on ATProto). Annotation datasets and corpus releases are published as eprints; individual annotations can reference back to associated publications. Researchers can find annotation datasets by searching for papers, or browse all annotations on a paper. Every top-level produce (corpus, expression, annotation layer, cluster set, segmentation, alignment, ontology, experiment definition, graph edge set, media, collection) links its papers through the same always-array `eprintRefs` field. Most produces also carry shared structured `licensing` (single, dual/choose-one, composite, or component-scoped terms via an SPDX expression and per-license detail), and data-producing releases additionally carry `reproducibility` (code, commit, command, environment, random seed).
 
-> A named entity corpus release is published as an eprint with full metadata (authors, abstract, publication venue). Annotation datasets link back to the eprint via `eprintRefs` (corpus records) or `eprintRef` (expression records). Researchers can discover the corpus by searching the publication platform.
+> A named entity corpus release is published as an eprint with full metadata (authors, abstract, publication venue). Annotation datasets link back to the eprint via `eprintRefs`. Researchers can discover the corpus by searching the publication platform.
 
 ## 8. Interoperable
 
@@ -63,8 +63,8 @@ All annotation data lives in **user-controlled Personal Data Servers (PDSes)**. 
 
 ## 10. Community-Expandable Enums
 
-Most community-expandable enumerated fields use a **dual pattern**: a `fooUri` field pointing to an ATProto record (the canonical reference) and a `foo` string field containing a slug (for human readability and fallback). See [Flexible Enums](./flexible-enums.md) for a detailed explanation with examples. Consumers check the URI first; if not recognized, they fall back to the slug. Known values are documented but not enforced.
+All enumerated fields use a **dual pattern**: a `fooUri` field pointing to an ATProto record (the canonical reference) and a `foo` string field containing a slug (for human readability and fallback). See [Flexible Enums](./flexible-enums.md) for a detailed explanation with examples. Consumers check the URI first; if not recognized, they fall back to the slug. Known values are documented but not enforced.
 
 This allows the community to **mint new values without schema changes**: someone creates a new linguistic category as a knowledge graph node, uses its AT-URI in their annotations, and the schema accommodates it transparently.
 
-> A `kind` field always has a corresponding `kindUri`. Standard values like "token-tag" have known URIs, but anyone can create a new kind node and use its URI. Consumers recognize both standard and custom kinds through the same mechanism.
+> A `kind` field always has a corresponding `kindUri`. Standard values like "token" have known URIs, but anyone can create a new kind node and use its URI. Consumers recognize both standard and custom kinds through the same mechanism.

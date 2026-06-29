@@ -24,7 +24,7 @@ Bluesky is a decentralized social network built on ATProto. Posts are stored as 
 
 ## Integration Pattern
 
-An `expression` record sets `sourceRef` to the AT-URI of a Bluesky post. Annotation layers created over that expression become linguistic analyses of the post's text.
+An `expression` record sets `sourceRef` to the AT-URI of a Bluesky post. Annotation layers created over that expression become linguistic analyzes of the post's text.
 
 ```json
 {
@@ -41,11 +41,11 @@ Annotation layers (POS tagging, NER, sentiment, discourse analysis, etc.) refere
 
 ## Layers Types Involved
 
-| Type | Role |
-|---|---|
-| `pub.layers.expression.expression` | `sourceRef` points to `app.bsky.feed.post` AT-URI |
-| `pub.layers.segmentation.segmentation` | Tokenization of the post text |
-| `pub.layers.annotation.annotationLayer` | Linguistic annotation layers over the post |
+| Type                                    | Role                                              |
+| --------------------------------------- | ------------------------------------------------- |
+| `pub.layers.expression.expression`      | `sourceRef` points to `app.bsky.feed.post` AT-URI |
+| `pub.layers.segmentation.segmentation`  | Tokenization of the post text                     |
+| `pub.layers.annotation.annotationLayer` | Linguistic annotation layers over the post        |
 
 ## Discovery
 

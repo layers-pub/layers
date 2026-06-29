@@ -23,17 +23,17 @@ Concrete is a stand-off annotation data model originally defined via Apache Thri
 
 | Concrete Type | Layers Equivalent | Notes |
 |---|---|---|
-| `Communication` | `pub.layers.expression.expression` (record) | Direct mapping. Concrete's Communication maps to a top-level Expression with `kind="document"`. Layers adds `sourceUrl`, `sourceRef`, `eprintRef`, `knowledgeRefs` for ATProto ecosystem integration, and `parentRef`/`anchor` for recursive nesting. Concrete's `id` field (stable corpus+document identifier) maps to the expression record's `id` field; the record key is an auto-generated `tid` and the AT-URI serves as the addressing handle. |
+| `Communication` | `pub.layers.expression.expression` (record) | Direct mapping. Concrete's Communication maps to a top-level Expression with `kind="document"`. Layers adds `sourceUrl`, `sourceRef`, `eprintRefs`, `knowledgeRefs` for ATProto ecosystem integration, and `parentRef`/`anchor` for recursive nesting. Concrete's `id` field maps to the record's rkey; `uuid` maps to the AT-URI. |
 | `CommunicationMetadata` | `pub.layers.defs#annotationMetadata` + `pub.layers.defs#featureMap` | Layers separates metadata (tool, timestamp, confidence, persona) from open features. |
 
 ### Hierarchical Structure
 
 | Concrete Type | Layers Equivalent | Notes |
 |---|---|---|
-| `Section` | `pub.layers.expression.expression` with `kind="section"` (or `paragraph`, `chapter`, `turn`, etc.) | Concrete sections map to nested Expressions with `parentRef` pointing to the document Expression and `anchor` specifying UTF-8 byte offsets. Layers adds `kindUri` for community-expandable section types; audio/video sections anchor temporally via `anchor.temporalSpan` (pub.layers.defs#anchor). |
-| `Sentence` | `pub.layers.expression.expression` with `kind="sentence"` | Nested Expression with `parentRef` pointing to its section. Audio/video sentences anchor temporally via `anchor.temporalSpan` (pub.layers.defs#anchor). |
+| `Section` | `pub.layers.expression.expression` with `kind="section"` (or `paragraph`, `chapter`, `turn`, etc.) | Concrete sections map to nested Expressions with `parentRef` pointing to the document Expression and `anchor` specifying UTF-8 byte offsets. Layers adds `kindUri` for community-expandable section types and `temporalSpan` for audio/video sections. |
+| `Sentence` | `pub.layers.expression.expression` with `kind="sentence"` | Nested Expression with `parentRef` pointing to its section. Layers adds `temporalSpan`. |
 | `Tokenization` | `pub.layers.segmentation.segmentation` | Tokenization is represented in the segmentation record, which contains a list of tokens decomposing an expression's text. Each tokenization has an optional `expressionRef` that scopes it to a specific sub-expression (e.g., a sentence-level expression). Layers supports multiple tokenizations per expression and community-expandable tokenization strategies via `kindUri`. |
-| `Token` | `pub.layers.expression.expression` with `kind="word"` | Concrete's `Token` has `tokenIndex`, `text`, and `TextSpan`; audio-grounded tokens anchor temporally via `anchor.temporalSpan` (pub.layers.defs#anchor). Tokens are word-level Expressions nested within their sentence. |
+| `Token` | `pub.layers.expression.expression` with `kind="word"` | Concrete's `Token` has `tokenIndex`, `text`, and `TextSpan`; Layers adds `temporalSpan` for audio-grounded tokens. Tokens are word-level Expressions nested within their sentence. |
 | `TextSpan` | `pub.layers.defs#span` | Concrete uses `start`/`ending` (exclusive); Layers uses `byteStart`/`byteEnd` (UTF-8 byte offsets, exclusive end). The import pipeline converts character offsets to byte offsets at import time. |
 
 ### Segmentation and Structural Binding
@@ -81,9 +81,9 @@ Concrete is a stand-off annotation data model originally defined via Apache Thri
 
 | Concrete Type | Layers Equivalent | Notes |
 |---|---|---|
-| `AnnotationMetadata` | `pub.layers.defs#annotationMetadata` | Direct mapping. `tool` → `tool`; `timestamp` → `timestamp`. Concrete's `Digest` field maps to `digest`; Concrete's `TheoryDependencies` field maps to `dependencies` (see row below). Layers adds `personaRef` for annotator persona and `agent` for ATProto-native annotator identity. Confidence is not carried on Concrete AnnotationMetadata; Layers provides `annotationMetadata.confidence` (0-1000) for cases where per-metadata confidence is needed, complementing per-annotation confidence on individual Concrete objects (TaggedToken.confidence, EntityMention.confidence, Situation.confidence). |
-| `TheoryDependencies` | `pub.layers.defs#annotationMetadata.dependencies` | Concrete's `TheoryDependencies` tracks which upstream analyses an annotation depends on. Layers uses the `dependencies` array on `annotationMetadata`, containing `objectRef` references to upstream records. |
-| `kBest` | `pub.layers.annotation.annotationLayer.rank` + `alternativesRef` | Concrete supports k-best lists for parse trees and other analyses. Layers models this with `rank` (1 = best) and `alternativesRef` (points to the top-ranked layer) on `annotationLayer`. Each alternative is a separate layer record. |
+| `AnnotationMetadata` | `pub.layers.defs#annotationMetadata` | Direct mapping. `tool` → `tool`; `timestamp` → `timestamp`; `confidence` → `confidence`. Layers adds `personaRef` for annotator persona, `digest` for content hashing, and `dependencies` for provenance chains. |
+| `TheoryDependencies` | `pub.layers.defs#annotationMetadata.dependencies` | Concrete's `TheoryDependencies` tracks which upstream analyzes an annotation depends on. Layers uses the `dependencies` array on `annotationMetadata`, containing `objectRef` references to upstream records. |
+| `kBest` | `pub.layers.annotation.annotationLayer.rank` + `alternativesRef` | Concrete supports k-best lists for parse trees and other analyzes. Layers models this with `rank` (1 = best) and `alternativesRef` (points to the top-ranked layer) on `annotationLayer`. Each alternative is a separate layer record. |
 | `CommunicationTagging` | `pub.layers.annotation.annotationLayer` with `kind="document-tag"` | Concrete's document-level tagging maps to an annotation layer with `kind="document-tag"` on the expression. |
 | `LanguageIdentification` | `expression.language` / `expression.languages` + `pub.layers.annotation.annotationLayer` with `subkind="language-id"` | Concrete's document-level language ID maps to `expression.language` (primary) and `expression.languages` (additional). Per-span language identification uses an annotation layer with `subkind="language-id"`. |
 
