@@ -4,7 +4,7 @@ All notable changes to the Layers lexicon schemas will be documented in this fil
 
 This project follows [Semantic Versioning](https://semver.org/).
 
-## [0.8.0] - 2026-06-22
+## [0.8.0] - 2026-06-29
 
 ### Added
 
