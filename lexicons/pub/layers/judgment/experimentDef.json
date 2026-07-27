@@ -5,17 +5,19 @@
     "main": {
       "type": "record",
       "description": "Definition of an annotation or judgment experiment.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": ["name", "createdAt"],
         "properties": {
           "name": {
             "type": "string",
+            "description": "Human-readable name of this experiment.",
             "maxLength": 512
           },
           "description": {
             "type": "string",
+            "description": "Free-text description of this experiment and its purpose.",
             "maxLength": 50000
           },
           "measureTypeUri": {
@@ -75,15 +77,18 @@
           },
           "ontologyRef": {
             "type": "string",
-            "format": "at-uri"
+            "format": "at-uri",
+            "description": "AT-URI of the ontology record supplying the label or category vocabulary this experiment collects responses over."
           },
           "personaRef": {
             "type": "string",
-            "format": "at-uri"
+            "format": "at-uri",
+            "description": "AT-URI of the pub.layers.persona.persona defining the interpretive framework annotators adopt for this experiment."
           },
           "corpusRef": {
             "type": "string",
-            "format": "at-uri"
+            "format": "at-uri",
+            "description": "AT-URI of the pub.layers.corpus.corpus whose items this experiment draws stimuli from."
           },
           "templateRefs": {
             "type": "array",
@@ -167,13 +172,49 @@
             "ref": "pub.layers.judgment.defs#experimentDesign",
             "description": "Experiment design parameters: list constraints, distribution strategy, item order."
           },
+          "stimulusExpressionRefs": {
+            "type": "array",
+            "description": "References to pub.layers.expression.expression records used as stimuli in this experiment (text stimuli).",
+            "maxLength": 10000,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "stimulusMediaRefs": {
+            "type": "array",
+            "description": "References to pub.layers.media.media records used as stimuli in this experiment (audio, video, image, signal, and other carrier stimuli).",
+            "maxLength": 10000,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
           "features": {
             "type": "ref",
-            "ref": "pub.layers.defs#featureMap"
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features carrying experiment detail not covered by the typed fields."
+          },
+          "languages": {
+            "type": "array",
+            "description": "BCP-47 language tags of the stimuli in this experiment. Empty when language is unspecified or unknown.",
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "languageRefs": {
+            "type": "array",
+            "description": "Grounded language references for the stimuli, carrying canonical BCP-47 tag, script/region codes, variety label, and a knowledge-graph source (glottolog, iso639-3, cldr). Richer than the languages slug array; use both.",
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#languageRef"
+            }
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "When this experiment definition record was created."
           }
         }
       }

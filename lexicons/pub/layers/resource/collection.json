@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "description": "A named collection of linguistic resource entries. Abstract enough to represent bead Lexicons, FrameNet frame inventories, PropBank frame files, WordNet synsets, morphological paradigm tables, gazetteers, stop-word lists, etc.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": [
@@ -20,6 +20,7 @@
           },
           "description": {
             "type": "string",
+            "description": "Human-readable description of this collection's scope and contents.",
             "maxLength": 10000
           },
           "kindUri": {
@@ -53,6 +54,7 @@
           },
           "knowledgeRefs": {
             "type": "array",
+            "description": "Knowledge graph groundings for this collection (e.g., a published resource release, an ontology node, Wikidata).",
             "maxLength": 32,
             "items": {
               "type": "ref",
@@ -80,19 +82,28 @@
           },
           "features": {
             "type": "ref",
-            "ref": "pub.layers.defs#featureMap"
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features describing this collection: size, domain, register, provenance notes, etc."
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "When this collection record was created."
           },
           "languages": {
             "type": "array",
             "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
-            "maxLength": 128,
             "items": {
               "type": "string",
               "maxLength": 32
+            }
+          },
+          "languageRefs": {
+            "type": "array",
+            "description": "Structured language references (canonical BCP-47 tag plus optional script, region, variety, and role) grounding the languages this record covers.",
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#languageRef"
             }
           }
         }

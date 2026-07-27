@@ -132,16 +132,1049 @@
           "description": "Writing system (ISO 15924 codes: 'Latn', 'Arab', 'Deva', 'Hans', 'Hant', 'Cyrl', 'Grek', etc.).",
           "maxLength": 32
         },
+        "writingDirectionUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the writing-direction definition node (typeDef of `writing-direction` at layers-core.ontology.layers.pub). Refines writingDirection; never replaces it."
+        },
         "writingDirection": {
           "type": "string",
-          "description": "Primary text direction.",
-          "knownValues": ["ltr", "rtl", "ttb", "btt"],
-          "maxLength": 8
+          "description": "Primary text direction slug (fallback when writingDirectionUri unavailable).",
+          "knownValues": ["ltr", "rtl", "ttb", "boustrophedon", "custom"],
+          "maxLength": 32
         },
         "ocrEngine": {
           "type": "string",
           "description": "OCR/HTR engine identifier (e.g., 'tesseract-5.3', 'transkribus', 'abbyy', 'google-vision').",
           "maxLength": 256
+        }
+      }
+    },
+    "signalInfo": {
+      "type": "object",
+      "description": "Composable metadata for a sampled time-series recording. Attach to any media record of kind signal or motion. Frequencies are millihertz because BIDS types SamplingFrequency as number and 512.03 Hz occurs; lengths are nanometres because iEEG contact localization is reported sub-millimetre; times are session-relative nanoseconds, never UTC-epoch, since 2^53 ns is about 104 days.",
+      "required": ["modality", "samplingFrequencyMilliHz"],
+      "properties": {
+        "modalityUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the modality definition node: a pub.layers.ontology.typeDef of the `modality` ontology at layers-core.ontology.layers.pub, or a pub.layers.graph.graphNode. The SAME node set is named by pub.layers.judgment.defs#recordingMethod.methodUri and pub.layers.catalog.defs#contentSummary.modalityUri. Each modality node reaches its carrier node by parentTypeRef, so media.kindUri is the parent rather than a synonym. Refines modality; never replaces it."
+        },
+        "modality": {
+          "type": "string",
+          "description": "Modality slug (fallback when modalityUri unavailable). Mirrors recordingMethod.method member for member, extended with the continuous physiological channels that vocabulary omits.",
+          "knownValues": ["eeg", "meg", "ieeg", "ecog", "fmri", "fnirs", "eye-tracking", "pupillometry", "emg", "ecg", "skin-conductance", "respiration", "mouse-tracking", "keystroke", "motion-capture", "articulography", "custom"],
+          "maxLength": 128
+        },
+        "formatUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the container format definition node (typeDef of `signal-format` at layers-acquisition.ontology.layers.pub)."
+        },
+        "format": {
+          "type": "string",
+          "description": "Container format slug (fallback when formatUri unavailable). Names what a reader must open; mimeType names the wire type, which for most of these is application/octet-stream.",
+          "knownValues": ["edf", "edf-plus", "bdf", "fif", "eeglab-set", "brainvision", "nwb", "nix", "snirf", "asc", "edf-eyelink", "c3d", "trc", "bvh", "tsv", "csv", "custom"],
+          "maxLength": 128
+        },
+        "samplingFrequencyMilliHz": {
+          "type": "integer",
+          "description": "Nominal sampling frequency in millihertz (2048 Hz = 2048000). BIDS SamplingFrequency, REQUIRED in the EEG, MEG, iEEG and NIRS sidecars; NWB ElectricalSeries.rate.",
+          "minimum": 1
+        },
+        "channelCount": {
+          "type": "integer",
+          "description": "Total recorded channels. BIDS EEGChannelCount / MEGChannelCount / NIRSChannelCount. Authoritative when channels is not fully enumerated.",
+          "minimum": 0
+        },
+        "numberOfSamples": {
+          "type": "integer",
+          "description": "Total samples per channel. With samplingFrequencyMilliHz this makes pub.layers.defs#signalSpan sample anchoring exact.",
+          "minimum": 0
+        },
+        "recordingDurationNanos": {
+          "type": "integer",
+          "description": "BIDS RecordingDuration, given in seconds upstream.",
+          "minimum": 0
+        },
+        "recordingTypeUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the recording continuity definition node."
+        },
+        "recordingType": {
+          "type": "string",
+          "description": "Recording continuity slug (fallback when recordingTypeUri unavailable). BIDS RecordingType, same three values.",
+          "knownValues": ["continuous", "epoched", "discontinuous"],
+          "maxLength": 64
+        },
+        "epochLengthNanos": {
+          "type": "integer",
+          "description": "BIDS EpochLength. Absent for continuous recordings.",
+          "minimum": 0
+        },
+        "epochCount": {
+          "type": "integer",
+          "description": "Number of epochs, for epoched recordings.",
+          "minimum": 0
+        },
+        "powerLineFrequencyMilliHz": {
+          "type": "integer",
+          "description": "Mains frequency in millihertz (50000 or 60000). BIDS PowerLineFrequency, REQUIRED in every electrophysiology sidecar: no downstream filtering decision can be made without it.",
+          "minimum": 0
+        },
+        "referenceSchemeUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the reference scheme definition node (typeDef of `eeg-reference-scheme`)."
+        },
+        "referenceScheme": {
+          "type": "string",
+          "description": "Referencing scheme slug (fallback when referenceSchemeUri unavailable). BIDS EEGReference and iEEGReference are both REQUIRED and both free text upstream; typing the common cases while keeping referenceDescription for the rest is the improvement over the upstream string.",
+          "knownValues": ["single-electrode", "linked-mastoids", "linked-ears", "average", "rest", "bipolar", "laplacian", "intracranial-common", "hardware-common", "not-applicable", "custom"],
+          "maxLength": 128
+        },
+        "referenceSensor": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "The reference electrode, as an objectRef whose objectId names a sensors[] uuid in this record. Replaces a free-text channel name, which cannot be validated and cannot be detected as dangling."
+        },
+        "groundSensor": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "The ground electrode. BIDS EEGGround / iEEGGround."
+        },
+        "referenceDescription": {
+          "type": "string",
+          "description": "Free-text reference detail for schemes the slug vocabulary cannot express. Carries BIDS EEGReference verbatim when it does not map.",
+          "maxLength": 2048
+        },
+        "placementSchemeUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the electrode or sensor placement definition node (typeDef of `electrode-placement`)."
+        },
+        "placementScheme": {
+          "type": "string",
+          "description": "Placement scheme slug (fallback when placementSchemeUri unavailable). BIDS EEGPlacementScheme, free text upstream.",
+          "knownValues": ["10-20", "10-10", "10-5", "biosemi-32", "biosemi-64", "biosemi-128", "egi-hydrocel-128", "egi-hydrocel-256", "ctf-275", "neuromag-306", "subdural-grid", "subdural-strip", "depth-electrode", "mixed-intracranial", "subject-specific", "custom"],
+          "maxLength": 128
+        },
+        "filterStatusUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the filter-reporting status definition node."
+        },
+        "filterStatus": {
+          "type": "string",
+          "description": "Whether filters is a complete account (fallback when filterStatusUri unavailable). BIDS makes SoftwareFilters REQUIRED and permits the literal n/a, which conflates none-applied with not-reported; separating them means an empty filters array is unambiguous.",
+          "knownValues": ["as-listed", "none-applied", "not-reported"],
+          "maxLength": 64
+        },
+        "filters": {
+          "type": "array",
+          "description": "Filters in application order. Carries BIDS HardwareFilters and SoftwareFilters, arbitrary untyped JSON upstream, as a typed list so a consumer can decide admissibility without parsing prose.",
+          "maxLength": 32,
+          "items": { "type": "ref", "ref": "#filterSpec" }
+        },
+        "channels": {
+          "type": "array",
+          "description": "Per-channel table in acquisition order. BIDS channels.tsv, whose name, type and units columns are REQUIRED. Inline rather than one record per channel: getRepo bulk export is fast and unmetered while listRecords caps at 100 per page, and a montage is one logical object.",
+          "maxLength": 4096,
+          "items": { "type": "ref", "ref": "#signalChannel" }
+        },
+        "sensors": {
+          "type": "array",
+          "description": "Physical sensor geometry. BIDS electrodes.tsv and optodes.tsv plus NWB's electrodes DynamicTable. Separate from channels because the two are not in bijection: an fNIRS channel is a source-detector-wavelength triple and a bipolar iEEG channel is a difference of two contacts.",
+          "maxLength": 4096,
+          "items": { "type": "ref", "ref": "#sensorSpec" }
+        },
+        "coordinateSystem": {
+          "type": "ref",
+          "ref": "#coordinateSystem",
+          "description": "Frame in which sensors coordinates are expressed. BIDS coordsystem.json."
+        },
+        "device": {
+          "type": "ref",
+          "ref": "#deviceInfo",
+          "description": "Acquisition hardware. BIDS Manufacturer / ManufacturersModelName / DeviceSerialNumber / SoftwareVersions; NWB Device."
+        },
+        "eventChannel": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "The trigger or stimulus-code channel, as an objectRef into this record's channels."
+        },
+        "eventCodes": {
+          "type": "array",
+          "description": "Trigger codes and their meanings. BIDS events.tsv carries trial_type as a bare string; grounding each code through a typeDef lets two labs' code 12 be recognized as the same condition or as different ones.",
+          "maxLength": 512,
+          "items": { "type": "ref", "ref": "#eventCode" }
+        },
+        "eventLayerRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of a pub.layers.annotation.annotationLayer of kind tier holding the decoded event stream. This is where BIDS events.tsv lands: onset and duration map to anchor.temporalSpan or anchor.signalSpan, trial_type to the layer subkind or the annotation label."
+        },
+        "headCircumferenceNanometres": {
+          "type": "integer",
+          "description": "BIDS HeadCircumference, centimetres upstream. On the recording rather than the participant because it is measured at acquisition.",
+          "minimum": 0
+        },
+        "dewarPositionUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the dewar position definition node."
+        },
+        "dewarPosition": {
+          "type": "string",
+          "description": "MEG dewar position slug (fallback when dewarPositionUri unavailable). BIDS DewarPosition, REQUIRED in the MEG sidecar.",
+          "knownValues": ["upright", "supine", "degrees-45", "custom"],
+          "maxLength": 64
+        },
+        "digitizedLandmarks": {
+          "type": "boolean",
+          "description": "BIDS DigitizedLandmarks, REQUIRED in the MEG sidecar."
+        },
+        "digitizedHeadPoints": {
+          "type": "boolean",
+          "description": "BIDS DigitizedHeadPoints, REQUIRED in the MEG sidecar."
+        },
+        "continuousHeadLocalization": {
+          "type": "boolean",
+          "description": "BIDS ContinuousHeadLocalization."
+        },
+        "maxMovementNanometres": {
+          "type": "integer",
+          "description": "BIDS MaxMovement.",
+          "minimum": 0
+        },
+        "associatedEmptyRoomRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of a pub.layers.media.media holding the empty-room noise recording. BIDS AssociatedEmptyRoom is a filesystem path; an AT-URI is the structured form of the same relation."
+        },
+        "sourceOptodeCount": {
+          "type": "integer",
+          "description": "BIDS NIRSSourceOptodeCount, REQUIRED in the NIRS sidecar.",
+          "minimum": 0
+        },
+        "detectorOptodeCount": {
+          "type": "integer",
+          "description": "BIDS NIRSDetectorOptodeCount, REQUIRED in the NIRS sidecar.",
+          "minimum": 0
+        },
+        "cogAtlasRef": {
+          "type": "ref",
+          "ref": "pub.layers.defs#knowledgeRef",
+          "description": "Cognitive Atlas term for the task. BIDS CogAtlasID is RECOMMENDED on every electrophysiology and behavioural sidecar. Use source cognitive-atlas."
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features not captured by the typed fields."
+        }
+      }
+    },
+    "signalChannel": {
+      "type": "object",
+      "description": "One recorded channel. BIDS channels.tsv, whose name, type and units columns are REQUIRED for every electrophysiology modality and which additionally makes low_cutoff and high_cutoff REQUIRED for iEEG. Position is held by reference through sensor, because channel and sensor are not in one-to-one correspondence.",
+      "required": ["uuid", "name", "type"],
+      "properties": {
+        "uuid": {
+          "type": "ref",
+          "ref": "pub.layers.defs#uuid",
+          "description": "Stable identifier for this channel within this record. Required because anchors, reference declarations and sync declarations point at channels, and a name or a positional index silently mis-addresses when a republished recording drops two bad channels."
+        },
+        "name": {
+          "type": "string",
+          "description": "Channel name exactly as in the raw file (Cz, MEG0113, S1-D1-760, gaze_x).",
+          "maxLength": 128
+        },
+        "typeUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the channel type definition node (typeDef of `channel-type` at layers-acquisition.ontology.layers.pub). The authoritative field: the union of the BIDS EEG, MEG, iEEG, NIRS and Motion keyword sets already runs to roughly sixty terms and grows with each extension proposal. The knownValues below are a seed, not a closed list."
+        },
+        "type": {
+          "type": "string",
+          "description": "Channel type slug (fallback when typeUri unavailable). Union of the BIDS keyword sets, uppercase as BIDS spells them.",
+          "knownValues": ["EEG", "REF", "EOG", "HEOG", "VEOG", "ECG", "EMG", "GSR", "PPG", "RESP", "TEMP", "PUPIL", "EYEGAZE", "TRIG", "SYSCLOCK", "AUDIO", "MISC", "MEGMAG", "MEGGRADAXIAL", "MEGGRADPLANAR", "MEGREFMAG", "MEGREFGRADAXIAL", "MEGREFGRADPLANAR", "MEGOTHER", "HLU", "FITERR", "ADC", "DAC", "SEEG", "ECOG", "DBS", "NIRSCWAMPLITUDE", "NIRSCWOPTICALDENSITY", "NIRSCWHBO", "NIRSCWHBR", "ACCEL", "GYRO", "MAGN", "ORNT", "POS", "VEL", "ANGACCEL", "JNTANG", "LATENCY", "CUSTOM"],
+          "maxLength": 64
+        },
+        "unitUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the physical unit definition node (typeDef of `si-unit`)."
+        },
+        "unit": {
+          "type": "string",
+          "description": "Physical unit of this channel's samples (fallback when unitUri unavailable). BIDS channels.tsv units, REQUIRED, which expects SI units.",
+          "knownValues": ["volt", "millivolt", "microvolt", "tesla", "femtotesla", "ampere", "microampere", "ohm", "siemens", "microsiemens", "degree-celsius", "pixel", "millimetre", "degree", "microdegree", "radian", "metre-per-second-squared", "radian-per-second", "arbitrary", "not-applicable", "custom"],
+          "maxLength": 64
+        },
+        "samplingFrequencyMilliHz": {
+          "type": "integer",
+          "description": "Per-channel rate when it differs from the recording's nominal rate, routine for auxiliary channels multiplexed into one file.",
+          "minimum": 1
+        },
+        "lowCutoffMilliHz": {
+          "type": "integer",
+          "description": "High-pass cutoff. 0 means DC-coupled. BIDS channels.tsv low_cutoff, a REQUIRED column for iEEG.",
+          "minimum": 0
+        },
+        "highCutoffMilliHz": {
+          "type": "integer",
+          "description": "Low-pass cutoff. BIDS channels.tsv high_cutoff, a REQUIRED column for iEEG.",
+          "minimum": 0
+        },
+        "notchMilliHz": {
+          "type": "integer",
+          "description": "BIDS channels.tsv notch.",
+          "minimum": 0
+        },
+        "statusUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the channel status definition node."
+        },
+        "status": {
+          "type": "string",
+          "description": "Channel quality slug (fallback when statusUri unavailable). BIDS channels.tsv status.",
+          "knownValues": ["good", "bad", "interpolated", "not-reported"],
+          "maxLength": 32
+        },
+        "statusDescription": {
+          "type": "string",
+          "description": "Why the channel is bad or interpolated. BIDS channels.tsv status_description.",
+          "maxLength": 1024
+        },
+        "referenceChannel": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "Per-channel reference for bipolar and mixed intracranial montages. BIDS channels.tsv reference."
+        },
+        "sensor": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "The sensors entry this channel reads from. How a channel acquires a position without duplicating coordinates per channel."
+        },
+        "sourceSensor": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "Emitting optode. BIDS NIRS channels.tsv source, a REQUIRED column."
+        },
+        "detectorSensor": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "Receiving optode. BIDS NIRS channels.tsv detector, a REQUIRED column."
+        },
+        "wavelengthPicometres": {
+          "type": "integer",
+          "description": "Nominal wavelength (760 nm = 760000). BIDS NIRS channels.tsv wavelength_nominal, a REQUIRED column.",
+          "minimum": 1
+        },
+        "group": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "Electrode group, shaft, grid, or tracking system this channel belongs to. NWB ElectrodeGroup; BIDS Motion tracksys."
+        },
+        "description": {
+          "type": "string",
+          "description": "Free-text note about this channel.",
+          "maxLength": 1024
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended per-channel features not captured by the typed fields."
+        }
+      }
+    },
+    "sensorSpec": {
+      "type": "object",
+      "description": "Physical placement of one sensor: an EEG electrode, an iEEG contact, a MEG coil, an fNIRS optode, a motion marker, or an anatomical landmark. Coordinates are signed integer nanometres in the frame named by the enclosing coordinateSystem.",
+      "required": ["uuid", "name", "type"],
+      "properties": {
+        "uuid": {
+          "type": "ref",
+          "ref": "pub.layers.defs#uuid",
+          "description": "Stable identifier within this record. Required because channels, anchors and spatial regions point at sensors."
+        },
+        "name": {
+          "type": "string",
+          "description": "Sensor name exactly as in the raw file.",
+          "maxLength": 128
+        },
+        "typeUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the sensor type definition node (typeDef of `sensor-type`)."
+        },
+        "type": {
+          "type": "string",
+          "description": "Sensor type slug (fallback when typeUri unavailable). BIDS optodes.tsv type is REQUIRED and takes source or detector; the rest cover the electrode, coil, marker and landmark cases BIDS spreads across electrodes.tsv and coordsystem.json.",
+          "knownValues": ["electrode", "depth-contact", "grid-contact", "strip-contact", "magnetometer", "gradiometer", "reference-coil", "head-position-coil", "source", "detector", "marker", "imu", "camera", "fiducial", "anatomical-landmark", "head-point", "custom"],
+          "maxLength": 64
+        },
+        "xNanometres": {
+          "type": "integer",
+          "description": "Signed X. BIDS electrodes.tsv x and optodes.tsv x, REQUIRED columns; NWB electrodes.x."
+        },
+        "yNanometres": {
+          "type": "integer",
+          "description": "Signed Y."
+        },
+        "zNanometres": {
+          "type": "integer",
+          "description": "Signed Z."
+        },
+        "impedanceMilliOhm": {
+          "type": "integer",
+          "description": "BIDS electrodes.tsv impedance; NWB electrodes.imp.",
+          "minimum": 0
+        },
+        "contactAreaSquareMicrometres": {
+          "type": "integer",
+          "description": "BIDS iEEG electrodes.tsv size, a REQUIRED column, square millimetres upstream. Load-bearing for current-density interpretation.",
+          "minimum": 0
+        },
+        "materialUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the electrode material definition node (typeDef of `electrode-material`)."
+        },
+        "material": {
+          "type": "string",
+          "description": "Material slug (fallback when materialUri unavailable). BIDS electrodes.tsv material, free text upstream, where Ag/AgCl already has three predictable spellings.",
+          "knownValues": ["ag-agcl", "platinum", "platinum-iridium", "gold", "tin", "stainless-steel", "silicon", "custom"],
+          "maxLength": 64
+        },
+        "hemisphereUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the hemisphere definition node."
+        },
+        "hemisphere": {
+          "type": "string",
+          "description": "Hemisphere slug (fallback when hemisphereUri unavailable). BIDS iEEG electrodes.tsv hemisphere.",
+          "knownValues": ["left", "right", "midline", "not-reported"],
+          "maxLength": 32
+        },
+        "group": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "Electrode group or shaft. NWB ElectrodeGroup, whose name, description, location and device are all required there."
+        },
+        "anatomyRef": {
+          "type": "ref",
+          "ref": "pub.layers.defs#knowledgeRef",
+          "description": "Grounded anatomical localization. NWB makes electrodes.location a required column and BIDS iEEG carries it free text; use source uberon. For iEEG this is a subject-specific claim about a subject-specific brain and inherits the participant's identifiability declaration."
+        },
+        "description": {
+          "type": "string",
+          "description": "Free-text note about this sensor.",
+          "maxLength": 1024
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended per-sensor features not captured by the typed fields."
+        }
+      }
+    },
+    "coordinateSystem": {
+      "type": "object",
+      "description": "The frame in which sensor, landmark, or volume coordinates are expressed. BIDS coordsystem.json, which requires a named system plus units and RECOMMENDS FiducialsCoordinates and AnatomicalLandmarkCoordinates. One def for all four use sites, so the four divergent lists the proposals carried collapse to one.",
+      "required": ["system"],
+      "properties": {
+        "systemUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the coordinate system definition node (typeDef of `coordinate-system`). Values MUST agree with pub.layers.defs#spatialEntity.crs."
+        },
+        "system": {
+          "type": "string",
+          "description": "Coordinate system slug (fallback when systemUri unavailable). Covers the BIDS EEG, MEG and iEEG coordinate system lists plus the stereotaxic spaces used for volumetric data.",
+          "knownValues": ["captrak", "eeglab", "ctf-head", "ctf-device", "elekta-neuromag-head", "elekta-neuromag-device", "bti-4d-head", "acpc", "scanner-ras", "mni152-nlin-2009c", "mni305", "talairach", "fsaverage", "individual-t1", "voxel-index", "pixel", "world-metric", "custom"],
+          "maxLength": 128
+        },
+        "unitUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the coordinate unit definition node."
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unit of the stored integer coordinates (fallback when unitUri unavailable). BIDS coordinate units are m, mm or cm, plus pixels for iEEG on a photograph; nanometre is the integer-safe encoding of all three.",
+          "knownValues": ["nanometre", "micrometre", "pixel", "voxel", "per-mille-normalized"],
+          "maxLength": 64
+        },
+        "spatialAxesUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the axis convention definition node (typeDef of `spatial-axes`)."
+        },
+        "spatialAxes": {
+          "type": "string",
+          "description": "Direction code naming the positive direction of X, Y, Z (fallback when spatialAxesUri unavailable). BIDS Motion SpatialAxes. Determines how every coordinate in the record is read, so a consumer that cannot resolve it MUST NOT assume a default.",
+          "knownValues": ["RAS", "LAS", "RAI", "LPS", "ARS", "ALS", "FRU", "FLU", "custom"],
+          "maxLength": 32
+        },
+        "referenceImageRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of a pub.layers.media.media of kind volume or image this frame is defined against. BIDS IntendedFor, a filesystem path upstream."
+        },
+        "fiducials": {
+          "type": "array",
+          "description": "Named landmark points defining the frame. BIDS FiducialsCoordinates and AnatomicalLandmarkCoordinates.",
+          "maxLength": 64,
+          "items": { "type": "ref", "ref": "#namedPoint" }
+        },
+        "description": {
+          "type": "string",
+          "description": "Free-text note about this coordinate frame.",
+          "maxLength": 4096
+        }
+      }
+    },
+    "namedPoint": {
+      "type": "object",
+      "description": "A named point in the enclosing coordinate system, in that system's unit.",
+      "required": ["name"],
+      "properties": {
+        "nameUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the landmark definition node."
+        },
+        "name": {
+          "type": "string",
+          "description": "Landmark slug (fallback when nameUri unavailable).",
+          "knownValues": ["nasion", "lpa", "rpa", "inion", "ac", "pc", "vertex", "custom"],
+          "maxLength": 128
+        },
+        "x": {
+          "type": "integer",
+          "description": "Signed X coordinate of the point, in the enclosing system's unit."
+        },
+        "y": {
+          "type": "integer",
+          "description": "Signed Y coordinate of the point, in the enclosing system's unit."
+        },
+        "z": {
+          "type": "integer",
+          "description": "Signed Z coordinate of the point, in the enclosing system's unit."
+        }
+      }
+    },
+    "filterSpec": {
+      "type": "object",
+      "description": "One filter applied to a recording. BIDS makes SoftwareFilters REQUIRED and HardwareFilters RECOMMENDED and types both as arbitrary nested JSON, so a consumer cannot today decide whether a recording is admissible for a given analysis without reading prose. Every parameter here is an integer in a named unit.",
+      "required": ["type"],
+      "properties": {
+        "stageUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the filter stage definition node."
+        },
+        "stage": {
+          "type": "string",
+          "description": "Where the filter was applied (fallback when stageUri unavailable). Distinguishes BIDS HardwareFilters from SoftwareFilters.",
+          "knownValues": ["hardware", "software", "unknown"],
+          "maxLength": 32
+        },
+        "typeUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the filter type definition node."
+        },
+        "type": {
+          "type": "string",
+          "description": "Filter type slug (fallback when typeUri unavailable).",
+          "knownValues": ["highpass", "lowpass", "bandpass", "bandstop", "notch", "detrend", "resample", "rereference", "ica", "ssp", "regression", "custom"],
+          "maxLength": 64
+        },
+        "lowCutoffMilliHz": {
+          "type": "integer",
+          "description": "High-pass cutoff of this filter stage, in millihertz.",
+          "minimum": 0
+        },
+        "highCutoffMilliHz": {
+          "type": "integer",
+          "description": "Low-pass cutoff of this filter stage, in millihertz.",
+          "minimum": 0
+        },
+        "centreMilliHz": {
+          "type": "integer",
+          "description": "Centre frequency, for notch and bandstop stages, in millihertz.",
+          "minimum": 0
+        },
+        "bandwidthMilliHz": {
+          "type": "integer",
+          "description": "Bandwidth of the stage, in millihertz.",
+          "minimum": 0
+        },
+        "order": {
+          "type": "integer",
+          "description": "Filter order.",
+          "minimum": 0
+        },
+        "designUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the filter design definition node."
+        },
+        "design": {
+          "type": "string",
+          "description": "Filter design slug (fallback when designUri unavailable).",
+          "knownValues": ["butterworth", "chebyshev-1", "chebyshev-2", "elliptic", "bessel", "fir-windowed", "fir-least-squares", "custom"],
+          "maxLength": 64
+        },
+        "directionUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the filter direction definition node."
+        },
+        "direction": {
+          "type": "string",
+          "description": "Whether the filter introduces phase shift (fallback when directionUri unavailable). Load-bearing for any latency claim about an ERP or evoked component.",
+          "knownValues": ["causal", "zero-phase", "unknown"],
+          "maxLength": 32
+        },
+        "componentsRemoved": {
+          "type": "integer",
+          "description": "For ica and ssp.",
+          "minimum": 0
+        },
+        "software": {
+          "type": "ref",
+          "ref": "pub.layers.defs#reproducibilityInfo",
+          "description": "Software that applied the filter, reusing the shared block rather than re-declaring name and version."
+        },
+        "description": {
+          "type": "string",
+          "description": "Free-text note about this filter stage.",
+          "maxLength": 2048
+        }
+      }
+    },
+    "eventCode": {
+      "type": "object",
+      "description": "One trigger code and what it means. Grounds BIDS events.tsv trial_type, a bare string upstream, in a type definition node.",
+      "required": ["code"],
+      "properties": {
+        "code": {
+          "type": "integer",
+          "description": "Integer value written on the trigger channel."
+        },
+        "channel": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "The channel this code appears on, when the recording has several trigger lines."
+        },
+        "label": {
+          "type": "string",
+          "description": "Condition label as the experimenter spells it.",
+          "maxLength": 256
+        },
+        "typeUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the condition or event-type definition node, typically a pub.layers.ontology.typeDef."
+        },
+        "knowledgeRef": {
+          "type": "ref",
+          "ref": "pub.layers.defs#knowledgeRef",
+          "description": "External grounding, for instance a HED tag (source hed) or a Cognitive Atlas concept."
+        },
+        "description": {
+          "type": "string",
+          "description": "Free-text note about this trigger code.",
+          "maxLength": 1024
+        }
+      }
+    },
+    "eyeTrackingInfo": {
+      "type": "object",
+      "description": "Composable eye-tracking metadata, carried alongside signalInfo. Screen geometry is deliberately absent: the same tracker at a different viewing distance yields different degrees of visual angle, so it is a property of stimulus presentation and lives on pub.layers.judgment.defs#presentationSpec.screen, which is where BIDS puts it (the StimulusPresentation object of the events sidecar).",
+      "properties": {
+        "recordedEyeUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the recorded-eye definition node."
+        },
+        "recordedEye": {
+          "type": "string",
+          "description": "Which eye was recorded (fallback when recordedEyeUri unavailable). BIDS RecordedEye, REQUIRED for eye-tracking recordings.",
+          "knownValues": ["left", "right", "both", "cyclopean"],
+          "maxLength": 32
+        },
+        "sampleCoordinateSystemUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the gaze coordinate system definition node."
+        },
+        "sampleCoordinateSystem": {
+          "type": "string",
+          "description": "What the x and y samples mean (fallback when the Uri is unavailable). BIDS SampleCoordinateSystem, REQUIRED. gaze-on-screen is the value that makes presentationSpec.screen mandatory.",
+          "knownValues": ["gaze-on-screen", "eye-in-head", "gaze-in-world", "custom"],
+          "maxLength": 64
+        },
+        "sampleCoordinateUnitUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the gaze sample unit definition node."
+        },
+        "sampleCoordinateUnit": {
+          "type": "string",
+          "description": "Unit of the gaze samples (fallback when the Uri is unavailable). BIDS SampleCoordinateUnits.",
+          "knownValues": ["pixel", "nanometre", "microdegree", "per-mille-normalized"],
+          "maxLength": 64
+        },
+        "methodUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the eye-tracking method definition node."
+        },
+        "method": {
+          "type": "string",
+          "description": "Tracking method slug (fallback when methodUri unavailable). BIDS EyeTrackingMethod, whose documented values include P-CR, DPI and EOG.",
+          "knownValues": ["p-cr", "dpi", "eog", "video-oculography", "scleral-search-coil", "custom"],
+          "maxLength": 64
+        },
+        "pupilFitMethodUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the pupil fit method definition node."
+        },
+        "pupilFitMethod": {
+          "type": "string",
+          "description": "BIDS PupilFitMethod (fallback when the Uri is unavailable).",
+          "knownValues": ["ellipse", "centroid", "custom"],
+          "maxLength": 64
+        },
+        "calibrationTypeUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the calibration grid definition node."
+        },
+        "calibrationType": {
+          "type": "string",
+          "description": "BIDS CalibrationType (fallback when the Uri is unavailable), whose examples are H3 and HV9.",
+          "knownValues": ["h3", "hv5", "hv9", "hv13", "none", "custom"],
+          "maxLength": 32
+        },
+        "calibrationCount": {
+          "type": "integer",
+          "description": "BIDS CalibrationCount.",
+          "minimum": 0
+        },
+        "calibrationPositionCount": {
+          "type": "integer",
+          "description": "BIDS CalibrationPosition.",
+          "minimum": 0
+        },
+        "averageCalibrationErrorMicrodegrees": {
+          "type": "integer",
+          "description": "BIDS AverageCalibrationError. Microdegrees because typical values are fractions of a degree.",
+          "minimum": 0
+        },
+        "maximalCalibrationErrorMicrodegrees": {
+          "type": "integer",
+          "description": "BIDS MaximalCalibrationError.",
+          "minimum": 0
+        },
+        "trackerDistanceNanometres": {
+          "type": "integer",
+          "description": "BIDS EyeTrackerDistance.",
+          "minimum": 0
+        },
+        "eventDetectionUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the fixation and saccade detection algorithm definition node."
+        },
+        "eventDetection": {
+          "type": "string",
+          "description": "Algorithm used to derive fixations and saccades (fallback when the Uri is unavailable). Absent means the trace is raw and no events were derived.",
+          "knownValues": ["velocity-threshold", "dispersion-threshold", "eyelink-parser", "engbert-kliegl", "none", "custom"],
+          "maxLength": 64
+        },
+        "device": {
+          "type": "ref",
+          "ref": "#deviceInfo",
+          "description": "Eye-tracking hardware."
+        }
+      }
+    },
+    "imageInfo": {
+      "type": "object",
+      "description": "Composable still-image metadata. Added because 0.8.0 has no image block at all, so a photograph's width and height had to borrow videoInfo, whose own description says it is for video content.",
+      "properties": {
+        "width": {
+          "type": "integer",
+          "description": "Width in pixels.",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "description": "Height in pixels.",
+          "minimum": 1
+        },
+        "bitDepth": {
+          "type": "integer",
+          "description": "Bit depth per channel.",
+          "minimum": 1
+        },
+        "dpi": {
+          "type": "integer",
+          "description": "Resolution in dots per inch, when the image derives from a physical original.",
+          "minimum": 1
+        },
+        "colorSpaceUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the colour space definition node."
+        },
+        "colorSpace": {
+          "type": "string",
+          "description": "Colour space slug (fallback when colorSpaceUri unavailable). Paired here even though the sibling videoInfo.colorSpace is not, since a new field should not inherit an existing wart.",
+          "knownValues": ["srgb", "adobe-rgb", "display-p3", "rec2020", "cmyk", "grayscale", "bitonal", "custom"],
+          "maxLength": 64
+        },
+        "codec": {
+          "type": "string",
+          "description": "Image codec identifier (jpeg, png, webp, jp2, tiff-lzw). Wire-format code, exempt from pairing.",
+          "maxLength": 128
+        },
+        "orientation": {
+          "type": "integer",
+          "description": "EXIF orientation tag.",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "captureDevice": {
+          "type": "ref",
+          "ref": "#deviceInfo",
+          "description": "Camera or scanner, structured rather than concatenated into a format string."
+        }
+      }
+    },
+    "motionInfo": {
+      "type": "object",
+      "description": "Composable motion-capture and articulography metadata: optical marker systems, inertial suits, electromagnetic articulography, ultrasound tongue imaging, and body or hand pose streams. Follows BIDS Motion, in which a tracking system is a grouping level below the session, so one session routinely carries several media records at different rates. A motion stream also carries signalInfo, because in BIDS Motion a mocap channel is typed POS, ORNT, VEL, ACCEL, GYRO, MAGN, ANGACCEL or JNTANG, that is, it is a sampled signal.",
+      "properties": {
+        "trackingSystem": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "The pub.layers.acquisition.defs#run or session stream grouping this system, as an objectRef. BIDS Motion tracksys entity, a bare label upstream."
+        },
+        "formatUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the motion container format definition node."
+        },
+        "format": {
+          "type": "string",
+          "description": "Container format slug (fallback when formatUri unavailable). Wire-format code.",
+          "knownValues": ["c3d", "bvh", "trc", "fbx", "tsv", "csv", "custom"],
+          "maxLength": 64
+        },
+        "trackedPointCount": {
+          "type": "integer",
+          "description": "Number of tracked points, markers, or joints.",
+          "minimum": 0
+        },
+        "rotationRuleUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the rotation handedness definition node."
+        },
+        "rotationRule": {
+          "type": "string",
+          "description": "BIDS Motion RotationRule (fallback when the Uri is unavailable).",
+          "knownValues": ["right-hand", "left-hand"],
+          "maxLength": 32
+        },
+        "rotationOrderUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the rotation order definition node."
+        },
+        "rotationOrder": {
+          "type": "string",
+          "description": "BIDS Motion RotationOrder (fallback when the Uri is unavailable).",
+          "knownValues": ["xyz", "xzy", "yxz", "yzx", "zxy", "zyx", "quaternion"],
+          "maxLength": 32
+        },
+        "skeletonUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the skeleton or marker-set definition node (typeDef of `skeleton`), which is where joint identity, joint order and joint topology are DEFINED. This is why no pose anchor is needed: the channels carry the numbers, this carries their meaning."
+        },
+        "skeleton": {
+          "type": "string",
+          "description": "Skeleton or marker-set slug (fallback when skeletonUri unavailable).",
+          "knownValues": ["coco-17", "openpose-body25", "openpose-135", "mediapipe-holistic", "mediapipe-hand-21", "smpl", "smplx", "vicon-plug-in-gait", "xsens-mvn", "ema-tongue-jaw-lips", "c3d-custom", "custom"],
+          "maxLength": 128
+        },
+        "coordinateSystem": {
+          "type": "ref",
+          "ref": "#coordinateSystem",
+          "description": "Carries spatialAxes; a motion stream must not define a second axis vocabulary."
+        },
+        "device": {
+          "type": "ref",
+          "ref": "#deviceInfo",
+          "description": "Motion-capture hardware."
+        }
+      }
+    },
+    "volumeInfo": {
+      "type": "object",
+      "description": "Composable metadata for volumetric imaging: fMRI runs, structural scans, and derived masks or parcellations. Volumes almost always exceed the blob cap, so externalUri plus contentDigest is the normal carriage rather than the exception.",
+      "required": ["volumeKind"],
+      "properties": {
+        "volumeKindUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the volume kind definition node."
+        },
+        "volumeKind": {
+          "type": "string",
+          "description": "Volume kind slug (fallback when the Uri is unavailable). BIDS suffix plus datatype.",
+          "knownValues": ["bold", "anatomical-t1", "anatomical-t2", "dwi", "fieldmap", "perfusion", "mask", "statistical-map", "parcellation", "custom"],
+          "maxLength": 128
+        },
+        "formatUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the volume container format definition node."
+        },
+        "format": {
+          "type": "string",
+          "description": "Container format slug (fallback when formatUri unavailable). Wire-format code.",
+          "knownValues": ["nifti-1", "nifti-2", "cifti-2", "gifti", "dicom", "mgz", "minc", "custom"],
+          "maxLength": 128
+        },
+        "repetitionTimeNanos": {
+          "type": "integer",
+          "description": "BIDS RepetitionTime.",
+          "minimum": 0
+        },
+        "echoTimeNanos": {
+          "type": "integer",
+          "description": "BIDS EchoTime.",
+          "minimum": 0
+        },
+        "flipAngleMicrodegrees": {
+          "type": "integer",
+          "description": "BIDS FlipAngle.",
+          "minimum": 0
+        },
+        "volumeCount": {
+          "type": "integer",
+          "description": "Volumes in the run. Bounds pub.layers.defs#signalSpan.volumeIndexEnd.",
+          "minimum": 0
+        },
+        "dimX": {
+          "type": "integer",
+          "description": "Voxel grid extent along X.",
+          "minimum": 1
+        },
+        "dimY": {
+          "type": "integer",
+          "description": "Voxel grid extent along Y.",
+          "minimum": 1
+        },
+        "dimZ": {
+          "type": "integer",
+          "description": "Voxel grid extent along Z.",
+          "minimum": 1
+        },
+        "voxelSizeXNanometres": {
+          "type": "integer",
+          "description": "Voxel edge length along X, in nanometres.",
+          "minimum": 1
+        },
+        "voxelSizeYNanometres": {
+          "type": "integer",
+          "description": "Voxel edge length along Y, in nanometres.",
+          "minimum": 1
+        },
+        "voxelSizeZNanometres": {
+          "type": "integer",
+          "description": "Voxel edge length along Z, in nanometres.",
+          "minimum": 1
+        },
+        "sliceTimingNanos": {
+          "type": "array",
+          "description": "Per-slice acquisition offsets within one TR. BIDS SliceTiming.",
+          "maxLength": 1024,
+          "items": { "type": "integer", "minimum": 0 }
+        },
+        "sliceEncodingDirection": {
+          "type": "string",
+          "description": "BIDS SliceEncodingDirection (k, k-). Wire-format code.",
+          "maxLength": 8
+        },
+        "phaseEncodingDirection": {
+          "type": "string",
+          "description": "BIDS PhaseEncodingDirection (j, j-). Wire-format code.",
+          "maxLength": 8
+        },
+        "coordinateSystem": {
+          "type": "ref",
+          "ref": "#coordinateSystem",
+          "description": "Stereotaxic frame the voxel grid is expressed against."
+        },
+        "device": {
+          "type": "ref",
+          "ref": "#deviceInfo",
+          "description": "Scanner hardware."
+        }
+      }
+    },
+
+    "syncInfo": {
+      "type": "object",
+      "description": "How one media stream aligns to a session's shared time base. This is what makes multimodal Layers possible: the 0.8.0 chain is annotationLayer.expression (single, REQUIRED) to expression.mediaRef (single), so a session of two cameras, a lapel microphone, an EEG cap and an eye tracker is unrepresentable, and parentMediaRef with startOffsetMs expresses excerpt-of, a different relation.",
+      "required": ["sessionRef"],
+      "properties": {
+        "sessionRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the pub.layers.acquisition.session whose clock this stream is expressed against."
+        },
+        "offsetNanos": {
+          "type": "integer",
+          "description": "Signed offset from session time zero to this stream's first sample. Session-relative, never UTC-epoch. Negative when the stream began before the origin, which is normal for a continuously running amplifier and which BIDS StartTime explicitly permits."
+        },
+        "clockSourceUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the synchronization method definition node (typeDef of `sync-method`)."
+        },
+        "clockSource": {
+          "type": "string",
+          "description": "How alignment was established (fallback when the Uri is unavailable). A consumer needs it to know how far to trust a cross-stream anchor: a hardware trigger and a clapperboard differ by three orders of magnitude.",
+          "knownValues": ["session-master", "shared-trigger", "ltc-timecode", "clapperboard", "audio-cross-correlation", "ptp", "ntp", "manual", "unsynchronized", "unknown"],
+          "maxLength": 64
+        },
+        "syncChannel": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "The channel carrying the shared sync signal, when clockSource is shared-trigger."
+        },
+        "driftPartsPerBillion": {
+          "type": "integer",
+          "description": "Signed measured drift against the session master. Independent oscillators diverge measurably over an hour, and zero is a claim rather than a safe default."
+        },
+        "syncUncertaintyNanos": {
+          "type": "integer",
+          "description": "Worst-case alignment error. Bounds how finely a cross-stream anchor may honestly be read.",
+          "minimum": 0
         }
       }
     }

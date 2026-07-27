@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "description": "A link between a Layers data record and an eprint.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": ["eprintIdentifier", "linkType", "createdAt"],
@@ -106,11 +106,13 @@
           },
           "features": {
             "type": "ref",
-            "ref": "pub.layers.defs#featureMap"
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features for this eprint link as key-value pairs."
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "Timestamp when this eprint link record was created."
           }
         }
       }

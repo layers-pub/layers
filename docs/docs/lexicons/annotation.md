@@ -6,6 +6,8 @@ sidebar_label: "Annotation"
 
 Unified abstract annotation model. All annotation types (token tags, span labels, entity mentions, situation/frame mentions, syntactic parses, discourse relations, interlinear glosses, sentiment, temporal expressions, etc.) are represented through a single abstract schema discriminated by kind and subkind.
 
+As of 0.9.0 the record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs. An annotation's `anchor` reaches the expanded ten-member anchor union, so a layer may now anchor into a signal span (EEG/MEG/audio samples), a promoted spatial region, or a bounding box in addition to the original text, token, temporal, and page anchors. See the [defs](./defs.md) reference for the anchor union and the [multimodal annotation guide](../guides/multimodal-annotation.md).
+
 ## Types
 
 ### annotationLayer
@@ -20,16 +22,20 @@ A named layer of annotations over an expression. All annotation types use this s
 | `kindUri` | at-uri | AT-URI of the annotation kind definition node. Community-expandable via knowledge graph. |
 | `kind` | string | Primary annotation kind slug (fallback). Known values: `token-tag`, `span`, `relation`, `tree`, `graph`, `tier`, `document-tag` |
 | `subkindUri` | at-uri | AT-URI of the annotation subkind definition node. Community-expandable via knowledge graph. |
-| `subkind` | string | Annotation subkind slug. Known values: `pos`, `xpos`, `ner`, `lemma`, `morph`, `supersense`, `sense`, `chunk`, `speaker`, `gloss`, `phonetic`, `prosody`, `tobi`, `language-id`, `entity-mention`, `situation-mention`, `frame`, `predicate`, `discourse-unit`, `speech-act`, `temporal-expression`, `temporal-signal`, `spatial-expression`, `spatial-signal`, `spatial-relation`, `location-mention`, `sentiment`, `emotion`, `stance`, `information-structure`, `error`, `correction`, `code-switch`, `highlight`, `comment`, `bookmark`, `temporal-value`, `temporal-vagueness`, `dependency`, `enhanced-dependency`, `constituency`, `ccg`, `coreference`, `bridging`, `temporal-relation`, `causal-relation`, `discourse-relation`, `custom` |
+| `subkind` | string | Annotation subkind slug. Known values: `pos`, `xpos`, `ner`, `lemma`, `morph`, `supersense`, `sense`, `chunk`, `speaker`, `gloss`, `phonetic`, `prosody`, `tobi`, `language-id`, `entity-mention`, `situation-mention`, `frame`, `predicate`, `discourse-unit`, `speech-act`, `temporal-expression`, `temporal-signal`, `spatial-expression`, `spatial-signal`, `spatial-relation`, `location-mention`, `sentiment`, `emotion`, `stance`, `information-structure`, `error`, `correction`, `code-switch`, `highlight`, `comment`, `bookmark`, `temporal-value`, `temporal-vagueness`, `dependency`, `enhanced-dependency`, `constituency`, `ccg`, `coreference`, `bridging`, `temporal-relation`, `causal-relation`, `discourse-relation`, `hed`, `custom`. The 0.9.0 addition `hed` covers Hierarchical Event Descriptor tagging of neural and behavioural event streams. |
 | `formalismUri` | at-uri | AT-URI of the formalism definition node. Community-expandable via knowledge graph. |
-| `formalism` | string | Formalism slug. Known values: `universal-dependencies`, `penn-treebank`, `stanford`, `prague`, `propbank`, `framenet`, `verbnet`, `amr`, `ucca`, `rst`, `erst`, `sdrt`, `pdtb`, `timeml`, `iso-space`, `spatialml`, `conll-u`, `brat`, `elan`, `leipzig-glossing`, `ipa`, `tobi`, `bpe`, `sentencepiece`, `unimorph`, `wals`, `custom` |
+| `formalism` | string | Formalism slug. Known values: `universal-dependencies`, `penn-treebank`, `stanford`, `prague`, `propbank`, `framenet`, `verbnet`, `amr`, `ucca`, `rst`, `erst`, `sdrt`, `pdtb`, `timeml`, `iso-space`, `spatialml`, `conll-u`, `brat`, `elan`, `leipzig-glossing`, `ipa`, `tobi`, `bpe`, `sentencepiece`, `unimorph`, `wals`, `hamnosys`, `signwriting`, `stokoe`, `bts`, `custom`. The 0.9.0 additions `hamnosys`, `signwriting`, `stokoe`, and `bts` are sign-language notation systems. |
 | `sourceMethodUri` | at-uri | AT-URI of the annotation source method definition node. Community-expandable via knowledge graph. |
 | `sourceMethod` | string | How this annotation layer was produced (fallback when sourceMethodUri unavailable). Known values: `manual-native`, `manual-corrected`, `automatic`, `automatic-corrected`, `converted`, `converted-corrected`, `crowd-sourced`, `custom` |
 | `labelSet` | string | Identifier for the label set used (e.g., 'universal-pos', 'ontonotes-ner'). |
 | `ontologyRef` | at-uri | Reference to a `pub.layers.ontology.ontology` defining the types used in this layer. |
 | `tokenizationId` | ref | For token-aligned layers: the tokenization these annotations are aligned to. Ref: `pub.layers.defs#uuid` |
 | `parentLayerRef` | at-uri | For dependent/subordinate layers: the parent layer this one subdivides or refines. |
-| `languages` | array | BCP-47 language tags this record covers. Empty when language is unspecified or unknown. Array of strings |
+| `sessionRef` | at-uri | AT-URI of the `pub.layers.acquisition.session` this layer annotates, when the layer spans several synchronized streams rather than one expression. |
+| `mediaRefs` | array | AT-URIs of the `pub.layers.media.media` records this layer annotates. Plural because `expression` is singular, so a layer over several synchronized streams needs more than one target. Array of at-uri |
+| `simultaneousWithRefs` | array | AT-URIs of `annotationLayer` records whose annotations are co-temporal with this one by construction; for instance the dominant and non-dominant hand tiers of a two-handed sign are one event. Array of at-uri |
+| `languages` | array | BCP-47 language tags this record covers. Empty when language is unspecified or unknown. Array of strings (item max 32). No array-level cap. |
+| `languageRefs` | array | Structured language references grounding each language via glottolog, iso639-3, or cldr and carrying script, region, variety, and role. Array of ref: `pub.layers.defs#languageRef` |
 | `annotations` | array | The annotations in this layer. Array of ref: `pub.layers.annotation.defs#annotation` |
 | `rank` | integer | Rank among k-best alternatives (1 = best). Absent if this is the only/primary analysis. |
 | `alternativesRef` | at-uri | Reference to the top-ranked (rank=1) layer in a k-best group. Absent on the top-ranked layer itself. |

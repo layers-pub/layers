@@ -9,7 +9,7 @@
         "type": "params",
         "required": ["uri"],
         "properties": {
-          "uri": { "type": "string", "format": "at-uri" }
+          "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of the template filling record to fetch." }
         }
       },
       "output": {
@@ -18,9 +18,9 @@
           "type": "object",
           "required": ["uri", "cid", "value"],
           "properties": {
-            "uri": { "type": "string", "format": "at-uri" },
-            "cid": { "type": "string", "format": "cid" },
-            "value": { "type": "ref", "ref": "pub.layers.resource.filling#main" }
+            "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of the returned template filling record." },
+            "cid": { "type": "string", "format": "cid", "description": "CID of the returned template filling record at this revision." },
+            "value": { "type": "ref", "ref": "pub.layers.resource.filling#main", "description": "The template filling record value." }
           }
         }
       },

@@ -6,6 +6,8 @@ sidebar_label: "Eprint"
 
 Eprint linkage and data provenance records. Provides a way to link linguistic data and annotations to academic eprints, and to describe the data artifacts a publication produced. Supports any publication platform, including chive.pub, arXiv, ACL Anthology, and others.
 
+As of 0.9.0 the record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
+
 ## Types
 
 ### eprint
@@ -43,10 +45,12 @@ A link from an eprint to the Layers data it produced or is associated with. Crea
 | `eprintUri` | at-uri | AT-URI of the eprint on its publication platform. |
 | `eprintDid` | did | DID of the eprint author/owner on the publication platform. |
 | `dataKindUri` | at-uri | AT-URI of the data kind definition node. Community-expandable via knowledge graph. |
-| `dataKind` | string | Data kind slug (fallback). Known values: `corpus`, `annotation-layer`, `model-output`, `gold-standard`, `evaluation-data`, `supplementary`, `replication` |
+| `dataKind` | string | Data kind slug (fallback). Known values: `corpus`, `annotation-layer`, `model-output`, `gold-standard`, `evaluation-data`, `supplementary`, `replication`, `experiment`, `judgments`, `dataset` |
 | `corpusRef` | at-uri | Reference to a Layers corpus. |
 | `expressionRefs` | array | References to specific Layers expressions. Array of at-uri |
 | `annotationRefs` | array | References to specific annotation records. Array of at-uri |
+| `experimentRefs` | array | References to `pub.layers.judgment.experimentDef` records this eprint produced or describes. Array of at-uri |
+| `catalogRef` | at-uri | Reference to a `pub.layers.catalog.collection` record: the browsable dataset artifact this eprint produced or is associated with. This is the catalog-model repoint of the never-shipped `datasetRef`; there is no `dataset.*` namespace. |
 | `description` | string | Description of the data. |
 | `paperSection` | string | Which section of the paper this data corresponds to (e.g., 'Section 4.2', 'Table 3', 'Appendix A'). |
 | `reproducibility` | ref | Information about how to reproduce the data. Ref: `pub.layers.defs#reproducibilityInfo` |
@@ -172,7 +176,7 @@ List data link records for a given eprint with pagination.
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `eprintUri` | at-uri (required) | AT-URI of the eprint to list data links for. |
-| `dataKind` | string | Filter by data kind slug. |
+| `dataKind` | string | Filter by data kind slug (including `experiment`, `judgments`, `dataset`). |
 | `limit` | integer | Maximum number of records to return (1-100, default 50). |
 | `cursor` | string | Pagination cursor from previous response. |
 

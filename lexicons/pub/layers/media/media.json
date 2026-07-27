@@ -1,12 +1,12 @@
 {
   "lexicon": 1,
   "id": "pub.layers.media.media",
-  "description": "Media source records for audio, video, image, and document data associated with expressions. Modality-specific metadata is factored into composable object types (audioInfo, videoInfo, documentInfo) so that multimodal media can carry all relevant technical metadata.",
+  "description": "Media source records for audio, video, image, document, signal, motion, and volume data associated with expressions. Modality-specific metadata is factored into composable object types (audioInfo, videoInfo, documentInfo, imageInfo, signalInfo, eyeTrackingInfo, motionInfo, volumeInfo) so that multimodal media can carry all relevant technical metadata.",
   "defs": {
     "main": {
       "type": "record",
-      "description": "A media source record (audio, video, image, or document) that can be referenced by expressions and annotations. Modality-specific metadata lives in composable audioInfo/videoInfo/documentInfo objects.",
-      "key": "tid",
+      "description": "A media source record (audio, video, image, document, signal, motion, or volume) that can be referenced by expressions and annotations. Modality-specific metadata lives in composable info objects; a single medium may carry several (a motion stream also carries signalInfo).",
+      "key": "any",
       "record": {
         "type": "object",
         "required": [
@@ -17,35 +17,45 @@
           "kindUri": {
             "type": "string",
             "format": "at-uri",
-            "description": "AT-URI of the media kind definition node. Community-expandable via knowledge graph."
+            "description": "AT-URI of the media kind definition node (typeDef of `media-kind` at layers-core.ontology.layers.pub). Names the carrier; the instrument-level modality is named by signalInfo.modalityUri, whose nodes reach their carrier node by parentTypeRef. Community-expandable via knowledge graph."
           },
           "kind": {
             "type": "string",
-            "description": "Media kind slug (fallback when kindUri unavailable).",
+            "description": "Media kind slug (fallback when kindUri unavailable). Names the CARRIER only. The instrument is named by signalInfo.modalityUri, which resolves into the same node set as pub.layers.judgment.defs#recordingMethod.methodUri; one media kind per instrument would fork that vocabulary across two lexicons.",
             "knownValues": [
               "audio",
               "video",
               "image",
-              "document"
+              "document",
+              "signal",
+              "motion",
+              "volume",
+              "custom"
             ],
             "maxLength": 128
           },
           "title": {
             "type": "string",
+            "description": "Human-readable title for this medium.",
             "maxLength": 1024
           },
           "description": {
             "type": "string",
+            "description": "Free-text description of this medium.",
             "maxLength": 10000
           },
           "blob": {
             "type": "blob",
-            "description": "The media blob.",
+            "description": "The media blob. Signal, motion and volume containers (EDF, BDF, FIF, EEGLAB SET, BrainVision, SNIRF, NWB, NIfTI, ASC, C3D, TRC) travel as application/octet-stream or application/x-hdf5, with the concrete container named by the relevant info block's format field. Content above maxSize MUST use externalUri.",
             "accept": [
               "audio/*",
               "video/*",
               "image/*",
-              "application/pdf"
+              "application/pdf",
+              "application/octet-stream",
+              "application/x-hdf5",
+              "text/tab-separated-values",
+              "text/csv"
             ],
             "maxSize": 104857600
           },
@@ -57,11 +67,17 @@
           },
           "mimeType": {
             "type": "string",
+            "description": "MIME type of the carried bytes.",
             "maxLength": 128
           },
           "durationMs": {
             "type": "integer",
             "description": "Duration in milliseconds (for audio/video).",
+            "minimum": 0
+          },
+          "durationNanos": {
+            "type": "integer",
+            "description": "Duration in nanoseconds; authoritative over durationMs where both are present. Milliseconds round away whole samples at 2048 Hz and above.",
             "minimum": 0
           },
           "fileSizeBytes": {
@@ -93,6 +109,64 @@
             "type": "ref",
             "ref": "pub.layers.media.defs#documentInfo",
             "description": "Document-specific metadata. Present for scanned documents, manuscripts, etc."
+          },
+          "image": {
+            "type": "ref",
+            "ref": "pub.layers.media.defs#imageInfo",
+            "description": "Still-image metadata. Photographs previously had to borrow videoInfo."
+          },
+          "signal": {
+            "type": "ref",
+            "ref": "pub.layers.media.defs#signalInfo",
+            "description": "Sampled time-series metadata (EEG, MEG, iEEG, fNIRS, EMG, ECG, EDA, respiration, gaze, mouse and key logging)."
+          },
+          "eyeTracking": {
+            "type": "ref",
+            "ref": "pub.layers.media.defs#eyeTrackingInfo",
+            "description": "Eye-tracking specifics, carried alongside signal. A nested block rather than an eighth carrier kind, because BIDS types eye-tracking as a physiological recording."
+          },
+          "motion": {
+            "type": "ref",
+            "ref": "pub.layers.media.defs#motionInfo",
+            "description": "Motion-capture and articulography metadata, carried alongside signal."
+          },
+          "volume": {
+            "type": "ref",
+            "ref": "pub.layers.media.defs#volumeInfo",
+            "description": "Volumetric imaging metadata."
+          },
+          "contentDigest": {
+            "type": "ref",
+            "ref": "pub.layers.defs#contentDigest",
+            "description": "Hash over the referenced bytes. The only integrity guarantee available for externalUri carriage, and therefore expected whenever externalUri is used without a blob. A record CID pins the record, not the bytes behind a URI."
+          },
+          "sessionRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the pub.layers.acquisition.session this medium is a stream of. Every stream of one synchronized recording carries the same sessionRef. parentMediaRef expresses excerpt-of and MUST NOT be used for synchronization."
+          },
+          "stream": {
+            "type": "ref",
+            "ref": "pub.layers.defs#objectRef",
+            "description": "The session stream this medium fills, as an objectRef whose recordRef is sessionRef and whose objectId is the stream's uuid. Replaces a session-local label string: a name join cannot be validated and cannot be detected as dangling."
+          },
+          "sync": {
+            "type": "ref",
+            "ref": "pub.layers.media.defs#syncInfo",
+            "description": "How this stream aligns to its session's shared time base."
+          },
+          "participantRefs": {
+            "type": "array",
+            "description": "AT-URIs of the pub.layers.acquisition.participant records this recording captures. On the record rather than inside four sibling info blocks, because a speech recording and a face video capture participants too, and four copies with no precedence rule is a conflict waiting to be written.",
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "access": {
+            "type": "ref",
+            "ref": "pub.layers.defs#accessCondition",
+            "description": "Conditions under which the bytes may be obtained. Distinct from licensing, which governs what may be done with them, and from consent, which governs the person they came from. All three must hold."
           },
           "knowledgeRefs": {
             "type": "array",
@@ -129,15 +203,23 @@
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "Timestamp at which this media record was created."
           },
           "languages": {
             "type": "array",
             "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
-            "maxLength": 128,
             "items": {
               "type": "string",
               "maxLength": 32
+            }
+          },
+          "languageRefs": {
+            "type": "array",
+            "description": "Structured language references, for varieties a BCP-47 tag cannot name. Each entry's tag SHOULD also appear in languages.",
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#languageRef"
             }
           }
         }

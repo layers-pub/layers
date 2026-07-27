@@ -42,7 +42,46 @@ The `source` field is a free-form string identifying the KB. Common values:
 | `semantic-scholar` | `204e3073` | Paper and author corpus identification |
 | `doi` | `10.1162/coli_a_00478` | Publication references |
 
+Version 0.9.0 widens `source` with the identifiers that data-oriented, multimodal, and neuroscientific work needs. These ground the entities that must not be minted as Layers-local vocabularies (species, institutions, funders, tools, brain regions, tasks, deposits):
+
+| Source | Example Identifier | Use Case |
+|--------|-------------------|----------|
+| `iso639-3` | `fin` | Language identity (paired with `languageRef`) |
+| `rrid` | `RRID:SCR_002823` | Software tools (`toolRef`, `reproducibility.softwareRefs`), antibodies, strains |
+| `ncbi-taxonomy` | `9606` | Species on `acquisition.participant` |
+| `uberon` | `UBERON:0002037` | Anatomical grounding of `sensorSpec.anatomyRef` and spatial regions |
+| `cognitive-atlas` | `trm_4a3fd79d0b57a` | Task grounding on `acquisition.session` and `signalInfo.cogAtlasRef` |
+| `hed` | `Sensory-event` | Hierarchical Event Descriptor tags on `eventCode` |
+| `clinicaltrials` | `NCT00000000` | Registered trials on `ethicsApproval.bodyRef` |
+| `ldc`, `elra`, `lindat`, `openneuro`, `dandi`, `paradisec`, `talkbank` | archive-specific | Dataset deposits grounded on `catalog.collection.knowledgeRefs` |
+| `handle`, `islrn`, `datacite` | `hdl:11234/1-1234` | Persistent identifiers for catalog collections |
+| `cogpo`, `mesh` | domain-specific | Cognitive-paradigm and biomedical concept grounding |
+
+The pattern is deliberate: funders ground via `ror` or the Crossref Funder Registry (`fundingRef.funderRef`), ethics boards via `ror` (`ethicsApproval.bodyRef`), manufacturers via `ror`/`wikidata` (`deviceInfo.manufacturerRef`), and languages via `glottolog`/`iso639-3`/`cldr` (`languageRef.knowledgeRef`). None of these becomes a Layers enum.
+
 The `sourceUri` field can point to an ATProto record representing the KB authority, enabling decentralized KB management.
+
+### Grounding languages with languageRef
+
+A bare BCP-47 tag in a `languages` array cannot name a variety below the language level, a Glottolog languoid whose code is disputed, or the role a language plays in a parallel or bilingual record. The 0.9.0 [`languageRef`](../foundations/primitives.md) shared def carries the tag plus optional `scriptCode` (ISO 15924), `regionCode` (ISO 3166-1 / UN M.49), `varietyLabel` (prose residue), a `role` (`primary`, `source`, `target`, `l1`, `l2`, `heritage`, `signed-l1`, `signed-l2`, ...), and a `knowledgeRef` grounding the language itself. It appears on the eight-record language set (expression, corpus, media, annotation layer, resource collection/entry/template, ontology) alongside the flat `languages` array; each `languageRef.tag` should also appear in `languages` so a consumer filtering on the cheap array is not silently excluded.
+
+```json
+{
+  "languages": ["poma", "el", "bg"],
+  "languageRefs": [
+    {
+      "tag": "poma",
+      "scriptCode": "Grek",
+      "varietyLabel": "Pomak (Xanthi)",
+      "knowledgeRef": { "source": "glottolog", "identifier": "poma1249" },
+      "role": "primary"
+    },
+    { "tag": "el", "knowledgeRef": { "source": "iso639-3", "identifier": "ell" }, "role": "metalanguage" }
+  ]
+}
+```
+
+Importers must normalize `tag` to the shortest ISO 639 code on write (`en` not `eng`, `fi` not `fin`, but `poma` for Pomak because no 639-1 code exists).
 
 ## Grounding Bibliographic Creators
 

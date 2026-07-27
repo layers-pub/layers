@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "description": "A standalone node in the property graph. Represents entities, concepts, situations, claims, or any domain object that does not have another Layers record. Existing Layers records (expressions, annotations, typeDefs) are implicitly nodes via objectRef.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": ["nodeType", "createdAt"],
@@ -42,11 +42,13 @@
           },
           "metadata": {
             "type": "ref",
-            "ref": "pub.layers.defs#annotationMetadata"
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who created this node, under what persona, with what tool."
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "Timestamp when this node record was created."
           }
         }
       }

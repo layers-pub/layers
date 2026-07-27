@@ -327,12 +327,34 @@ For incremental presentation methods (RSVP, self-paced), additional fields contr
 
 | Field | Description |
 |-------|-------------|
-| `chunkingUnit` | How text is segmented: `word`, `character`, `morpheme`, `phrase`, `sentence`, `region`, `custom` |
+| `chunkingUnit` | How text is segmented: `word`, `character`, `morpheme`, `phrase`, `clause`, `sentence`, `region`, `sign`, `gesture-phrase`, `custom`. Paired with `chunkingUnitUri` as of 0.9.0; `clause`, `sign`, and `gesture-phrase` are the new values, for signed and gestural stimuli. |
 | `timingMs` | Per-chunk display duration in milliseconds (for timed presentations like RSVP) |
 | `isiMs` | Inter-stimulus interval in milliseconds |
 | `cumulative` | Whether previous chunks remain visible (true for cumulative self-paced reading, false for non-cumulative) |
 | `maskChar` | Masking character replacing hidden text (e.g., `-` for dashes, `#` for hashes) |
 | `features` | Additional method-specific parameters (e.g., prime duration for masked priming, gate size for gating) |
+
+#### Screen geometry (0.9.0)
+
+Gaze-on-screen eye-tracking is uninterpretable without the display geometry: a pixel gaze sample means nothing without screen size, viewing distance, and the pixels-per-degree that follow from them. `presentationSpec` carries these as optional fields, which BIDS keeps in the events sidecar `StimulusPresentation` object:
+
+```json
+{
+  "presentation": {
+    "method": "visual-world",
+    "screenWidthPx": 1920,
+    "screenHeightPx": 1080,
+    "screenWidthMm": 520,
+    "screenHeightMm": 290,
+    "viewingDistanceMm": 700,
+    "refreshRateMilliHz": 60000,
+    "pixelsPerDegree": 48,
+    "sessionRef": "at://did:plc:lab/pub.layers.acquisition.session/ses-01"
+  }
+}
+```
+
+`presentationSpec` also gains `sessionRef`, `participantRefs`, and `mediaRefs`, tying a presentation specification to the concrete session, participants, and stimulus media it was delivered under.
 
 ## Recording Methods
 
@@ -363,7 +385,9 @@ The `recordingMethods` array on `experimentDef` declares what instruments captur
 | `skin-conductance` | Galvanic skin response |
 | `ecog` | Intracranial EEG / electrocorticography |
 
-All values are community-expandable via `methodUri`. Detailed acquisition parameters (sample rate, channel count, montage) belong on `pub.layers.media.media` records, not the experiment definition. See the [Psycholinguistic Data guide](./psycholinguistic-data.md) for media record examples.
+All values are community-expandable via `methodUri`, which resolves into the shared `modality` node set (the same nodes that back `media.signalInfo.modalityUri` and `catalog.contentSummary.modalityUri`), so an instrument named in a protocol joins the recording it produced and the catalogue entry advertising it. Detailed acquisition parameters (sample rate, channel count, montage) belong on `pub.layers.media.media` records, not the experiment definition. See the [Psycholinguistic Data guide](./psycholinguistic-data.md) for media record examples and the [Acquisition reference](../lexicons/acquisition.md) for session and participant records.
+
+As of 0.9.0 `recordingMethod` also carries the acquisition links `sessionRef`, `participantRefs`, and `mediaRefs`, so a recording instrument in an experiment points at the concrete session that ran it and the media records it produced.
 
 ### Examples
 
@@ -444,6 +468,28 @@ fMRI with auditory narrative (passive):
   "guidelines": "Listen to the story and try to understand what is happening..."
 }
 ```
+
+## Sessions and Participants
+
+An `experimentDef` is a type-level protocol: what is measured, how it is presented, what instruments capture it. The token event that runs the protocol on a specific person on a specific day is a [`pub.layers.acquisition.session`](../lexicons/acquisition.md), which 0.9.0 adds. Before 0.9.0 the only task construct was `experimentDef`, reachable only from `judgmentSet.experimentRef`, so a neural recording with no behavioural judgments had nowhere to say what the participant was doing. A session fixes that: it names its `task`, its `participantRefs`, its synchronized `streams`, its `devices`, and, critically, the `clock` that every stream offset and every anchor into the session is measured from.
+
+```json
+{
+  "$type": "pub.layers.acquisition.session",
+  "sessionId": "ses-01",
+  "experimentRef": "at://did:plc:lab/pub.layers.judgment.experimentDef/n400-study",
+  "task": "reading",
+  "clock": "first-trigger",
+  "participantRefs": ["at://did:plc:lab/pub.layers.acquisition.participant/sub-01"],
+  "streams": [
+    { "uuid": { "value": "stream-eeg" }, "streamRole": "neural", "mediaRef": "at://did:plc:lab/pub.layers.media.media/eeg-run-1" },
+    { "uuid": { "value": "stream-et" }, "streamRole": "gaze", "mediaRef": "at://did:plc:lab/pub.layers.media.media/et-run-1" }
+  ],
+  "ethicsApprovals": [{ "protocolId": "IRB-2025-118", "bodyRef": { "source": "ror", "identifier": "00f54p054" } }]
+}
+```
+
+A participant is pseudonymous and de-identified by field absence: no name, email, DID, handle, institutional identifier, or birth-date-derived string ever enters the record. Its typed fields mirror BIDS `participants.tsv` and NWB `Subject` (`ageMonths`, `sex`, `handedness`, `hearingStatus`, `languageProfiles`), and its required `consent` block declares, in typed terms, whether the underlying bytes may live in a public PDS at all. Data whose `consent.identifiability` is `identifiable`, or whose `consent.scope` is `not-redistributable` or `controlled-access`, must be referenced by `media.externalUri` behind a gate rather than carried as a Layers blob. See the [Acquisition reference](../lexicons/acquisition.md) for the full participant and session shapes and the ethics and access model.
 
 ## The Stimulus Pipeline
 
@@ -655,7 +701,24 @@ Every judgment can carry `responseTimeMs` and a `behavioralData` feature map for
 
 ### Response Times
 
-The `responseTimeMs` field captures reaction time in milliseconds. For multi-region tasks (self-paced reading), per-region times go in `behavioralData`:
+The `responseTimeMs` field captures a single reaction time in milliseconds. For per-region reading-time and eye-movement measures, the 0.9.0 `regionResponse` object (`pub.layers.judgment.defs#regionResponse`) is the typed shape that the untyped `region.N.rt` feature keys previously stood in for. A single `regionResponse` names its region, its analysis role, and the standard eye-movement measures:
+
+```json
+{
+  "region": { "recordRef": "at://.../stimulus", "objectId": { "value": "region-1" } },
+  "regionIndex": 1,
+  "regionRole": "critical",
+  "readingTimeMs": 445,
+  "firstFixationMs": 260,
+  "gazeDurationMs": 410,
+  "goPastMs": 620,
+  "regressionsOut": 1,
+  "regressionsIn": 0,
+  "fixationCount": 3
+}
+```
+
+The `regionRole` axis (`critical`, `spillover`, `precritical`, `pretarget`, `target`, `posttarget`, `filler`, ...) is what an analysis groups on. Where a measure has no named field, it goes in the object's own `features` map rather than into flat `region.N.*` keys. The `behavioralData` feature-map form remains valid for signals the typed object does not reach, and for per-region measures a producer carries a `regionResponse` per region under a judgment's `behavioralData`/`features` until a lexicon field promotes it:
 
 ```json
 {
@@ -665,9 +728,7 @@ The `responseTimeMs` field captures reaction time in milliseconds. For multi-reg
   "behavioralData": {
     "entries": [
       { "key": "region.0.rt", "value": "312" },
-      { "key": "region.1.rt", "value": "287" },
-      { "key": "region.2.rt", "value": "445" },
-      { "key": "region.3.rt", "value": "398" }
+      { "key": "region.1.rt", "value": "287" }
     ]
   }
 }

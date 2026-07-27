@@ -1,0 +1,45 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.acquisition.listParticipants",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "List participant records.",
+      "parameters": {
+        "type": "params",
+        "required": ["repo"],
+        "properties": {
+          "repo": { "type": "string", "format": "at-identifier", "description": "The repository (DID or handle) whose participant records to list." },
+          "species": { "type": "string", "maxLength": 128, "description": "Filter to participants of this species slug." },
+          "language": { "type": "string", "maxLength": 32, "description": "Filter to participants with this BCP-47 language tag in their repertoire." },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50, "description": "Maximum number of records to return in one page." },
+          "cursor": { "type": "string", "description": "Opaque pagination cursor from a previous response, to resume after the last returned record." }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["records"],
+          "properties": {
+            "cursor": { "type": "string", "description": "Opaque pagination cursor to pass to the next call, absent when no further pages remain." },
+            "records": {
+              "type": "array",
+              "description": "The page of participant records returned.",
+              "items": { "type": "ref", "ref": "#recordView" }
+            }
+          }
+        }
+      }
+    },
+    "recordView": {
+      "type": "object",
+      "required": ["uri", "cid", "value"],
+      "properties": {
+        "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of this participant record." },
+        "cid": { "type": "string", "format": "cid", "description": "CID of this participant record's indexed revision." },
+        "value": { "type": "ref", "ref": "pub.layers.acquisition.participant#main", "description": "The participant record value." }
+      }
+    }
+  }
+}

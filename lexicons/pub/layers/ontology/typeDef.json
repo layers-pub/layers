@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "description": "A type definition within an ontology. Covers entity types, situation types, role types, and relation types in a single unified model.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": ["ontologyRef", "name", "typeKind", "createdAt"],
@@ -70,11 +70,13 @@
           },
           "features": {
             "type": "ref",
-            "ref": "pub.layers.defs#featureMap"
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features describing this type not reached by the named fields."
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "When this type definition record was created."
           }
         }
       }

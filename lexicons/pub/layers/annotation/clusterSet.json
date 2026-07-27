@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "description": "Groups annotations into equivalence classes. Used for coreference resolution (entity clusters, situation clusters), bridging anaphora grouping, and any annotation clustering task.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": ["kind", "clusters", "createdAt"],
@@ -47,6 +47,7 @@
           },
           "clusters": {
             "type": "array",
+            "description": "The equivalence classes in this set; each cluster groups annotations judged to corefer.",
             "items": {
               "type": "ref",
               "ref": "pub.layers.annotation.defs#cluster"
@@ -54,7 +55,8 @@
           },
           "metadata": {
             "type": "ref",
-            "ref": "pub.layers.defs#annotationMetadata"
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who produced this cluster set, when, with what tool or model."
           },
           "licensing": {
             "type": "ref",
@@ -77,7 +79,8 @@
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "Timestamp when this cluster set record was created."
           }
         }
       }

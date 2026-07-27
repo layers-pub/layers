@@ -6,6 +6,8 @@ sidebar_label: "Persona"
 
 Persona records define annotation frameworks and analyst perspectives. Different personas can annotate the same data with different ontologies and interpretive frameworks, following FOVEA's persona-based approach.
 
+As of 0.9.0 the record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
+
 ## Types
 
 ### persona

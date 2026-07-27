@@ -5,14 +5,15 @@
     "main": {
       "type": "record",
       "description": "A set of judgments from a single annotator for an experiment.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": ["experimentRef", "judgments", "createdAt"],
         "properties": {
           "experimentRef": {
             "type": "string",
-            "format": "at-uri"
+            "format": "at-uri",
+            "description": "AT-URI of the pub.layers.judgment.experimentDef this judgment set was collected for."
           },
           "agent": {
             "type": "ref",
@@ -21,6 +22,7 @@
           },
           "judgments": {
             "type": "array",
+            "description": "The judgments in this set, each a pub.layers.judgment.defs#judgment, all produced by the one annotator.",
             "items": {
               "type": "ref",
               "ref": "pub.layers.judgment.defs#judgment"
@@ -28,7 +30,8 @@
           },
           "metadata": {
             "type": "ref",
-            "ref": "pub.layers.defs#annotationMetadata"
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who created this judgment set record, with what tool."
           },
           "knowledgeRefs": {
             "type": "array",
@@ -46,7 +49,8 @@
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "When this judgment set record was created."
           }
         }
       }

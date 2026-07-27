@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "description": "A batch of typed, directed edges between Layers objects. Use for bulk edge creation when many edges share the same provenance and context.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": ["edges", "createdAt"],
@@ -45,6 +45,7 @@
           },
           "edges": {
             "type": "array",
+            "description": "The directed edge entries contained in this set.",
             "items": {
               "type": "ref",
               "ref": "pub.layers.graph.defs#graphEdgeEntry"
@@ -52,7 +53,8 @@
           },
           "metadata": {
             "type": "ref",
-            "ref": "pub.layers.defs#annotationMetadata"
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who produced this edge set, when, with what tool or model."
           },
           "knowledgeRefs": {
             "type": "array",
@@ -89,7 +91,8 @@
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "Timestamp when this edge set record was created."
           }
         }
       }

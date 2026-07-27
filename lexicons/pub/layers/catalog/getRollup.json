@@ -1,0 +1,178 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.catalog.getRollup",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "Compute totals and facets over a collection's subtree. Derived state, and therefore a query rather than a record: a record asserting counts over records its author does not own is neither rebuildable from the firehose nor authoritative, and it can contradict the appview that is. Sums traverse the containment spine only, so each descendant is counted exactly once; facets union over the whole relation graph, and union is idempotent, so a treebank reachable by two paths contributes its languages once.",
+      "parameters": {
+        "type": "params",
+        "required": ["collection"],
+        "properties": {
+          "collection": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the collection to roll up."
+          },
+          "maxDepth": {
+            "type": "integer",
+            "description": "Limit the subtree walk to this many levels below the collection. Omit for the whole subtree.",
+            "minimum": 0,
+            "maximum": 8
+          },
+          "resolveVersion": {
+            "type": "boolean",
+            "description": "When the collection is a concept node carrying currentVersionRef, roll up that release rather than every release. Releases are versionOf, never children, so they never sum; this switch decides which release's membership is walked.",
+            "default": true
+          },
+          "includeFacets": {
+            "type": "boolean",
+            "description": "Include the facet buckets. Sums alone are much cheaper.",
+            "default": true
+          },
+          "facetDimensionUri": {
+            "type": "array",
+            "description": "Restrict faceting to these dimension definition nodes. Takes precedence over facetDimension.",
+            "maxLength": 16,
+            "items": { "type": "string", "format": "at-uri" }
+          },
+          "facetDimension": {
+            "type": "array",
+            "description": "Restrict faceting to these dimension slugs.",
+            "maxLength": 16,
+            "items": { "type": "string", "maxLength": 128 }
+          },
+          "trustUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the trust-tier definition node. Refines trust; never replaces it."
+          },
+          "trust": {
+            "type": "string",
+            "description": "Which asserting parties to include (fallback when trustUri unavailable). Same vocabulary and same default as pub.layers.catalog.listContainers.",
+            "knownValues": ["self-asserted", "curated", "open"],
+            "default": "curated",
+            "maxLength": 64
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["collection", "computedAt", "totals"],
+          "properties": {
+            "collection": { "type": "string", "format": "at-uri", "description": "AT-URI of the collection this rollup was computed over." },
+            "computedAt": {
+              "type": "string",
+              "format": "datetime",
+              "description": "When this rollup was computed. A rollup without a timestamp cannot be told from a stale cache."
+            },
+            "descendantCollectionCount": { "type": "integer", "minimum": 0, "description": "Number of collections in the subtree along the containment spine, each counted once." },
+            "totals": {
+              "type": "array",
+              "description": "Summed content buckets over the subtree, each carrying its own countSource: 'computed' where the appview counted the records, 'declared' where it could only add up publishers' own figures, and 'unavailable' where a bucket is known to exist at an unknown size. A subtree mixing the three reports the weakest, so a total is never presented as firmer than its inputs.",
+              "maxLength": 256,
+              "items": { "type": "ref", "ref": "pub.layers.catalog.defs#contentSummary" }
+            },
+            "facets": {
+              "type": "array",
+              "description": "Facet buckets over the reachable graph.",
+              "maxLength": 32,
+              "items": { "type": "ref", "ref": "#facet" }
+            },
+            "warnings": {
+              "type": "array",
+              "description": "What the rollup could not establish. Reported rather than silently absorbed, since a hierarchy over unpopulated fields otherwise renders as confident zeroes.",
+              "maxLength": 64,
+              "items": { "type": "ref", "ref": "#rollupWarning" }
+            }
+          }
+        }
+      },
+      "errors": [{ "name": "RecordNotFound" }, { "name": "RollupTooLarge" }]
+    },
+
+    "facet": {
+      "type": "object",
+      "description": "One facet dimension and its buckets.",
+      "required": ["dimension", "values"],
+      "properties": {
+        "dimensionUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the facet dimension definition node (typeDef of 'facet-dimension' at layers-core.ontology.layers.pub). Refines dimension; never replaces it."
+        },
+        "dimension": {
+          "type": "string",
+          "description": "Facet dimension slug (fallback when dimensionUri unavailable).",
+          "knownValues": ["language", "modality", "annotation-kind", "annotation-subkind", "formalism", "source-method", "license", "access", "collection-kind", "produce-type", "task-type", "measure-type", "recording-method", "publisher", "custom"],
+          "maxLength": 128
+        },
+        "values": {
+          "type": "array",
+          "description": "The buckets within this dimension, one per distinct value with its member count.",
+          "maxLength": 512,
+          "items": { "type": "ref", "ref": "#facetValue" }
+        }
+      }
+    },
+
+    "facetValue": {
+      "type": "object",
+      "description": "One bucket within a facet. Merging is one-directional: a record carrying valueUri N and a record carrying only the slug of N merge into one bucket keyed on N, while two records pointing at DIFFERENT nodes that happen to share a fallback slug do not merge. That asymmetry is the whole reason the URI half of the pair exists.",
+      "required": ["value", "count"],
+      "properties": {
+        "valueUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the definition node this bucket is keyed on, when the bucket resolved to one."
+        },
+        "value": {
+          "type": "string",
+          "description": "Slug for this bucket. Rendered verbatim when it falls outside the field's knownValues: an off-vocabulary slug is meaningful data, and coercing it to 'custom' or discarding it loses real distinctions that publishers have already drawn.",
+          "maxLength": 512
+        },
+        "label": {
+          "type": "string",
+          "description": "Display label resolved from the definition node, when one resolved.",
+          "maxLength": 1024
+        },
+        "count": {
+          "type": "integer",
+          "description": "Number of distinct members contributing this value, deduplicated by member AT-URI so a member reachable by several paths counts once.",
+          "minimum": 0
+        }
+      }
+    },
+
+    "rollupWarning": {
+      "type": "object",
+      "description": "A qualification on a computed rollup.",
+      "required": ["code"],
+      "properties": {
+        "codeUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the warning-code definition node (typeDef of 'rollup-warning' at layers-core.ontology.layers.pub). Refines code; never replaces it."
+        },
+        "code": {
+          "type": "string",
+          "description": "Warning code slug (fallback when codeUri unavailable).",
+          "knownValues": ["count-unavailable", "count-declared-only", "member-unindexed", "pin-dangling", "vocabulary-unresolved", "depth-truncated", "cycle-detected", "parent-mismatch", "language-tag-non-canonical", "license-non-spdx", "custom"],
+          "maxLength": 128
+        },
+        "subjectRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the record the warning concerns."
+        },
+        "detail": {
+          "type": "string",
+          "description": "Prose explaining what the warning code means for this particular subject.",
+          "maxLength": 2048
+        }
+      }
+    }
+  }
+}

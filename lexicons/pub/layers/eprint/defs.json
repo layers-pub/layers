@@ -63,10 +63,12 @@
         },
         "volume": {
           "type": "string",
+          "description": "Volume number (CSL 'volume').",
           "maxLength": 64
         },
         "issue": {
           "type": "string",
+          "description": "Issue number (CSL 'issue').",
           "maxLength": 64
         },
         "page": {
@@ -76,6 +78,7 @@
         },
         "edition": {
           "type": "string",
+          "description": "Edition (CSL 'edition').",
           "maxLength": 64
         },
         "version": {
@@ -96,10 +99,12 @@
         },
         "isbn": {
           "type": "string",
+          "description": "ISBN (CSL 'ISBN').",
           "maxLength": 32
         },
         "issn": {
           "type": "string",
+          "description": "ISSN (CSL 'ISSN').",
           "maxLength": 32
         },
         "pmid": {

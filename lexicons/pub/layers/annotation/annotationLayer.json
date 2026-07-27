@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "description": "A named layer of annotations over an expression. All annotation types use this single record type. The combination of kind, subkind, and formalism tells the appview how to render. Multiple layers can coexist for the same expression.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": [
@@ -19,6 +19,29 @@
             "type": "string",
             "format": "at-uri",
             "description": "The expression this annotation layer applies to."
+          },
+          "sessionRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the acquisition session (pub.layers.acquisition.session) this layer annotates, when the layer spans several synchronized streams rather than one expression."
+          },
+          "mediaRefs": {
+            "type": "array",
+            "description": "AT-URIs of the media records (pub.layers.media.media) this layer annotates. Plural because expression is singular, so a layer over several synchronized streams needs more than one target.",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "simultaneousWithRefs": {
+            "type": "array",
+            "description": "AT-URIs of annotationLayer records whose annotations are co-temporal with this one by construction; for instance the dominant and non-dominant hand tiers of a two-handed sign are one event.",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
           },
           "kindUri": {
             "type": "string",
@@ -95,6 +118,7 @@
               "temporal-relation",
               "causal-relation",
               "discourse-relation",
+              "hed",
               "custom"
             ],
             "maxLength": 128
@@ -134,6 +158,10 @@
               "sentencepiece",
               "unimorph",
               "wals",
+              "hamnosys",
+              "signwriting",
+              "stokoe",
+              "bts",
               "custom"
             ],
             "maxLength": 128
@@ -198,7 +226,8 @@
           },
           "metadata": {
             "type": "ref",
-            "ref": "pub.layers.defs#annotationMetadata"
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who produced this layer, when, with what tool or model."
           },
           "licensing": {
             "type": "ref",
@@ -221,15 +250,23 @@
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "Timestamp when this annotation layer record was created."
           },
           "languages": {
             "type": "array",
             "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
-            "maxLength": 128,
             "items": {
               "type": "string",
               "maxLength": 32
+            }
+          },
+          "languageRefs": {
+            "type": "array",
+            "description": "Structured language references for this record, grounding each language via glottolog, iso639-3, or cldr and carrying script, region, variety, and role. Richer companion to the languages tag array.",
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#languageRef"
             }
           }
         }

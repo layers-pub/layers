@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "description": "An annotation ontology: a collection of typed definitions (entity types, situation types, role types, relation types) that together form a complete annotation framework.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": ["name", "createdAt"],
@@ -69,9 +69,41 @@
               "format": "at-uri"
             }
           },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who authored this ontology, with what tool, under what persona."
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features describing this ontology (e.g., release channel, coverage, status)."
+          },
+          "reproducibility": {
+            "type": "ref",
+            "ref": "pub.layers.defs#reproducibilityInfo",
+            "description": "How this ontology was produced (code, commit, command, environment, seed, funding, ethics approvals)."
+          },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "When this ontology record was created."
+          },
+          "languages": {
+            "type": "array",
+            "description": "BCP-47 language tags this ontology covers. Empty when language is unspecified or language-independent.",
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "languageRefs": {
+            "type": "array",
+            "description": "Structured language references (canonical BCP-47 tag plus optional script, region, variety, and role) grounding the languages this ontology covers.",
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#languageRef"
+            }
           }
         }
       }

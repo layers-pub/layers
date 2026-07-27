@@ -9,7 +9,7 @@
         "type": "params",
         "required": ["uri"],
         "properties": {
-          "uri": { "type": "string", "format": "at-uri" }
+          "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of the experiment definition record to fetch." }
         }
       },
       "output": {
@@ -18,9 +18,9 @@
           "type": "object",
           "required": ["uri", "cid", "value"],
           "properties": {
-            "uri": { "type": "string", "format": "at-uri" },
-            "cid": { "type": "string", "format": "cid" },
-            "value": { "type": "ref", "ref": "pub.layers.judgment.experimentDef#main" }
+            "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of the returned experiment definition record." },
+            "cid": { "type": "string", "format": "cid", "description": "CID of the returned experiment definition record revision." },
+            "value": { "type": "ref", "ref": "pub.layers.judgment.experimentDef#main", "description": "The experiment definition record value." }
           }
         }
       },

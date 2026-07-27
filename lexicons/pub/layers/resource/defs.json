@@ -15,6 +15,7 @@
         },
         "description": {
           "type": "string",
+          "description": "Human-readable description of this slot's role and the fillers it expects.",
           "maxLength": 2048
         },
         "required": {
@@ -56,6 +57,7 @@
         },
         "knowledgeRefs": {
           "type": "array",
+          "description": "Knowledge graph groundings for this slot (e.g., the semantic role or ontology type it corresponds to).",
           "maxLength": 16,
           "items": {
             "type": "ref",
@@ -64,7 +66,8 @@
         },
         "features": {
           "type": "ref",
-          "ref": "pub.layers.defs#featureMap"
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features describing this slot not captured by the typed fields."
         }
       }
     },
@@ -95,7 +98,8 @@
         },
         "features": {
           "type": "ref",
-          "ref": "pub.layers.defs#featureMap"
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features describing this filler assignment (e.g., sampling weight, generation source)."
         }
       }
     },
@@ -126,7 +130,8 @@
         },
         "features": {
           "type": "ref",
-          "ref": "pub.layers.defs#featureMap"
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features describing this composition member."
         }
       }
     },
@@ -156,7 +161,8 @@
         },
         "features": {
           "type": "ref",
-          "ref": "pub.layers.defs#featureMap"
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features describing this component (e.g., pos, morphological features)."
         }
       }
     }

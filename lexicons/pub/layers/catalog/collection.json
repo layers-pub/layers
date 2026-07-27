@@ -1,0 +1,230 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.catalog.collection",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A citable, nestable grouping of linguistic material: the thing a researcher names in prose, cites in a bibliography, and browses for. 'UD English-EWT', 'Universal Dependencies', 'VerbNet', 'MegaAcceptability Linking v1', 'UniMorph Finnish' and 'Buckeye' are each one of these, at whatever depth their community organizes them. Container-ness is a kind, not a separate record type, so a collection may hold other collections to arbitrary depth. Distinct from pub.layers.resource.collection, which is the narrower notion of a set of lexical resource entries and remains a legitimate member of this one.",
+      "key": "any",
+      "record": {
+        "type": "object",
+        "required": [
+          "name",
+          "kind",
+          "createdAt"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Human-readable name, as the community writes it ('UD English-EWT', 'MegaAcceptability Linking v1').",
+            "maxLength": 2048,
+            "maxGraphemes": 512
+          },
+          "localId": {
+            "type": "string",
+            "description": "Stable, lowercase, immutable, human-readable local identifier for this collection within its publishing account ('ewt', 'eng', 'ud'). Survives handle changes, account merges and record rebuilds, which AT-URIs do not when a repo is rebuilt in place. Advisory for resolution and authoritative for nothing; parentRef is the link.",
+            "maxLength": 128
+          },
+          "description": {
+            "type": "string",
+            "description": "Prose description of what this collection is and what it contains.",
+            "maxLength": 50000
+          },
+          "kindUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the collection kind definition node, a pub.layers.ontology.typeDef of the 'catalog-kind' ontology at layers-core.ontology.layers.pub, or a pub.layers.graph.graphNode. Community-expandable via knowledge graph. Refines kind; never replaces it."
+          },
+          "kind": {
+            "type": "string",
+            "description": "Collection kind slug. REQUIRED, because a consumer that cannot resolve kindUri, or that has not yet indexed the ontology account, must still be able to render and facet this record. Container-ness is carried here rather than by a separate record type: 'project' and 'language-group' habitually contain other collections, 'treebank' and 'judgment-study' habitually do not, and nothing in the schema enforces the habit.",
+            "knownValues": ["project", "language-group", "sub-project", "release", "treebank", "corpus", "annotated-corpus", "parallel-corpus", "comparable-corpus", "speech-corpus", "audio-corpus", "video-corpus", "sign-language-corpus", "multimodal-corpus", "neuro-dataset", "eye-tracking-dataset", "motion-dataset", "experiment-series", "judgment-study", "stimulus-set", "lexicon", "frame-inventory", "wordnet", "ontology", "ontology-alignment", "morphological-paradigm-set", "gazetteer", "treebank-family", "benchmark", "shared-task", "subcorpus", "archive", "custom"],
+            "maxLength": 128
+          },
+          "parentRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the pub.layers.catalog.collection that contains this one. Child-held and single-valued: a child's PDS can always write this, whereas nothing can compel a parent's PDS to write a member array, so this is the canonical containment spine and a parent-held member list would be a derived cache at best. MUST NOT be self-referential directly or transitively; the appview rejects cycles at index time. A collection has at most one parent and may be a member of any number of collections through pub.layers.catalog.membership."
+          },
+          "rootRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the root of this collection's parent chain, denormalized so subtree selection is an indexed equality rather than a recursive chase. Equal to this record's own AT-URI when parentRef is absent, which cannot be written into the record and is therefore left absent at depth 0."
+          },
+          "depth": {
+            "type": "integer",
+            "description": "Number of parentRef hops from the root: 0 for a project with no parent, 1 for UD English under UD, 2 for UD English-EWT. Denormalized for indexed subtree queries and, as a side effect, a validity check: a claimed depth that disagrees with the observed chain is how a cycle or a stale parent surfaces. Bounded because a bound is what makes it checkable, not because any depth is meaningful.",
+            "minimum": 0,
+            "maximum": 8
+          },
+          "version": {
+            "type": "string",
+            "description": "Version or release designation of this collection ('2.18', 'v2.1', 'FrameNet 1.7'). Present on a release node; usually absent on the concept node above it.",
+            "maxLength": 64
+          },
+          "versionOfRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the concept-level collection this record is a released version OF. Version is orthogonal to containment: a release is a versionOf its concept node, NEVER a child of it. UD has 24 releases; were a release a child and release edges summed, UD would report 24 times 228 treebanks. Rollups on a concept node resolve through currentVersionRef and sum that release only."
+          },
+          "previousVersionRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the collection release this one directly supersedes, forming a version chain. Distinct from a sibling work: four MegaAttitude datasets share one project and only one of them is a version of another."
+          },
+          "currentVersionRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the release a consumer should treat as current. Written on the concept node; a rollup over a concept node resolves through it."
+          },
+          "supersededByRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the collection that replaces this one after a withdrawal or a rename. Distinct from previousVersionRef's inverse: supersession may cross project boundaries."
+          },
+          "firstReleasedAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When this collection was first released to the public, which for imported material is decades before the Layers record existed."
+          },
+          "releasedAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When this particular version was released."
+          },
+          "pinPolicyUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the pin-policy definition node (typeDef of 'pin-policy' at layers-core.ontology.layers.pub). Refines pinPolicy; never replaces it."
+          },
+          "pinPolicy": {
+            "type": "string",
+            "description": "Whether this collection's membership is pinned to exact member revisions or tracks them as they change. Declared rather than enforced, because the declaration is what a consumer needs and enforcement across repos it does not own is not available. Under 'pinned', every pub.layers.catalog.membership edge into this collection SHOULD carry memberCid, and the appview flags those that do not. Layers-hosted collections whose repos are rebuilt in place SHOULD declare 'floating' and carry the release axis in version plus previousVersionRef, since a rebuild moves every CID and dangles every pin taken before it.",
+            "knownValues": ["pinned", "floating", "undeclared"],
+            "maxLength": 64
+          },
+          "stabilityUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the stability definition node (typeDef of 'stability' at layers-core.ontology.layers.pub). Refines stability; never replaces it."
+          },
+          "stability": {
+            "type": "string",
+            "description": "Lifecycle state of this collection (fallback when stabilityUri unavailable).",
+            "knownValues": ["draft", "active", "maintained", "frozen", "deprecated", "withdrawn"],
+            "maxLength": 64
+          },
+          "stabilityNotice": {
+            "type": "string",
+            "description": "Prose explaining a deprecation or withdrawal, and where to go instead.",
+            "maxLength": 4096
+          },
+          "accessUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the access-condition definition node (typeDef of 'access-condition' at layers-core.ontology.layers.pub). Refines access; never replaces it."
+          },
+          "access": {
+            "type": "string",
+            "description": "Access conditions on the underlying material (fallback when accessUri unavailable). Distinct from licensing, which states what a recipient may do; this states who may become a recipient, which for participant-identifiable neural, audio and video data is the governing constraint.",
+            "knownValues": ["open", "registration-required", "agreement-required", "restricted", "embargoed", "closed"],
+            "maxLength": 64
+          },
+          "embargoedUntil": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When an embargo lifts, present when access is 'embargoed'."
+          },
+          "contents": {
+            "type": "array",
+            "description": "Publisher-declared summary of what this collection contains, one entry per produce type and narrowing. Makes a browse row renderable without paging the produces, which is the difference between a page load and a multi-minute crawl over tens of thousands of annotation records. Every entry states its countSource, so a consumer can tell a declared figure from a computed one and from an absent one. Never authoritative over the appview's computed rollup.",
+            "maxLength": 128,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.catalog.defs#contentSummary"
+            }
+          },
+          "citation": {
+            "type": "ref",
+            "ref": "pub.layers.catalog.defs#citation",
+            "description": "How to cite this collection, and whether this is the level that should be cited. Presence marks this node as citable; creditPolicy delegates upward or downward when it is not."
+          },
+          "homepage": {
+            "type": "string",
+            "format": "uri",
+            "description": "Canonical project or dataset homepage.",
+            "maxLength": 2048
+          },
+          "languages": {
+            "type": "array",
+            "description": "Canonical BCP-47 language tags this collection covers. Canonical means the shortest ISO 639 code that exists for the language: 'en' not 'eng', 'fi' not 'fin', but 'poma' for Pomak because no 639-1 code exists. Language is a FACET, never a level: 107 of UD's 145 languages have exactly one treebank, so a language tier would insert 107 nodes identical to their sole child, and 88 treebanks sit in cross-language families that a language tier cannot address at any depth. Rolls up as a set union over the containment spine, so a project node legitimately carries 145 tags. Where a tag cannot name the variety precisely, carry the tag here and the precise identity in languageRefs.",
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "languageRefs": {
+            "type": "array",
+            "description": "Structured language references, present when a bare BCP-47 tag is insufficient: a variety below the language level, a Glottolog languoid, a disputed code, or a per-language role in a parallel or bilingual collection. Each entry's tag SHOULD also appear in languages so consumers filtering on the cheap array are not silently excluded.",
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#languageRef"
+            }
+          },
+          "ontologyRefs": {
+            "type": "array",
+            "description": "AT-URIs of pub.layers.ontology.ontology records defining the type systems used across this collection.",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "External groundings for this collection as an entity: Wikidata for the project, ROR for its home institution, OpenAlex or DOI for its canonical publication, LDC or LINDAT or OpenNeuro or PARADISEC for its deposit elsewhere.",
+            "maxLength": 64,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "eprintRefs": {
+            "type": "array",
+            "description": "AT-URIs of pub.layers.eprint.eprint records describing this collection. Inherited by descendants that declare none: one parent eprintRef is what lets UniMorph replace 185 redundant per-language citations with one.",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "licensing": {
+            "type": "ref",
+            "ref": "pub.layers.defs#licensing",
+            "description": "Licensing terms governing this collection (supports dual, multi, composite and component-scoped licensing). Component-scoped licensing is the normal case in a nested catalogue: a per-treebank license sits beneath a release-level one, which is what licenseRef.appliesTo carries."
+          },
+          "reproducibility": {
+            "type": "ref",
+            "ref": "pub.layers.defs#reproducibilityInfo",
+            "description": "How this collection was built: pipeline name and version, container, code repository, commit, command, funding and ethics approvals. Required in spirit for any collection derived from another, since nesting produces derivatives by construction."
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who curated this collection record, under what persona, with what tool, and what upstream records it was derived from."
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features that no field above reaches. Not a place to reintroduce a controlled vocabulary as key-value strings."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When this Layers record was written. Distinct from firstReleasedAt and citation.publishedAt, which describe the material rather than the record."
+          }
+        }
+      }
+    }
+  }
+}

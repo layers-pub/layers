@@ -27,9 +27,9 @@
           "type": "object",
           "required": ["uri", "nsid", "value", "fromCache"],
           "properties": {
-            "uri":       { "type": "string", "format": "at-uri" },
-            "cid":       { "type": "string", "format": "cid" },
-            "nsid":      { "type": "string" },
+            "uri":       { "type": "string", "format": "at-uri", "description": "AT-URI of the returned external record." },
+            "cid":       { "type": "string", "format": "cid", "description": "CID of the returned external record at this revision." },
+            "nsid":      { "type": "string", "description": "Collection NSID of the external record." },
             "fromCache": { "type": "boolean", "description": "True when served from `external_records` without a network fetch." },
             "value":     { "type": "unknown", "description": "Foreign record body as published by the source." }
           }

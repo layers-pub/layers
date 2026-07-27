@@ -32,11 +32,11 @@
               "description": "Imported source record view, identical to `getExternal`'s response.",
               "required": ["uri", "nsid", "value", "fromCache"],
               "properties": {
-                "uri":       { "type": "string", "format": "at-uri" },
-                "cid":       { "type": "string", "format": "cid" },
-                "nsid":      { "type": "string" },
-                "fromCache": { "type": "boolean" },
-                "value":     { "type": "unknown" }
+                "uri":       { "type": "string", "format": "at-uri", "description": "AT-URI of the source external record." },
+                "cid":       { "type": "string", "format": "cid", "description": "CID of the source external record at this revision." },
+                "nsid":      { "type": "string", "description": "Collection NSID of the source external record." },
+                "fromCache": { "type": "boolean", "description": "True when the record was served from the local external_records cache without a network fetch." },
+                "value":     { "type": "unknown", "description": "The source record value that the lens was applied to." }
               }
             },
             "target": {

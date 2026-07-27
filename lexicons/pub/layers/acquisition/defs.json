@@ -1,0 +1,81 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.acquisition.defs",
+  "description": "Shared object types for participants, sessions, consent and access conditions.",
+  "defs": {
+    "stream": {
+      "type": "object",
+      "description": "One synchronized media stream within a session, with its offset against the session clock. The uuid is what an anchor's pub.layers.defs#mediaScope.stream objectRef points at, and what pub.layers.media.media#stream resolves to.",
+      "required": ["uuid"],
+      "properties": {
+        "uuid": { "type": "ref", "ref": "pub.layers.defs#uuid", "description": "Stable identifier for this stream within this session. Required because media records and anchors point at streams, and a session-local label string is a name join that cannot be validated." },
+        "streamId": { "type": "string", "description": "Human-readable session-local label (cam-left, lapel-a, eeg, eyetrack-right, mocap-upper). Display cache, advisory: uuid is the join key.", "maxLength": 64 },
+        "mediaRef": { "type": "string", "format": "at-uri", "description": "AT-URI of the pub.layers.media.media carrying this stream." },
+        "mediaCid": { "type": "string", "format": "cid", "description": "CID of the media revision this session's offsets were measured against, so a replaced recording is detectable rather than silently reinterpreted." },
+        "participantRef": { "type": "string", "format": "at-uri", "description": "AT-URI of the pub.layers.acquisition.participant this stream records, when the session has several and streams are per-participant." },
+        "streamRoleUri": { "type": "string", "format": "at-uri", "description": "AT-URI of the stream role definition node (typeDef of stream-role at layers-acquisition.ontology.layers.pub)." },
+        "streamRole": { "type": "string", "description": "What this stream is FOR (fallback when streamRoleUri unavailable). Distinct from the medium's kind: two audio streams can be a close-talk and a room microphone, which are the same kind and not interchangeable.", "knownValues": ["primary", "reference", "close-talk", "far-field", "room", "camera", "overhead", "face", "hands", "screen-capture", "neural", "physiological", "gaze", "motion", "articulatory", "stimulus", "trigger", "annotation-aid", "custom"], "maxLength": 128 },
+        "offsetNanos": { "type": "integer", "description": "Signed offset from the session clock's zero to this stream's first sample, session-relative and never UTC-epoch. Negative when the stream began before t=0, which BIDS StartTime explicitly permits. Duplicates media.sync.offsetNanos deliberately: the session is authoritative when the two disagree, because only the session sees all streams." },
+        "driftPartsPerBillion": { "type": "integer", "description": "Signed measured clock drift against the session master, in parts per billion. Independent oscillators diverge measurably over an hour, and zero is a claim rather than a safe default." },
+        "syncMethodUri": { "type": "string", "format": "at-uri", "description": "AT-URI of the synchronization method definition node (typeDef of sync-method at layers-acquisition.ontology.layers.pub), the same node set as media.defs#syncInfo.clockSourceUri." },
+        "syncMethod": { "type": "string", "description": "How this stream was aligned (fallback when syncMethodUri unavailable).", "knownValues": ["hardware-trigger", "shared-clock", "ltc-timecode", "clapperboard", "audio-cross-correlation", "ptp", "ntp", "manual", "unsynchronized", "custom"], "maxLength": 128 },
+        "syncUncertaintyNanos": { "type": "integer", "description": "Estimated alignment uncertainty in nanoseconds. A hardware trigger and a clapperboard differ by three orders of magnitude, and a consumer needs it to know how far to trust a cross-stream anchor.", "minimum": 0 },
+        "features": { "type": "ref", "ref": "pub.layers.defs#featureMap", "description": "Stream-specific properties not yet promoted to a typed field." }
+      }
+    },
+
+    "run": {
+      "type": "object",
+      "description": "An uninterrupted acquisition within a session, sharing acquisition parameters and task throughout. BIDS run-<index>. Also the grouping object a media.defs#motionInfo tracking system points at, addressed by uuid.",
+      "required": ["uuid"],
+      "properties": {
+        "uuid": { "type": "ref", "ref": "pub.layers.defs#uuid", "description": "Stable identifier for this run within this session. Required because a motion tracking system points at a run by uuid, and a name join cannot be validated." },
+        "runIndex": { "type": "integer", "description": "0-based run number (ordinal) within the session.", "minimum": 0 },
+        "label": { "type": "string", "description": "Human-readable run name.", "maxLength": 256 },
+        "taskUri": { "type": "string", "format": "at-uri", "description": "AT-URI of this run's task definition node, when it differs from the session's." },
+        "task": { "type": "string", "description": "Task slug for this run (fallback when taskUri unavailable), from the session task vocabulary.", "maxLength": 128 },
+        "streams": { "type": "array", "description": "Streams active during this run, as objectRefs into the session's streams.", "maxLength": 64, "items": { "type": "ref", "ref": "pub.layers.defs#objectRef" } },
+        "startNanos": { "type": "integer", "description": "Signed start on the session clock." },
+        "durationNanos": { "type": "integer", "description": "Run duration in nanoseconds.", "minimum": 0 },
+        "eventLayerRef": { "type": "string", "format": "at-uri", "description": "AT-URI of a pub.layers.annotation.annotationLayer of kind tier carrying this run's trigger and event codes. This is where BIDS events.tsv lands." },
+        "judgmentSetRefs": { "type": "array", "description": "AT-URIs of pub.layers.judgment.judgmentSet records collected during this run.", "maxLength": 64, "items": { "type": "string", "format": "at-uri" } },
+        "features": { "type": "ref", "ref": "pub.layers.defs#featureMap", "description": "Run-specific properties not yet promoted to a typed field." }
+      }
+    },
+
+    "consent": {
+      "type": "object",
+      "description": "The basis on which a participant's data may be published and redistributed, and how identifiable the retained data is. Separate from licensing, which governs the artifact, and from accessCondition, which governs the gate: a licence permits reuse, consent permits existence, an access condition permits retrieval, and all three must hold. Absent from all 26 record types in 0.8.0.",
+      "required": ["status", "scope", "identifiability"],
+      "properties": {
+        "statusUri": { "type": "string", "format": "at-uri", "description": "AT-URI of the consent status definition node." },
+        "status": { "type": "string", "description": "Current status (fallback when statusUri unavailable). A consumer MUST NOT redistribute data whose status is withdrawn.", "knownValues": ["granted", "granted-with-restrictions", "withdrawn", "expired", "not-reported"], "maxLength": 64 },
+        "scopeUri": { "type": "string", "format": "at-uri", "description": "AT-URI of the redistribution scope definition node (typeDef of consent-scope at layers-acquisition.ontology.layers.pub)." },
+        "scope": { "type": "string", "description": "What redistribution the participant agreed to (fallback when scopeUri unavailable). not-redistributable and controlled-access are declarations that the underlying bytes MUST NOT be carried as a Layers blob and MUST instead be referenced by media.externalUri pointing at a gated repository.", "knownValues": ["public", "research-only", "restricted", "controlled-access", "not-redistributable", "not-reported"], "maxLength": 128 },
+        "identifiabilityUri": { "type": "string", "format": "at-uri", "description": "AT-URI of the identifiability definition node." },
+        "identifiability": { "type": "string", "description": "How identifiable the retained data is (fallback when the Uri is unavailable). This decides whether the data may live in Layers at all. identifiable is a hard signal NOT to carry the bytes here: face video, unmodified voice, a full-head structural MRI and a clinically annotated iEEG montage are identifiable however the metadata is scrubbed, and a public PDS plus a firehose is the wrong container. Such data belongs behind media.externalUri with a matching accessCondition, with Layers holding only the description.", "knownValues": ["anonymous", "pseudonymous", "de-identified", "identifiable", "not-reported"], "maxLength": 64 },
+        "ethicsApprovals": { "type": "array", "description": "Approvals this consent falls under, reusing pub.layers.defs#ethicsApproval rather than declaring a second shape.", "maxLength": 16, "items": { "type": "ref", "ref": "pub.layers.defs#ethicsApproval" } },
+        "grantedAt": { "type": "string", "format": "datetime", "description": "When consent was granted. MAY be coarsened for de-identification." },
+        "expiresAt": { "type": "string", "format": "datetime", "description": "When consent expires, if it does." },
+        "withdrawnAt": { "type": "string", "format": "datetime", "description": "When consent was withdrawn. Its presence obliges the publisher to delete or tombstone the associated records and obliges every indexer to suppress them. It does NOT and cannot guarantee erasure: a record broadcast on the firehose or pulled by getRepo is outside the publisher's control, and Layers is a read-only indexer with no authority over third-party consumers. The normative consequence belongs stated rather than implied: do not write into a Layers record anything whose later erasure you would need to guarantee." },
+        "withdrawalContact": { "type": "string", "description": "Where a withdrawal request should be sent: a URL or an institutional address, never a personal one.", "maxLength": 512 },
+        "notes": { "type": "string", "description": "Free-text consent detail the typed fields do not capture.", "maxLength": 4096 }
+      }
+    },
+
+
+
+    "languageCompetence": {
+      "type": "object",
+      "description": "One language in a participant's repertoire, with the role it plays and how it was acquired. Composes pub.layers.defs#languageRef rather than re-declaring tag, script and grounding.",
+      "required": ["language"],
+      "properties": {
+        "language": { "type": "ref", "ref": "pub.layers.defs#languageRef", "description": "The language, including sign languages (ase, bfi, gsg). Its role field carries l1, l2, heritage, signed-l1 and signed-l2: a hearing L2 signer and a deaf L1 signer are different participants for essentially every research question in the field." },
+        "proficiencyUri": { "type": "string", "format": "at-uri", "description": "AT-URI of the proficiency scale point definition node (typeDef of proficiency at layers-acquisition.ontology.layers.pub)." },
+        "proficiency": { "type": "string", "description": "Proficiency slug (fallback when proficiencyUri unavailable).", "knownValues": ["native", "near-native", "advanced", "intermediate", "beginner", "receptive-only", "not-reported"], "maxLength": 64 },
+        "ageOfAcquisitionMonths": { "type": "integer", "description": "Age of first exposure in whole months.", "minimum": 0 },
+        "features": { "type": "ref", "ref": "pub.layers.defs#featureMap", "description": "Competence detail not yet promoted to a typed field." }
+      }
+    }
+  }
+}

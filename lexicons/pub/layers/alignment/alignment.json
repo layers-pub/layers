@@ -6,7 +6,7 @@
     "main": {
       "type": "record",
       "description": "An alignment between two parallel sequences. The sequences can be tokenizations, annotation layers, expressions (for parallel text), or tiers. Links establish many-to-many correspondence between elements indexed by position.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": ["kind", "links", "createdAt"],
@@ -85,7 +85,8 @@
           },
           "metadata": {
             "type": "ref",
-            "ref": "pub.layers.defs#annotationMetadata"
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who produced this alignment, when, with what tool or model."
           },
           "knowledgeRefs": {
             "type": "array",
@@ -117,11 +118,13 @@
           },
           "features": {
             "type": "ref",
-            "ref": "pub.layers.defs#featureMap"
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features (e.g., alignment scores, confidence, model parameters)."
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "Timestamp when this alignment record was created."
           }
         }
       }

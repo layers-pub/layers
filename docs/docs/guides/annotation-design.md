@@ -289,3 +289,74 @@ An AMR sembank with discussion-based reconciliation:
   }
 }
 ```
+
+## Organizing Corpora into Collections
+
+A corpus record describes one curated set of expressions. It does not, on its own, say how corpora nest into projects, releases, and language groups, which level a researcher should cite, or how many things a whole project contains. Those questions live in [`pub.layers.catalog`](../lexicons/catalog.md).
+
+A `catalog.collection` is a node in a containment tree; a `catalog.membership` is a typed edge into one. The corpus above becomes a `produce` member of a treebank collection, which is a `member` of a project collection:
+
+```json
+{
+  "$type": "pub.layers.catalog.collection",
+  "name": "Universal Dependencies",
+  "localId": "ud",
+  "kind": "project",
+  "citation": { "creditPolicy": "cite-children" }
+}
+```
+
+```json
+{
+  "$type": "pub.layers.catalog.collection",
+  "name": "UD English-EWT",
+  "localId": "ewt",
+  "kind": "treebank",
+  "parentRef": "at://did:plc:ud/pub.layers.catalog.collection/ud",
+  "languages": ["en"],
+  "citation": {
+    "creditPolicy": "cite-self",
+    "identifiers": [{ "source": "handle", "identifier": "hdl:11234/1-5150" }]
+  },
+  "contents": [
+    { "produceCollection": "pub.layers.annotation.annotationLayer", "subkind": "dependency",
+      "formalism": "universal-dependencies", "count": 16622, "unit": "sentence",
+      "countSource": "declared", "sourceMethod": "manual" }
+  ]
+}
+```
+
+Two rules keep the arithmetic honest. First, only `member` and `produce` edges sum in a rollup; a `role: "annotates"` edge from a PropBank-SRL layer to the treebank renders on both pages and adds to neither count. Second, every `contentSummary` states its `countSource`, so a `declared` figure the publisher wrote is never confused with a `computed` figure the appview derived or an `unavailable` bucket whose size is genuinely unknown. Derived counts come from the `getRollup` query, never from a stored aggregate. Design a collection's `citation.creditPolicy` deliberately: an umbrella project should usually delegate downward (`cite-children`) so that a duplicate citable level is authored on purpose rather than by omission.
+
+## Annotating Neural and Signal Data
+
+As of 0.9.0 an annotation layer can anchor into a continuous signal, not only text and time. A `signalSpan` anchor addresses exact samples (or session-relative nanoseconds) over one or more channels of an EEG, MEG, iEEG, fNIRS, EMG, or audio-waveform recording, and may select a `frequencyBand` for time-frequency work:
+
+```json
+{
+  "$type": "pub.layers.annotation.annotationLayer",
+  "kind": "span",
+  "subkind": "custom",
+  "sessionRef": "at://did:plc:lab/pub.layers.acquisition.session/ses-01",
+  "mediaRefs": ["at://did:plc:lab/pub.layers.media.media/eeg-run-1"],
+  "annotations": [
+    {
+      "label": "N400",
+      "anchor": {
+        "signalSpan": {
+          "scope": {
+            "sessionRef": "at://did:plc:lab/pub.layers.acquisition.session/ses-01",
+            "stream": { "recordRef": "at://did:plc:lab/pub.layers.acquisition.session/ses-01", "objectId": { "value": "stream-eeg" } }
+          },
+          "startSample": 2048,
+          "endSample": 3072,
+          "channels": [{ "recordRef": "at://did:plc:lab/pub.layers.media.media/eeg-run-1", "objectId": { "value": "chan-Cz" } }],
+          "frequencyBand": { "band": "broadband" }
+        }
+      }
+    }
+  ]
+}
+```
+
+Three design points carry over from text annotation. First, the layer's `sessionRef` and `mediaRefs` replace the singular `expression` when a layer spans several synchronized streams rather than one text. Second, the `signalSpan.channels[]` dereference `signalChannel` uuids declared inline on the media record's `signalInfo`, which is why those uuids are required. Third, co-temporal tiers (the dominant and non-dominant hand of a two-handed sign, or an event tier and its evoked response) link through `simultaneousWithRefs`, so a consumer knows the annotations are one event by construction rather than by coincidence of timestamps. The event stream that BIDS keeps in `events.tsv` lands in an annotation layer of kind tier, reachable from `signalInfo.eventLayerRef` or `run.eventLayerRef`. See the [Multimodal Annotation guide](./multimodal-annotation.md) and the [BIDS and NWB data-model notes](../integration/data-models/index.md) for the full mapping.

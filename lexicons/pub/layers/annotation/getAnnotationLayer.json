@@ -9,7 +9,7 @@
         "type": "params",
         "required": ["uri"],
         "properties": {
-          "uri": { "type": "string", "format": "at-uri" }
+          "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of the annotation layer record to fetch." }
         }
       },
       "output": {
@@ -18,9 +18,9 @@
           "type": "object",
           "required": ["uri", "cid", "value"],
           "properties": {
-            "uri": { "type": "string", "format": "at-uri" },
-            "cid": { "type": "string", "format": "cid" },
-            "value": { "type": "ref", "ref": "pub.layers.annotation.annotationLayer#main" }
+            "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of the returned annotation layer record." },
+            "cid": { "type": "string", "format": "cid", "description": "CID of the returned annotation layer record at this revision." },
+            "value": { "type": "ref", "ref": "pub.layers.annotation.annotationLayer#main", "description": "The annotation layer record value." }
           }
         }
       },

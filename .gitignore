@@ -30,3 +30,8 @@ lexicons/com/
 .vscode/
 *.swp
 *.swo
+
+# Lexicon version-control and migration tooling artifacts (regenerable; tracked separately)
+lexicons/.panproto/
+lexicons/.schemas/
+scripts/*/target/

@@ -4,6 +4,52 @@ All notable changes to the Layers lexicon schemas will be documented in this fil
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.9.0] - 2026-07-27
+
+This is a clean-break minor release (0.x permits breaking changes in a minor bump). It carries exactly one breaking change (the `digest` to `contentDigest` replacement); everything else is additive or a backward-compatible (BCNF) constraint relaxation. No republish of an existing record is forced by any change: the `digest` values are migrated by a hand-authored panproto lens. The release adds two namespaces (`catalog`, `acquisition`), extends the shared anchoring model to continuous neural and physiological signals, and threads BIDS/NWB-grade acquisition metadata through the media and judgment lexicons.
+
+### Added
+
+- **`pub.layers.catalog` namespace**: browsable, nestable, citable collections of Layers records, replacing any notion of a central index. `catalog.collection` (a node in a child-held containment tree, discriminated by `kind`, with orthogonal versioning via `versionOfRef`/`currentVersionRef`), `catalog.membership` (a typed edge whose `role` decides rollup arithmetic; only `member` and `produce` sum), and `catalog.defs` (`memberRef` with a denormalized `memberType` NSID discriminator, `contentSummary` with a required `countSource`, and `citation` with a `creditPolicy`). Queries: `getCollection`, `listCollections`, `listMembers`, `listContainers`, and `getRollup` (the derived-counts surface; there is no `index.aggregate`). There is no `pub.layers.index.*` namespace and no `dataset.*` reference.
+- **`pub.layers.acquisition` namespace**: the recording events and the people they capture. `acquisition.participant` (pseudonymous, de-identified by field absence, with BIDS `participants.tsv` and NWB `Subject` fields and a required `consent` block) and `acquisition.session` (a synchronized recording event whose `clock` is the shared time base every stream and anchor resolves against). `acquisition.defs`: `stream` (required `uuid`, the target of `mediaScope.stream`), `run`, `consent`, `accessCondition`, and `languageCompetence`. Queries: `getParticipant`, `listParticipants`, `getSession`, `listSessions`.
+- **New shared defs in `pub.layers.defs`**: `contentDigest` (structured `{algorithm, value}` hash), `signalSpan` (the one new anchor member), `mediaScope` (medium/session/stream/track scoping), `frequencyBand`, `fundingRef` (shared, reused by `reproducibilityInfo` and acquisition), `ethicsApproval` (shared, reused by `reproducibilityInfo`, `session`, and `consent`), and `languageRef` (canonical BCP-47 `tag` plus script, region, variety, role, and a knowledge-graph source).
+- **12 new composable defs in `pub.layers.media.defs`**: `signalInfo`, `signalChannel`, `sensorSpec`, `coordinateSystem` (and its `namedPoint`), `filterSpec`, `eventCode`, `eyeTrackingInfo`, `imageInfo` (photos no longer borrow `videoInfo`), `motionInfo`, `volumeInfo`, `deviceInfo`, and `syncInfo`, carrying the BIDS EEG/MEG/iEEG/NIRS/Motion sidecars and NWB electrode and device tables as typed metadata.
+- **New carriage fields on `pub.layers.media.media`** (all optional): `signal`, `eyeTracking`, `motion`, `volume`, `image`, `contentDigest`, `durationNanos`, `sessionRef`, `stream`, `sync`, `participantRefs`, and `access`.
+- **`annotationMetadata.toolRef`** (grounded software reference via `rrid`; the existing `tool` string remains required as a display fallback).
+- **`reproducibilityInfo`** gains `name`, `version`, `softwareRefs`, `operatingSystem`, `container`, `funding`, and `ethicsApprovals`.
+- **`licenseRef.appliesToUri`** and `knownValues` on `appliesTo` (`whole`, `annotations`, `underlying-text`, `underlying-media`, `code`, `documentation`, `ontology`, `derived-data`, `custom`).
+- **New optional fields on `defs#boundingBox`** (`unitUri`/`unit`, `scope`, `page`, `frameIndex`, `timeNanos`) and **`defs#spatialEntity`** (`scope`, `page`, `frameIndex`, `timeNanos`, `readingOrder`, `roleUri`/`role`, `articulatorUri`/`articulator`, `maskMediaRef`, `parcelRef`, `sensors`).
+- **`languageRefs[]`** on the eight-record language set: `expression`, `corpus`, `media`, `annotation.annotationLayer`, `resource.collection`, `resource.entry`, `resource.template`, and `ontology.ontology`.
+- **`ontology.ontology`** gains `languages`, `languageRefs`, `metadata`, `features`, and `reproducibility`.
+- **`corpus.corpus.knowledgeRefs[]`** (grounding to catalog identifiers and dataset registries).
+- **`annotation.annotationLayer`** gains `sessionRef`, `mediaRefs`, and `simultaneousWithRefs`.
+- **`judgment.experimentDef`** gains `languages`, `languageRefs`, `stimulusExpressionRefs`, and `stimulusMediaRefs` (two type-discriminated stimulus arrays).
+- **`judgment.defs`** gains the `regionResponse` object (per-region reading-time and eye-movement measures with a `regionRole` axis), screen-geometry and acquisition-link fields on `presentationSpec`, and `sessionRef`/`participantRefs`/`mediaRefs` on `recordingMethod`.
+- **`eprint.dataLink`** gains `experimentRefs` and `catalogRef` (the catalog-model repoint of the never-shipped `datasetRef`; no `datasetRef` field is added).
+- **`pub.layers.catalog.*` and `pub.layers.acquisition.*` NSIDs** added to the `authAnnotator`, `authCorpusManager`, `authExperimenter`, `authFull`, `authOntologyEditor`, and `authReadOnly` permission sets (no `authIndexPublisher`, since `index.*` is dropped).
+- **Scheme A**: every record `main` (26 existing plus the 4 new records) declares `key: any` instead of `key: tid`, widening rkey acceptance to arbitrary strings (existing TID-keyed records stay valid).
+- Comprehensive documentation: new `catalog` and `acquisition` lexicon references; a new BIDS/NWB data-model mapping; updates to all 14 existing lexicon references, the primitives/design-principles/flexible-enums foundations, and the annotation-design, judgment-data, and knowledge-grounding guides.
+
+### Changed (Breaking)
+
+- `pub.layers.defs#annotationMetadata.digest` (the packed `<algorithm>:<lowercase-hex>` string) is **removed and replaced** by `contentDigest` (a `pub.layers.defs#contentDigest` object with separate `algorithm` and `value` fields). This is the release's only breaking change. A hand-authored `panproto-lens-dsl` spec migrates existing `"algo:hex"` values into the object form, so no record republish is required.
+
+### Changed (Backward-compatible)
+
+- **`defs#anchor`** union widened from 7 to 10 members, adding `boundingBox` (promotion, no new type), `spatialRegion` (a `spatialEntity`, aliased so anchor-use is distinct from `annotation.spatial` content-use), and `signalSpan` (the one new anchor type). New members are additive to writers but a silent drop to readers that have not learned them; hand-written anchor dispatch must add the three cases.
+- **`defs#temporalSpan`** `start` and `ending` drop `minimum: 0` (now signed and session-relative, per BIDS `StartTime`) and gain `startNanos`, `endingNanos`, and `scope`. `start`/`ending` remain required.
+- **`defs#spatialEntity`** widens `geometryFormat` (`page-xml-coords`, `alto-polygon`) and `crs` (`per-mille-normalized`, `mni152-nlin-2009c`, `mni305`, `talairach`, `acpc`, `scanner-ras`, `fsaverage`, `individual-t1`, `voxel-index`, `world-metric`) known values.
+- **`defs#knowledgeRef.source`** widened with `iso639-3`, `doi`, `handle`, `islrn`, `datacite`, `ldc`, `elra`, `lindat`, `openneuro`, `dandi`, `paradisec`, `talkbank`, `ncbi-taxonomy`, `rrid`, `cognitive-atlas`, `cogpo`, `hed`, `uberon`, `mesh`, and `clinicaltrials`.
+- **`media.media.kind`** widened to the full carrier superset (`audio`, `video`, `image`, `document`, `signal`, `motion`, `volume`, `custom`); `kind` names the carrier only, with the instrument-level modality on `signalInfo.modalityUri`.
+- **`media.media.blob.accept`** widened with `application/octet-stream`, `application/x-hdf5`, `text/tab-separated-values`, and `text/csv`.
+- **`media.documentInfo.writingDirection`** reshaped into a URI+slug pair (`writingDirectionUri` + `writingDirection`), dropping `btt` and adding `boustrophedon` and `custom`.
+- **`judgment.defs#presentationSpec.chunkingUnit`** paired with `chunkingUnitUri` and widened with `clause`, `sign`, and `gesture-phrase`.
+- **`annotation.annotationLayer`** widens `subkind` (`hed`) and `formalism` (`hamnosys`, `signwriting`, `stokoe`, `bts`) known values.
+- **`eprint.dataLink.dataKind`** widened with `experiment`, `judgments`, and `dataset`.
+- **`languages` arrays** drop their array-level `maxLength` on the seven language-bearing records plus `contentSummary` and `collection` (typological resources list thousands of languages; the record size limit governs). The per-item `maxLength: 32` on `languages` items is retained.
+
+To confirm the BCNF rows before merge, run `panproto schema diff --old <v0.8.0 dir> --new <worktree>`.
+
 ## [0.8.0] - 2026-06-29
 
 ### Added

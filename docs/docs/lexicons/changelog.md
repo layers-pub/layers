@@ -6,6 +6,8 @@ sidebar_label: "Changelog"
 
 Structured changelog records for tracking changes to any Layers record. Adapted from Chive's `pub.chive.eprint.changelog` pattern but generalized to target any of the 26 `pub.layers.*` record types, with sub-record precision via `objectRef`.
 
+As of 0.9.0 the record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
+
 Where Chive's changelog uses free-text location strings ("Section 3.2") to describe what changed within an eprint, Layers' changelog uses `objectRef` to machine-readably identify specific objects within a record (e.g., annotation #3 within an annotationLayer, a particular typeDef within an ontology, a cluster within a clusterSet).
 
 ## Types

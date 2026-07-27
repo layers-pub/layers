@@ -24,7 +24,8 @@
         },
         "temporalSpan": {
           "type": "ref",
-          "ref": "pub.layers.defs#temporalSpan"
+          "ref": "pub.layers.defs#temporalSpan",
+          "description": "Time interval this token occupies in associated media, for audio or video tokenizations."
         }
       }
     },
@@ -35,7 +36,8 @@
       "properties": {
         "uuid": {
           "type": "ref",
-          "ref": "pub.layers.defs#uuid"
+          "ref": "pub.layers.defs#uuid",
+          "description": "Stable identifier for this tokenization within the segmentation record, referenced by alignments via localId."
         },
         "kindUri": {
           "type": "string",
@@ -63,7 +65,8 @@
         },
         "metadata": {
           "type": "ref",
-          "ref": "pub.layers.defs#annotationMetadata"
+          "ref": "pub.layers.defs#annotationMetadata",
+          "description": "Provenance: who produced this tokenization, when, with what tool or model."
         }
       }
     }

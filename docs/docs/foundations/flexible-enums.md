@@ -171,8 +171,19 @@ This pattern is systematic across Layers:
 | citation type | typeUri | type | "article-journal", "paper-conference", "book", "chapter", "thesis", "report", "dataset", "software", "preprint", ... |
 | creator role | roleUri | role | "author", "editor", "translator", "contributor", "illustrator", "director", "producer", "collector", "custom" |
 | creator nameType | nameTypeUri | nameType | "personal", "organizational" |
+| media kind | kindUri | kind | "audio", "video", "image", "document", "signal", "motion", "volume", "custom" (0.9.0) |
+| signal modality | modalityUri | modality | "eeg", "meg", "ieeg", "fmri", "fnirs", "eye-tracking", "emg", "ecg", "motion-capture", "articulography", ... (0.9.0) |
+| writing direction | writingDirectionUri | writingDirection | "ltr", "rtl", "ttb", "boustrophedon", "custom" (0.9.0) |
+| language role | roleUri | role | "primary", "source", "target", "metalanguage", "gloss", "l1", "l2", "heritage", "signed-l1", "signed-l2", "custom" (0.9.0) |
+| license component | appliesToUri | appliesTo | "whole", "annotations", "underlying-text", "underlying-media", "code", "ontology", "derived-data", "custom" (0.9.0) |
+| digest algorithm | algorithmUri | algorithm | "sha256", "sha512", "blake3", "md5", "custom" (0.9.0) |
+| channel type | typeUri | type | "EEG", "MEGMAG", "SEEG", "ECOG", "EOG", "EMG", "EYEGAZE", "TRIG", "NIRSCWHBO", "ACCEL", ... (0.9.0) |
+| collection kind | kindUri | kind | "project", "language-group", "release", "treebank", "neuro-dataset", "judgment-study", "lexicon", ... (0.9.0) |
+| membership role | roleUri | role | "member", "produce", "annotates", "derived-from", "parallel-with", "translation-of", ... (0.9.0) |
 
 Consumers should handle both fields transparently; producers should populate at least the slug.
+
+**The modality lattice** (0.9.0): the `modality`, `recording method`, and catalog `contentSummary` modality fields all resolve to one `modality` node set (seeded under `layers-core.ontology.layers.pub`), while `media kind` resolves to the PARENT of those nodes: each modality typeDef (`eeg`, `fmri`, `speech-audio`) names its carrier `media-kind` typeDef (`media-kind-signal`, `media-kind-volume`, `media-kind-audio`) via `parentTypeRef`. So "collections with EEG" and "media of kind signal" are one graph traversal rather than two enums. This is the URI+slug pattern doing what a closed enum cannot: a single vocabulary shared across three lexicons, extended without a schema change, with a structural parent relation the slug alone could never carry.
 
 ## Implementation Guidance
 

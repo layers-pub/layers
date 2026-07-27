@@ -10,7 +10,8 @@
       "properties": {
         "uuid": {
           "type": "ref",
-          "ref": "pub.layers.defs#uuid"
+          "ref": "pub.layers.defs#uuid",
+          "description": "Stable identifier for this edge within the set."
         },
         "edgeTypeUri": {
           "type": "string",
@@ -35,11 +36,13 @@
         "confidence": {
           "type": "integer",
           "minimum": 0,
-          "maximum": 1000
+          "maximum": 1000,
+          "description": "Confidence 0-1000."
         },
         "features": {
           "type": "ref",
-          "ref": "pub.layers.defs#featureMap"
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features for this edge as key-value pairs."
         }
       }
     }

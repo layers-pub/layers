@@ -1,0 +1,97 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.catalog.listMembers",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "List what a collection contains: the edges out of it, optionally narrowed by role and by member record type. Covers both arms of the model, since child collections are reachable here by role 'member' and produce records by role 'produce'.",
+      "parameters": {
+        "type": "params",
+        "required": ["collection"],
+        "properties": {
+          "collection": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the container collection."
+          },
+          "roleUri": {
+            "type": "array",
+            "description": "Filter to these membership-role definition nodes. Takes precedence over role.",
+            "maxLength": 16,
+            "items": { "type": "string", "format": "at-uri" }
+          },
+          "role": {
+            "type": "array",
+            "description": "Filter by role slug. Note that only 'member' and 'produce' contribute to rollups; the rest are rendered and never summed.",
+            "maxLength": 16,
+            "items": { "type": "string", "maxLength": 128 }
+          },
+          "memberType": {
+            "type": "array",
+            "description": "Filter by the member's NSID, which the edge denormalizes as memberRef.memberType so this filter needs no AT-URI resolution.",
+            "maxLength": 16,
+            "items": { "type": "string", "maxLength": 317 }
+          },
+          "includeSelfAsserted": {
+            "type": "boolean",
+            "description": "Include edges whose author does not control the member, which is the normal case for cross-family relations such as an annotation project claiming coverage of someone else's treebank.",
+            "default": true
+          },
+          "asOf": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Return the membership as it stood at this instant, honouring validFrom and validUntil. Omit for current membership."
+          },
+          "resolvePins": {
+            "type": "boolean",
+            "description": "Resolve each member at the CID its edge names rather than at its current revision.",
+            "default": false
+          },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50, "description": "Maximum number of membership edges to return in one page." },
+          "cursor": { "type": "string", "description": "Opaque pagination cursor to resume from a previous page." }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["records"],
+          "properties": {
+            "cursor": { "type": "string", "description": "Opaque pagination cursor to pass to the next call; absent when the last page has been reached." },
+            "records": {
+              "type": "array",
+              "description": "The page of membership edges out of this collection, each with its resolved member.",
+              "items": { "type": "ref", "ref": "#membershipView" }
+            }
+          }
+        }
+      },
+      "errors": [{ "name": "RecordNotFound" }]
+    },
+
+    "membershipView": {
+      "type": "object",
+      "description": "A membership edge together with the resolved member's identity, so a member list renders without a second round trip.",
+      "required": ["uri", "cid", "value"],
+      "properties": {
+        "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of the membership edge." },
+        "cid": { "type": "string", "format": "cid", "description": "CID of the membership edge's current revision." },
+        "value": { "type": "ref", "ref": "pub.layers.catalog.membership#main", "description": "The membership edge record itself." },
+        "memberResolved": {
+          "type": "boolean",
+          "description": "Whether the appview holds the member record. False is a normal state, not an error: an edge into an unindexed or third-party PDS renders from the edge's own memberName and memberVersion display caches."
+        },
+        "memberCidResolved": {
+          "type": "string",
+          "format": "cid",
+          "description": "CID at which the member actually resolved. Differs from the edge's memberCid when a pin is dangling, which is how a rebuilt repo's moved CIDs become visible rather than silent."
+        },
+        "memberCollectionValue": {
+          "type": "ref",
+          "ref": "pub.layers.catalog.collection#main",
+          "description": "The member record itself when it is a nested collection, so a child list renders in one call."
+        }
+      }
+    }
+  }
+}

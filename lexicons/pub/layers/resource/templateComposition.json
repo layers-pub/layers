@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "description": "A composition of templates (sequence, tree, or other structure). Used for multi-part stimuli, template hierarchies, and complex item construction.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": ["compositionType", "members", "createdAt"],
@@ -37,15 +37,18 @@
           },
           "metadata": {
             "type": "ref",
-            "ref": "pub.layers.defs#annotationMetadata"
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who assembled this composition, with what tool."
           },
           "features": {
             "type": "ref",
-            "ref": "pub.layers.defs#featureMap"
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features describing this composition not captured by the typed fields."
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "When this composition record was created."
           }
         }
       }
