@@ -30,7 +30,7 @@ The goal is not to replicate each framework's API or file format, but to show th
 | [W3C Web Annotation](./w3c-web-annotation) | W3C Recommendation                     | Web-based annotation                      |
 | [Decomp / UDS](./decomp)                   | Decompositional Semantics Initiative   | Real-valued semantic property graphs      |
 | [CSL-JSON / BibTeX / DataCite](./csl-datacite) | CSL project / BibTeX / DataCite e.V. | Bibliographic citation and licensing interchange |
-| [BIDS / NWB](./bids-nwb)                        | INCF / NWB:N                            | Neuroimaging and neurophysiology data (0.9.0)    |
+| [BIDS / NWB](./bids-nwb)                        | INCF / NWB:N                            | Neuroimaging and neurophysiology data            |
 
 ## Methodology
 

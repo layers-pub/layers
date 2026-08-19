@@ -1,10 +1,10 @@
 {
   "name": "@layers/docs",
-  "version": "0.5.0",
+  "version": "0.9.0",
   "private": true,
   "author": "Aaron Steven White",
   "engines": {
-    "node": ">=18.0"
+    "node": ">=20.0"
   },
   "scripts": {
     "start": "docusaurus start",
@@ -16,16 +16,24 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.7.0",
-    "@docusaurus/preset-classic": "^3.7.0",
-    "@docusaurus/theme-mermaid": "^3.7.0",
+    "@docusaurus/core": "^3.10.2",
+    "@docusaurus/preset-classic": "^3.10.2",
+    "@docusaurus/theme-mermaid": "^3.10.2",
     "prism-react-renderer": "^2.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.7.0",
-    "@docusaurus/tsconfig": "^3.7.0",
+    "@docusaurus/module-type-aliases": "^3.10.2",
+    "@docusaurus/tsconfig": "^3.10.2",
+    "image-size": "file:vendor/docusaurus-image-size",
     "typescript": "~5.5.0"
+  },
+  "overrides": {
+    "image-size": "$image-size",
+    "serialize-javascript": "7.1.0",
+    "sockjs": {
+      "uuid": "11.1.1"
+    }
   }
 }

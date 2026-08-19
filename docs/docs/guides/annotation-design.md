@@ -330,7 +330,7 @@ Two rules keep the arithmetic honest. First, only `member` and `produce` edges s
 
 ## Annotating Neural and Signal Data
 
-As of 0.9.0 an annotation layer can anchor into a continuous signal, not only text and time. A `signalSpan` anchor addresses exact samples (or session-relative nanoseconds) over one or more channels of an EEG, MEG, iEEG, fNIRS, EMG, or audio-waveform recording, and may select a `frequencyBand` for time-frequency work:
+An annotation layer can anchor into a continuous signal, not only text and time. A `signalSpan` anchor addresses exact samples (or session-relative nanoseconds) over one or more channels of an EEG, MEG, iEEG, fNIRS, EMG, or audio-waveform recording, and may select a `frequencyBand` for time-frequency work:
 
 ```json
 {

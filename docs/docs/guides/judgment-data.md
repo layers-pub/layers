@@ -327,14 +327,14 @@ For incremental presentation methods (RSVP, self-paced), additional fields contr
 
 | Field | Description |
 |-------|-------------|
-| `chunkingUnit` | How text is segmented: `word`, `character`, `morpheme`, `phrase`, `clause`, `sentence`, `region`, `sign`, `gesture-phrase`, `custom`. Paired with `chunkingUnitUri` as of 0.9.0; `clause`, `sign`, and `gesture-phrase` are the new values, for signed and gestural stimuli. |
+| `chunkingUnit` | How text is segmented: `word`, `character`, `morpheme`, `phrase`, `clause`, `sentence`, `region`, `sign`, `gesture-phrase`, `custom`. Paired with `chunkingUnitUri`; `clause`, `sign`, and `gesture-phrase` cover signed and gestural stimuli. |
 | `timingMs` | Per-chunk display duration in milliseconds (for timed presentations like RSVP) |
 | `isiMs` | Inter-stimulus interval in milliseconds |
 | `cumulative` | Whether previous chunks remain visible (true for cumulative self-paced reading, false for non-cumulative) |
 | `maskChar` | Masking character replacing hidden text (e.g., `-` for dashes, `#` for hashes) |
 | `features` | Additional method-specific parameters (e.g., prime duration for masked priming, gate size for gating) |
 
-#### Screen geometry (0.9.0)
+#### Screen geometry
 
 Gaze-on-screen eye-tracking is uninterpretable without the display geometry: a pixel gaze sample means nothing without screen size, viewing distance, and the pixels-per-degree that follow from them. `presentationSpec` carries these as optional fields, which BIDS keeps in the events sidecar `StimulusPresentation` object:
 
@@ -354,7 +354,7 @@ Gaze-on-screen eye-tracking is uninterpretable without the display geometry: a p
 }
 ```
 
-`presentationSpec` also gains `sessionRef`, `participantRefs`, and `mediaRefs`, tying a presentation specification to the concrete session, participants, and stimulus media it was delivered under.
+`presentationSpec` also carries `sessionRef`, `participantRefs`, and `mediaRefs`, tying a presentation specification to the concrete session, participants, and stimulus media it was delivered under.
 
 ## Recording Methods
 
@@ -387,7 +387,7 @@ The `recordingMethods` array on `experimentDef` declares what instruments captur
 
 All values are community-expandable via `methodUri`, which resolves into the shared `modality` node set (the same nodes that back `media.signalInfo.modalityUri` and `catalog.contentSummary.modalityUri`), so an instrument named in a protocol joins the recording it produced and the catalogue entry advertising it. Detailed acquisition parameters (sample rate, channel count, montage) belong on `pub.layers.media.media` records, not the experiment definition. See the [Psycholinguistic Data guide](./psycholinguistic-data.md) for media record examples and the [Acquisition reference](../lexicons/acquisition.md) for session and participant records.
 
-As of 0.9.0 `recordingMethod` also carries the acquisition links `sessionRef`, `participantRefs`, and `mediaRefs`, so a recording instrument in an experiment points at the concrete session that ran it and the media records it produced.
+`recordingMethod` also carries the acquisition links `sessionRef`, `participantRefs`, and `mediaRefs`, so a recording instrument in an experiment points at the concrete session that ran it and the media records it produced.
 
 ### Examples
 
@@ -471,7 +471,7 @@ fMRI with auditory narrative (passive):
 
 ## Sessions and Participants
 
-An `experimentDef` is a type-level protocol: what is measured, how it is presented, what instruments capture it. The token event that runs the protocol on a specific person on a specific day is a [`pub.layers.acquisition.session`](../lexicons/acquisition.md), which 0.9.0 adds. Before 0.9.0 the only task construct was `experimentDef`, reachable only from `judgmentSet.experimentRef`, so a neural recording with no behavioural judgments had nowhere to say what the participant was doing. A session fixes that: it names its `task`, its `participantRefs`, its synchronized `streams`, its `devices`, and, critically, the `clock` that every stream offset and every anchor into the session is measured from.
+An `experimentDef` is a type-level protocol: what is measured, how it is presented, what instruments capture it. The token event that runs the protocol on a specific person on a specific day is a [`pub.layers.acquisition.session`](../lexicons/acquisition.md). A session names its `task`, its `participantRefs`, its synchronized `streams`, its `devices`, and, critically, the `clock` that every stream offset and every anchor into the session is measured from. This gives a neural recording with no behavioural judgments a place to declare what the participant was doing, without routing through `judgmentSet.experimentRef`.
 
 ```json
 {
@@ -701,7 +701,7 @@ Every judgment can carry `responseTimeMs` and a `behavioralData` feature map for
 
 ### Response Times
 
-The `responseTimeMs` field captures a single reaction time in milliseconds. For per-region reading-time and eye-movement measures, the 0.9.0 `regionResponse` object (`pub.layers.judgment.defs#regionResponse`) is the typed shape that the untyped `region.N.rt` feature keys previously stood in for. A single `regionResponse` names its region, its analysis role, and the standard eye-movement measures:
+The `responseTimeMs` field captures a single reaction time in milliseconds. For per-region reading-time and eye-movement measures, the `regionResponse` object (`pub.layers.judgment.defs#regionResponse`) is the typed shape for the measures that untyped `region.N.rt` feature keys otherwise encode. A single `regionResponse` names its region, its analysis role, and the standard eye-movement measures:
 
 ```json
 {
@@ -718,7 +718,7 @@ The `responseTimeMs` field captures a single reaction time in milliseconds. For 
 }
 ```
 
-The `regionRole` axis (`critical`, `spillover`, `precritical`, `pretarget`, `target`, `posttarget`, `filler`, ...) is what an analysis groups on. Where a measure has no named field, it goes in the object's own `features` map rather than into flat `region.N.*` keys. The `behavioralData` feature-map form remains valid for signals the typed object does not reach, and for per-region measures a producer carries a `regionResponse` per region under a judgment's `behavioralData`/`features` until a lexicon field promotes it:
+The `regionRole` axis (`critical`, `spillover`, `precritical`, `pretarget`, `target`, `posttarget`, `filler`, ...) is what an analysis groups on. Where a measure has no named field, it goes in the object's own `features` map rather than into flat `region.N.*` keys. The `behavioralData` feature-map form is valid for signals the typed object does not reach, and for per-region measures a producer carries a `regionResponse` per region under a judgment's `behavioralData`/`features` until a lexicon field promotes it:
 
 ```json
 {

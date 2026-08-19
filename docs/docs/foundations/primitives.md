@@ -27,7 +27,7 @@ objectRef = {
 
 ## anchor
 
-Polymorphic attachment point that specifies where an annotation applies. Different anchor kinds support different modalities. As of 0.9.0 the union carries ten members: the original seven plus `boundingBox`, `spatialRegion`, and `signalSpan`, which extend anchoring to static image regions, promoted spatial regions (including stereotaxic brain space), and continuous-signal sample spans (EEG, MEG, iEEG, audio waveforms, sensor streams). See the [Multimodal Annotation guide](../guides/multimodal-annotation.md) for practical examples across text, audio, video, image, paged documents, and neural/signal data.
+Polymorphic attachment point that specifies where an annotation applies. Different anchor kinds support different modalities. The union carries ten members: `textSpan`, `tokenRef`, `tokenRefSequence`, `temporalSpan`, `spatioTemporalAnchor`, `pageAnchor`, and `externalTarget`, together with `boundingBox`, `spatialRegion`, and `signalSpan`, which anchor to static image regions, promoted spatial regions (including stereotaxic brain space), and continuous-signal sample spans (EEG, MEG, iEEG, audio waveforms, sensor streams). See the [Multimodal Annotation guide](../guides/multimodal-annotation.md) for practical examples across text, audio, video, image, paged documents, and neural/signal data.
 
 ```typescript
 anchor = {
@@ -40,9 +40,9 @@ anchor = {
   spatioTemporalAnchor?: spatioTemporalAnchor  // Spatio-temporal region in video
   pageAnchor?: pageAnchor                    // Page and region in a paged document
   externalTarget?: externalTarget            // External resource target (web page, document, etc.)
-  boundingBox?: boundingBox                  // Static spatial region in an image or single frame (0.9.0)
-  spatialRegion?: spatialEntity              // Promoted spatial region used as an anchor (0.9.0)
-  signalSpan?: signalSpan                    // Sample/time span over channels of a continuous signal (0.9.0)
+  boundingBox?: boundingBox                  // Static spatial region in an image or single frame
+  spatialRegion?: spatialEntity              // Promoted spatial region used as an anchor
+  signalSpan?: signalSpan                    // Sample/time span over channels of a continuous signal
 }
 ```
 
@@ -52,17 +52,17 @@ W3C selectors are not carried directly on the anchor; they live inside `external
 - `textSpan`: the `span` type `{byteStart: integer, byteEnd: integer, charStart?: integer, charEnd?: integer}` (UTF-8 byte offsets; optional character offsets).
 - `tokenRef`: `{tokenizationId: uuid, tokenIndex: integer}` referencing a token by tokenization id and 0-based index.
 - `tokenRefSequence`: `{tokenizationId: uuid, tokenIndexes: integer[], anchorTokenIndex?: integer}` referencing possibly non-contiguous token indices within one tokenization.
-- `temporalSpan`: `{start, ending, startNanos?, endingNanos?, scope?}`. Times are milliseconds, now signed and session-relative (they may precede a session clock origin, per BIDS `StartTime`); the nanosecond fields are authoritative where both are present, and `scope` (a `mediaScope`) names which stream the times are measured against.
+- `temporalSpan`: `{start, ending, startNanos?, endingNanos?, scope?}`. Times are milliseconds, signed and session-relative (they may precede a session clock origin, per BIDS `StartTime`); the nanosecond fields are authoritative where both are present, and `scope` (a `mediaScope`) names which stream the times are measured against.
 - `spatioTemporalAnchor`: `{temporalSpan, keyframes?: keyframe[], interpolation?}` where each `keyframe` is `{timeMs, bbox, features?}` (region tracked through video).
 - `pageAnchor`: `{page: integer, boundingBox?: boundingBox, textSpan?: span}` where `boundingBox` is `{x, y, width, height}` (region in a paged document).
 - `externalTarget`: external URL or resource identifier (carries an optional W3C selector).
-- `boundingBox` (0.9.0): `{x, y, width, height, unit?, scope?, page?, frameIndex?, timeNanos?}`, a static region in an image or single frame that imposes no temporal span.
-- `spatialRegion` (0.9.0): a `spatialEntity` used as an anchor. Aliased so anchor-use is distinct from the `annotation.spatial` content-use of the same type. Reaches every geometry format and CRS the type carries, including stereotaxic brain spaces (`mni152-nlin-2009c`, `talairach`, `scanner-ras`, `voxel-index`) and layout roles (`text-line`, `baseline`, `word`).
-- `signalSpan` (0.9.0): `{scope, startSample?, endSample?, startNanos?, endingNanos?, channels?, sensors?, frequencyBand?, volumeIndexStart?, volumeIndexEnd?, epochIndex?, region?}`. A sample-indexed or time-indexed span over one or more channels of a continuous signal. `scope` is required (an unscoped sample index is meaningless); samples are signed; `channels`/`sensors` dereference `signalChannel`/`sensorSpec` uuids in the media record.
+- `boundingBox`: `{x, y, width, height, unit?, scope?, page?, frameIndex?, timeNanos?}`, a static region in an image or single frame that imposes no temporal span.
+- `spatialRegion`: a `spatialEntity` used as an anchor. Aliased so anchor-use is distinct from the `annotation.spatial` content-use of the same type. Reaches every geometry format and CRS the type carries, including stereotaxic brain spaces (`mni152-nlin-2009c`, `talairach`, `scanner-ras`, `voxel-index`) and layout roles (`text-line`, `baseline`, `word`).
+- `signalSpan`: `{scope, startSample?, endSample?, startNanos?, endingNanos?, channels?, sensors?, frequencyBand?, volumeIndexStart?, volumeIndexEnd?, epochIndex?, region?}`. A sample-indexed or time-indexed span over one or more channels of a continuous signal. `scope` is required (an unscoped sample index is meaningless); samples are signed; `channels`/`sensors` dereference `signalChannel`/`sensorSpec` uuids in the media record.
 
-**Signal, spatial, and multi-stream anchoring** (0.9.0): `signalSpan`, the widened `temporalSpan`, and the promoted `boundingBox`/`spatialEntity` all take an optional `scope` (a `mediaScope`) that names the medium, session clock, stream, and track the coordinates are measured against. Absent `scope` means the single medium reachable from the annotated expression, so every pre-0.9.0 record keeps its single-stream reading unchanged. Present `scope` is what lets one annotation address one stream of a synchronized, multi-stream [acquisition session](../lexicons/acquisition.md).
+**Signal, spatial, and multi-stream anchoring**: `signalSpan`, `temporalSpan`, and `boundingBox`/`spatialEntity` all take an optional `scope` (a `mediaScope`) that names the medium, session clock, stream, and track the coordinates are measured against. Absent `scope` means the single medium reachable from the annotated expression, so a record with no scope keeps its single-stream reading. Present `scope` is what lets one annotation address one stream of a synchronized, multi-stream [acquisition session](../lexicons/acquisition.md).
 
-Because the union widened rather than changed, the new members are additive to a writer but a silent drop to a reader that has not learned them: any hand-written dispatch over the anchor union must add `boundingBox`, `spatialRegion`, and `signalSpan` cases.
+A reader silently drops any anchor member it does not handle, so any hand-written dispatch over the anchor union must include cases for `boundingBox`, `spatialRegion`, and `signalSpan` alongside the others.
 
 **W3C Compatibility**: Anchors can include W3C selectors (textQuoteSelector, textPositionSelector, fragmentSelector) for compatibility with Web Annotation clients.
 
@@ -121,7 +121,7 @@ Three-way provenance tracking: agent + persona + tool, plus confidence and a str
 ```typescript
 annotationMetadata = {
   tool: string                  // Software that produced the annotation, e.g. "spaCy 3.7" (max 512 chars). Display fallback when toolRef is present.
-  toolRef?: knowledgeRef        // Grounded reference to the tool, typically via rrid (0.9.0)
+  toolRef?: knowledgeRef        // Grounded reference to the tool, typically via rrid
   agent?: agentRef              // Who ran the tool (human or model)
   timestamp?: string (ISO 8601) // When the annotation was produced
   confidence?: integer          // 0-1000 confidence score (integer-scaled to avoid floats)
@@ -130,13 +130,13 @@ annotationMetadata = {
 
   dependencies?: objectRef[]    // Upstream records this was derived from (max 32)
 
-  contentDigest?: contentDigest // Structured content hash {algorithm, value} (0.9.0)
+  contentDigest?: contentDigest // Structured content hash {algorithm, value}
 }
 ```
 
 `tool` is the only required field. The three provenance concerns stay distinct: `agent` (who did it), `personaRef` (under what framework), and `tool` (with what software).
 
-**Breaking change in 0.9.0**: the packed `digest` string of 0.7.0 and 0.8.0 (a `<algorithm>:<hex>` value) is replaced outright by the structured `contentDigest` object `{algorithmUri?, algorithm, value}`, so a verifier dispatches on `algorithm` without string-splitting. This is the release's one breaking change; a hand-authored `panproto-lens-dsl` migration lifts existing `"algo:hex"` values into the object form, so no republish is forced. The same `contentDigest` type is what `media.media.contentDigest` uses to hash externally hosted bytes a record CID cannot cover.
+The content digest is a structured `contentDigest` object `{algorithmUri?, algorithm, value}`, so a verifier dispatches on `algorithm` without string-splitting. The same `contentDigest` type is what `media.media.contentDigest` uses to hash externally hosted bytes a record CID cannot cover.
 
 **Use cases**:
 - Human annotation: agent is the annotator, tool is the annotation interface (e.g., "Inception 24.1").
@@ -161,7 +161,7 @@ licenseRef = {
   url?: string                  // URL of the full license text (DataCite rightsURI)
   attribution?: string          // Required attribution/credit text for downstream users
   notes?: string                // Additional licensing notes, restrictions, or usage terms
-  appliesToUri?: AtUri          // Canonical AT-URI of the license-component node (0.9.0)
+  appliesToUri?: AtUri          // Canonical AT-URI of the license-component node
   appliesTo?: string            // Component this license covers when an artifact mixes licenses by part; knownValues "whole", "annotations", "underlying-text", "underlying-media", "code", "documentation", "ontology", "derived-data", "custom"; omit when it covers the whole artifact
 }
 ```
@@ -184,8 +184,6 @@ reproducibilityInfo = {
   command?: string              // Command to reproduce the data
   environment?: string          // Environment specification (Docker image, conda env, etc.)
   randomSeed?: integer          // Random seed used
-
-  // Added in 0.9.0:
   name?: string                 // Pipeline/model/procedure name
   version?: string              // Pipeline/model/procedure version
   softwareRefs?: knowledgeRef[] // Grounded software references, typically via rrid
@@ -380,6 +378,6 @@ These can be included alongside Layers-native anchors to support Web Annotation 
 
 ## Primitives Summary
 
-These primitives recur throughout all Layers lexicons. All record types compose from the same set. featureMap and the [URI+slug pattern](./flexible-enums.md) allow custom attributes and values without schema changes. W3C selectors provide compatibility with existing annotation ecosystems. The polymorphic anchor supports text, audio, video, image, paged documents, and (as of 0.9.0) continuous signals, promoted spatial regions, and static bounding boxes, with an optional `mediaScope` scoping each to one stream of a synchronized acquisition session. knowledgeRef links annotations to external KBs and authority records; the 0.9.0 `languageRef` grounds languages (BCP-47 tag plus script, region, variety, role, and a glottolog/iso639-3/cldr source), and `contentDigest`, `fundingRef`, and `ethicsApproval` are the other shared defs added this release.
+These primitives recur throughout all Layers lexicons. All record types compose from the same set. featureMap and the [URI+slug pattern](./flexible-enums.md) allow custom attributes and values without schema changes. W3C selectors provide compatibility with existing annotation ecosystems. The polymorphic anchor supports text, audio, video, image, paged documents, continuous signals, promoted spatial regions, and static bounding boxes, with an optional `mediaScope` scoping each to one stream of a synchronized acquisition session. knowledgeRef links annotations to external KBs and authority records; the `languageRef` grounds languages (BCP-47 tag plus script, region, variety, role, and a glottolog/iso639-3/cldr source), and `contentDigest`, `fundingRef`, and `ethicsApproval` are the other shared defs.
 
 For detailed guides on how these primitives work together, see [Temporal Representation](../guides/temporal-representation.md), [Spatial Representation](../guides/spatial-representation.md), [Multimodal Annotation](../guides/multimodal-annotation.md), and [Knowledge Grounding](../guides/knowledge-grounding.md).

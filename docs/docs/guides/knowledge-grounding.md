@@ -42,7 +42,7 @@ The `source` field is a free-form string identifying the KB. Common values:
 | `semantic-scholar` | `204e3073` | Paper and author corpus identification |
 | `doi` | `10.1162/coli_a_00478` | Publication references |
 
-Version 0.9.0 widens `source` with the identifiers that data-oriented, multimodal, and neuroscientific work needs. These ground the entities that must not be minted as Layers-local vocabularies (species, institutions, funders, tools, brain regions, tasks, deposits):
+The `source` field also covers the identifiers that data-oriented, multimodal, and neuroscientific work needs. These ground the entities that must not be minted as Layers-local vocabularies (species, institutions, funders, tools, brain regions, tasks, deposits):
 
 | Source | Example Identifier | Use Case |
 |--------|-------------------|----------|
@@ -63,7 +63,7 @@ The `sourceUri` field can point to an ATProto record representing the KB authori
 
 ### Grounding languages with languageRef
 
-A bare BCP-47 tag in a `languages` array cannot name a variety below the language level, a Glottolog languoid whose code is disputed, or the role a language plays in a parallel or bilingual record. The 0.9.0 [`languageRef`](../foundations/primitives.md) shared def carries the tag plus optional `scriptCode` (ISO 15924), `regionCode` (ISO 3166-1 / UN M.49), `varietyLabel` (prose residue), a `role` (`primary`, `source`, `target`, `l1`, `l2`, `heritage`, `signed-l1`, `signed-l2`, ...), and a `knowledgeRef` grounding the language itself. It appears on the eight-record language set (expression, corpus, media, annotation layer, resource collection/entry/template, ontology) alongside the flat `languages` array; each `languageRef.tag` should also appear in `languages` so a consumer filtering on the cheap array is not silently excluded.
+A bare BCP-47 tag in a `languages` array cannot name a variety below the language level, a Glottolog languoid whose code is disputed, or the role a language plays in a parallel or bilingual record. The [`languageRef`](../foundations/primitives.md) shared def carries the tag plus optional `scriptCode` (ISO 15924), `regionCode` (ISO 3166-1 / UN M.49), `varietyLabel` (prose residue), a `role` (`primary`, `source`, `target`, `l1`, `l2`, `heritage`, `signed-l1`, `signed-l2`, ...), and a `knowledgeRef` grounding the language itself. It appears on the eight-record language set (expression, corpus, media, annotation layer, resource collection/entry/template, ontology) alongside the flat `languages` array; each `languageRef.tag` should also appear in `languages` so a consumer filtering on the cheap array is not silently excluded.
 
 ```json
 {

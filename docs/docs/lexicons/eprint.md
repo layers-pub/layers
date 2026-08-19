@@ -6,7 +6,7 @@ sidebar_label: "Eprint"
 
 Eprint linkage and data provenance records. Provides a way to link linguistic data and annotations to academic eprints, and to describe the data artifacts a publication produced. Supports any publication platform, including chive.pub, arXiv, ACL Anthology, and others.
 
-As of 0.9.0 the record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
+The record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
 
 ## Types
 

@@ -6,7 +6,7 @@ sidebar_label: "Segmentation"
 
 A segmentation record that binds one or more tokenizations to an expression. Each tokenization can cover the whole expression or a specific sub-expression (e.g., a sentence). Multiple segmentations can coexist for the same expression, enabling alternative tokenization strategies.
 
-As of 0.9.0 the record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
+The record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
 
 Structural hierarchy (sections, sentences, paragraphs, turns) is expressed via expression records with `parentRef` and appropriate `kind` values. The segmentation record provides the token-level decomposition only.
 

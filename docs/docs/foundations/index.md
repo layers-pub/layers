@@ -6,7 +6,7 @@ slug: /foundations
 
 # Foundations
 
-Layers is built on a small set of foundational concepts that ensure the schema remains modular, interoperable, and extensible across linguistic theories, annotation formalisms, and data modalities.
+Layers uses a small set of shared concepts across linguistic theories, annotation formalisms, and data modalities.
 
 This section covers:
 
@@ -16,4 +16,4 @@ This section covers:
 
 - **[Flexible Enums](./flexible-enums.md)**: The URI+slug pattern that allows the community to mint new annotation kinds, tag sets, and categories without schema changes.
 
-- **[Lexicon Overview](./lexicon-overview.md)**: The 14 lexicons organized into core pipeline layers, parallel tracks, integration layers, and a cross-cutting changelog layer, with a dependency graph showing how they compose.
+- **[Lexicon Overview](./lexicon-overview.md)**: The 15 record namespaces and shared definitions namespace, organized into core pipeline layers, parallel tracks, integration layers, and cross-cutting layers, with a dependency graph showing how they compose.

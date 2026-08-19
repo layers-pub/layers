@@ -270,7 +270,7 @@ Target for annotating external resources (web pages, documents, etc.). Compatibl
 ### anchor
 **Type:** Object
 
-Abstract anchor: how an annotation attaches to its source data. This is a polymorphic type; at least one anchoring field should be present. Consumers dispatch on which field(s) are populated. As of 0.9.0 the union carries ten members: the original seven plus `boundingBox`, `spatialRegion`, and `signalSpan`.
+Abstract anchor: how an annotation attaches to its source data. This is a polymorphic type; at least one anchoring field should be present. Consumers dispatch on which field(s) are populated. The union carries ten members: `textSpan`, `tokenRef`, `tokenRefSequence`, `temporalSpan`, `spatioTemporalAnchor`, `pageAnchor`, `externalTarget`, `boundingBox`, `spatialRegion`, and `signalSpan`.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -285,12 +285,12 @@ Abstract anchor: how an annotation attaches to its source data. This is a polymo
 | `spatialRegion` | ref | Normalized spatial region used as an anchor (aliased so anchor-use is distinct from the `annotation.spatial` content-use of the same type). Ref: `#spatialEntity` |
 | `signalSpan` | ref | Sample-indexed or time-indexed span over one or more channels of a continuous signal (EEG, MEG, audio waveform, sensor stream, etc.). Ref: `#signalSpan` |
 
-The three new members are additive to a writer (the union has no `required` array) but a silent drop to a reader that has not learned them. Any consumer that dispatches by hand over the anchor union must add cases for `boundingBox`, `spatialRegion`, and `signalSpan`; the two hand-written dispatch sites in the reference stack are `lairs/media/anchors.py` and `web/components/annotations/registry.tsx`.
+The `boundingBox`, `spatialRegion`, and `signalSpan` members are additive to a writer (the union has no `required` array) but a silent drop to a reader that has not learned them. Any consumer that dispatches by hand over the anchor union must handle cases for `boundingBox`, `spatialRegion`, and `signalSpan`; the two hand-written dispatch sites in the reference stack are `lairs/media/anchors.py` and `web/components/annotations/registry.tsx`.
 
 ### mediaScope
 **Type:** Object
 
-Which medium, session clock, stream, and track a temporal, spatial, or signal anchor is measured against. Absent scope on any anchor means the single medium reachable from the annotated expression, which preserves the single-stream reading of every pre-0.9.0 record. Present scope is what makes an anchor address one stream of a synchronized, multi-stream acquisition session.
+Which medium, session clock, stream, and track a temporal, spatial, or signal anchor is measured against. Absent scope on any anchor means the single medium reachable from the annotated expression, which is the single-stream reading of a record with no scope. Present scope is what makes an anchor address one stream of a synchronized, multi-stream acquisition session.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -315,7 +315,7 @@ A frequency band selected by a signal anchor, for time-frequency annotation of n
 ### signalSpan
 **Type:** Object
 
-A sample-indexed or time-indexed span over one or more channels of a continuous signal: EEG, MEG, iEEG, an audio waveform, an fNIRS stream, an fMRI run, a sensor trace. The one anchor member introduced in 0.9.0. An unscoped sample index is meaningless, so `scope` is required. `startSample` and `endSample` are signed (a span may precede the clock origin); `startNanos`/`endingNanos` carry the session-relative clock time, and `startSample` wins where both a sample and a nanosecond start are present. Channels and sensors are addressed by `objectRef` into the media record's `signalChannel`/`sensorSpec` uuids, which is why those carry a required `uuid`.
+A sample-indexed or time-indexed span over one or more channels of a continuous signal: EEG, MEG, iEEG, an audio waveform, an fNIRS stream, an fMRI run, a sensor trace. An unscoped sample index is meaningless, so `scope` is required. `startSample` and `endSample` are signed (a span may precede the clock origin); `startNanos`/`endingNanos` carry the session-relative clock time, and `startSample` wins where both a sample and a nanosecond start are present. Channels and sensors are addressed by `objectRef` into the media record's `signalChannel`/`sensorSpec` uuids, which is why those carry a required `uuid`.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -367,15 +367,15 @@ Metadata about who or what produced an annotation, when, and with what confidenc
 | Field | Type | Description |
 |-------|------|-------------|
 | `agent` | ref | The agent (human or model) that produced this annotation. Distinct from `personaRef` (the interpretive framework) and `tool` (the software). Ref: `#agentRef` |
-| `tool` | string | Name or identifier of the software tool used to produce this annotation (e.g., 'spaCy 3.7', 'brat 1.3', 'ELAN 6.4'). Distinct from `agent` (who ran the tool). Display fallback when `toolRef` is unavailable. Still required. |
+| `tool` | string | Name or identifier of the software tool used to produce this annotation (e.g., 'spaCy 3.7', 'brat 1.3', 'ELAN 6.4'). Distinct from `agent` (who ran the tool). Display fallback when `toolRef` is unavailable. Required. |
 | `toolRef` | ref | Grounded reference to the software tool, typically via `rrid` (a Research Resource Identifier). Distinct from `agent` (who ran the tool). Ref: `#knowledgeRef` |
 | `timestamp` | datetime | When the annotation was produced. |
 | `confidence` | integer | Confidence score scaled 0-1000. 1000 = maximum confidence. |
 | `personaRef` | at-uri | Reference to the persona/annotation framework under which this annotation was produced. |
-| `contentDigest` | ref | Structured content hash for integrity verification of this annotation. Replaces the 0.8.0 packed `digest` string. Ref: `#contentDigest` |
+| `contentDigest` | ref | Structured content hash for integrity verification of this annotation. Ref: `#contentDigest` |
 | `dependencies` | array | References to upstream records this annotation was derived from (provenance chain). Array of ref: `#objectRef` |
 
-The `digest` string of 0.7.0 and 0.8.0 (a packed `<algorithm>:<hex>` value) is gone; 0.9.0 replaces it outright with the structured `contentDigest` object. This is the release's one breaking change. A hand-authored `panproto-lens-dsl` spec lifts existing `"algo:hex"` values into `contentDigest`'s `algorithm` plus `value`, so no republish is forced.
+The content digest is a structured `contentDigest` object (`{algorithmUri?, algorithm, value}`), so a verifier dispatches on `algorithm` without string-splitting.
 
 ### licenseRef
 **Type:** Object
@@ -439,7 +439,7 @@ A reference to an external knowledge base entry. Supports ATProto-native knowled
 ### contentDigest
 **Type:** Object
 
-A structured content hash for integrity verification. Replaces the packed `<algorithm>:<hex>` string that `annotationMetadata.digest` carried through 0.8.0: the algorithm and the value are separate fields, so a verifier dispatches on `algorithm` without string-splitting and `media.media.contentDigest` can hash externally hosted bytes the record CID does not cover.
+A structured content hash for integrity verification. The algorithm and the value are separate fields, so a verifier dispatches on `algorithm` without string-splitting, and `media.media.contentDigest` can hash externally hosted bytes the record CID does not cover.
 
 | Field | Type | Description |
 |-------|------|-------------|

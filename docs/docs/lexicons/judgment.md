@@ -4,7 +4,7 @@ sidebar_label: "Judgment"
 
 # pub.layers.judgment
 
-As of 0.9.0 the record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs. An `experimentDef` is a type-level protocol; the token event that runs it is a [`pub.layers.acquisition.session`](./acquisition.md), which links back via `session.experimentRef`. Neural, eye-tracking, and other instrument data captured during a judgment task live in [`pub.layers.media`](./media.md) signal records placed on the session clock.
+The record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs. An `experimentDef` is a type-level protocol; the token event that runs it is a [`pub.layers.acquisition.session`](./acquisition.md), which links back via `session.experimentRef`. Neural, eye-tracking, and other instrument data captured during a judgment task live in [`pub.layers.media`](./media.md) signal records placed on the session clock.
 
 Linguistic judgment records for annotation experiments, crowdsourced judgments, and inter-annotator agreement. Inspired by bead's framework for constructing, deploying, and analyzing large-scale linguistic judgment experiments.
 

@@ -296,7 +296,7 @@
         },
         "device": {
           "type": "ref",
-          "ref": "#deviceInfo",
+          "ref": "pub.layers.defs#deviceInfo",
           "description": "Acquisition hardware. BIDS Manufacturer / ManufacturersModelName / DeviceSerialNumber / SoftwareVersions; NWB Device."
         },
         "eventChannel": {
@@ -903,7 +903,7 @@
         },
         "device": {
           "type": "ref",
-          "ref": "#deviceInfo",
+          "ref": "pub.layers.defs#deviceInfo",
           "description": "Eye-tracking hardware."
         }
       }
@@ -956,7 +956,7 @@
         },
         "captureDevice": {
           "type": "ref",
-          "ref": "#deviceInfo",
+          "ref": "pub.layers.defs#deviceInfo",
           "description": "Camera or scanner, structured rather than concatenated into a format string."
         }
       }
@@ -1026,7 +1026,7 @@
         },
         "device": {
           "type": "ref",
-          "ref": "#deviceInfo",
+          "ref": "pub.layers.defs#deviceInfo",
           "description": "Motion-capture hardware."
         }
       }
@@ -1131,7 +1131,7 @@
         },
         "device": {
           "type": "ref",
-          "ref": "#deviceInfo",
+          "ref": "pub.layers.defs#deviceInfo",
           "description": "Scanner hardware."
         }
       }

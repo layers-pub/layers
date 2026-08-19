@@ -6,7 +6,7 @@ sidebar_label: "Ontology"
 
 Annotation ontology definitions. Defines the types, labels, and relationships used in annotation, inspired by FOVEA's persona-based ontology builder and bead's unified frame ontology interfaces. Ontologies are first-class objects that can be shared, versioned, and linked to knowledge graphs.
 
-As of 0.9.0 the record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
+The record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
 
 Ontologies also back the controlled vocabularies that every `<x>Uri` field across the lexicons points at. Layers seeds three ontology accounts, whose typeDefs the `<x>Uri` fields resolve into:
 

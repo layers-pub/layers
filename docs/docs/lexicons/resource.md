@@ -6,7 +6,7 @@ sidebar_label: "Resource"
 
 Linguistic resource records: lexical entries, collections, stimulus templates, slot definitions, and fillings. Provides an abstract, composable framework for representing any structured linguistic resource: lexicons, frame inventories, stimulus generation pipelines, and experimental item construction.
 
-As of 0.9.0 the record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
+The record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
 
 ## Types
 

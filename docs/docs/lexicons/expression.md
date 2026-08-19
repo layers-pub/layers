@@ -29,12 +29,12 @@ An expression record representing any linguistic unit, from a full document to a
 | `eprintRefs` | array | Eprint records (papers/preprints) describing or associated with this expression. Array of at-uri (max 64) |
 | `knowledgeRefs` | array | References to knowledge base entries relevant to this expression. Array of ref: `pub.layers.defs#knowledgeRef` |
 | `parentRef` | at-uri | Reference to the parent expression this one is nested within. Absent for top-level expressions (documents, recordings, etc.). |
-| `anchor` | ref | How this expression attaches to its parent (character span, temporal span, signal span, spatial region, etc.). As of 0.9.0 the anchor union carries ten members. Ref: `pub.layers.defs#anchor` |
+| `anchor` | ref | How this expression attaches to its parent (character span, temporal span, signal span, spatial region, etc.). The anchor union carries ten members. Ref: `pub.layers.defs#anchor` |
 | `languages` | array | BCP-47 language tags this record covers. Empty when language is unspecified or unknown. Array of strings (item max 32). No array-level cap. |
 | `languageRefs` | array | Grounded language references carrying canonical BCP-47 tag, script/region codes, variety label, and a knowledge-graph source (glottolog, iso639-3, cldr). Richer than the `languages` slug array; use both. Array of ref: `pub.layers.defs#languageRef` |
 | `createdAt` | datetime | Record creation timestamp. (required) |
 
-As of 0.9.0 the record `main` declares `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
+The record `main` declares `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
 
 ## XRPC Queries
 

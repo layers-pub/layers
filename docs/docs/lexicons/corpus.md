@@ -6,7 +6,7 @@ sidebar_label: "Corpus"
 
 Corpus records. A corpus is a named, versioned collection of expressions with shared metadata, annotation guidelines, and ontologies. For nesting corpora into projects, releases, and language groups (and for browsable, citable rollups across many corpora), see the [catalog](./catalog.md) namespace; a corpus is a `produce` member of a `catalog.collection`.
 
-As of 0.9.0 the record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
+The record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
 
 ## Types
 

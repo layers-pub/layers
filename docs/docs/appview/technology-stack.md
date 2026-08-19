@@ -10,8 +10,8 @@ sidebar_position: 2
 | Concern         | Crate / library                                                  |
 | --------------- | ---------------------------------------------------------------- |
 | Language        | Rust, edition 2024, channel 1.95                                 |
-| Metaframework   | `idiolect` v0.7.0 (path dep)                                     |
-| Schema codegen  | `panproto` v0.39.0 (via idiolect)                                |
+| Metaframework   | `idiolect` (path dep)                                            |
+| Schema codegen  | `panproto` (via idiolect)                                        |
 | HTTP framework  | `axum` + `tower-http` (request id, tracing, cors)                |
 | Async runtime   | `tokio` multi-thread                                             |
 | Postgres        | `sqlx` (runtime-tokio-rustls)                                    |

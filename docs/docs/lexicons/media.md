@@ -4,7 +4,7 @@ sidebar_label: "Media"
 
 # pub.layers.media
 
-Media source records for the full carrier superset: audio, video, image, document, and, as of 0.9.0, signal (EEG, MEG, iEEG, fNIRS, EMG, ECG, EDA, respiration, gaze, mouse and key logging), motion (motion capture, articulography), and volume (fMRI, structural MRI, DWI, PET). Modality-specific metadata is factored into composable object types so that multimodal media can carry all relevant technical metadata: `audioInfo`, `videoInfo`, `documentInfo`, `imageInfo`, `signalInfo`, `eyeTrackingInfo`, `motionInfo`, `volumeInfo`, and their supporting types. Domain-specific metadata (recording conditions, speaker demographics, consent, quality assessment) is handled through the open `featureMap` with documented key conventions.
+Media source records for the full carrier superset: audio, video, image, document, signal (EEG, MEG, iEEG, fNIRS, EMG, ECG, EDA, respiration, gaze, mouse and key logging), motion (motion capture, articulography), and volume (fMRI, structural MRI, DWI, PET). Modality-specific metadata is factored into composable object types so that multimodal media can carry all relevant technical metadata: `audioInfo`, `videoInfo`, `documentInfo`, `imageInfo`, `signalInfo`, `eyeTrackingInfo`, `motionInfo`, `volumeInfo`, and their supporting types. Domain-specific metadata (recording conditions, speaker demographics, consent, quality assessment) is handled through the open `featureMap` with documented key conventions.
 
 `kind` names the carrier only. The instrument-level modality (`eeg`, `fmri`, `speech-audio`, and the rest) lives on `signalInfo.modalityUri`, whose nodes reach their carrier node by `parentTypeRef`; this is the same modality node set that `judgment.defs#recordingMethod.methodUri` and `catalog.defs#contentSummary.modalityUri` resolve to, so a recording, the experiment that produced it, and the catalogue entry advertising it join on one vocabulary. A signal, motion, or volume medium is a stream of an acquisition session: `sessionRef` and `stream` place it on the session clock, and `sync` states how it aligns to that clock.
 
@@ -66,7 +66,7 @@ Composable document/image metadata. Attach to any media record representing scan
 **NSID:** `pub.layers.media.defs#imageInfo`
 **Type:** Object
 
-Still-image metadata. Photographs previously had to borrow `videoInfo`; `imageInfo` gives them their own type with a paired colour-space vocabulary.
+Still-image metadata, with a paired colour-space vocabulary.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -323,7 +323,7 @@ A media source record (audio, video, image, or document) that can be referenced 
 | `audio` | ref | Audio-specific metadata. Ref: `pub.layers.media.defs#audioInfo` |
 | `video` | ref | Video-specific metadata. Ref: `pub.layers.media.defs#videoInfo` |
 | `document` | ref | Document-specific metadata. Ref: `pub.layers.media.defs#documentInfo` |
-| `image` | ref | Still-image metadata. Photographs previously had to borrow `videoInfo`. Ref: `pub.layers.media.defs#imageInfo` |
+| `image` | ref | Still-image metadata. Ref: `pub.layers.media.defs#imageInfo` |
 | `signal` | ref | Sampled time-series metadata (EEG, MEG, iEEG, fNIRS, EMG, ECG, EDA, respiration, gaze, mouse and key logging). Ref: `pub.layers.media.defs#signalInfo` |
 | `eyeTracking` | ref | Eye-tracking specifics, carried alongside `signal`. A nested block rather than an eighth carrier kind, because BIDS types eye-tracking as a physiological recording. Ref: `pub.layers.media.defs#eyeTrackingInfo` |
 | `motion` | ref | Motion-capture and articulography metadata, carried alongside `signal`. Ref: `pub.layers.media.defs#motionInfo` |
