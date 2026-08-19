@@ -5,14 +5,15 @@
     "main": {
       "type": "record",
       "description": "An inter-annotator agreement report summarizing agreement metrics across judgment sets.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": ["experimentRef", "createdAt"],
         "properties": {
           "experimentRef": {
             "type": "string",
-            "format": "at-uri"
+            "format": "at-uri",
+            "description": "AT-URI of the pub.layers.judgment.experimentDef this report summarizes agreement for."
           },
           "judgmentSetRefs": {
             "type": "array",
@@ -41,19 +42,23 @@
           },
           "numAnnotators": {
             "type": "integer",
+            "description": "Number of annotators whose judgment sets entered this agreement computation.",
             "minimum": 1
           },
           "numItems": {
             "type": "integer",
+            "description": "Number of items over which agreement was computed.",
             "minimum": 1
           },
           "features": {
             "type": "ref",
-            "ref": "pub.layers.defs#featureMap"
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features carrying agreement-report detail not covered by the typed fields."
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "When this agreement report record was created."
           }
         }
       }

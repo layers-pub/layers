@@ -5,13 +5,14 @@ sidebar_position: 5
 
 # Lexicon Overview
 
-Layers consists of 14 lexicons organized into core pipeline layers, parallel tracks, integration layers, and a cross-cutting changelog layer.
+Layers has 15 record namespaces plus the shared `pub.layers.defs` namespace. They are organized into core pipeline layers, parallel tracks, integration layers, and cross-cutting layers.
 
 ## Lexicon Directory
 
 | Namespace | Record NSIDs | Purpose |
 |-----------|-------------|---------|
-| [Definitions](../lexicons/defs.md) | `pub.layers.defs` | Core primitives: objectRef, anchor, constraint, agentRef, annotationMetadata, knowledgeRef, featureMap, alignmentLink, licensing, licenseRef, reproducibilityInfo |
+| [Definitions](../lexicons/defs.md) | `pub.layers.defs` | Core primitives: objectRef, anchor, signalSpan, mediaScope, constraint, agentRef, annotationMetadata, knowledgeRef, languageRef, featureMap, alignmentLink, licensing, contentDigest, fundingRef, ethicsApproval, reproducibilityInfo |
+| [Acquisition](../lexicons/acquisition.md) | `pub.layers.acquisition.participant`, `pub.layers.acquisition.session`, `pub.layers.acquisition.defs` | Pseudonymous participants, synchronized recording sessions, streams, consent, and access conditions |
 | [Expression](../lexicons/expression.md) | `pub.layers.expression.expression` | Any linguistic unit (document, paragraph, sentence, word, morpheme) with recursive nesting |
 | [Segmentation](../lexicons/segmentation.md) | `pub.layers.segmentation.segmentation`, `pub.layers.segmentation.defs` | Tokenization strategies, token sequences, sub-expression scoping |
 | [Annotation](../lexicons/annotation.md) | `pub.layers.annotation.annotationLayer`, `pub.layers.annotation.clusterSet`, `pub.layers.annotation.defs` | Linguistic labels and categories (POS, NER, SRL, discourse, etc.) |
@@ -22,8 +23,9 @@ Layers consists of 14 lexicons organized into core pipeline layers, parallel tra
 | [Alignment](../lexicons/alignment.md) | `pub.layers.alignment.alignment` | Cross-record linking, token correspondence, equivalence |
 | [Graph](../lexicons/graph.md) | `pub.layers.graph.graphNode`, `pub.layers.graph.graphEdge`, `pub.layers.graph.graphEdgeSet`, `pub.layers.graph.defs` | Generic typed property graph for knowledge representation and cross-referencing |
 | [Persona](../lexicons/persona.md) | `pub.layers.persona.persona` | Agent personas, theoretical frameworks, backgrounds |
-| [Media](../lexicons/media.md) | `pub.layers.media.media`, `pub.layers.media.defs` | Audio, video, image, and paged document references |
+| [Media](../lexicons/media.md) | `pub.layers.media.media`, `pub.layers.media.defs` | Audio, video, image, paged document, continuous signal, motion, and volume references |
 | [Eprint](../lexicons/eprint.md) | `pub.layers.eprint.eprint`, `pub.layers.eprint.dataLink`, `pub.layers.eprint.defs` | Eprint linkage, data provenance, scholarly metadata, reproducibility |
+| [Catalog](../lexicons/catalog.md) | `pub.layers.catalog.collection`, `pub.layers.catalog.membership`, `pub.layers.catalog.defs` | Browsable, citable collection hierarchies, typed membership, and derived rollups |
 | [Changelog](../lexicons/changelog.md) | `pub.layers.changelog.entry`, `pub.layers.changelog.defs` | Structured change tracking for any Layers record, with sub-record precision via objectRef |
 
 ## Lexicon Organization
@@ -52,6 +54,7 @@ These lexicons support the pipeline but do not depend on each other in strict or
 - **pub.layers.corpus**: Corpus metadata, membership, and statistics (organizes expressions)
 - **pub.layers.resource**: Lexical entries, collections, stimulus templates, and fillings (supports experiments)
 - **pub.layers.judgment**: Human and model judgments, experiment design (supports annotation and alignment)
+- **pub.layers.acquisition**: Participants and synchronized recording sessions (connects experiment protocols to media streams)
 - **pub.layers.alignment**: Cross-record correspondence (integrates across layers)
 
 ### Integration Layers
@@ -63,8 +66,9 @@ These lexicons connect Layers to the ATProto ecosystem:
 - **pub.layers.media**: Audio, video, image, and paged document references
 - **pub.layers.eprint**: Eprint linkage, data provenance, reproducibility information, and scholarly metadata
 
-### Cross-Cutting Layer
+### Cross-Cutting Layers
 
+- **pub.layers.catalog**: Browsable and citable collection hierarchies whose typed memberships can reference records in any namespace
 - **pub.layers.changelog**: Structured change tracking for any Layers record, with sub-record precision via `objectRef`
 
 ## Dependency Graph
@@ -81,6 +85,7 @@ graph TD
     RESOURCE["<b>pub.layers.resource</b><br/>Lexical Resources & Templates"]
     ONTO["<b>pub.layers.ontology</b><br/>Label Definitions"]
     JUDGE["<b>pub.layers.judgment</b><br/>Judgments & Experiments"]
+    ACQ["<b>pub.layers.acquisition</b><br/>Sessions & Participants"]
     ALIGN["<b>pub.layers.alignment</b><br/>Cross-Record Linking"]
 
     GRAPH["<b>pub.layers.graph</b><br/>Typed Property Graph"]
@@ -88,6 +93,7 @@ graph TD
     MEDIA["<b>pub.layers.media</b><br/>Media References"]
     EPRINT["<b>pub.layers.eprint</b><br/>Eprint & Data Provenance"]
 
+    CATALOG["<b>pub.layers.catalog</b><br/>Collections & Rollups"]
     CHANGELOG["<b>pub.layers.changelog</b><br/>Change Tracking"]
 
     DEFS --> EXPR
@@ -97,6 +103,7 @@ graph TD
     DEFS --> RESOURCE
     DEFS --> ONTO
     DEFS --> JUDGE
+    DEFS --> ACQ
     DEFS --> ALIGN
 
     EXPR --> SEG
@@ -105,6 +112,9 @@ graph TD
     ONTO --> ANN
     CORPUS --> EXPR
     JUDGE --> ANN
+    JUDGE --> ACQ
+    MEDIA --> ACQ
+    ACQ --> ANN
     ALIGN --> ANN
 
     DEFS --> GRAPH
@@ -117,6 +127,7 @@ graph TD
     MEDIA --> EXPR
     EPRINT --> CORPUS
 
+    DEFS --> CATALOG
     DEFS --> CHANGELOG
 
     classDef pipeline fill:#001673,stroke:#2c6faa,color:#fff,stroke-width:2px
@@ -127,9 +138,9 @@ graph TD
 
     class DEFS primitives
     class EXPR,SEG,ANN pipeline
-    class CORPUS,RESOURCE,ONTO,JUDGE,ALIGN parallel
+    class CORPUS,RESOURCE,ONTO,JUDGE,ACQ,ALIGN parallel
     class GRAPH,PERSONA,MEDIA,EPRINT integration
-    class CHANGELOG crosscutting
+    class CATALOG,CHANGELOG crosscutting
 ```
 
 ## Pipeline Layers
@@ -153,7 +164,7 @@ Foundation for all other lexicons. Defines abstract, composable primitives:
 
 **Used by**: All other lexicons
 
-**File**: `schemas/pub/layers/defs.json`
+**File**: `lexicons/pub/layers/defs.json`
 
 ### pub.layers.expression (Linguistic Units)
 
@@ -169,7 +180,7 @@ Any linguistic unit, from a single morpheme to a full document, with recursive n
 
 **Used by**: All downstream layers
 
-**Directory**: `schemas/pub/layers/expression/` (expression.json, get/list queries)
+**Directory**: `lexicons/pub/layers/expression/` (expression.json, get/list queries)
 
 ### pub.layers.segmentation (Tokenization)
 
@@ -184,7 +195,7 @@ Provides token-level decomposition of expressions:
 
 **Used by**: `pub.layers.annotation`
 
-**Directory**: `schemas/pub/layers/segmentation/` (segmentation.json, defs.json, get/list queries)
+**Directory**: `lexicons/pub/layers/segmentation/` (segmentation.json, defs.json, get/list queries)
 
 ### pub.layers.annotation (Linguistic Annotations)
 
@@ -201,7 +212,7 @@ Labels, categories, semantic roles, discourse relations:
 
 **Used by**: `pub.layers.alignment`, integration layers
 
-**Directory**: `schemas/pub/layers/annotation/` (annotationLayer.json, clusterSet.json, defs.json, get/list queries)
+**Directory**: `lexicons/pub/layers/annotation/` (annotationLayer.json, clusterSet.json, defs.json, get/list queries)
 
 ## Parallel Support Layers
 
@@ -219,7 +230,7 @@ Authority records for linguistic categories, tag sets, frameworks:
 
 **Used by**: `pub.layers.annotation`, `pub.layers.graph`
 
-**Directory**: `schemas/pub/layers/ontology/` (ontology.json, typeDef.json, defs.json, get/list queries)
+**Directory**: `lexicons/pub/layers/ontology/` (ontology.json, typeDef.json, defs.json, get/list queries)
 
 ### pub.layers.corpus (Corpus Metadata)
 
@@ -233,7 +244,7 @@ Corpus records, membership, and statistics:
 
 **Used by**: `pub.layers.annotation` (corpus context), `pub.layers.eprint`
 
-**Directory**: `schemas/pub/layers/corpus/` (corpus.json, membership.json, defs.json, get/list queries)
+**Directory**: `lexicons/pub/layers/corpus/` (corpus.json, membership.json, defs.json, get/list queries)
 
 ### pub.layers.resource (Lexical Resources & Templates)
 
@@ -249,7 +260,7 @@ Lexical entries, collections, stimulus templates, fillings, and compositions:
 
 **Used by**: `pub.layers.judgment` (stimulus generation)
 
-**Directory**: `schemas/pub/layers/resource/` (entry.json, collection.json, template.json, filling.json, templateComposition.json, collectionMembership.json, defs.json, get/list queries)
+**Directory**: `lexicons/pub/layers/resource/` (entry.json, collection.json, template.json, filling.json, templateComposition.json, collectionMembership.json, defs.json, get/list queries)
 
 ### pub.layers.judgment (Judgments & Experiments)
 
@@ -264,7 +275,22 @@ Human judgments, model predictions, experiment design:
 
 **Used by**: `pub.layers.annotation`, applications for filtering/ranking
 
-**Directory**: `schemas/pub/layers/judgment/` (experimentDef.json, judgmentSet.json, agreementReport.json, defs.json, get/list queries)
+**Directory**: `lexicons/pub/layers/judgment/` (experimentDef.json, judgmentSet.json, agreementReport.json, defs.json, get/list queries)
+
+### pub.layers.acquisition (Sessions & Participants)
+
+Participants and the synchronized recording sessions in which they produce data:
+
+- Pseudonymous participant records with typed consent and access conditions
+- Session clocks shared by media streams and session-scoped anchors
+- Stream and run definitions linking media, participants, tasks, and event layers
+- BIDS- and NWB-oriented acquisition metadata
+
+**Depends on**: `pub.layers.defs`, `pub.layers.judgment`, `pub.layers.media`
+
+**Used by**: `pub.layers.annotation`, `pub.layers.judgment`, `pub.layers.media`
+
+**Directory**: `lexicons/pub/layers/acquisition/` (participant.json, session.json, defs.json, get/list queries)
 
 ### pub.layers.alignment (Cross-Record Linking)
 
@@ -279,7 +305,7 @@ Linking annotations across records and layers:
 
 **Used by**: All layers (enables multi-layer composition)
 
-**Directory**: `schemas/pub/layers/alignment/` (alignment.json, get/list queries)
+**Directory**: `lexicons/pub/layers/alignment/` (alignment.json, get/list queries)
 
 ## Integration Layers
 
@@ -291,13 +317,13 @@ Generic typed property graph for knowledge representation and cross-referencing:
 - Typed directed edges between any Layers objects (expressions, annotations, graph nodes, external KB nodes)
 - Batch edge sets for efficient bulk operations
 - Supports multidigraphs and cycles
-- Subsumes cross-document relations, knowledge grounding, expression graphs, and intertextual linking
+- Represents cross-document relations, knowledge grounding, expression graphs, and intertextual linking
 
 **Depends on**: `pub.layers.defs`, `pub.layers.ontology`
 
 **Used by**: `pub.layers.annotation` (via knowledgeRef), all layers (via objectRef-based cross-referencing)
 
-**Directory**: `schemas/pub/layers/graph/` (graphNode.json, graphEdge.json, graphEdgeSet.json, defs.json, get/list queries)
+**Directory**: `lexicons/pub/layers/graph/` (graphNode.json, graphEdge.json, graphEdgeSet.json, defs.json, get/list queries)
 
 ### pub.layers.persona (Agent Personas)
 
@@ -311,7 +337,7 @@ Agent personas, theoretical frameworks, methodological backgrounds:
 
 **Used by**: `pub.layers.annotation` (via annotationMetadata.personaRef)
 
-**Directory**: `schemas/pub/layers/persona/` (persona.json, get/list queries)
+**Directory**: `lexicons/pub/layers/persona/` (persona.json, get/list queries)
 
 ### pub.layers.media (Multimodal References)
 
@@ -326,7 +352,7 @@ Audio, video, image, and paged document references:
 
 **Used by**: `pub.layers.expression` (source documents), `pub.layers.segmentation` (temporal/spatial anchors)
 
-**Directory**: `schemas/pub/layers/media/` (media.json, defs.json, get/list queries)
+**Directory**: `lexicons/pub/layers/media/` (media.json, defs.json, get/list queries)
 
 ### pub.layers.eprint (Eprint & Data Provenance)
 
@@ -341,9 +367,24 @@ Eprint linkage, data provenance, and scholarly metadata:
 
 **Used by**: `pub.layers.expression` and every other data-producing record that carries `eprintRefs` (the persona record is the exception), discovery/search
 
-**Directory**: `schemas/pub/layers/eprint/` (eprint.json, dataLink.json, defs.json, get/list queries)
+**Directory**: `lexicons/pub/layers/eprint/` (eprint.json, dataLink.json, defs.json, get/list queries)
 
-## Cross-Cutting Layer
+## Cross-Cutting Layers
+
+### pub.layers.catalog (Collections & Rollups)
+
+Browsable, citable collections of Layers records:
+
+- Child-held containment through `collection.parentRef`
+- Typed membership edges that can reference records in any namespace
+- Citation policies and persistent identifiers at the collection level
+- Declared content summaries and query-time rollups
+
+**Depends on**: `pub.layers.defs`
+
+**References**: All record namespaces through `membership.member`
+
+**Directory**: `lexicons/pub/layers/catalog/` (collection.json, membership.json, defs.json, collection and rollup queries)
 
 ### pub.layers.changelog (Change Tracking)
 
@@ -359,7 +400,7 @@ Structured changelog records for tracking changes to any Layers record:
 
 **References**: All other namespaces (the `subject` field can point to any record type)
 
-**Directory**: `schemas/pub/layers/changelog/` (entry.json, defs.json, get/list queries)
+**Directory**: `lexicons/pub/layers/changelog/` (entry.json, defs.json, get/list queries)
 
 ## XRPC Queries
 
@@ -412,11 +453,13 @@ pub.layers.annotation.listClusterSets       → list cluster sets in a repo
 | corpus | `getCorpus`, `listCorpora`, `getMembership`, `listMemberships` |
 | resource | `getEntry`, `listEntries`, `getCollection`, `listCollections`, `getTemplate`, `listTemplates`, `getFilling`, `listFillings`, `getTemplateComposition`, `listTemplateCompositions`, `getCollectionMembership`, `listCollectionMemberships` |
 | judgment | `getExperimentDef`, `listExperimentDefs`, `getJudgmentSet`, `listJudgmentSets`, `getAgreementReport`, `listAgreementReports` |
+| acquisition | `getParticipant`, `listParticipants`, `getSession`, `listSessions` |
 | alignment | `getAlignment`, `listAlignments` |
 | graph | `getGraphNode`, `listGraphNodes`, `getGraphEdge`, `listGraphEdges`, `getGraphEdgeSet`, `listGraphEdgeSets` |
 | persona | `getPersona`, `listPersonas` |
 | media | `getMedia`, `listMedia` |
 | eprint | `getEprint`, `listEprints`, `getDataLink`, `listDataLinks` |
+| catalog | `getCollection`, `listCollections`, `listMembers`, `listContainers`, `getRollup` |
 | changelog | `getEntry`, `listEntries`, `listByCollection` |
 
 ## See Also

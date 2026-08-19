@@ -9,10 +9,10 @@
         "type": "params",
         "required": ["expression"],
         "properties": {
-          "expression": { "type": "string", "format": "at-uri" },
-          "kind": { "type": "string", "maxLength": 128 },
-          "limit": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50 },
-          "cursor": { "type": "string" }
+          "expression": { "type": "string", "format": "at-uri", "description": "AT-URI of the expression to filter results to." },
+          "kind": { "type": "string", "maxLength": 128, "description": "alignment kind slug to filter by (fallback when a kindUri filter is unavailable)." },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50, "description": "Maximum number of records to return in one page." },
+          "cursor": { "type": "string", "description": "Opaque pagination cursor from a previous response, to resume after the last returned record." }
         }
       },
       "output": {
@@ -21,9 +21,10 @@
           "type": "object",
           "required": ["records"],
           "properties": {
-            "cursor": { "type": "string" },
+            "cursor": { "type": "string", "description": "Opaque pagination cursor for the next page, absent when no further results remain." },
             "records": {
               "type": "array",
+              "description": "The page of alignment records returned.",
               "items": { "type": "ref", "ref": "#recordView" }
             }
           }
@@ -34,9 +35,9 @@
       "type": "object",
       "required": ["uri", "cid", "value"],
       "properties": {
-        "uri": { "type": "string", "format": "at-uri" },
-        "cid": { "type": "string", "format": "cid" },
-        "value": { "type": "ref", "ref": "pub.layers.alignment.alignment#main" }
+        "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of this alignment record." },
+        "cid": { "type": "string", "format": "cid", "description": "CID of this alignment record at this revision." },
+        "value": { "type": "ref", "ref": "pub.layers.alignment.alignment#main", "description": "The alignment record value." }
       }
     }
   }

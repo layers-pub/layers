@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "description": "A corpus: a curated collection of expressions.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": [
@@ -20,10 +20,12 @@
           },
           "description": {
             "type": "string",
+            "description": "Free-text description of the corpus: its contents, provenance, and intended use.",
             "maxLength": 50000
           },
           "version": {
             "type": "string",
+            "description": "Version identifier for this release of the corpus.",
             "maxLength": 64
           },
           "domainUri": {
@@ -71,6 +73,15 @@
               "format": "at-uri"
             }
           },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "Knowledge graph references grounding this corpus (e.g., source catalog identifiers, dataset registries such as ldc or elra, associated publications).",
+            "maxLength": 64,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
           "reproducibility": {
             "type": "ref",
             "ref": "pub.layers.defs#reproducibilityInfo",
@@ -88,19 +99,28 @@
           },
           "features": {
             "type": "ref",
-            "ref": "pub.layers.defs#featureMap"
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features for this corpus (e.g., genre breakdown, collection method, custom metadata)."
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "Timestamp when this corpus record was created."
           },
           "languages": {
             "type": "array",
             "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
-            "maxLength": 128,
             "items": {
               "type": "string",
               "maxLength": 32
+            }
+          },
+          "languageRefs": {
+            "type": "array",
+            "description": "Structured language references for this record, grounding each language via glottolog, iso639-3, or cldr and carrying script, region, variety, and role. Richer companion to the languages tag array.",
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#languageRef"
             }
           }
         }

@@ -9,7 +9,8 @@
       "properties": {
         "uuid": {
           "type": "ref",
-          "ref": "pub.layers.defs#uuid"
+          "ref": "pub.layers.defs#uuid",
+          "description": "Stable identifier for this annotation, used as the referent for parentId, childIds, and argument targets."
         },
         "anchor": {
           "type": "ref",
@@ -121,7 +122,8 @@
         },
         "features": {
           "type": "ref",
-          "ref": "pub.layers.defs#featureMap"
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features for this argument (e.g., syntactic realization, optionality, span-level attributes)."
         }
       }
     },
@@ -132,7 +134,8 @@
       "properties": {
         "uuid": {
           "type": "ref",
-          "ref": "pub.layers.defs#uuid"
+          "ref": "pub.layers.defs#uuid",
+          "description": "Stable identifier for this cluster within the cluster set."
         },
         "canonicalLabel": {
           "type": "string",
@@ -149,6 +152,7 @@
         },
         "knowledgeRefs": {
           "type": "array",
+          "description": "Links from this cluster to external knowledge bases (e.g., the Wikidata or DBpedia entity the members denote).",
           "maxLength": 32,
           "items": {
             "type": "ref",
@@ -157,7 +161,8 @@
         },
         "features": {
           "type": "ref",
-          "ref": "pub.layers.defs#featureMap"
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features for this cluster (e.g., entity type, salience, discourse status)."
         }
       }
     }

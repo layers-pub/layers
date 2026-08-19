@@ -1,0 +1,92 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.catalog.listContainers",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "List the collections that contain, annotate, or otherwise point at a given record: the reverse index over pub.layers.catalog.membership. A hard dependency rather than a convenience, because edges are written by the pointing party and live in that party's repo, so cross-family structure is invisible from the pointed-at record's own side without it. This is what surfaces 'annotated by PropBank-SRL' on a treebank whose maintainers never wrote that edge.",
+      "parameters": {
+        "type": "params",
+        "required": ["member"],
+        "properties": {
+          "member": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the record to find containers for. May be a collection, a corpus, an annotation layer, a media item, a judgment set, an ontology, or any other member type."
+          },
+          "roleUri": {
+            "type": "array",
+            "description": "Filter to these membership-role definition nodes. Takes precedence over role.",
+            "maxLength": 16,
+            "items": { "type": "string", "format": "at-uri" }
+          },
+          "role": {
+            "type": "array",
+            "description": "Filter by role slug.",
+            "maxLength": 16,
+            "items": { "type": "string", "maxLength": 128 }
+          },
+          "includeSelfAsserted": {
+            "type": "boolean",
+            "description": "Include edges asserted by parties that do not control this record. Setting this false reduces the result to structure blessed by the record's own publisher, which for most cross-family relations is empty.",
+            "default": true
+          },
+          "trustUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the trust-tier definition node. Refines trust; never replaces it."
+          },
+          "trust": {
+            "type": "string",
+            "description": "Which asserting parties to include (fallback when trustUri unavailable). 'curated' restricts to publishers the appview's operators have vouched for, 'open' includes every indexed assertion, 'self-asserted' restricts to edges written by a repo that also owns the member.",
+            "knownValues": ["self-asserted", "curated", "open"],
+            "default": "curated",
+            "maxLength": 64
+          },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50, "description": "Maximum number of container edges to return in one page." },
+          "cursor": { "type": "string", "description": "Opaque pagination cursor to resume from a previous page." }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["records"],
+          "properties": {
+            "cursor": { "type": "string", "description": "Opaque pagination cursor to pass to the next call; absent when the last page has been reached." },
+            "parent": {
+              "type": "ref",
+              "ref": "pub.layers.catalog.getCollection#collectionView",
+              "description": "The member's canonical parent, resolved from its own parentRef rather than from any edge. Returned separately because it is the one containment fact the member itself asserts, and it is the only one that contributes to a subtree sum."
+            },
+            "records": {
+              "type": "array",
+              "description": "Edges pointing at this member, each with its asserting collection resolved.",
+              "items": { "type": "ref", "ref": "#containerView" }
+            }
+          }
+        }
+      },
+      "errors": [{ "name": "RecordNotFound" }]
+    },
+
+    "containerView": {
+      "type": "object",
+      "required": ["uri", "cid", "value"],
+      "properties": {
+        "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of the membership edge." },
+        "cid": { "type": "string", "format": "cid", "description": "CID of the membership edge's current revision." },
+        "value": { "type": "ref", "ref": "pub.layers.catalog.membership#main", "description": "The membership edge record itself." },
+        "container": {
+          "type": "ref",
+          "ref": "pub.layers.catalog.getCollection#collectionView",
+          "description": "The collection at the container end, resolved."
+        },
+        "contributesToRollup": {
+          "type": "boolean",
+          "description": "Whether this edge's role is one of the two that sum ('member', 'produce'). False for every cross-family relation, which is what keeps a parallel-corpus grouping browsable while contributing zero to the counts of treebanks it does not own."
+        }
+      }
+    }
+  }
+}

@@ -14,6 +14,7 @@
         },
         "roleDescription": {
           "type": "string",
+          "description": "Prose describing what this role means and what fills it.",
           "maxLength": 2048
         },
         "fillerTypeRefs": {
@@ -50,6 +51,7 @@
         },
         "knowledgeRefs": {
           "type": "array",
+          "description": "Knowledge graph groundings for this role (e.g., a FrameNet frame element or PropBank argument).",
           "maxLength": 16,
           "items": {
             "type": "ref",

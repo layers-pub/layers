@@ -1,0 +1,260 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.catalog.defs",
+  "description": "Shared definitions for the Layers catalogue: the thing a researcher cites and browses for. Provides the member reference used by catalog.membership, the publisher-declared content summary that makes a collection browsable without paging its produces, and the citation block that marks a collection as the level a community names in a bibliography.",
+  "defs": {
+    "memberRef": {
+      "type": "object",
+      "description": "A reference to the thing contained by a collection. Composes pub.layers.defs#objectRef rather than re-declaring recordRef and objectId, so a member that exists only in an external knowledge base (a VerbNet class present in Wikidata but not yet in Layers) is representable, and so any resolver written against objectRef works here unchanged.",
+      "required": ["ref", "memberType"],
+      "properties": {
+        "ref": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "The member. Populate recordRef for a Layers record, recordRef plus objectId for a sub-record object, knowledgeRef for a member Layers does not hold."
+        },
+        "memberType": {
+          "type": "string",
+          "description": "NSID of the member's record type, denormalized so a member list can dispatch its renderer and filter by type without resolving every AT-URI. Mirrors the NSID-discriminator pattern of pub.layers.changelog.entry#subjectCollection. Empty string when the member is knowledgeRef-only.",
+          "knownValues": [
+            "pub.layers.catalog.collection",
+            "pub.layers.corpus.corpus",
+            "pub.layers.expression.expression",
+            "pub.layers.resource.collection",
+            "pub.layers.resource.entry",
+            "pub.layers.annotation.annotationLayer",
+            "pub.layers.annotation.clusterSet",
+            "pub.layers.segmentation.segmentation",
+            "pub.layers.alignment.alignment",
+            "pub.layers.graph.graphEdgeSet",
+            "pub.layers.ontology.ontology",
+            "pub.layers.ontology.typeDef",
+            "pub.layers.judgment.experimentDef",
+            "pub.layers.judgment.judgmentSet",
+            "pub.layers.media.media",
+            "pub.layers.acquisition.session",
+            "pub.layers.acquisition.participant",
+            "pub.layers.eprint.eprint",
+            "pub.layers.persona.persona"
+          ],
+          "maxLength": 317
+        },
+        "memberCid": {
+          "type": "string",
+          "format": "cid",
+          "description": "CID of the exact member revision this edge pins. Required in practice when the containing collection declares pinPolicy 'pinned'. Pins the member's RECORD, not its contents: a corpus record's expressions and annotation layers live in other repos reached through pub.layers.corpus.membership, which this CID does not cover. Pin the produce edges too for layer-set coverage; byte-level reproducibility is not implied."
+        },
+        "memberVersion": {
+          "type": "string",
+          "description": "Display cache of the member's version string. Advisory; superseded by the member record whenever it resolves.",
+          "maxLength": 64
+        },
+        "memberName": {
+          "type": "string",
+          "description": "Display cache of the member's name, advisory in exactly the way an ATProto handle is advisory. Lets a container render a member list before its members are indexed; superseded by the member record whenever it resolves.",
+          "maxLength": 2048,
+          "maxGraphemes": 512
+        }
+      }
+    },
+
+    "contentSummary": {
+      "type": "object",
+      "description": "One publisher-declared bucket of what a collection contains: a produce record type, optionally narrowed by kind, subkind and modality, with a count and an explicit statement of where the count came from. Exists so a browse row can state 'sentence-level dependency annotation over 16,622 expressions, English, gold' without paging tens of thousands of annotation records. Never authoritative over the appview's computed rollup; countSource is what lets a consumer tell the two apart.",
+      "required": ["produceCollection", "countSource"],
+      "properties": {
+        "produceCollection": {
+          "type": "string",
+          "description": "NSID of the produce record type this bucket summarizes. Takes the same value space as pub.layers.catalog.defs#memberRef.memberType so a summary and an edge over the same produce join without translation.",
+          "knownValues": [
+            "pub.layers.corpus.corpus",
+            "pub.layers.expression.expression",
+            "pub.layers.annotation.annotationLayer",
+            "pub.layers.annotation.clusterSet",
+            "pub.layers.segmentation.segmentation",
+            "pub.layers.alignment.alignment",
+            "pub.layers.graph.graphEdgeSet",
+            "pub.layers.ontology.ontology",
+            "pub.layers.ontology.typeDef",
+            "pub.layers.resource.collection",
+            "pub.layers.resource.entry",
+            "pub.layers.judgment.experimentDef",
+            "pub.layers.judgment.judgmentSet",
+            "pub.layers.media.media",
+            "pub.layers.acquisition.session",
+            "pub.layers.acquisition.participant"
+          ],
+          "maxLength": 317
+        },
+        "kindUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the kind definition node for this bucket. MUST resolve into the kind vocabulary of the record type named by produceCollection: a pub.layers.ontology.typeDef of the 'annotation-kind' ontology at layers-annotation.ontology.layers.pub for an annotationLayer bucket, of 'catalog-kind' at layers-core.ontology.layers.pub for a nested collection bucket. Refines kind; never replaces it."
+        },
+        "kind": {
+          "type": "string",
+          "description": "Kind slug (fallback when kindUri unavailable). Draws on the kind vocabulary of the record type named by produceCollection, so its value space is polymorphic by construction. A consumer that cannot resolve produceCollection MUST render this slug verbatim rather than attempting to validate it.",
+          "maxLength": 128
+        },
+        "subkindUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the subkind definition node (typeDef of 'annotation-subkind' at layers-annotation.ontology.layers.pub for annotation buckets). Refines subkind; never replaces it."
+        },
+        "subkind": {
+          "type": "string",
+          "description": "Subkind slug (fallback when subkindUri unavailable). This is the primary selection criterion for corpus and NLP browsing: 'has dependency annotation' and 'has coreference' are subkind queries, and answering them by paging annotationLayer records costs minutes and hundreds of megabytes per refresh.",
+          "knownValues": ["pos", "xpos", "lemma", "morph", "ner", "supersense", "sense", "chunk", "dependency", "enhanced-dependency", "constituency", "ccg", "frame", "predicate", "coreference", "bridging", "discourse-relation", "temporal-relation", "causal-relation", "sentiment", "emotion", "stance", "information-structure", "speaker", "gloss", "phonetic", "prosody", "tobi", "language-id", "code-switch", "error", "correction", "custom"],
+          "maxLength": 128
+        },
+        "modalityUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the modality definition node, a pub.layers.ontology.typeDef of the 'modality' ontology at layers-core.ontology.layers.pub. The SAME node set is named by pub.layers.judgment.defs#recordingMethod.methodUri and by pub.layers.media.defs#signalInfo.modalityUri, so a recording, the experiment that produced it, and the catalogue entry advertising it join on one vocabulary. Distinct from pub.layers.media.media.kindUri, which names the CARRIER: each modality node reaches its carrier node by parentTypeRef, so 'collections with EEG' and 'media of kind signal' are one traversal rather than two enums."
+        },
+        "modality": {
+          "type": "string",
+          "description": "Modality slug (fallback when modalityUri unavailable). Covers everything Layers can annotate, not text alone.",
+          "knownValues": ["text", "speech-audio", "non-speech-audio", "video", "sign-language-video", "image", "document-scan", "eeg", "meg", "ieeg", "ecog", "fnirs", "fmri", "structural-mri", "dwi", "pet", "emg", "ecg", "eda", "respiration", "eye-tracking", "pupillometry", "motion-capture", "articulography", "ultrasound-tongue", "electroglottography", "electropalatography", "keystroke", "mouse-tracking", "button-box", "touch", "behavioral-response", "custom"],
+          "maxLength": 128
+        },
+        "count": {
+          "type": "integer",
+          "description": "How many units this bucket holds. Meaningless without countSource: pub.layers.corpus.corpus.expressionCount is null on every live record today, and a rollup that cannot distinguish a declared 16,622 from a computed 16,622 from an absent one will present zero as fact.",
+          "minimum": 0
+        },
+        "unitUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the unit definition node (typeDef of 'unit' at layers-core.ontology.layers.pub). Refines unit; never replaces it."
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unit slug for count (fallback when unitUri unavailable).",
+          "knownValues": ["expression", "sentence", "token", "word", "type", "lemma", "entry", "paradigm-cell", "annotation", "span", "relation", "tree", "node", "edge", "cluster", "document", "media-item", "session", "participant", "trial", "judgment", "run", "class", "type-def", "second", "sample", "byte", "custom"],
+          "maxLength": 64
+        },
+        "countSourceUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the count-source definition node (typeDef of 'count-source' at layers-core.ontology.layers.pub). Refines countSource; never replaces it."
+        },
+        "countSource": {
+          "type": "string",
+          "description": "Where count came from. Required, because an unqualified number in a catalogue is a claim the catalogue cannot support. 'declared' is the publisher's own figure; 'computed' is derived from records the publisher holds; 'estimated' is sampled or projected; 'unavailable' asserts the bucket exists while its size is unknown, which is the honest state for most of the live corpus today.",
+          "knownValues": ["declared", "computed", "estimated", "unavailable"],
+          "maxLength": 64
+        },
+        "countIsExact": {
+          "type": "boolean",
+          "description": "Whether count is exact rather than rounded or floored. Absent means unstated."
+        },
+        "sourceMethodUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the production-method definition node (typeDef of 'source-method' at layers-annotation.ontology.layers.pub). Refines sourceMethod; never replaces it."
+        },
+        "sourceMethod": {
+          "type": "string",
+          "description": "How the contents of this bucket were produced (fallback when sourceMethodUri unavailable). This is the gold-versus-silver discriminator and the single most requested filter in corpus browsing.",
+          "knownValues": ["manual", "double-annotated-adjudicated", "semi-automatic", "automatic", "projected", "converted", "crowdsourced", "native", "synthetic", "custom"],
+          "maxLength": 128
+        },
+        "formalismUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the formalism definition node (typeDef of 'formalism' at layers-annotation.ontology.layers.pub). Refines formalism; never replaces it."
+        },
+        "formalism": {
+          "type": "string",
+          "description": "Annotation formalism slug (fallback when formalismUri unavailable).",
+          "knownValues": ["universal-dependencies", "stanford-dependencies", "surface-syntactic-ud", "penn-treebank", "tiger", "prague-tectogrammatical", "ccgbank", "abstract-meaning-representation", "universal-decompositional-semantics", "propbank", "framenet", "verbnet", "ontonotes", "unimorph", "sigmorphon", "conll-u", "conll-2003", "elan-tier", "praat-textgrid", "bids", "nwb", "custom"],
+          "maxLength": 128
+        },
+        "languages": {
+          "type": "array",
+          "description": "Canonical BCP-47 language tags this bucket covers, when narrower than the collection's own languages array. Canonical means the shortest ISO 639 code that exists for the language: 'en' not 'eng', 'fi' not 'fin', but 'poma' for Pomak because no 639-1 code exists.",
+          "items": {
+            "type": "string",
+            "maxLength": 32
+          }
+        },
+        "exampleRefs": {
+          "type": "array",
+          "description": "AT-URIs of a few representative records from this bucket, so a browse row can render a real example without a query. Advisory and small by design.",
+          "maxLength": 8,
+          "items": {
+            "type": "string",
+            "format": "at-uri"
+          }
+        },
+        "asOf": {
+          "type": "string",
+          "format": "datetime",
+          "description": "When this summary was last recomputed by its publisher. A stale summary is detectable only if it is dated."
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open key-value map for publisher-specific summary attributes not covered by the named fields."
+        }
+      }
+    },
+
+    "citation": {
+      "type": "object",
+      "description": "How to cite this collection, and whether this collection is the level that should be cited at all. A collection carrying a citation block is a citable node: a publisher declaration rather than a schema tier, which is what lets UD name the treebank as citable while UniMorph names the project. Absent means the publisher has not declared; consumers should fall back to the nearest ancestor that has.",
+      "properties": {
+        "creditPolicyUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the credit-policy definition node (typeDef of 'credit-policy' at layers-core.ontology.layers.pub). Refines creditPolicy; never replaces it."
+        },
+        "creditPolicy": {
+          "type": "string",
+          "description": "Where the publisher wants credit to land (fallback when creditPolicyUri unavailable). 'cite-self' marks this node as the row a bibliography should name, which is UniMorph's case: 186 language datasets share one paper. 'cite-children' delegates downward, which is UD's case: researchers cite the treebank, not the project. 'cite-both' is legitimate when a project paper and a component paper both exist. Umbrella collections SHOULD default to 'cite-children' so that a duplicate citable level is authored deliberately rather than by omission.",
+          "knownValues": ["cite-self", "cite-children", "cite-parent", "cite-both", "do-not-cite"],
+          "maxLength": 64
+        },
+        "citeAs": {
+          "type": "string",
+          "description": "The publisher's preferred citation string, as prose. Prose by design: this is the residue after authors, publisher and identifiers have been given structurally, and forcing a bibliography style into a schema would be false precision.",
+          "maxLength": 4096
+        },
+        "authors": {
+          "type": "array",
+          "description": "Authors or maintainers credited for this collection, as agentRefs so an ORCID grounds a person and a DID grounds an ATProto-native contributor. Structured rather than a name string because release-level deposits routinely flatten hundreds of contributors into 'Zeman, Daniel; et al.', and the project node and the release node legitimately carry different author sets.",
+          "maxLength": 1024,
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#agentRef"
+          }
+        },
+        "publisher": {
+          "type": "ref",
+          "ref": "pub.layers.defs#knowledgeRef",
+          "description": "The publishing organization or repository, grounded via source 'ror', 'lindat', 'ldc', 'elra', 'openneuro' or 'wikidata'. Not a free-text name: 'LDC', 'Linguistic Data Consortium' and 'U. Penn LDC' are one organization and must facet as one."
+        },
+        "identifiers": {
+          "type": "array",
+          "description": "Persistent identifiers for this collection, grounded via source 'doi', 'handle', 'islrn', 'datacite', 'openalex' or 'ror'. This is the field that gives a persistent identifier to the level researchers actually name, which today is a directory inside a tarball under someone else's handle.",
+          "maxLength": 16,
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.defs#knowledgeRef"
+          }
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "datetime",
+          "description": "Publication date used in a citation. Distinct from createdAt, which is when the Layers record was written."
+        },
+        "acknowledgement": {
+          "type": "string",
+          "description": "Acknowledgement text the publisher asks downstream users to reproduce.",
+          "maxLength": 4096
+        }
+      }
+    }
+  }
+}

@@ -26,7 +26,7 @@ These definitions follow established interchange conventions rather than inventi
 
 A `citation` is intentionally dual-mode. It can be a single raw formatted string (`raw`), a set of structured fields, or both. Consumers prefer the structured fields when present and fall back to `raw`. A valid `citation` populates at least `raw` or `title`.
 
-The `citation` carries rendered bibliographic metadata. It does not replace the canonical link key: on a `pub.layers.eprint.eprint` record, `eprintIdentifier` and `eprintIdentifierType` (doi, arxiv, acl-anthology, semantic-scholar, pubmed, isbn, url, at-uri, custom) remain the identifier used to resolve and deduplicate the cited work.
+The `citation` carries rendered bibliographic metadata. It does not replace the canonical link key: on a `pub.layers.eprint.eprint` record, `eprintIdentifier` and `eprintIdentifierType` (doi, arxiv, acl-anthology, semantic-scholar, pubmed, isbn, url, at-uri, custom) are the identifier used to resolve and deduplicate the cited work.
 
 ## CSL-JSON
 

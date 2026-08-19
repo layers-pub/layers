@@ -33,9 +33,11 @@ Annotations can reference other annotations across layers and records. This allo
 
 ## 5. Multimodal Support
 
-Annotations apply to text, audio, video, image, and paged documents through a **polymorphic anchor type**. The same annotation schema works across modalities by switching the anchor kind (textSpan, temporalSpan, spatioTemporalAnchor, pageAnchor, etc.). See the [Multimodal Annotation guide](../guides/multimodal-annotation.md) for practical examples.
+Annotations apply to text, audio, video, image, paged documents, and continuous neural and physiological signals through a **polymorphic anchor type**. The same annotation schema works across modalities by switching the anchor kind (textSpan, temporalSpan, spatioTemporalAnchor, pageAnchor, boundingBox, spatialRegion, signalSpan). See the [Multimodal Annotation guide](../guides/multimodal-annotation.md) for practical examples.
 
-> A speech transcription uses temporal anchors `{start: 12500, ending: 15300}` in milliseconds, and a POS tag in that transcription anchors to the same time span. An image analysis uses spatial anchors `{x: 100, y: 50, width: 200, height: 150}`, and a caption annotation anchors the same way.
+> A speech transcription uses temporal anchors `{start: 12500, ending: 15300}` in milliseconds, and a POS tag in that transcription anchors to the same time span. An image analysis uses spatial anchors `{x: 100, y: 50, width: 200, height: 150}`, and a caption annotation anchors the same way. An ERP annotation over an EEG recording anchors to a signal span `{scope: {sessionRef, stream}, startSample: 2048, endSample: 3072, channels: [...], frequencyBand: {band: "alpha"}}`, addressing exact samples and channels of one stream of a synchronized [acquisition session](../lexicons/acquisition.md).
+
+The anchors carry an optional `mediaScope` naming the medium, session clock, stream, and track the coordinates are measured against. Absent scope means the single medium reachable from the annotated expression, so a text or single-track record reads as a single, unambiguous stream; present scope is what lets an annotation address one stream of a multi-stream recording without ambiguity.
 
 ## 6. Knowledge-Grounded
 
@@ -60,6 +62,8 @@ Layers uses **W3C Web Annotation selectors** (textQuoteSelector, textPositionSel
 All annotation data lives in **user-controlled Personal Data Servers (PDSes)**. There is no central database or authoritative archive. Users publish annotation records to their PDSes; appviews index and search across records from multiple users. If an appview is shut down or deletes its database, no user data is lost.
 
 > A researcher annotates a corpus and publishes annotation records to their PDS. An appview indexes those records and makes them searchable. The researcher retains full ownership and can revoke access, migrate to a different PDS, or delete records at any time.
+
+Every record `main` declares `key: any` rather than `key: tid` (Scheme A). Record keys may be arbitrary strings, so a publisher can give a record a stable, human-meaningful rkey rather than a time-ordered TID; a TID is itself a valid string, so TID-keyed records are equally acceptable. It pairs with the catalog namespace, whose `collection.localId` is a stable, immutable, human-readable identifier that survives handle changes and in-place repo rebuilds, the two events that move an AT-URI's CID and dangle any pin taken against it. Browsable, nestable, citable groupings of records live in [`pub.layers.catalog`](../lexicons/catalog.md); there is no central index namespace, and a collection's containment spine is child-held (`parentRef`) so no PDS is ever asked to write a link it does not control.
 
 ## 10. Community-Expandable Enums
 

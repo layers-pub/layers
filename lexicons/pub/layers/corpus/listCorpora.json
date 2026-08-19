@@ -13,19 +13,23 @@
         "properties": {
           "repo": {
             "type": "string",
-            "format": "at-identifier"
+            "format": "at-identifier",
+            "description": "DID or handle of the repository whose corpora to list."
           },
           "domain": {
-            "type": "string"
+            "type": "string",
+            "description": "Filter to corpora in this domain slug (e.g., news, biomedical, legal)."
           },
           "limit": {
             "type": "integer",
             "minimum": 1,
             "maximum": 100,
-            "default": 50
+            "default": 50,
+            "description": "Maximum number of corpora to return in one page."
           },
           "cursor": {
-            "type": "string"
+            "type": "string",
+            "description": "Opaque pagination cursor to resume from a previous page."
           },
           "languages": {
             "type": "array",
@@ -46,10 +50,12 @@
           ],
           "properties": {
             "cursor": {
-              "type": "string"
+              "type": "string",
+              "description": "Opaque pagination cursor for the next page, absent when no further results remain."
             },
             "records": {
               "type": "array",
+              "description": "The page of corpus records returned.",
               "items": {
                 "type": "ref",
                 "ref": "#recordView"
@@ -69,15 +75,18 @@
       "properties": {
         "uri": {
           "type": "string",
-          "format": "at-uri"
+          "format": "at-uri",
+          "description": "AT-URI of this corpus record."
         },
         "cid": {
           "type": "string",
-          "format": "cid"
+          "format": "cid",
+          "description": "CID of this corpus record at this revision."
         },
         "value": {
           "type": "ref",
-          "ref": "pub.layers.corpus.corpus#main"
+          "ref": "pub.layers.corpus.corpus#main",
+          "description": "The corpus record value."
         }
       }
     }

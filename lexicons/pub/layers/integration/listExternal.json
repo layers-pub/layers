@@ -21,8 +21,8 @@
             "format": "did",
             "description": "Optional repo DID filter."
           },
-          "cursor": { "type": "string" },
-          "limit": { "type": "integer", "minimum": 1, "maximum": 200, "default": 50 }
+          "cursor": { "type": "string", "description": "Opaque pagination cursor from a previous response, to resume after the last returned record." },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 200, "default": 50, "description": "Maximum number of records to return in one page." }
         }
       },
       "output": {
@@ -33,18 +33,19 @@
           "properties": {
             "records": {
               "type": "array",
+              "description": "The page of external records returned.",
               "items": {
                 "type": "object",
                 "required": ["uri", "nsid", "value"],
                 "properties": {
-                  "uri":   { "type": "string", "format": "at-uri" },
-                  "cid":   { "type": "string" },
-                  "nsid":  { "type": "string" },
+                  "uri":   { "type": "string", "format": "at-uri", "description": "AT-URI of each returned external record." },
+                  "cid":   { "type": "string", "description": "CID of each returned external record at this revision." },
+                  "nsid":  { "type": "string", "description": "Collection NSID of each returned external record." },
                   "value": { "type": "unknown", "description": "Raw record body as published by the foreign appview." }
                 }
               }
             },
-            "cursor": { "type": "string" }
+            "cursor": { "type": "string", "description": "Opaque pagination cursor to pass to the next request to fetch the following page; absent when no further records remain." }
           }
         }
       }

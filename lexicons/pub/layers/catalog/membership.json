@@ -1,0 +1,111 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.catalog.membership",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A typed edge from a pub.layers.catalog.collection to something it contains, produces, annotates, or otherwise relates to. A record rather than an inline array because the two endpoints routinely live in different repos: PropBank-SRL's edge onto a UD treebank is written by PropBank's account, and requiring UD to bless every annotation over its treebanks is unimplementable. Complements rather than replaces the containment spine: parentRef on the child is the single canonical parent, and these edges carry produces, cross-family relations, and multiple membership.",
+      "key": "any",
+      "record": {
+        "type": "object",
+        "required": [
+          "catalogRef",
+          "member",
+          "role",
+          "createdAt"
+        ],
+        "properties": {
+          "catalogRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the pub.layers.catalog.collection at the container end of this edge."
+          },
+          "member": {
+            "type": "ref",
+            "ref": "pub.layers.catalog.defs#memberRef",
+            "description": "The thing at the other end, as an objectRef plus a denormalized NSID and optional pinning CID. Covers Layers records, sub-record objects, and members Layers does not hold."
+          },
+          "roleUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the membership role definition node, a pub.layers.ontology.typeDef of the 'membership-role' ontology at layers-core.ontology.layers.pub, or a pub.layers.graph.graphNode. Community-expandable via knowledge graph. Refines role; never replaces it."
+          },
+          "role": {
+            "type": "string",
+            "description": "What this edge asserts. REQUIRED, and it is the field that decides arithmetic. Exactly two roles contribute to a rollup: 'produce', which names a corpus, annotation layer, segmentation, alignment, judgment set, media item or ontology this collection publishes and is where the count recursion bottoms out, and 'member', which names a nested collection whose own parentRef points back here and which therefore lies on the containment spine. Every other role is rendered and never summed, so PropBank-SRL over UD English-EWT appears on the treebank's page under 'annotated by' contributing zero, and a parallel-corpus grouping browses as first-class without inflating the counts of treebanks it does not own.",
+            "knownValues": ["member", "produce", "annotates", "derived-from", "subset-of", "translation-of", "parallel-with", "aligned-with", "registry-for", "typed-by", "replicates", "extends", "mirror-of", "same-as", "stimulus-for", "documented-by", "custom"],
+            "maxLength": 128
+          },
+          "ordinal": {
+            "type": "integer",
+            "description": "Ordering index within the container, when the container has a meaningful order (a release sequence, a paradigm ordering, a curriculum). Absent means unordered.",
+            "minimum": 0
+          },
+          "pinPolicyUri": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "AT-URI of the pin-policy definition node (typeDef of 'pin-policy' at layers-core.ontology.layers.pub). Refines pinPolicy; never replaces it."
+          },
+          "pinPolicy": {
+            "type": "string",
+            "description": "Pin policy for this edge specifically, overriding the container's declaration. Present because one collection legitimately pins some members and floats others: a release pins the treebanks it shipped while floating the ontology it types against.",
+            "knownValues": ["pinned", "floating", "undeclared"],
+            "maxLength": 64
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When this membership took effect. Lets two releases of one collection carry different member sets as coexisting edges rather than as a rewritten array."
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When this membership ceased. A member dropped between releases is expressed by closing its edge, not by deleting it, so a pinned earlier release still resolves."
+          },
+          "selfAsserted": {
+            "type": "boolean",
+            "description": "True when the edge's author does not control the member, which is the normal case for 'annotates', 'derived-from' and 'parallel-with'. Consumers that surface only curated structure filter on it; consumers that surface everything render it with attribution to the edge's repo."
+          },
+          "notes": {
+            "type": "string",
+            "description": "Prose qualifying this edge: what was projected, what was excluded, what is approximate.",
+            "maxLength": 4096
+          },
+          "knowledgeRefs": {
+            "type": "array",
+            "description": "External groundings for the relation itself, such as the paper that established a derivation or an alignment.",
+            "maxLength": 16,
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#knowledgeRef"
+            }
+          },
+          "eprintRefs": {
+            "type": "array",
+            "description": "AT-URIs of pub.layers.eprint.eprint records documenting this relation.",
+            "maxLength": 16,
+            "items": {
+              "type": "string",
+              "format": "at-uri"
+            }
+          },
+          "metadata": {
+            "type": "ref",
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who asserted this edge, under what persona, with what tool."
+          },
+          "features": {
+            "type": "ref",
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open key-value map for edge-specific attributes not covered by the named fields."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Timestamp when this membership edge record was created."
+          }
+        }
+      }
+    }
+  }
+}

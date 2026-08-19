@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "description": "A changelog entry describing changes to any Layers record.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": ["subject", "subjectCollection", "summary", "sections", "createdAt"],

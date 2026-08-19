@@ -1,0 +1,48 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.acquisition.session",
+  "description": "A synchronized recording occasion. Declares one time base shared by several media streams, so an annotation at 12340 ms resolves simultaneously against the lapel microphone, two camera angles, the EEG cap and the eye tracker.",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "One acquisition session. Corresponds to BIDS ses-<label>, a logical grouping of neuroimaging and behavioral data consistent across subjects, and to one NWB file, whose session_description, identifier and session_start_time are all required there and none of which has a home in Layers 0.8.0. Without this record a synchronized multi-stream recording is unrepresentable, and adding signal media alone would leave cross-stream annotation unanchorable.",
+      "key": "any",
+      "record": {
+        "type": "object",
+        "required": ["sessionId", "streams", "createdAt"],
+        "properties": {
+          "sessionId": { "type": "string", "description": "Stable session identifier within the authoring repo (ses-01, buckeye-s01-b03). BIDS session_id, REQUIRED in sessions.tsv; NWB session_id.", "maxLength": 128 },
+          "label": { "type": "string", "description": "Human-readable label. NWB session_description.", "maxLength": 512, "maxGraphemes": 128 },
+          "participantRefs": { "type": "array", "description": "AT-URIs of the pub.layers.acquisition.participant records recorded. An array because dialogue, interview, map-task and elicitation sessions have several, and each stream may belong to a different one.", "maxLength": 128, "items": { "type": "string", "format": "at-uri" } },
+          "experimentRef": { "type": "string", "format": "at-uri", "description": "AT-URI of the pub.layers.judgment.experimentDef this session instantiates. An experimentDef is a type-level protocol; a session is the token event that ran it, and 0.8.0 has only the type level." },
+          "taskUri": { "type": "string", "format": "at-uri", "description": "AT-URI of the task definition node; ground to the Cognitive Atlas through knowledgeRefs where possible." },
+          "task": { "type": "string", "description": "Task slug (fallback when taskUri unavailable). BIDS TaskName is REQUIRED in every EEG, MEG, iEEG and NIRS sidecar, yet 0.8.0's only task construct is judgment.experimentDef, reachable only from judgmentSet.experimentRef, so a neural recording with no behavioural judgments could not name what the participant was doing.", "knownValues": ["rest", "naturalistic-listening", "naturalistic-viewing", "reading", "self-paced-reading", "acceptability-judgment", "picture-naming", "lexical-decision", "priming", "visual-world", "oddball", "elicitation", "free-conversation", "interview", "narrative", "map-task", "wordlist", "repetition", "production", "custom"], "maxLength": 128 },
+          "startedAt": { "type": "string", "format": "datetime", "description": "Acquisition start. BIDS sessions.tsv and scans.tsv acq_time; NWB session_start_time, required there. MAY be coarsened for de-identification; when it is, say so in features, because a consumer cannot otherwise distinguish a coarsened timestamp from a precise one." },
+          "durationNanos": { "type": "integer", "description": "Session duration in nanoseconds.", "minimum": 0 },
+          "clockUri": { "type": "string", "format": "at-uri", "description": "AT-URI of the session clock definition node." },
+          "clock": { "type": "string", "description": "What t=0 means (fallback when clockUri unavailable). Every stream offset and every anchor into this session is measured from it, so leaving it implicit would make every cross-stream anchor ambiguous.", "knownValues": ["session-start", "first-stream-start", "master-stream-start", "first-trigger", "wall-clock", "custom"], "maxLength": 64 },
+          "masterStream": { "type": "ref", "ref": "pub.layers.defs#objectRef", "description": "The stream whose clock defines t=0, when clock is master-stream-start. An objectRef whose recordRef is this session and whose objectId is the stream uuid." },
+          "streams": { "type": "array", "description": "The synchronized media streams making up this session. Inline rather than an edge record because a session is authored by one party who controls all its streams, the same reasoning that makes resource.templateComposition.members inline while corpus.membership is a record.", "minLength": 1, "maxLength": 256, "items": { "type": "ref", "ref": "pub.layers.acquisition.defs#stream" } },
+          "runs": { "type": "array", "description": "Sub-divisions of the session. BIDS run-<index>, an uninterrupted repetition of data acquisition with the same acquisition parameters and task. A session routinely spans several runs and, per BIDS Motion, several tracking systems at different sampling rates, which is why a session cannot carry one sampling rate.", "maxLength": 512, "items": { "type": "ref", "ref": "pub.layers.acquisition.defs#run" } },
+          "devices": { "type": "array", "description": "Instruments used, structured rather than a free-text device string; each a pub.layers.defs#deviceInfo.", "maxLength": 64, "items": { "type": "ref", "ref": "pub.layers.defs#deviceInfo" } },
+          "presentation": { "type": "ref", "ref": "pub.layers.judgment.defs#presentationSpec", "description": "How stimuli were displayed, including screen geometry, which gaze-on-screen eye-tracking requires and which BIDS places in the events sidecar StimulusPresentation object rather than on the tracker." },
+          "environmentUri": { "type": "string", "format": "at-uri", "description": "AT-URI of the recording environment definition node." },
+          "environment": { "type": "string", "description": "Recording environment slug (fallback when environmentUri unavailable). Determines what a consumer may assume about noise floor, lighting and electromagnetic interference.", "knownValues": ["sound-booth", "laboratory", "field", "home", "classroom", "clinic", "mri-scanner", "meg-shielded-room", "operating-room", "online", "custom"], "maxLength": 128 },
+          "siteRef": { "type": "ref", "ref": "pub.layers.defs#knowledgeRef", "description": "Institution or site, grounded via ror. Not an at-uri: an institution is an external entity Layers references, not a Layers record. NWB institution and lab." },
+          "consent": { "type": "ref", "ref": "pub.layers.acquisition.defs#consent", "description": "Session-level consent when it differs from the participants' standing consent. Absent means the participants' declarations govern." },
+          "access": { "type": "ref", "ref": "pub.layers.defs#accessCondition", "description": "Conditions under which this session's data may be obtained." },
+          "ethicsApprovals": { "type": "array", "description": "Human-subjects or animal-care approvals this session was conducted under, each a pub.layers.defs#ethicsApproval (the shared def, reused rather than a bespoke shape). BIDS EthicsApprovals is an optional array of free-text strings upstream.", "maxLength": 16, "items": { "type": "ref", "ref": "pub.layers.defs#ethicsApproval" } },
+          "licensing": { "type": "ref", "ref": "pub.layers.defs#licensing", "description": "Governs the artifact; consent governs the person; access governs the gate." },
+          "reproducibility": { "type": "ref", "ref": "pub.layers.defs#reproducibilityInfo", "description": "How the acquisition was driven computationally, plus funding, via the shared reproducibilityInfo shape. Session-level ethics approvals are carried by ethicsApprovals. BIDS Funding is a free-text string array upstream." },
+          "eprintRefs": { "type": "array", "description": "AT-URIs of eprint records describing or associated with this session.", "maxLength": 64, "items": { "type": "string", "format": "at-uri" } },
+          "knowledgeRefs": { "type": "array", "description": "Knowledge graph references for this session (task grounded via cognitive-atlas, site via ror).", "maxLength": 32, "items": { "type": "ref", "ref": "pub.layers.defs#knowledgeRef" } },
+          "metadata": { "type": "ref", "ref": "pub.layers.defs#annotationMetadata", "description": "Provenance: who created this session record, with what tool." },
+          "features": { "type": "ref", "ref": "pub.layers.defs#featureMap", "description": "Protocol deviations, timestamp coarsening, surgery, pharmacology, stimulus notes. NWB protocol, surgery, virus, pharmacology, data_collection and stimulus_notes land here until any earns a typed field." },
+          "languages": { "type": "array", "description": "Canonical BCP-47 tags this session's data covers, including sign language tags. No array-level cap; the record size limit governs.", "items": { "type": "string", "maxLength": 32 } },
+          "languageRefs": { "type": "array", "description": "Structured language references complementing languages, each a pub.layers.defs#languageRef. No array-level cap; the record size limit governs.", "items": { "type": "ref", "ref": "pub.layers.defs#languageRef" } },
+          "createdAt": { "type": "string", "format": "datetime", "description": "When this session record was created." }
+        }
+      }
+    }
+  }
+}

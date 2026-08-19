@@ -1,0 +1,87 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.catalog.getCollection",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "Get a single catalogue collection by its AT-URI, optionally with its immediate children and its ancestor chain. Depth is bounded and small: there is deliberately no unbounded-recursion surface, and deeper walks paginate pub.layers.catalog.listMembers per node.",
+      "parameters": {
+        "type": "params",
+        "required": ["uri"],
+        "properties": {
+          "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of the collection to fetch." },
+          "depth": {
+            "type": "integer",
+            "description": "How many levels of descendants to include in children. 0 returns the record alone. Capped at 3 because browse renders two levels and a count, never a tree.",
+            "minimum": 0,
+            "maximum": 3,
+            "default": 1
+          },
+          "includeAncestors": {
+            "type": "boolean",
+            "description": "Include the parentRef chain from this collection up to its root, for breadcrumbs.",
+            "default": true
+          },
+          "resolvePins": {
+            "type": "boolean",
+            "description": "When the collection declares pinPolicy 'pinned', resolve each member at the CID its edge names rather than at its current revision.",
+            "default": false
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["uri", "cid", "value"],
+          "properties": {
+            "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of the returned collection." },
+            "cid": { "type": "string", "format": "cid", "description": "CID of the returned collection's current revision." },
+            "value": { "type": "ref", "ref": "pub.layers.catalog.collection#main", "description": "The collection record itself." },
+            "pinnedUri": {
+              "type": "string",
+              "description": "The pinned citation form: this record's AT-URI together with the CID under which the appview resolved it. Computed at read time, because a record cannot carry its own CID: writing the value would change it.",
+              "maxLength": 512
+            },
+            "ancestors": {
+              "type": "array",
+              "description": "The parentRef chain, root first. Empty when this collection is a root.",
+              "maxLength": 8,
+              "items": { "type": "ref", "ref": "#collectionView" }
+            },
+            "children": {
+              "type": "array",
+              "description": "Collections whose parentRef points at this one, ordered by ordinal then name. Truncated at the page limit; use listMembers for the full set.",
+              "maxLength": 100,
+              "items": { "type": "ref", "ref": "#collectionView" }
+            },
+            "descendantCollectionCount": {
+              "type": "integer",
+              "description": "Number of collections in this one's subtree along the containment spine, computed by the appview. 0 for a leaf, which is what lets a ragged hierarchy render uniformly: every child is a card and the count says whether it opens.",
+              "minimum": 0
+            },
+            "childCount": {
+              "type": "integer",
+              "description": "Number of direct children.",
+              "minimum": 0
+            }
+          }
+        }
+      },
+      "errors": [{ "name": "RecordNotFound" }, { "name": "DepthExceeded" }]
+    },
+
+    "collectionView": {
+      "type": "object",
+      "description": "A collection as it appears in a browse row: the record, its identity, and the two derived numbers a card needs.",
+      "required": ["uri", "cid", "value"],
+      "properties": {
+        "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of this collection." },
+        "cid": { "type": "string", "format": "cid", "description": "CID of this collection's current revision." },
+        "value": { "type": "ref", "ref": "pub.layers.catalog.collection#main", "description": "The collection record itself." },
+        "descendantCollectionCount": { "type": "integer", "minimum": 0, "description": "Number of collections in this one's subtree along the containment spine." },
+        "childCount": { "type": "integer", "minimum": 0, "description": "Number of direct children." }
+      }
+    }
+  }
+}

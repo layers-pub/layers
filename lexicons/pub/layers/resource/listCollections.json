@@ -13,19 +13,23 @@
         "properties": {
           "repo": {
             "type": "string",
-            "format": "at-identifier"
+            "format": "at-identifier",
+            "description": "The repository (DID or handle) whose collection records to list."
           },
           "kind": {
-            "type": "string"
+            "type": "string",
+            "description": "Filter to collections with this kind slug."
           },
           "limit": {
             "type": "integer",
             "minimum": 1,
             "maximum": 100,
-            "default": 50
+            "default": 50,
+            "description": "Maximum number of records to return in one page."
           },
           "cursor": {
-            "type": "string"
+            "type": "string",
+            "description": "Opaque pagination cursor from a previous response, to resume after the last returned record."
           },
           "languages": {
             "type": "array",
@@ -46,10 +50,12 @@
           ],
           "properties": {
             "cursor": {
-              "type": "string"
+              "type": "string",
+              "description": "Opaque pagination cursor to pass to the next call, absent when no further pages remain."
             },
             "records": {
               "type": "array",
+              "description": "The page of collection records returned.",
               "items": {
                 "type": "ref",
                 "ref": "#recordView"
@@ -69,15 +75,18 @@
       "properties": {
         "uri": {
           "type": "string",
-          "format": "at-uri"
+          "format": "at-uri",
+          "description": "AT-URI of this collection record."
         },
         "cid": {
           "type": "string",
-          "format": "cid"
+          "format": "cid",
+          "description": "CID of this collection record's indexed revision."
         },
         "value": {
           "type": "ref",
-          "ref": "pub.layers.resource.collection#main"
+          "ref": "pub.layers.resource.collection#main",
+          "description": "The collection record value."
         }
       }
     }

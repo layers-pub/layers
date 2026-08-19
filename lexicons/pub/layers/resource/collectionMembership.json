@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "description": "Links an entry to a collection. Separate record enables many-to-many relationships (an entry can belong to multiple collections) and decentralized curation (anyone can propose membership).",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": ["collectionRef", "entryRef", "createdAt"],
@@ -32,11 +32,13 @@
           },
           "features": {
             "type": "ref",
-            "ref": "pub.layers.defs#featureMap"
+            "ref": "pub.layers.defs#featureMap",
+            "description": "Open-ended features describing this membership: curation confidence, ordering rationale, etc."
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "When this membership record was created."
           }
         }
       }

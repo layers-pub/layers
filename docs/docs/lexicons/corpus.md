@@ -4,7 +4,9 @@ sidebar_label: "Corpus"
 
 # pub.layers.corpus
 
-Corpus records. A corpus is a named, versioned collection of expressions with shared metadata, annotation guidelines, and ontologies.
+Corpus records. A corpus is a named, versioned collection of expressions with shared metadata, annotation guidelines, and ontologies. For nesting corpora into projects, releases, and language groups (and for browsable, citable rollups across many corpora), see the [catalog](./catalog.md) namespace; a corpus is a `produce` member of a `catalog.collection`.
+
+The record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
 
 ## Types
 
@@ -19,7 +21,9 @@ A corpus: a curated collection of expressions.
 | `name` | string | Corpus name. (required, max 512) |
 | `description` | string | Detailed description of the corpus. (max 50000) |
 | `version` | string | Version string for the corpus release. (max 64) |
-| `languages` | array | BCP-47 language tags this record covers. Empty when language is unspecified or unknown. Array of strings (max 128) |
+| `languages` | array | BCP-47 language tags this record covers. Empty when language is unspecified or unknown. Array of strings (item max 32). No array-level cap. |
+| `languageRefs` | array | Structured language references grounding each language via glottolog, iso639-3, or cldr and carrying script, region, variety, and role. Richer companion to the `languages` tag array. Array of ref: `pub.layers.defs#languageRef` |
+| `knowledgeRefs` | array | Knowledge graph references grounding this corpus (e.g., source catalog identifiers, dataset registries such as ldc or elra, associated publications). Array of ref: `pub.layers.defs#knowledgeRef` (max 64) |
 | `domainUri` | at-uri | AT-URI of the domain definition node. Community-expandable via knowledge graph. |
 | `domain` | string | Domain slug (fallback when domainUri unavailable). Known values: `news`, `biomedical`, `legal`, `social-media`, `dialogue`, `literary`, `scientific`, `web`, `spoken`, `custom` |
 | `licensing` | ref | Licensing terms governing this corpus (supports dual/multi/component licensing). Ref: `pub.layers.defs#licensing` |

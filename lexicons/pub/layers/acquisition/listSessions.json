@@ -1,0 +1,45 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.acquisition.listSessions",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "List session records.",
+      "parameters": {
+        "type": "params",
+        "required": ["repo"],
+        "properties": {
+          "repo": { "type": "string", "format": "at-identifier", "description": "The repository (DID or handle) whose session records to list." },
+          "task": { "type": "string", "maxLength": 128, "description": "Filter to sessions with this task slug." },
+          "participant": { "type": "string", "format": "at-uri", "description": "Filter to sessions recording this participant, by participant AT-URI." },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50, "description": "Maximum number of records to return in one page." },
+          "cursor": { "type": "string", "description": "Opaque pagination cursor from a previous response, to resume after the last returned record." }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["records"],
+          "properties": {
+            "cursor": { "type": "string", "description": "Opaque pagination cursor to pass to the next call, absent when no further pages remain." },
+            "records": {
+              "type": "array",
+              "description": "The page of session records returned.",
+              "items": { "type": "ref", "ref": "#recordView" }
+            }
+          }
+        }
+      }
+    },
+    "recordView": {
+      "type": "object",
+      "required": ["uri", "cid", "value"],
+      "properties": {
+        "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of this session record." },
+        "cid": { "type": "string", "format": "cid", "description": "CID of this session record's indexed revision." },
+        "value": { "type": "ref", "ref": "pub.layers.acquisition.session#main", "description": "The session record value." }
+      }
+    }
+  }
+}

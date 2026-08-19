@@ -6,7 +6,7 @@
     "main": {
       "type": "record",
       "description": "A persona representing an annotator's role, expertise, and interpretive framework.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": ["name", "createdAt"],
@@ -95,7 +95,8 @@
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "Timestamp when this persona record was created."
           }
         }
       }

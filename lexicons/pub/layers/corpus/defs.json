@@ -42,7 +42,8 @@
         },
         "features": {
           "type": "ref",
-          "ref": "pub.layers.defs#featureMap"
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features for this annotation design (e.g., platform, interface, pay structure)."
         }
       }
     },
@@ -73,7 +74,8 @@
         },
         "features": {
           "type": "ref",
-          "ref": "pub.layers.defs#featureMap"
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features for this redundancy specification (e.g., overlap sampling, batch size)."
         }
       }
     },
@@ -115,7 +117,8 @@
         },
         "features": {
           "type": "ref",
-          "ref": "pub.layers.defs#featureMap"
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features for this adjudication specification (e.g., tie-breaking rules, escalation policy)."
         }
       }
     },
@@ -165,7 +168,8 @@
         },
         "features": {
           "type": "ref",
-          "ref": "pub.layers.defs#featureMap"
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features for this quality criterion (e.g., measurement window, exclusion rules)."
         }
       }
     }

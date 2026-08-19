@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "description": "A filled template: a template with all slots mapped to specific fillers, producing a rendered text. Generalizes bead's FilledTemplate and Item. The rendered text can optionally be materialized as a pub.layers.expression for annotation. Fillings are composable: they reference templates, entries, and communications via AT-URIs.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": ["templateRef", "slotFillings", "createdAt"],
@@ -66,7 +66,8 @@
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "When this filling record was created."
           }
         }
       }

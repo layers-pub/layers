@@ -4,6 +4,8 @@ sidebar_label: "Judgment"
 
 # pub.layers.judgment
 
+The record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs. An `experimentDef` is a type-level protocol; the token event that runs it is a [`pub.layers.acquisition.session`](./acquisition.md), which links back via `session.experimentRef`. Neural, eye-tracking, and other instrument data captured during a judgment task live in [`pub.layers.media`](./media.md) signal records placed on the session clock.
+
 Linguistic judgment records for annotation experiments, crowdsourced judgments, and inter-annotator agreement. Inspired by bead's framework for constructing, deploying, and analyzing large-scale linguistic judgment experiments.
 
 ## Types
@@ -35,12 +37,18 @@ Definition of an annotation or judgment experiment.
 | `scaleMin` | integer | Minimum scale value for ordinal-scale judgments. |
 | `scaleMax` | integer | Maximum scale value. |
 | `labels` | array | Available labels for categorical judgments. Array of strings |
+| `stimulusExpressionRefs` | array | References to `pub.layers.expression.expression` records used as stimuli (text stimuli). Array of at-uri |
+| `stimulusMediaRefs` | array | References to `pub.layers.media.media` records used as stimuli (audio, video, image, signal, and other carrier stimuli). Array of at-uri |
+| `languages` | array | BCP-47 language tags of the stimuli. Empty when unspecified. Array of strings (item max 32). No array-level cap. |
+| `languageRefs` | array | Grounded language references for the stimuli, carrying canonical BCP-47 tag, script/region codes, variety label, and a knowledge-graph source (glottolog, iso639-3, cldr). Use both. Array of ref: `pub.layers.defs#languageRef` |
 | `knowledgeRefs` | array | Knowledge graph references. Array of ref: `pub.layers.defs#knowledgeRef` |
 | `licensing` | ref | Licensing terms governing this experiment definition (supports dual/multi/component licensing). Ref: `pub.layers.defs#licensing` |
 | `eprintRefs` | array | Eprint records (papers/preprints) describing or associated with this experiment. Array of at-uri (max 64) |
 | `reproducibility` | ref | How this experiment dataset was produced (code, commit, command, environment, seed). Ref: `pub.layers.defs#reproducibilityInfo` |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
+
+Stimuli split into two type-discriminated arrays (`stimulusExpressionRefs` for text, `stimulusMediaRefs` for carriers) rather than one polymorphic ref, so a renderer dispatches on the array without resolving each AT-URI.
 
 ### judgmentSet
 **NSID:** `pub.layers.judgment.judgmentSet`
@@ -117,23 +125,60 @@ How stimuli are displayed to participants.
 |-------|------|-------------|
 | `methodUri` | at-uri | AT-URI of the presentation method definition node. Community-expandable via knowledge graph. |
 | `method` | string | Presentation method (fallback). Known values: `rsvp`, `self-paced`, `whole-sentence`, `auditory`, `visual-world`, `masked-priming`, `cross-modal`, `naturalistic`, `gating`, `maze`, `boundary`, `moving-window`, `custom` |
-| `chunkingUnit` | string | How text is segmented for incremental presentation. Known values: `word`, `character`, `morpheme`, `phrase`, `sentence`, `region`, `custom` |
+| `chunkingUnitUri` | at-uri | AT-URI of the chunking unit definition node. Community-expandable via knowledge graph. |
+| `chunkingUnit` | string | How text is segmented for incremental presentation (fallback when chunkingUnitUri unavailable). Known values: `word`, `character`, `morpheme`, `phrase`, `clause`, `sentence`, `region`, `sign`, `gesture-phrase`, `custom` |
 | `timingMs` | integer | Per-chunk display duration in milliseconds. |
 | `isiMs` | integer | Inter-stimulus interval in milliseconds. |
 | `cumulative` | boolean | Whether previous chunks remain visible during incremental presentation. |
 | `maskChar` | string | Masking character for non-cumulative displays (e.g., '-', '#'). |
+| `screenWidthPx` / `screenHeightPx` | integer | Display width and height in pixels. |
+| `screenWidthMm` / `screenHeightMm` | integer | Physical display width and height in millimeters. |
+| `viewingDistanceMm` | integer | Participant eye-to-screen distance in millimeters. |
+| `refreshRateMilliHz` | integer | Display refresh rate in millihertz (e.g., 60000 for 60 Hz). |
+| `pixelsPerDegree` | integer | Pixels subtending one degree of visual angle at the stated viewing distance. |
+| `sessionRef` | at-uri | AT-URI of the `pub.layers.acquisition.session` whose clock and setup this presentation was delivered under. |
+| `participantRefs` | array | AT-URIs of `pub.layers.acquisition.participant` records presented under this specification. Array of at-uri |
+| `mediaRefs` | array | AT-URIs of `pub.layers.media.media` records delivered as stimuli under this specification. Array of at-uri |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
+
+The screen-geometry fields are what gaze-on-screen eye-tracking requires (a pixel gaze sample means nothing without screen size, viewing distance, and pixels-per-degree); BIDS keeps them in the events sidecar `StimulusPresentation` object.
+
+### regionResponse
+**NSID:** `pub.layers.judgment.defs#regionResponse`
+**Type:** Object
+
+A per-region reading-time or response record, for self-paced reading, eye-tracking-while-reading, and maze tasks. Carries the standard eye-movement measures and a region-role axis (`critical`, `spillover`, `precritical`) for analysis. Required: `region`.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `region` | ref | Reference to the region being measured. Use `recordRef` for the stimulus record, `objectId` for a specific region object within it. Ref: `pub.layers.defs#objectRef` |
+| `regionIndex` | integer | Zero-indexed position of this region within the stimulus presentation order. |
+| `regionRoleUri` / `regionRole` | at-uri / string | Analysis role of this region. Known values: `critical`, `spillover`, `precritical`, `pretarget`, `target`, `posttarget`, `filler`, `custom`. |
+| `readingTimeMs` | integer | Total reading time on this region. |
+| `firstFixationMs` | integer | First-fixation duration on this region. |
+| `gazeDurationMs` | integer | Gaze (first-pass) duration on this region. |
+| `goPastMs` | integer | Go-past (regression-path) duration on this region. |
+| `totalTimeMs` | integer | Total dwell time across all fixations on this region. |
+| `regressionsOut` / `regressionsIn` | integer | Count of regressions launched out of / landing in this region. |
+| `fixationCount` | integer | Number of fixations on this region. |
+| `responseTimeMs` | integer | Response time for a per-region response task (maze, grammaticality-at-region). |
+| `scalarValue` | integer | Numeric per-region response value (e.g., rating at this region). |
+| `categoricalValue` | string | Categorical per-region response label. |
+| `features` | ref | Open key-value map for per-region measures not covered by the named fields. Ref: `pub.layers.defs#featureMap` |
 
 ### recordingMethod
 **NSID:** `pub.layers.judgment.defs#recordingMethod`
 **Type:** Object
 
-A data capture instrument used in an experiment.
+A data capture instrument used in an experiment. `methodUri` resolves into the shared `modality` node set in `layers-acquisition.ontology.layers.pub`, the same nodes backing `media.signalInfo.modalityUri` and `catalog.contentSummary.modalityUri`, so an instrument named in a protocol joins the recording it produced and the catalogue entry advertising it.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `methodUri` | at-uri | AT-URI of the recording method definition node. Community-expandable via knowledge graph. |
+| `methodUri` | at-uri | AT-URI of the recording method definition node, resolving into the shared modality node set. Community-expandable via knowledge graph. |
 | `method` | string | Recording method (fallback). Known values: `button-box`, `keyboard`, `mouse-click`, `touchscreen`, `voice`, `eeg`, `meg`, `fmri`, `fnirs`, `eye-tracking`, `pupillometry`, `mouse-tracking`, `emg`, `skin-conductance`, `ecog`, `custom` |
+| `sessionRef` | at-uri | AT-URI of the `pub.layers.acquisition.session` whose clock this recording was captured on. |
+| `participantRefs` | array | AT-URIs of `pub.layers.acquisition.participant` records this recording captured. Array of at-uri |
+| `mediaRefs` | array | AT-URIs of `pub.layers.media.media` records produced by this recording instrument. Array of at-uri |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 
 ### agreementReport

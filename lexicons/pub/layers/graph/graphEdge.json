@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "description": "A single directed typed edge between any two Layers objects. Supports multidigraphs and cycles. Source and target use objectRef, which can point to local UUIDs, remote AT-URIs, or external knowledge graph nodes.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": ["source", "target", "edgeType", "createdAt"],
@@ -76,11 +76,13 @@
           },
           "metadata": {
             "type": "ref",
-            "ref": "pub.layers.defs#annotationMetadata"
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who asserted this edge, under what persona, with what tool."
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "Timestamp when this edge record was created."
           }
         }
       }

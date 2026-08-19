@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "description": "A linguistic resource entry: a lexical item, frame element filler, morphological paradigm cell, or any atomic unit in a structured linguistic collection. Abstract enough to represent bead LexicalItems, FrameNet lexical units, PropBank rolesets, WordNet synset members, morphological paradigm cells, etc.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": [
@@ -82,15 +82,23 @@
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "When this entry record was created."
           },
           "languages": {
             "type": "array",
             "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
-            "maxLength": 128,
             "items": {
               "type": "string",
               "maxLength": 32
+            }
+          },
+          "languageRefs": {
+            "type": "array",
+            "description": "Structured language references (canonical BCP-47 tag plus optional script, region, variety, and role) grounding the languages this record covers.",
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#languageRef"
             }
           }
         }

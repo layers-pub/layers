@@ -44,6 +44,7 @@
         },
         "confidence": {
           "type": "integer",
+          "description": "Annotator's stated confidence in this judgment, scaled 0-1000.",
           "minimum": 0,
           "maximum": 1000
         },
@@ -54,7 +55,8 @@
         },
         "features": {
           "type": "ref",
-          "ref": "pub.layers.defs#featureMap"
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features carrying judgment detail not covered by the typed fields."
         }
       }
     },
@@ -100,7 +102,8 @@
         },
         "features": {
           "type": "ref",
-          "ref": "pub.layers.defs#featureMap"
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features carrying experiment-design detail not covered by the typed fields."
         }
       }
     },
@@ -166,10 +169,15 @@
           ],
           "maxLength": 128
         },
+        "chunkingUnitUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the chunking unit definition node. Community-expandable via knowledge graph."
+        },
         "chunkingUnit": {
           "type": "string",
-          "description": "How text is segmented for incremental presentation.",
-          "knownValues": ["word", "character", "morpheme", "phrase", "sentence", "region", "custom"],
+          "description": "How text is segmented for incremental presentation (fallback when chunkingUnitUri unavailable).",
+          "knownValues": ["word", "character", "morpheme", "phrase", "clause", "sentence", "region", "sign", "gesture-phrase", "custom"],
           "maxLength": 128
         },
         "timingMs": {
@@ -191,9 +199,153 @@
           "description": "Masking character for non-cumulative displays (e.g., '-', '#').",
           "maxLength": 8
         },
+        "screenWidthPx": {
+          "type": "integer",
+          "description": "Display width in pixels.",
+          "minimum": 0
+        },
+        "screenHeightPx": {
+          "type": "integer",
+          "description": "Display height in pixels.",
+          "minimum": 0
+        },
+        "screenWidthMm": {
+          "type": "integer",
+          "description": "Physical display width in millimeters.",
+          "minimum": 0
+        },
+        "screenHeightMm": {
+          "type": "integer",
+          "description": "Physical display height in millimeters.",
+          "minimum": 0
+        },
+        "viewingDistanceMm": {
+          "type": "integer",
+          "description": "Participant eye-to-screen distance in millimeters.",
+          "minimum": 0
+        },
+        "refreshRateMilliHz": {
+          "type": "integer",
+          "description": "Display refresh rate in millihertz (e.g., 60000 for 60 Hz).",
+          "minimum": 0
+        },
+        "pixelsPerDegree": {
+          "type": "integer",
+          "description": "Pixels subtending one degree of visual angle at the stated viewing distance.",
+          "minimum": 0
+        },
+        "sessionRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the pub.layers.acquisition.session whose clock and setup this presentation was delivered under."
+        },
+        "participantRefs": {
+          "type": "array",
+          "description": "AT-URIs of pub.layers.acquisition.participant records presented under this specification.",
+          "items": {
+            "type": "string",
+            "format": "at-uri"
+          }
+        },
+        "mediaRefs": {
+          "type": "array",
+          "description": "AT-URIs of pub.layers.media.media records delivered as stimuli under this specification.",
+          "items": {
+            "type": "string",
+            "format": "at-uri"
+          }
+        },
         "features": {
           "type": "ref",
-          "ref": "pub.layers.defs#featureMap"
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features carrying presentation detail not covered by the typed fields."
+        }
+      }
+    },
+    "regionResponse": {
+      "type": "object",
+      "description": "A per-region reading-time or response measurement within a judgment, addressing one region of the presented stimulus (e.g., in self-paced reading or eye-tracking region analysis).",
+      "required": ["region"],
+      "properties": {
+        "region": {
+          "type": "ref",
+          "ref": "pub.layers.defs#objectRef",
+          "description": "Reference to the region being measured. Use recordRef for the stimulus record, objectId for a specific region object within it, localId for same-record references."
+        },
+        "regionIndex": {
+          "type": "integer",
+          "description": "Zero-indexed position of this region within the stimulus presentation order.",
+          "minimum": 0
+        },
+        "regionRoleUri": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the region role definition node. Community-expandable via knowledge graph."
+        },
+        "regionRole": {
+          "type": "string",
+          "description": "Analysis role of this region (fallback when regionRoleUri unavailable).",
+          "knownValues": ["critical", "spillover", "precritical", "pretarget", "target", "posttarget", "filler", "custom"],
+          "maxLength": 128
+        },
+        "readingTimeMs": {
+          "type": "integer",
+          "description": "Total reading time on this region in milliseconds.",
+          "minimum": 0
+        },
+        "firstFixationMs": {
+          "type": "integer",
+          "description": "First-fixation duration on this region in milliseconds.",
+          "minimum": 0
+        },
+        "gazeDurationMs": {
+          "type": "integer",
+          "description": "Gaze (first-pass) duration on this region in milliseconds.",
+          "minimum": 0
+        },
+        "goPastMs": {
+          "type": "integer",
+          "description": "Go-past (regression-path) duration on this region in milliseconds.",
+          "minimum": 0
+        },
+        "totalTimeMs": {
+          "type": "integer",
+          "description": "Total dwell time across all fixations on this region in milliseconds.",
+          "minimum": 0
+        },
+        "regressionsOut": {
+          "type": "integer",
+          "description": "Count of regressions launched out of this region.",
+          "minimum": 0
+        },
+        "regressionsIn": {
+          "type": "integer",
+          "description": "Count of regressions landing in this region.",
+          "minimum": 0
+        },
+        "fixationCount": {
+          "type": "integer",
+          "description": "Number of fixations on this region.",
+          "minimum": 0
+        },
+        "responseTimeMs": {
+          "type": "integer",
+          "description": "Response time in milliseconds for a per-region response task (e.g., maze, grammaticality-at-region).",
+          "minimum": 0
+        },
+        "scalarValue": {
+          "type": "integer",
+          "description": "Numeric per-region response value (e.g., rating at this region)."
+        },
+        "categoricalValue": {
+          "type": "string",
+          "description": "Categorical per-region response label.",
+          "maxLength": 512
+        },
+        "features": {
+          "type": "ref",
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open key-value map for per-region measures not covered by the named fields."
         }
       }
     },
@@ -205,7 +357,7 @@
         "methodUri": {
           "type": "string",
           "format": "at-uri",
-          "description": "AT-URI of the recording method definition node. Community-expandable via knowledge graph."
+          "description": "AT-URI of the recording method definition node. Resolves into the shared modality node set in layers-acquisition.ontology.layers.pub (the same nodes backing media signalInfo.modalityUri and catalog contentSummary.modalityUri). Community-expandable via knowledge graph."
         },
         "method": {
           "type": "string",
@@ -230,9 +382,31 @@
           ],
           "maxLength": 128
         },
+        "sessionRef": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "AT-URI of the pub.layers.acquisition.session whose clock this recording was captured on."
+        },
+        "participantRefs": {
+          "type": "array",
+          "description": "AT-URIs of pub.layers.acquisition.participant records this recording captured.",
+          "items": {
+            "type": "string",
+            "format": "at-uri"
+          }
+        },
+        "mediaRefs": {
+          "type": "array",
+          "description": "AT-URIs of pub.layers.media.media records produced by this recording instrument.",
+          "items": {
+            "type": "string",
+            "format": "at-uri"
+          }
+        },
         "features": {
           "type": "ref",
-          "ref": "pub.layers.defs#featureMap"
+          "ref": "pub.layers.defs#featureMap",
+          "description": "Open-ended features carrying recording-method detail not covered by the typed fields."
         }
       }
     }

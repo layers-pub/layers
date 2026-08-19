@@ -6,6 +6,8 @@ sidebar_label: "Graph"
 
 Generic typed property graph for knowledge representation and cross-referencing. Provides standalone graph nodes, typed directed edges between any Layers objects (within or across expressions, or to external knowledge graph nodes), and batch edge sets for efficient bulk operations. Enables cross-document coreference, intertextual linking, knowledge grounding, expression graphs (reply threads, translation chains, revision histories), temporal ordering (Allen's Interval Algebra), spatial relations (RCC-8 Region Connection Calculus), and arbitrary typed relationships.
 
+The record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
+
 ## Types
 
 ### graphNode

@@ -6,7 +6,7 @@
     "main": {
       "type": "record",
       "description": "A segmentation of an expression into tokenizations. Structural hierarchy (sections, sentences, paragraphs) is expressed via expression records with parentRef; this record provides the token-level decomposition.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": ["expression", "tokenizations", "createdAt"],
@@ -26,7 +26,8 @@
           },
           "metadata": {
             "type": "ref",
-            "ref": "pub.layers.defs#annotationMetadata"
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who produced this segmentation, when, with what tool or model."
           },
           "knowledgeRefs": {
             "type": "array",
@@ -63,7 +64,8 @@
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "Timestamp when this segmentation record was created."
           }
         }
       }

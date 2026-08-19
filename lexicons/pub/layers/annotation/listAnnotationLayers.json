@@ -9,11 +9,11 @@
         "type": "params",
         "required": ["expression"],
         "properties": {
-          "expression": { "type": "string", "format": "at-uri" },
-          "kind": { "type": "string" },
-          "subkind": { "type": "string" },
-          "limit": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50 },
-          "cursor": { "type": "string" }
+          "expression": { "type": "string", "format": "at-uri", "description": "AT-URI of the expression whose annotation layers to list." },
+          "kind": { "type": "string", "description": "Filter to layers of this annotation kind slug (e.g., token-tag, span, tree)." },
+          "subkind": { "type": "string", "description": "Filter to layers of this annotation subkind slug (e.g., pos, ner, dependency)." },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50, "description": "Maximum number of annotation layers to return in one page." },
+          "cursor": { "type": "string", "description": "Opaque pagination cursor to resume from a previous page." }
         }
       },
       "output": {
@@ -22,9 +22,10 @@
           "type": "object",
           "required": ["records"],
           "properties": {
-            "cursor": { "type": "string" },
+            "cursor": { "type": "string", "description": "Opaque pagination cursor for the next page, absent when no further results remain." },
             "records": {
               "type": "array",
+              "description": "The page of annotation layer records returned.",
               "items": { "type": "ref", "ref": "#recordView" }
             }
           }
@@ -35,9 +36,9 @@
       "type": "object",
       "required": ["uri", "cid", "value"],
       "properties": {
-        "uri": { "type": "string", "format": "at-uri" },
-        "cid": { "type": "string", "format": "cid" },
-        "value": { "type": "ref", "ref": "pub.layers.annotation.annotationLayer#main" }
+        "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of this annotation layer record." },
+        "cid": { "type": "string", "format": "cid", "description": "CID of this annotation layer record at this revision." },
+        "value": { "type": "ref", "ref": "pub.layers.annotation.annotationLayer#main", "description": "The annotation layer record value." }
       }
     }
   }

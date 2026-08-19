@@ -1,0 +1,14 @@
+{
+  "name": "image-size",
+  "version": "2.0.3-layers.0",
+  "description": "Docusaurus-compatible image-size adapter backed by image-meta",
+  "private": true,
+  "license": "MIT",
+  "exports": {
+    ".": "./index.cjs",
+    "./fromFile": "./from-file.cjs"
+  },
+  "dependencies": {
+    "image-meta": "0.2.2"
+  }
+}

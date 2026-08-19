@@ -1,0 +1,153 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.catalog.listCollections",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "List and filter catalogue collections. Every controlled-vocabulary parameter carries the same URI-plus-slug pair as the field it filters, so a client holding a node URI from a facet bucket can build the follow-up query without down-converting to a slug and silently merging two distinct community-minted nodes that share a fallback.",
+      "parameters": {
+        "type": "params",
+        "properties": {
+          "repo": {
+            "type": "string",
+            "format": "at-identifier",
+            "description": "Restrict to collections published by this repo. Omit to search across all indexed repos."
+          },
+          "q": {
+            "type": "string",
+            "description": "Free-text query over name and description.",
+            "maxLength": 512
+          },
+          "kindUri": {
+            "type": "array",
+            "description": "Filter to these collection-kind definition nodes. Matches records whose kindUri is any of these, OR whose kind slug equals the slug of any of these nodes. Takes precedence over kind.",
+            "maxLength": 16,
+            "items": { "type": "string", "format": "at-uri" }
+          },
+          "kind": {
+            "type": "array",
+            "description": "Filter by collection-kind slug. Use when the client has no resolved node.",
+            "maxLength": 16,
+            "items": { "type": "string", "maxLength": 128 }
+          },
+          "parentRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Direct children of this collection only."
+          },
+          "rootRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Everything in this collection's subtree along the containment spine, at any depth. An indexed equality on the denormalized rootRef, not a recursive walk."
+          },
+          "depth": {
+            "type": "integer",
+            "description": "Restrict to collections at exactly this depth from their root.",
+            "minimum": 0,
+            "maximum": 8
+          },
+          "citableOnly": {
+            "type": "boolean",
+            "description": "Restrict to collections carrying a citation block whose creditPolicy is 'cite-self' or 'cite-both'. This is what makes one index serve three communities: the same record type, filtered to the level each community names.",
+            "default": false
+          },
+          "languages": {
+            "type": "array",
+            "description": "Filter to collections covering any of these canonical BCP-47 tags. Language is a facet here, never a level, so this matches a project node carrying 145 tags as readily as a single treebank.",
+            "items": { "type": "string", "maxLength": 32 }
+          },
+          "modalityUri": {
+            "type": "array",
+            "description": "Filter to collections whose contents declare any of these modality definition nodes. Takes precedence over modality.",
+            "maxLength": 16,
+            "items": { "type": "string", "format": "at-uri" }
+          },
+          "modality": {
+            "type": "array",
+            "description": "Filter by modality slug over contents ('eeg', 'sign-language-video', 'speech-audio', 'fmri', 'eye-tracking', 'text').",
+            "maxLength": 16,
+            "items": { "type": "string", "maxLength": 128 }
+          },
+          "annotationSubkindUri": {
+            "type": "array",
+            "description": "Filter to collections whose contents declare any of these annotation-subkind definition nodes. Takes precedence over annotationSubkind.",
+            "maxLength": 16,
+            "items": { "type": "string", "format": "at-uri" }
+          },
+          "annotationSubkind": {
+            "type": "array",
+            "description": "Filter by annotation subkind slug over contents ('dependency', 'coreference', 'frame'). The primary selection criterion for corpus and NLP browsing.",
+            "maxLength": 16,
+            "items": { "type": "string", "maxLength": 128 }
+          },
+          "sourceMethodUri": {
+            "type": "array",
+            "description": "Filter to these production-method definition nodes. Takes precedence over sourceMethod.",
+            "maxLength": 8,
+            "items": { "type": "string", "format": "at-uri" }
+          },
+          "sourceMethod": {
+            "type": "array",
+            "description": "Filter by production-method slug. The gold-versus-silver discriminator.",
+            "maxLength": 8,
+            "items": { "type": "string", "maxLength": 128 }
+          },
+          "spdxUri": {
+            "type": "array",
+            "description": "Filter to these license definition nodes. Takes precedence over spdx.",
+            "maxLength": 16,
+            "items": { "type": "string", "format": "at-uri" }
+          },
+          "spdx": {
+            "type": "array",
+            "description": "Filter by SPDX license identifier. Importers normalize on write; consumers should not have to guess at spellings.",
+            "maxLength": 16,
+            "items": { "type": "string", "maxLength": 128 }
+          },
+          "accessUri": {
+            "type": "array",
+            "description": "Filter to these access-condition definition nodes. Takes precedence over access.",
+            "maxLength": 8,
+            "items": { "type": "string", "format": "at-uri" }
+          },
+          "access": {
+            "type": "array",
+            "description": "Filter by access-condition slug.",
+            "maxLength": 8,
+            "items": { "type": "string", "maxLength": 64 }
+          },
+          "stability": {
+            "type": "array",
+            "description": "Filter by lifecycle state. Defaults to excluding 'withdrawn' when omitted.",
+            "maxLength": 8,
+            "items": { "type": "string", "maxLength": 64 }
+          },
+          "sort": {
+            "type": "string",
+            "description": "Result ordering.",
+            "knownValues": ["relevance", "name", "created", "released", "size"],
+            "default": "relevance",
+            "maxLength": 32
+          },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50, "description": "Maximum number of collections to return in one page." },
+          "cursor": { "type": "string", "description": "Opaque pagination cursor to resume from a previous page." }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["records"],
+          "properties": {
+            "cursor": { "type": "string", "description": "Opaque pagination cursor to pass to the next call; absent when the last page has been reached." },
+            "records": {
+              "type": "array",
+              "description": "The page of matching collections, as browse rows.",
+              "items": { "type": "ref", "ref": "pub.layers.catalog.getCollection#collectionView" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

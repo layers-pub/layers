@@ -9,10 +9,10 @@
         "type": "params",
         "required": ["ontologyRef"],
         "properties": {
-          "ontologyRef": { "type": "string", "format": "at-uri" },
-          "typeKind": { "type": "string" },
-          "limit": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50 },
-          "cursor": { "type": "string" }
+          "ontologyRef": { "type": "string", "format": "at-uri", "description": "AT-URI of the ontology whose type definitions to list." },
+          "typeKind": { "type": "string", "description": "Restrict to type definitions of this type-kind slug (e.g., 'entity-type', 'relation-type')." },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50, "description": "Maximum number of type definitions to return in one page." },
+          "cursor": { "type": "string", "description": "Opaque pagination cursor to resume from a previous page." }
         }
       },
       "output": {
@@ -21,9 +21,10 @@
           "type": "object",
           "required": ["records"],
           "properties": {
-            "cursor": { "type": "string" },
+            "cursor": { "type": "string", "description": "Opaque pagination cursor to pass to the next call; absent when the last page has been reached." },
             "records": {
               "type": "array",
+              "description": "The page of matching type definitions.",
               "items": { "type": "ref", "ref": "#recordView" }
             }
           }
@@ -34,9 +35,9 @@
       "type": "object",
       "required": ["uri", "cid", "value"],
       "properties": {
-        "uri": { "type": "string", "format": "at-uri" },
-        "cid": { "type": "string", "format": "cid" },
-        "value": { "type": "ref", "ref": "pub.layers.ontology.typeDef#main" }
+        "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of the type definition." },
+        "cid": { "type": "string", "format": "cid", "description": "CID of the type definition's current revision." },
+        "value": { "type": "ref", "ref": "pub.layers.ontology.typeDef#main", "description": "The type definition record itself." }
       }
     }
   }

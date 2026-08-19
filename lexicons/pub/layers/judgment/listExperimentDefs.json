@@ -9,11 +9,11 @@
         "type": "params",
         "required": ["repo"],
         "properties": {
-          "repo": { "type": "string", "format": "at-identifier" },
-          "measureType": { "type": "string" },
-          "taskType": { "type": "string" },
-          "limit": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50 },
-          "cursor": { "type": "string" }
+          "repo": { "type": "string", "format": "at-identifier", "description": "The repository (DID or handle) whose experiment definitions to list." },
+          "measureType": { "type": "string", "description": "Filter to experiment definitions with this measure type slug." },
+          "taskType": { "type": "string", "description": "Filter to experiment definitions with this response instrument (task type) slug." },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50, "description": "Maximum number of records to return in one page." },
+          "cursor": { "type": "string", "description": "Opaque pagination cursor from a previous response, to resume after the last returned record." }
         }
       },
       "output": {
@@ -22,9 +22,10 @@
           "type": "object",
           "required": ["records"],
           "properties": {
-            "cursor": { "type": "string" },
+            "cursor": { "type": "string", "description": "Opaque pagination cursor to pass to the next call, absent when no further pages remain." },
             "records": {
               "type": "array",
+              "description": "The page of experiment definition records returned.",
               "items": { "type": "ref", "ref": "#recordView" }
             }
           }
@@ -35,9 +36,9 @@
       "type": "object",
       "required": ["uri", "cid", "value"],
       "properties": {
-        "uri": { "type": "string", "format": "at-uri" },
-        "cid": { "type": "string", "format": "cid" },
-        "value": { "type": "ref", "ref": "pub.layers.judgment.experimentDef#main" }
+        "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of this experiment definition record." },
+        "cid": { "type": "string", "format": "cid", "description": "CID of this experiment definition record's indexed revision." },
+        "value": { "type": "ref", "ref": "pub.layers.judgment.experimentDef#main", "description": "The experiment definition record value." }
       }
     }
   }

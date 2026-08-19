@@ -1,0 +1,30 @@
+{
+  "lexicon": 1,
+  "id": "pub.layers.acquisition.getSession",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "Get a single session record by its AT-URI.",
+      "parameters": {
+        "type": "params",
+        "required": ["uri"],
+        "properties": {
+          "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of the session record to fetch." }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["uri", "cid", "value"],
+          "properties": {
+            "uri": { "type": "string", "format": "at-uri", "description": "AT-URI of the returned session record." },
+            "cid": { "type": "string", "format": "cid", "description": "CID of the returned session record revision." },
+            "value": { "type": "ref", "ref": "pub.layers.acquisition.session#main", "description": "The session record value." }
+          }
+        }
+      },
+      "errors": [{ "name": "RecordNotFound" }]
+    }
+  }
+}

@@ -6,6 +6,8 @@ sidebar_label: "Resource"
 
 Linguistic resource records: lexical entries, collections, stimulus templates, slot definitions, and fillings. Provides an abstract, composable framework for representing any structured linguistic resource: lexicons, frame inventories, stimulus generation pipelines, and experimental item construction.
 
+The record `main`s declare `key: any` (Scheme A): rkeys may be arbitrary strings rather than TIDs.
+
 ## Types
 
 ### entry
@@ -27,7 +29,8 @@ A linguistic resource entry: a lexical item, frame element filler, morphological
 | `sourceRef` | at-uri | AT-URI of the source record this entry was derived from. |
 | `metadata` | ref | Provenance: who created this entry, with what tool. Ref: `pub.layers.defs#annotationMetadata` |
 | `createdAt` | datetime | Record creation timestamp. |
-| `languages` | array | BCP-47 language tags this record covers. Empty when language is unspecified or unknown. Array of strings (max 128) |
+| `languages` | array | BCP-47 language tags this record covers. Empty when language is unspecified or unknown. Array of strings (item max 32). No array-level cap. |
+| `languageRefs` | array | Structured language references grounding each language via glottolog, iso639-3, or cldr and carrying script, region, variety, and role. Array of ref: `pub.layers.defs#languageRef` |
 
 ### collection
 **NSID:** `pub.layers.resource.collection`
@@ -49,7 +52,8 @@ A named collection of linguistic resource entries. Abstract enough to represent 
 | `eprintRefs` | array | Eprint records (papers/preprints) describing or associated with this collection. Array of at-uri (max 64) |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
-| `languages` | array | BCP-47 language tags this record covers. Empty when language is unspecified or unknown. Array of strings (max 128) |
+| `languages` | array | BCP-47 language tags this record covers. Empty when language is unspecified or unknown. Array of strings (item max 32). No array-level cap. |
+| `languageRefs` | array | Structured language references grounding each language via glottolog, iso639-3, or cldr and carrying script, region, variety, and role. Array of ref: `pub.layers.defs#languageRef` |
 
 ### collectionMembership
 **NSID:** `pub.layers.resource.collectionMembership`
@@ -103,7 +107,8 @@ A parameterized text template with named variable slots. Generalizes stimulus ge
 | `metadata` | ref | Provenance: who designed this template. Ref: `pub.layers.defs#annotationMetadata` |
 | `features` | ref | Open-ended features: measureType, taskType, category, domain, etc. Ref: `pub.layers.defs#featureMap` |
 | `createdAt` | datetime | Record creation timestamp. |
-| `languages` | array | BCP-47 language tags this record covers. Empty when language is unspecified or unknown. Array of strings (max 128) |
+| `languages` | array | BCP-47 language tags this record covers. Empty when language is unspecified or unknown. Array of strings (item max 32). No array-level cap. |
+| `languageRefs` | array | Structured language references grounding each language via glottolog, iso639-3, or cldr and carrying script, region, variety, and role. Array of ref: `pub.layers.defs#languageRef` |
 
 ### slotFilling
 **NSID:** `pub.layers.resource.defs#slotFilling`

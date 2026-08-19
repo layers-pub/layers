@@ -6,7 +6,7 @@
     "main": {
       "type": "record",
       "description": "An expression record representing a linguistic data source or unit at any granularity, from full documents down to individual morphemes.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": [
@@ -88,7 +88,8 @@
           },
           "metadata": {
             "type": "ref",
-            "ref": "pub.layers.defs#annotationMetadata"
+            "ref": "pub.layers.defs#annotationMetadata",
+            "description": "Provenance: who created this expression record, when, with what tool."
           },
           "features": {
             "type": "ref",
@@ -126,15 +127,23 @@
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "Timestamp when this expression record was created."
           },
           "languages": {
             "type": "array",
             "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
-            "maxLength": 128,
             "items": {
               "type": "string",
               "maxLength": 32
+            }
+          },
+          "languageRefs": {
+            "type": "array",
+            "description": "Grounded language references carrying canonical BCP-47 tag, script/region codes, variety label, and a knowledge-graph source (glottolog, iso639-3, cldr). Richer than the languages slug array; use both.",
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#languageRef"
             }
           }
         }

@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "description": "A parameterized text template with named variable slots. Generalizes bead's Template (text pattern with {slotName} placeholders, slot definitions, and cross-slot constraints) and similar pattern structures used for stimulus generation, item construction, data augmentation, and controlled natural language. Templates are composable: they can reference ontologies, collections, and other templates.",
-      "key": "tid",
+      "key": "any",
       "record": {
         "type": "object",
         "required": [
@@ -54,6 +54,7 @@
           },
           "knowledgeRefs": {
             "type": "array",
+            "description": "Knowledge graph groundings for this template (e.g., a construction, a linguistic phenomenon, a stimulus paradigm).",
             "maxLength": 32,
             "items": {
               "type": "ref",
@@ -72,15 +73,23 @@
           },
           "createdAt": {
             "type": "string",
-            "format": "datetime"
+            "format": "datetime",
+            "description": "When this template record was created."
           },
           "languages": {
             "type": "array",
             "description": "BCP-47 language tags this record covers. Empty when language is unspecified or unknown.",
-            "maxLength": 128,
             "items": {
               "type": "string",
               "maxLength": 32
+            }
+          },
+          "languageRefs": {
+            "type": "array",
+            "description": "Structured language references (canonical BCP-47 tag plus optional script, region, variety, and role) grounding the languages this record covers.",
+            "items": {
+              "type": "ref",
+              "ref": "pub.layers.defs#languageRef"
             }
           }
         }
