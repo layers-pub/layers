@@ -83,6 +83,7 @@ A single judgment about a linguistic item.
 | `responseTimeMs` | integer | Response time in milliseconds. |
 | `confidence` | integer | Confidence score 0-1000. |
 | `behavioralData` | ref | Behavioral analytics (e.g., mouse movements, keystroke patterns, eye tracking). Ref: `pub.layers.defs#featureMap` |
+| `regionResponses` | array | Per-region reading-time and eye-movement measures for incremental-presentation tasks (self-paced reading, eye-tracking-while-reading, maze), one entry per region. Array of ref: `pub.layers.judgment.defs#regionResponse` |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
 
 ### experimentDesign

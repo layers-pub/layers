@@ -74,13 +74,13 @@ Representative mappings include:
 
 The manifest is the complete registry for the mappings shipped in this repository. A source prefix appearing under `lexicons/foreign/` does not by itself require an appview to subscribe to that prefix.
 
-## Media and external targets in 0.9.0
+## Media and external targets in 0.10.0
 
-Version 0.9.0 separates the identity of a medium from the location selected within it:
+Version 0.10.0 separates the identity of a medium from the location selected within it:
 
 - A `pub.layers.media.media` record identifies bytes through `blob` or `externalUri`, records technical metadata, and can refer to an acquisition session.
 - An annotation layer names one expression and can also name several media records through `mediaRefs` or a synchronized session through `sessionRef`.
 - Each annotation carries an anchor. The anchor union supports text spans, token references, token sequences, temporal spans, spatio-temporal regions, page anchors, external targets, bounding boxes, normalized spatial regions, and continuous-signal spans.
 - Time, image, video, and signal anchors use `mediaScope` to identify the relevant media record, acquisition session, stream, or track when the expression does not determine it.
 
-Thus annotating externally hosted media does not require an appview to store its bytes. A Layers media record can identify the external resource, and annotations can select the relevant interval, frame, region, or signal range. The older `annotationLayer.target` pattern is not part of the 0.9.0 schema.
+Thus annotating externally hosted media does not require an appview to store its bytes. A Layers media record can identify the external resource, and annotations can select the relevant interval, frame, region, or signal range. The older `annotationLayer.target` pattern is not part of the 0.10.0 schema.

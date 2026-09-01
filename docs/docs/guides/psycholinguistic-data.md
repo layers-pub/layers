@@ -82,7 +82,7 @@ A segmentation record defines the regions of interest:
 
 ### Behavioral Data
 
-Per-region reading times are recorded as judgments. Each judgment references the stimulus item and records `responseTimeMs`:
+Per-region reading times are recorded on each judgment as a `regionResponses` array of typed `regionResponse` objects, one per region, alongside the whole-trial `responseTimeMs`. Each entry names its region (by `regionIndex` into the segmentation, optionally with a `regionRole` for analysis) and carries the reading-time and eye-movement measures:
 
 ```json
 {
@@ -97,18 +97,18 @@ Per-region reading times are recorded as judgments. Each judgment references the
       "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42" },
       "categoricalValue": "yes",
       "responseTimeMs": 1842,
-      "behavioralData": {
-        "entries": [
-          { "key": "region.0.rt", "value": "312" },
-          { "key": "region.1.rt", "value": "287" },
-          { "key": "region.2.rt", "value": "445" },
-          { "key": "region.3.rt", "value": "398" }
-        ]
-      }
+      "regionResponses": [
+        { "region": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42" }, "regionIndex": 0, "readingTimeMs": 312 },
+        { "region": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42" }, "regionIndex": 1, "readingTimeMs": 287 },
+        { "region": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42" }, "regionIndex": 2, "regionRole": "critical", "readingTimeMs": 445 },
+        { "region": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42" }, "regionIndex": 3, "regionRole": "spillover", "readingTimeMs": 398 }
+      ]
     }
   ]
 }
 ```
+
+Producers that have not adopted the typed field can still carry per-region measures as flat `region.N.rt` keys under a judgment's `behavioralData` feature map; see the [Judgment Data guide](./judgment-data.md#behavioral-data) for that form.
 
 ### Experimental Design
 
@@ -148,7 +148,7 @@ The experiment definition specifies measure type, presentation method, recording
 
 ## Eye-Tracking (Reading)
 
-Eye-tracking during reading produces fixation, saccade, and regression data over text stimuli.
+Eye-tracking during reading produces fixation, saccade, and regression data over text stimuli. Raw fixations and saccades are annotations, as below; the derived per-region measures they aggregate into (first-fixation duration, gaze duration, go-past time, regression counts) are recorded as a `regionResponses` array on the reading judgment, exactly as for [self-paced reading](#behavioral-data) above.
 
 ### Fixation Data
 

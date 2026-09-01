@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/layers-pub/layers/releases"><img src="https://img.shields.io/badge/version-0.9.0-purple?style=flat-square" alt="Version 0.9.0"></a>
+  <a href="https://github.com/layers-pub/layers/releases"><img src="https://img.shields.io/badge/version-0.10.0-purple?style=flat-square" alt="Version 0.10.0"></a>
   <a href="https://github.com/layers-pub/layers/blob/main/CHANGELOG.md"><img src="https://img.shields.io/badge/status-active%20development-orange?style=flat-square" alt="Status: active development"></a>
   <a href="https://docs.layers.pub"><img src="https://img.shields.io/badge/docs-docs.layers.pub-blue?style=flat-square" alt="Documentation"></a>
   <a href="https://github.com/layers-pub/layers/blob/main/LICENSE"><img src="https://img.shields.io/github/license/layers-pub/layers?style=flat-square" alt="License"></a>
@@ -30,18 +30,16 @@ The schemas provide a common target for formats such as CoNLL-U, brat, ELAN, TEI
 
 This repository contains the lexicon schemas and their documentation. Appview implementations, generated language bindings, and application code are versioned separately from this schema release.
 
-## Version 0.9.0
+## Version 0.10.0
 
-Version 0.9.0 contains 114 `pub.layers.*` lexicon files:
+Version 0.10.0 contains 114 `pub.layers.*` lexicon files:
 
 - 30 record collections
 - 65 query or procedure methods
 - shared definition lexicons
 - six OAuth permission-set lexicons
 
-The release adds two record families. `pub.layers.acquisition.*` represents participants and synchronized data-collection sessions. `pub.layers.catalog.*` provides citable collections and typed membership across corpora, resources, experiments, media, and other Layers records.
-
-Version 0.9.0 also expands the anchor model for images, video, continuous signals, and synchronized sessions; adds BIDS- and NWB-oriented media and acquisition metadata; changes record keys from `tid` to `any`; and replaces the packed annotation digest string with a structured `contentDigest` object. See the [changelog](CHANGELOG.md) for the compatibility notes.
+This release adds one field. `pub.layers.judgment.defs#judgment` gains an optional `regionResponses` array, one entry per region of the presented stimulus, for self-paced-reading, eye-tracking-while-reading, and maze tasks. Each `regionResponse` names its region and analysis role and carries the standard reading and eye-movement measures (reading time, first-fixation and gaze duration, go-past and total time, regression counts, and fixation count). The change is additive and backward compatible: existing judgments omit the field, and the previously unreferenced `regionResponse` definition now has a referrer. See the [changelog](CHANGELOG.md) for the full notes.
 
 ## Data model
 
