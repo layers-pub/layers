@@ -53,6 +53,14 @@
           "ref": "pub.layers.defs#featureMap",
           "description": "Behavioral signals: mouse movements, keystroke patterns, eye tracking data, scroll events, etc."
         },
+        "regionResponses": {
+          "type": "array",
+          "description": "Per-region reading-time or response measurements for this judgment, one per region of the presented stimulus (self-paced reading, eye-tracking region analysis).",
+          "items": {
+            "type": "ref",
+            "ref": "pub.layers.judgment.defs#regionResponse"
+          }
+        },
         "features": {
           "type": "ref",
           "ref": "pub.layers.defs#featureMap",

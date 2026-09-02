@@ -701,7 +701,7 @@ Every judgment can carry `responseTimeMs` and a `behavioralData` feature map for
 
 ### Response Times
 
-The `responseTimeMs` field captures a single reaction time in milliseconds. For per-region reading-time and eye-movement measures, the `regionResponse` object (`pub.layers.judgment.defs#regionResponse`) is the typed shape for the measures that untyped `region.N.rt` feature keys otherwise encode. A single `regionResponse` names its region, its analysis role, and the standard eye-movement measures:
+The `responseTimeMs` field captures a single reaction time in milliseconds. For per-region reading-time and eye-movement measures, a judgment carries a `regionResponses` array of typed `regionResponse` objects (`pub.layers.judgment.defs#regionResponse`), the typed shape for the measures that untyped `region.N.rt` feature keys otherwise encode. A single `regionResponse` names its region, its analysis role, and the standard eye-movement measures:
 
 ```json
 {
@@ -718,7 +718,7 @@ The `responseTimeMs` field captures a single reaction time in milliseconds. For 
 }
 ```
 
-The `regionRole` axis (`critical`, `spillover`, `precritical`, `pretarget`, `target`, `posttarget`, `filler`, ...) is what an analysis groups on. Where a measure has no named field, it goes in the object's own `features` map rather than into flat `region.N.*` keys. The `behavioralData` feature-map form is valid for signals the typed object does not reach, and for per-region measures a producer carries a `regionResponse` per region under a judgment's `behavioralData`/`features` until a lexicon field promotes it:
+The `regionRole` axis (`critical`, `spillover`, `precritical`, `pretarget`, `target`, `posttarget`, `filler`, ...) is what an analysis groups on. Where a measure has no named field, it goes in the object's own `features` map rather than into flat `region.N.*` keys. The `behavioralData` feature-map form remains valid for signals the typed object does not reach; a producer that has not adopted the typed `regionResponses` array can still carry per-region measures as flat `region.N.*` keys under a judgment's `behavioralData`/`features`:
 
 ```json
 {
