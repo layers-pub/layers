@@ -10,6 +10,10 @@ This project follows [Semantic Versioning](https://semver.org/).
 
 - `regionResponses` optional array on `pub.layers.judgment.defs#judgment`, one entry per region of the presented stimulus, for self-paced-reading, eye-tracking-while-reading, and maze tasks. Each entry is a `pub.layers.judgment.defs#regionResponse` naming its region and analysis role (`regionRole`) and carrying the standard reading and eye-movement measures (`readingTimeMs`, `firstFixationMs`, `gazeDurationMs`, `goPastMs`, `totalTimeMs`, `regressionsOut`, `regressionsIn`, `fixationCount`) plus optional per-region `responseTimeMs`, `scalarValue`, and `categoricalValue`. Additive and backward compatible: existing judgments omit the field, and the `regionResponse` def (already present) now has a referrer.
 
+### Migrations
+
+- Recorded the adjacent migration lens `v0.9.0 -> v0.10.0` (additive `regionResponses`) under `lexicons/lenses/`, completing the panproto migration chain through 0.10.0. Round-trip verified on real records across every schema hop.
+
 ## [0.9.0] - 2026-08-19
 
 This is a clean-break minor release (0.x permits breaking changes in a minor bump). It carries exactly one breaking change (the `digest` to `contentDigest` replacement); everything else is additive or a backward-compatible (BCNF) constraint relaxation. No republish of an existing record is forced by any change: the `digest` values are migrated by a hand-authored panproto lens. The release adds two namespaces (`catalog`, `acquisition`), extends the shared anchoring model to continuous neural and physiological signals, and threads BIDS/NWB-grade acquisition metadata through the media and judgment lexicons.
