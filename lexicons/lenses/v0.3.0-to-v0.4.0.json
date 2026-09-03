@@ -1,0 +1,2611 @@
+{
+  "vertex_map": {
+    "pub.layers.defs#constraint.description": "pub.layers.defs#constraint.description",
+    "pub.layers.defs#objectRef.recordRef": "pub.layers.defs#objectRef.recordRef",
+    "pub.layers.defs#boundingBox.y": "pub.layers.defs#boundingBox.y",
+    "pub.layers.defs#annotationMetadata.tool": "pub.layers.defs#annotationMetadata.tool",
+    "pub.layers.defs#alignmentLink.sourceIndices": "pub.layers.defs#alignmentLink.sourceIndices",
+    "pub.layers.defs#textQuoteSelector.suffix": "pub.layers.defs#textQuoteSelector.suffix",
+    "pub.layers.defs#constraint.scope": "pub.layers.defs#constraint.scope",
+    "pub.layers.defs#anchor.tokenRefSequence": "pub.layers.defs#anchor.tokenRefSequence",
+    "pub.layers.defs#annotationMetadata.digest": "pub.layers.defs#annotationMetadata.digest",
+    "pub.layers.defs#spatialEntity.geometry": "pub.layers.defs#spatialEntity.geometry",
+    "pub.layers.defs#externalTarget.selector:variant1": "pub.layers.defs#externalTarget.selector:variant1",
+    "pub.layers.defs#temporalEntity": "pub.layers.defs#temporalEntity",
+    "pub.layers.defs#annotationMetadata.dependencies": "pub.layers.defs#annotationMetadata.dependencies",
+    "pub.layers.defs#temporalExpression.value": "pub.layers.defs#temporalExpression.value",
+    "pub.layers.defs#externalTarget.title": "pub.layers.defs#externalTarget.title",
+    "pub.layers.defs#temporalEntity.duration": "pub.layers.defs#temporalEntity.duration",
+    "pub.layers.defs#spatioTemporalAnchor.keyframes": "pub.layers.defs#spatioTemporalAnchor.keyframes",
+    "pub.layers.defs#objectRef.objectId": "pub.layers.defs#objectRef.objectId",
+    "pub.layers.defs#knowledgeRef": "pub.layers.defs#knowledgeRef",
+    "pub.layers.defs#tokenRefSequence": "pub.layers.defs#tokenRefSequence",
+    "pub.layers.defs#constraint.scopeUri": "pub.layers.defs#constraint.scopeUri",
+    "pub.layers.defs#tokenRefSequence.tokenIndexes": "pub.layers.defs#tokenRefSequence.tokenIndexes",
+    "pub.layers.defs#anchor.tokenRef": "pub.layers.defs#anchor.tokenRef",
+    "pub.layers.defs#temporalSpan": "pub.layers.defs#temporalSpan",
+    "pub.layers.defs#objectRef.localId": "pub.layers.defs#objectRef.localId",
+    "pub.layers.defs#agentRef.knowledgeRef": "pub.layers.defs#agentRef.knowledgeRef",
+    "pub.layers.defs#annotationMetadata.agent": "pub.layers.defs#annotationMetadata.agent",
+    "pub.layers.defs#alignmentLink.knowledgeRefs:items": "pub.layers.defs#alignmentLink.knowledgeRefs:items",
+    "pub.layers.defs#fragmentSelector": "pub.layers.defs#fragmentSelector",
+    "pub.layers.defs#textQuoteSelector.prefix": "pub.layers.defs#textQuoteSelector.prefix",
+    "pub.layers.defs#pageAnchor.boundingBox": "pub.layers.defs#pageAnchor.boundingBox",
+    "pub.layers.defs#spatialModifier": "pub.layers.defs#spatialModifier",
+    "pub.layers.defs#alignmentLink.targetIndices:items": "pub.layers.defs#alignmentLink.targetIndices:items",
+    "pub.layers.defs#knowledgeRef.source": "pub.layers.defs#knowledgeRef.source",
+    "pub.layers.defs#keyframe.features": "pub.layers.defs#keyframe.features",
+    "pub.layers.defs#temporalEntity.intervalEnd": "pub.layers.defs#temporalEntity.intervalEnd",
+    "pub.layers.defs#temporalExpression.anchorRef": "pub.layers.defs#temporalExpression.anchorRef",
+    "pub.layers.defs#constraint.context:items": "pub.layers.defs#constraint.context:items",
+    "pub.layers.defs#anchor.temporalSpan": "pub.layers.defs#anchor.temporalSpan",
+    "pub.layers.defs#spatialEntity": "pub.layers.defs#spatialEntity",
+    "pub.layers.defs#spatialExpression": "pub.layers.defs#spatialExpression",
+    "pub.layers.defs#keyframe": "pub.layers.defs#keyframe",
+    "pub.layers.defs#spatialExpression.typeUri": "pub.layers.defs#spatialExpression.typeUri",
+    "pub.layers.defs#spatialEntity.geometryFormat": "pub.layers.defs#spatialEntity.geometryFormat",
+    "pub.layers.defs#agentRef.name": "pub.layers.defs#agentRef.name",
+    "pub.layers.defs#spatioTemporalAnchor.interpolationUri": "pub.layers.defs#spatioTemporalAnchor.interpolationUri",
+    "pub.layers.defs#temporalEntity.intervalStart": "pub.layers.defs#temporalEntity.intervalStart",
+    "pub.layers.defs#temporalExpression.function": "pub.layers.defs#temporalExpression.function",
+    "pub.layers.defs#temporalModifier.modUri": "pub.layers.defs#temporalModifier.modUri",
+    "pub.layers.defs#spatialEntity.typeUri": "pub.layers.defs#spatialEntity.typeUri",
+    "pub.layers.defs#featureMap.entries:items": "pub.layers.defs#featureMap.entries:items",
+    "pub.layers.defs#knowledgeRef.label": "pub.layers.defs#knowledgeRef.label",
+    "pub.layers.defs#spatioTemporalAnchor.keyframes:items": "pub.layers.defs#spatioTemporalAnchor.keyframes:items",
+    "pub.layers.defs#pageAnchor": "pub.layers.defs#pageAnchor",
+    "pub.layers.defs#temporalSpan.start": "pub.layers.defs#temporalSpan.start",
+    "pub.layers.defs#knowledgeRef.sourceUri": "pub.layers.defs#knowledgeRef.sourceUri",
+    "pub.layers.defs#uuid.value": "pub.layers.defs#uuid.value",
+    "pub.layers.defs#knowledgeRef.identifier": "pub.layers.defs#knowledgeRef.identifier",
+    "pub.layers.defs#spatialEntity.crs": "pub.layers.defs#spatialEntity.crs",
+    "pub.layers.defs#agentRef.id": "pub.layers.defs#agentRef.id",
+    "pub.layers.defs#temporalExpression": "pub.layers.defs#temporalExpression",
+    "pub.layers.defs#boundingBox.height": "pub.layers.defs#boundingBox.height",
+    "pub.layers.defs#tokenRef": "pub.layers.defs#tokenRef",
+    "pub.layers.defs#agentRef.did": "pub.layers.defs#agentRef.did",
+    "pub.layers.defs#spatialEntity.features": "pub.layers.defs#spatialEntity.features",
+    "pub.layers.defs#tokenRefSequence.tokenIndexes:items": "pub.layers.defs#tokenRefSequence.tokenIndexes:items",
+    "pub.layers.defs#feature": "pub.layers.defs#feature",
+    "pub.layers.defs#tokenRef.tokenIndex": "pub.layers.defs#tokenRef.tokenIndex",
+    "pub.layers.defs#featureMap": "pub.layers.defs#featureMap",
+    "pub.layers.defs#keyframe.bbox": "pub.layers.defs#keyframe.bbox",
+    "pub.layers.defs#externalTarget.selector:variant2": "pub.layers.defs#externalTarget.selector:variant2",
+    "pub.layers.defs#anchor.textSpan": "pub.layers.defs#anchor.textSpan",
+    "pub.layers.defs#boundingBox.width": "pub.layers.defs#boundingBox.width",
+    "pub.layers.defs#spatialEntity.geometryFormatUri": "pub.layers.defs#spatialEntity.geometryFormatUri",
+    "pub.layers.defs#tokenRefSequence.tokenizationId": "pub.layers.defs#tokenRefSequence.tokenizationId",
+    "pub.layers.defs#uuid": "pub.layers.defs#uuid",
+    "pub.layers.defs#anchor.externalTarget": "pub.layers.defs#anchor.externalTarget",
+    "pub.layers.defs#temporalExpression.functionUri": "pub.layers.defs#temporalExpression.functionUri",
+    "pub.layers.defs#tokenRefSequence.anchorTokenIndex": "pub.layers.defs#tokenRefSequence.anchorTokenIndex",
+    "pub.layers.defs#temporalEntity.earliest": "pub.layers.defs#temporalEntity.earliest",
+    "pub.layers.defs#temporalExpression.typeUri": "pub.layers.defs#temporalExpression.typeUri",
+    "pub.layers.defs#temporalExpression.features": "pub.layers.defs#temporalExpression.features",
+    "pub.layers.defs#spatioTemporalAnchor.interpolation": "pub.layers.defs#spatioTemporalAnchor.interpolation",
+    "pub.layers.defs#span.start": "pub.layers.defs#span.start",
+    "pub.layers.defs#temporalEntity.instant": "pub.layers.defs#temporalEntity.instant",
+    "pub.layers.defs#fragmentSelector.value": "pub.layers.defs#fragmentSelector.value",
+    "pub.layers.defs#temporalModifier.mod": "pub.layers.defs#temporalModifier.mod",
+    "pub.layers.defs#fragmentSelector.conformsTo": "pub.layers.defs#fragmentSelector.conformsTo",
+    "pub.layers.defs#alignmentLink": "pub.layers.defs#alignmentLink",
+    "pub.layers.defs#spatialExpression.anchorRef": "pub.layers.defs#spatialExpression.anchorRef",
+    "pub.layers.defs#feature.value": "pub.layers.defs#feature.value",
+    "pub.layers.defs#keyframe.timeMs": "pub.layers.defs#keyframe.timeMs",
+    "pub.layers.defs#temporalEntity.granularity": "pub.layers.defs#temporalEntity.granularity",
+    "pub.layers.defs#constraint.expressionFormatUri": "pub.layers.defs#constraint.expressionFormatUri",
+    "pub.layers.defs#spatioTemporalAnchor": "pub.layers.defs#spatioTemporalAnchor",
+    "pub.layers.defs#annotationMetadata": "pub.layers.defs#annotationMetadata",
+    "pub.layers.defs#alignmentLink.label": "pub.layers.defs#alignmentLink.label",
+    "pub.layers.defs#temporalEntity.granularityUri": "pub.layers.defs#temporalEntity.granularityUri",
+    "pub.layers.defs#temporalModifier.features": "pub.layers.defs#temporalModifier.features",
+    "pub.layers.defs#alignmentLink.sourceIndices:items": "pub.layers.defs#alignmentLink.sourceIndices:items",
+    "pub.layers.defs#externalTarget.sourceHash": "pub.layers.defs#externalTarget.sourceHash",
+    "pub.layers.defs#textPositionSelector": "pub.layers.defs#textPositionSelector",
+    "pub.layers.defs#pageAnchor.textSpan": "pub.layers.defs#pageAnchor.textSpan",
+    "pub.layers.defs#anchor.pageAnchor": "pub.layers.defs#anchor.pageAnchor",
+    "pub.layers.defs#temporalSpan.ending": "pub.layers.defs#temporalSpan.ending",
+    "pub.layers.defs#tokenRef.tokenizationId": "pub.layers.defs#tokenRef.tokenizationId",
+    "pub.layers.defs#boundingBox": "pub.layers.defs#boundingBox",
+    "pub.layers.defs#span.ending": "pub.layers.defs#span.ending",
+    "pub.layers.defs#spatialModifier.features": "pub.layers.defs#spatialModifier.features",
+    "pub.layers.defs#textQuoteSelector": "pub.layers.defs#textQuoteSelector",
+    "pub.layers.defs#alignmentLink.targetIndices": "pub.layers.defs#alignmentLink.targetIndices",
+    "pub.layers.defs#spatioTemporalAnchor.temporalSpan": "pub.layers.defs#spatioTemporalAnchor.temporalSpan",
+    "pub.layers.defs#alignmentLink.confidence": "pub.layers.defs#alignmentLink.confidence",
+    "pub.layers.defs#spatialEntity.crsUri": "pub.layers.defs#spatialEntity.crsUri",
+    "pub.layers.defs#spatialEntity.type": "pub.layers.defs#spatialEntity.type",
+    "pub.layers.defs#feature.key": "pub.layers.defs#feature.key",
+    "pub.layers.defs#spatialExpression.value": "pub.layers.defs#spatialExpression.value",
+    "pub.layers.defs#annotationMetadata.confidence": "pub.layers.defs#annotationMetadata.confidence",
+    "pub.layers.defs#temporalEntity.latest": "pub.layers.defs#temporalEntity.latest",
+    "pub.layers.defs#anchor": "pub.layers.defs#anchor",
+    "pub.layers.defs#externalTarget.selector:variant0": "pub.layers.defs#externalTarget.selector:variant0",
+    "pub.layers.defs#pageAnchor.page": "pub.layers.defs#pageAnchor.page",
+    "pub.layers.defs#textQuoteSelector.exact": "pub.layers.defs#textQuoteSelector.exact",
+    "pub.layers.defs#temporalModifier": "pub.layers.defs#temporalModifier",
+    "pub.layers.defs#spatialEntity.uncertainty": "pub.layers.defs#spatialEntity.uncertainty",
+    "pub.layers.defs#constraint.expressionFormat": "pub.layers.defs#constraint.expressionFormat",
+    "pub.layers.defs#constraint.context": "pub.layers.defs#constraint.context",
+    "pub.layers.defs#externalTarget.source": "pub.layers.defs#externalTarget.source",
+    "pub.layers.defs#constraint.expression": "pub.layers.defs#constraint.expression",
+    "pub.layers.defs#temporalEntity.features": "pub.layers.defs#temporalEntity.features",
+    "pub.layers.defs#spatialModifier.modUri": "pub.layers.defs#spatialModifier.modUri",
+    "pub.layers.defs#agentRef": "pub.layers.defs#agentRef",
+    "pub.layers.defs#span": "pub.layers.defs#span",
+    "pub.layers.defs#anchor.spatioTemporalAnchor": "pub.layers.defs#anchor.spatioTemporalAnchor",
+    "pub.layers.defs#knowledgeRef.uri": "pub.layers.defs#knowledgeRef.uri",
+    "pub.layers.defs#spatialExpression.type": "pub.layers.defs#spatialExpression.type",
+    "pub.layers.defs#spatialEntity.dimensions": "pub.layers.defs#spatialEntity.dimensions",
+    "pub.layers.defs#spatialExpression.functionUri": "pub.layers.defs#spatialExpression.functionUri",
+    "pub.layers.defs#objectRef": "pub.layers.defs#objectRef",
+    "pub.layers.defs#temporalEntity.recurrence": "pub.layers.defs#temporalEntity.recurrence",
+    "pub.layers.defs#textPositionSelector.end": "pub.layers.defs#textPositionSelector.end",
+    "pub.layers.defs#spatialExpression.function": "pub.layers.defs#spatialExpression.function",
+    "pub.layers.defs#temporalExpression.modifier": "pub.layers.defs#temporalExpression.modifier",
+    "pub.layers.defs#spatialExpression.modifier": "pub.layers.defs#spatialExpression.modifier",
+    "pub.layers.defs#annotationMetadata.personaRef": "pub.layers.defs#annotationMetadata.personaRef",
+    "pub.layers.defs#featureMap.entries": "pub.layers.defs#featureMap.entries",
+    "pub.layers.defs#boundingBox.x": "pub.layers.defs#boundingBox.x",
+    "pub.layers.defs#alignmentLink.knowledgeRefs": "pub.layers.defs#alignmentLink.knowledgeRefs",
+    "pub.layers.defs#alignmentLink.features": "pub.layers.defs#alignmentLink.features",
+    "pub.layers.defs#annotationMetadata.dependencies:items": "pub.layers.defs#annotationMetadata.dependencies:items",
+    "pub.layers.defs#temporalEntity.calendar": "pub.layers.defs#temporalEntity.calendar",
+    "pub.layers.defs#temporalEntity.calendarUri": "pub.layers.defs#temporalEntity.calendarUri",
+    "pub.layers.defs#spatialModifier.mod": "pub.layers.defs#spatialModifier.mod",
+    "pub.layers.defs#annotationMetadata.timestamp": "pub.layers.defs#annotationMetadata.timestamp",
+    "pub.layers.defs#constraint": "pub.layers.defs#constraint",
+    "pub.layers.defs#externalTarget.selector": "pub.layers.defs#externalTarget.selector",
+    "pub.layers.defs#textPositionSelector.start": "pub.layers.defs#textPositionSelector.start",
+    "pub.layers.defs#objectRef.knowledgeRef": "pub.layers.defs#objectRef.knowledgeRef",
+    "pub.layers.defs#spatialEntity.bbox": "pub.layers.defs#spatialEntity.bbox",
+    "pub.layers.defs#spatialExpression.features": "pub.layers.defs#spatialExpression.features",
+    "pub.layers.defs#externalTarget": "pub.layers.defs#externalTarget",
+    "pub.layers.defs#temporalExpression.type": "pub.layers.defs#temporalExpression.type"
+  },
+  "edge_map": [
+    [
+      {
+        "src": "pub.layers.defs#anchor",
+        "tgt": "pub.layers.defs#anchor.pageAnchor",
+        "kind": "prop",
+        "name": "pageAnchor"
+      },
+      {
+        "src": "pub.layers.defs#anchor",
+        "tgt": "pub.layers.defs#anchor.pageAnchor",
+        "kind": "prop",
+        "name": "pageAnchor"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#anchor",
+        "tgt": "pub.layers.defs#anchor.tokenRef",
+        "kind": "prop",
+        "name": "tokenRef"
+      },
+      {
+        "src": "pub.layers.defs#anchor",
+        "tgt": "pub.layers.defs#anchor.tokenRef",
+        "kind": "prop",
+        "name": "tokenRef"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.geometryFormat",
+        "kind": "prop",
+        "name": "geometryFormat"
+      },
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.geometryFormat",
+        "kind": "prop",
+        "name": "geometryFormat"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#anchor.tokenRefSequence",
+        "tgt": "pub.layers.defs#tokenRefSequence",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#anchor.tokenRefSequence",
+        "tgt": "pub.layers.defs#tokenRefSequence",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalExpression.modifier",
+        "tgt": "pub.layers.defs#temporalModifier",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#temporalExpression.modifier",
+        "tgt": "pub.layers.defs#temporalModifier",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalExpression",
+        "tgt": "pub.layers.defs#temporalExpression.typeUri",
+        "kind": "prop",
+        "name": "typeUri"
+      },
+      {
+        "src": "pub.layers.defs#temporalExpression",
+        "tgt": "pub.layers.defs#temporalExpression.typeUri",
+        "kind": "prop",
+        "name": "typeUri"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#anchor",
+        "tgt": "pub.layers.defs#anchor.tokenRefSequence",
+        "kind": "prop",
+        "name": "tokenRefSequence"
+      },
+      {
+        "src": "pub.layers.defs#anchor",
+        "tgt": "pub.layers.defs#anchor.tokenRefSequence",
+        "kind": "prop",
+        "name": "tokenRefSequence"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#tokenRefSequence",
+        "tgt": "pub.layers.defs#tokenRefSequence.tokenIndexes",
+        "kind": "prop",
+        "name": "tokenIndexes"
+      },
+      {
+        "src": "pub.layers.defs#tokenRefSequence",
+        "tgt": "pub.layers.defs#tokenRefSequence.tokenIndexes",
+        "kind": "prop",
+        "name": "tokenIndexes"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialExpression",
+        "tgt": "pub.layers.defs#spatialExpression.type",
+        "kind": "prop",
+        "name": "type"
+      },
+      {
+        "src": "pub.layers.defs#spatialExpression",
+        "tgt": "pub.layers.defs#spatialExpression.type",
+        "kind": "prop",
+        "name": "type"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#objectRef",
+        "tgt": "pub.layers.defs#objectRef.localId",
+        "kind": "prop",
+        "name": "localId"
+      },
+      {
+        "src": "pub.layers.defs#objectRef",
+        "tgt": "pub.layers.defs#objectRef.localId",
+        "kind": "prop",
+        "name": "localId"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#keyframe",
+        "tgt": "pub.layers.defs#keyframe.bbox",
+        "kind": "prop",
+        "name": "bbox"
+      },
+      {
+        "src": "pub.layers.defs#keyframe",
+        "tgt": "pub.layers.defs#keyframe.bbox",
+        "kind": "prop",
+        "name": "bbox"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#externalTarget.selector:variant1",
+        "tgt": "pub.layers.defs#textPositionSelector",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#externalTarget.selector:variant1",
+        "tgt": "pub.layers.defs#textPositionSelector",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#uuid",
+        "tgt": "pub.layers.defs#uuid.value",
+        "kind": "prop",
+        "name": "value"
+      },
+      {
+        "src": "pub.layers.defs#uuid",
+        "tgt": "pub.layers.defs#uuid.value",
+        "kind": "prop",
+        "name": "value"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#annotationMetadata",
+        "tgt": "pub.layers.defs#annotationMetadata.digest",
+        "kind": "prop",
+        "name": "digest"
+      },
+      {
+        "src": "pub.layers.defs#annotationMetadata",
+        "tgt": "pub.layers.defs#annotationMetadata.digest",
+        "kind": "prop",
+        "name": "digest"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#tokenRefSequence.tokenIndexes",
+        "tgt": "pub.layers.defs#tokenRefSequence.tokenIndexes:items",
+        "kind": "items",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#tokenRefSequence.tokenIndexes",
+        "tgt": "pub.layers.defs#tokenRefSequence.tokenIndexes:items",
+        "kind": "items",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#anchor.spatioTemporalAnchor",
+        "tgt": "pub.layers.defs#spatioTemporalAnchor",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#anchor.spatioTemporalAnchor",
+        "tgt": "pub.layers.defs#spatioTemporalAnchor",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#constraint",
+        "tgt": "pub.layers.defs#constraint.scope",
+        "kind": "prop",
+        "name": "scope"
+      },
+      {
+        "src": "pub.layers.defs#constraint",
+        "tgt": "pub.layers.defs#constraint.scope",
+        "kind": "prop",
+        "name": "scope"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#objectRef.objectId",
+        "tgt": "pub.layers.defs#uuid",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#objectRef.objectId",
+        "tgt": "pub.layers.defs#uuid",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#alignmentLink",
+        "tgt": "pub.layers.defs#alignmentLink.confidence",
+        "kind": "prop",
+        "name": "confidence"
+      },
+      {
+        "src": "pub.layers.defs#alignmentLink",
+        "tgt": "pub.layers.defs#alignmentLink.confidence",
+        "kind": "prop",
+        "name": "confidence"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#anchor",
+        "tgt": "pub.layers.defs#anchor.temporalSpan",
+        "kind": "prop",
+        "name": "temporalSpan"
+      },
+      {
+        "src": "pub.layers.defs#anchor",
+        "tgt": "pub.layers.defs#anchor.temporalSpan",
+        "kind": "prop",
+        "name": "temporalSpan"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#featureMap.entries:items",
+        "tgt": "pub.layers.defs#feature",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#featureMap.entries:items",
+        "tgt": "pub.layers.defs#feature",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#externalTarget.selector",
+        "tgt": "pub.layers.defs#externalTarget.selector:variant2",
+        "kind": "variant",
+        "name": "#fragmentSelector"
+      },
+      {
+        "src": "pub.layers.defs#externalTarget.selector",
+        "tgt": "pub.layers.defs#externalTarget.selector:variant2",
+        "kind": "variant",
+        "name": "#fragmentSelector"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalExpression",
+        "tgt": "pub.layers.defs#temporalExpression.features",
+        "kind": "prop",
+        "name": "features"
+      },
+      {
+        "src": "pub.layers.defs#temporalExpression",
+        "tgt": "pub.layers.defs#temporalExpression.features",
+        "kind": "prop",
+        "name": "features"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#pageAnchor",
+        "tgt": "pub.layers.defs#pageAnchor.page",
+        "kind": "prop",
+        "name": "page"
+      },
+      {
+        "src": "pub.layers.defs#pageAnchor",
+        "tgt": "pub.layers.defs#pageAnchor.page",
+        "kind": "prop",
+        "name": "page"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialExpression",
+        "tgt": "pub.layers.defs#spatialExpression.anchorRef",
+        "kind": "prop",
+        "name": "anchorRef"
+      },
+      {
+        "src": "pub.layers.defs#spatialExpression",
+        "tgt": "pub.layers.defs#spatialExpression.anchorRef",
+        "kind": "prop",
+        "name": "anchorRef"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#keyframe",
+        "tgt": "pub.layers.defs#keyframe.timeMs",
+        "kind": "prop",
+        "name": "timeMs"
+      },
+      {
+        "src": "pub.layers.defs#keyframe",
+        "tgt": "pub.layers.defs#keyframe.timeMs",
+        "kind": "prop",
+        "name": "timeMs"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatioTemporalAnchor",
+        "tgt": "pub.layers.defs#spatioTemporalAnchor.keyframes",
+        "kind": "prop",
+        "name": "keyframes"
+      },
+      {
+        "src": "pub.layers.defs#spatioTemporalAnchor",
+        "tgt": "pub.layers.defs#spatioTemporalAnchor.keyframes",
+        "kind": "prop",
+        "name": "keyframes"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#tokenRefSequence",
+        "tgt": "pub.layers.defs#tokenRefSequence.anchorTokenIndex",
+        "kind": "prop",
+        "name": "anchorTokenIndex"
+      },
+      {
+        "src": "pub.layers.defs#tokenRefSequence",
+        "tgt": "pub.layers.defs#tokenRefSequence.anchorTokenIndex",
+        "kind": "prop",
+        "name": "anchorTokenIndex"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalSpan",
+        "tgt": "pub.layers.defs#temporalSpan.ending",
+        "kind": "prop",
+        "name": "ending"
+      },
+      {
+        "src": "pub.layers.defs#temporalSpan",
+        "tgt": "pub.layers.defs#temporalSpan.ending",
+        "kind": "prop",
+        "name": "ending"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialExpression.features",
+        "tgt": "pub.layers.defs#featureMap",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#spatialExpression.features",
+        "tgt": "pub.layers.defs#featureMap",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#pageAnchor.textSpan",
+        "tgt": "pub.layers.defs#span",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#pageAnchor.textSpan",
+        "tgt": "pub.layers.defs#span",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#externalTarget.selector:variant0",
+        "tgt": "pub.layers.defs#textQuoteSelector",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#externalTarget.selector:variant0",
+        "tgt": "pub.layers.defs#textQuoteSelector",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#alignmentLink.targetIndices",
+        "tgt": "pub.layers.defs#alignmentLink.targetIndices:items",
+        "kind": "items",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#alignmentLink.targetIndices",
+        "tgt": "pub.layers.defs#alignmentLink.targetIndices:items",
+        "kind": "items",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#externalTarget.selector:variant2",
+        "tgt": "pub.layers.defs#fragmentSelector",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#externalTarget.selector:variant2",
+        "tgt": "pub.layers.defs#fragmentSelector",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#externalTarget",
+        "tgt": "pub.layers.defs#externalTarget.title",
+        "kind": "prop",
+        "name": "title"
+      },
+      {
+        "src": "pub.layers.defs#externalTarget",
+        "tgt": "pub.layers.defs#externalTarget.title",
+        "kind": "prop",
+        "name": "title"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.recurrence",
+        "kind": "prop",
+        "name": "recurrence"
+      },
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.recurrence",
+        "kind": "prop",
+        "name": "recurrence"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalModifier",
+        "tgt": "pub.layers.defs#temporalModifier.modUri",
+        "kind": "prop",
+        "name": "modUri"
+      },
+      {
+        "src": "pub.layers.defs#temporalModifier",
+        "tgt": "pub.layers.defs#temporalModifier.modUri",
+        "kind": "prop",
+        "name": "modUri"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialExpression",
+        "tgt": "pub.layers.defs#spatialExpression.typeUri",
+        "kind": "prop",
+        "name": "typeUri"
+      },
+      {
+        "src": "pub.layers.defs#spatialExpression",
+        "tgt": "pub.layers.defs#spatialExpression.typeUri",
+        "kind": "prop",
+        "name": "typeUri"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.duration",
+        "kind": "prop",
+        "name": "duration"
+      },
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.duration",
+        "kind": "prop",
+        "name": "duration"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialEntity.bbox",
+        "tgt": "pub.layers.defs#boundingBox",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#spatialEntity.bbox",
+        "tgt": "pub.layers.defs#boundingBox",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#boundingBox",
+        "tgt": "pub.layers.defs#boundingBox.x",
+        "kind": "prop",
+        "name": "x"
+      },
+      {
+        "src": "pub.layers.defs#boundingBox",
+        "tgt": "pub.layers.defs#boundingBox.x",
+        "kind": "prop",
+        "name": "x"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialExpression",
+        "tgt": "pub.layers.defs#spatialExpression.functionUri",
+        "kind": "prop",
+        "name": "functionUri"
+      },
+      {
+        "src": "pub.layers.defs#spatialExpression",
+        "tgt": "pub.layers.defs#spatialExpression.functionUri",
+        "kind": "prop",
+        "name": "functionUri"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#tokenRef.tokenizationId",
+        "tgt": "pub.layers.defs#uuid",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#tokenRef.tokenizationId",
+        "tgt": "pub.layers.defs#uuid",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.granularityUri",
+        "kind": "prop",
+        "name": "granularityUri"
+      },
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.granularityUri",
+        "kind": "prop",
+        "name": "granularityUri"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialExpression",
+        "tgt": "pub.layers.defs#spatialExpression.modifier",
+        "kind": "prop",
+        "name": "modifier"
+      },
+      {
+        "src": "pub.layers.defs#spatialExpression",
+        "tgt": "pub.layers.defs#spatialExpression.modifier",
+        "kind": "prop",
+        "name": "modifier"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#anchor",
+        "tgt": "pub.layers.defs#anchor.externalTarget",
+        "kind": "prop",
+        "name": "externalTarget"
+      },
+      {
+        "src": "pub.layers.defs#anchor",
+        "tgt": "pub.layers.defs#anchor.externalTarget",
+        "kind": "prop",
+        "name": "externalTarget"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialModifier",
+        "tgt": "pub.layers.defs#spatialModifier.modUri",
+        "kind": "prop",
+        "name": "modUri"
+      },
+      {
+        "src": "pub.layers.defs#spatialModifier",
+        "tgt": "pub.layers.defs#spatialModifier.modUri",
+        "kind": "prop",
+        "name": "modUri"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#alignmentLink.features",
+        "tgt": "pub.layers.defs#featureMap",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#alignmentLink.features",
+        "tgt": "pub.layers.defs#featureMap",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#span",
+        "tgt": "pub.layers.defs#span.start",
+        "kind": "prop",
+        "name": "start"
+      },
+      {
+        "src": "pub.layers.defs#span",
+        "tgt": "pub.layers.defs#span.start",
+        "kind": "prop",
+        "name": "start"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#alignmentLink",
+        "tgt": "pub.layers.defs#alignmentLink.targetIndices",
+        "kind": "prop",
+        "name": "targetIndices"
+      },
+      {
+        "src": "pub.layers.defs#alignmentLink",
+        "tgt": "pub.layers.defs#alignmentLink.targetIndices",
+        "kind": "prop",
+        "name": "targetIndices"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalExpression",
+        "tgt": "pub.layers.defs#temporalExpression.function",
+        "kind": "prop",
+        "name": "function"
+      },
+      {
+        "src": "pub.layers.defs#temporalExpression",
+        "tgt": "pub.layers.defs#temporalExpression.function",
+        "kind": "prop",
+        "name": "function"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalExpression.value",
+        "tgt": "pub.layers.defs#temporalEntity",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#temporalExpression.value",
+        "tgt": "pub.layers.defs#temporalEntity",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.typeUri",
+        "kind": "prop",
+        "name": "typeUri"
+      },
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.typeUri",
+        "kind": "prop",
+        "name": "typeUri"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalExpression",
+        "tgt": "pub.layers.defs#temporalExpression.anchorRef",
+        "kind": "prop",
+        "name": "anchorRef"
+      },
+      {
+        "src": "pub.layers.defs#temporalExpression",
+        "tgt": "pub.layers.defs#temporalExpression.anchorRef",
+        "kind": "prop",
+        "name": "anchorRef"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialExpression",
+        "tgt": "pub.layers.defs#spatialExpression.value",
+        "kind": "prop",
+        "name": "value"
+      },
+      {
+        "src": "pub.layers.defs#spatialExpression",
+        "tgt": "pub.layers.defs#spatialExpression.value",
+        "kind": "prop",
+        "name": "value"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#anchor",
+        "tgt": "pub.layers.defs#anchor.spatioTemporalAnchor",
+        "kind": "prop",
+        "name": "spatioTemporalAnchor"
+      },
+      {
+        "src": "pub.layers.defs#anchor",
+        "tgt": "pub.layers.defs#anchor.spatioTemporalAnchor",
+        "kind": "prop",
+        "name": "spatioTemporalAnchor"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#tokenRef",
+        "tgt": "pub.layers.defs#tokenRef.tokenIndex",
+        "kind": "prop",
+        "name": "tokenIndex"
+      },
+      {
+        "src": "pub.layers.defs#tokenRef",
+        "tgt": "pub.layers.defs#tokenRef.tokenIndex",
+        "kind": "prop",
+        "name": "tokenIndex"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#pageAnchor.boundingBox",
+        "tgt": "pub.layers.defs#boundingBox",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#pageAnchor.boundingBox",
+        "tgt": "pub.layers.defs#boundingBox",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#constraint.context",
+        "tgt": "pub.layers.defs#constraint.context:items",
+        "kind": "items",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#constraint.context",
+        "tgt": "pub.layers.defs#constraint.context:items",
+        "kind": "items",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#keyframe",
+        "tgt": "pub.layers.defs#keyframe.features",
+        "kind": "prop",
+        "name": "features"
+      },
+      {
+        "src": "pub.layers.defs#keyframe",
+        "tgt": "pub.layers.defs#keyframe.features",
+        "kind": "prop",
+        "name": "features"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#constraint",
+        "tgt": "pub.layers.defs#constraint.expression",
+        "kind": "prop",
+        "name": "expression"
+      },
+      {
+        "src": "pub.layers.defs#constraint",
+        "tgt": "pub.layers.defs#constraint.expression",
+        "kind": "prop",
+        "name": "expression"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#boundingBox",
+        "tgt": "pub.layers.defs#boundingBox.height",
+        "kind": "prop",
+        "name": "height"
+      },
+      {
+        "src": "pub.layers.defs#boundingBox",
+        "tgt": "pub.layers.defs#boundingBox.height",
+        "kind": "prop",
+        "name": "height"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#textPositionSelector",
+        "tgt": "pub.layers.defs#textPositionSelector.end",
+        "kind": "prop",
+        "name": "end"
+      },
+      {
+        "src": "pub.layers.defs#textPositionSelector",
+        "tgt": "pub.layers.defs#textPositionSelector.end",
+        "kind": "prop",
+        "name": "end"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.uncertainty",
+        "kind": "prop",
+        "name": "uncertainty"
+      },
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.uncertainty",
+        "kind": "prop",
+        "name": "uncertainty"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#objectRef",
+        "tgt": "pub.layers.defs#objectRef.recordRef",
+        "kind": "prop",
+        "name": "recordRef"
+      },
+      {
+        "src": "pub.layers.defs#objectRef",
+        "tgt": "pub.layers.defs#objectRef.recordRef",
+        "kind": "prop",
+        "name": "recordRef"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialEntity.features",
+        "tgt": "pub.layers.defs#featureMap",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#spatialEntity.features",
+        "tgt": "pub.layers.defs#featureMap",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#alignmentLink",
+        "tgt": "pub.layers.defs#alignmentLink.knowledgeRefs",
+        "kind": "prop",
+        "name": "knowledgeRefs"
+      },
+      {
+        "src": "pub.layers.defs#alignmentLink",
+        "tgt": "pub.layers.defs#alignmentLink.knowledgeRefs",
+        "kind": "prop",
+        "name": "knowledgeRefs"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#alignmentLink.knowledgeRefs:items",
+        "tgt": "pub.layers.defs#knowledgeRef",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#alignmentLink.knowledgeRefs:items",
+        "tgt": "pub.layers.defs#knowledgeRef",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#tokenRefSequence.tokenizationId",
+        "tgt": "pub.layers.defs#uuid",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#tokenRefSequence.tokenizationId",
+        "tgt": "pub.layers.defs#uuid",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#annotationMetadata",
+        "tgt": "pub.layers.defs#annotationMetadata.timestamp",
+        "kind": "prop",
+        "name": "timestamp"
+      },
+      {
+        "src": "pub.layers.defs#annotationMetadata",
+        "tgt": "pub.layers.defs#annotationMetadata.timestamp",
+        "kind": "prop",
+        "name": "timestamp"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialExpression.anchorRef",
+        "tgt": "pub.layers.defs#objectRef",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#spatialExpression.anchorRef",
+        "tgt": "pub.layers.defs#objectRef",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#featureMap.entries",
+        "tgt": "pub.layers.defs#featureMap.entries:items",
+        "kind": "items",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#featureMap.entries",
+        "tgt": "pub.layers.defs#featureMap.entries:items",
+        "kind": "items",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.bbox",
+        "kind": "prop",
+        "name": "bbox"
+      },
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.bbox",
+        "kind": "prop",
+        "name": "bbox"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.granularity",
+        "kind": "prop",
+        "name": "granularity"
+      },
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.granularity",
+        "kind": "prop",
+        "name": "granularity"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#tokenRef",
+        "tgt": "pub.layers.defs#tokenRef.tokenizationId",
+        "kind": "prop",
+        "name": "tokenizationId"
+      },
+      {
+        "src": "pub.layers.defs#tokenRef",
+        "tgt": "pub.layers.defs#tokenRef.tokenizationId",
+        "kind": "prop",
+        "name": "tokenizationId"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#annotationMetadata.dependencies:items",
+        "tgt": "pub.layers.defs#objectRef",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#annotationMetadata.dependencies:items",
+        "tgt": "pub.layers.defs#objectRef",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#agentRef",
+        "tgt": "pub.layers.defs#agentRef.knowledgeRef",
+        "kind": "prop",
+        "name": "knowledgeRef"
+      },
+      {
+        "src": "pub.layers.defs#agentRef",
+        "tgt": "pub.layers.defs#agentRef.knowledgeRef",
+        "kind": "prop",
+        "name": "knowledgeRef"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#constraint",
+        "tgt": "pub.layers.defs#constraint.context",
+        "kind": "prop",
+        "name": "context"
+      },
+      {
+        "src": "pub.layers.defs#constraint",
+        "tgt": "pub.layers.defs#constraint.context",
+        "kind": "prop",
+        "name": "context"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalExpression",
+        "tgt": "pub.layers.defs#temporalExpression.modifier",
+        "kind": "prop",
+        "name": "modifier"
+      },
+      {
+        "src": "pub.layers.defs#temporalExpression",
+        "tgt": "pub.layers.defs#temporalExpression.modifier",
+        "kind": "prop",
+        "name": "modifier"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.instant",
+        "kind": "prop",
+        "name": "instant"
+      },
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.instant",
+        "kind": "prop",
+        "name": "instant"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialModifier",
+        "tgt": "pub.layers.defs#spatialModifier.mod",
+        "kind": "prop",
+        "name": "mod"
+      },
+      {
+        "src": "pub.layers.defs#spatialModifier",
+        "tgt": "pub.layers.defs#spatialModifier.mod",
+        "kind": "prop",
+        "name": "mod"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#objectRef.localId",
+        "tgt": "pub.layers.defs#uuid",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#objectRef.localId",
+        "tgt": "pub.layers.defs#uuid",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#constraint",
+        "tgt": "pub.layers.defs#constraint.description",
+        "kind": "prop",
+        "name": "description"
+      },
+      {
+        "src": "pub.layers.defs#constraint",
+        "tgt": "pub.layers.defs#constraint.description",
+        "kind": "prop",
+        "name": "description"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.features",
+        "kind": "prop",
+        "name": "features"
+      },
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.features",
+        "kind": "prop",
+        "name": "features"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#anchor.temporalSpan",
+        "tgt": "pub.layers.defs#temporalSpan",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#anchor.temporalSpan",
+        "tgt": "pub.layers.defs#temporalSpan",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.crs",
+        "kind": "prop",
+        "name": "crs"
+      },
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.crs",
+        "kind": "prop",
+        "name": "crs"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#anchor.tokenRef",
+        "tgt": "pub.layers.defs#tokenRef",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#anchor.tokenRef",
+        "tgt": "pub.layers.defs#tokenRef",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatioTemporalAnchor.temporalSpan",
+        "tgt": "pub.layers.defs#temporalSpan",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#spatioTemporalAnchor.temporalSpan",
+        "tgt": "pub.layers.defs#temporalSpan",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatioTemporalAnchor",
+        "tgt": "pub.layers.defs#spatioTemporalAnchor.temporalSpan",
+        "kind": "prop",
+        "name": "temporalSpan"
+      },
+      {
+        "src": "pub.layers.defs#spatioTemporalAnchor",
+        "tgt": "pub.layers.defs#spatioTemporalAnchor.temporalSpan",
+        "kind": "prop",
+        "name": "temporalSpan"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#annotationMetadata",
+        "tgt": "pub.layers.defs#annotationMetadata.tool",
+        "kind": "prop",
+        "name": "tool"
+      },
+      {
+        "src": "pub.layers.defs#annotationMetadata",
+        "tgt": "pub.layers.defs#annotationMetadata.tool",
+        "kind": "prop",
+        "name": "tool"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#anchor.pageAnchor",
+        "tgt": "pub.layers.defs#pageAnchor",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#anchor.pageAnchor",
+        "tgt": "pub.layers.defs#pageAnchor",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#externalTarget.selector",
+        "tgt": "pub.layers.defs#externalTarget.selector:variant1",
+        "kind": "variant",
+        "name": "#textPositionSelector"
+      },
+      {
+        "src": "pub.layers.defs#externalTarget.selector",
+        "tgt": "pub.layers.defs#externalTarget.selector:variant1",
+        "kind": "variant",
+        "name": "#textPositionSelector"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#featureMap",
+        "tgt": "pub.layers.defs#featureMap.entries",
+        "kind": "prop",
+        "name": "entries"
+      },
+      {
+        "src": "pub.layers.defs#featureMap",
+        "tgt": "pub.layers.defs#featureMap.entries",
+        "kind": "prop",
+        "name": "entries"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.latest",
+        "kind": "prop",
+        "name": "latest"
+      },
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.latest",
+        "kind": "prop",
+        "name": "latest"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialModifier.features",
+        "tgt": "pub.layers.defs#featureMap",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#spatialModifier.features",
+        "tgt": "pub.layers.defs#featureMap",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#alignmentLink",
+        "tgt": "pub.layers.defs#alignmentLink.label",
+        "kind": "prop",
+        "name": "label"
+      },
+      {
+        "src": "pub.layers.defs#alignmentLink",
+        "tgt": "pub.layers.defs#alignmentLink.label",
+        "kind": "prop",
+        "name": "label"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.geometry",
+        "kind": "prop",
+        "name": "geometry"
+      },
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.geometry",
+        "kind": "prop",
+        "name": "geometry"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalModifier.features",
+        "tgt": "pub.layers.defs#featureMap",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#temporalModifier.features",
+        "tgt": "pub.layers.defs#featureMap",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#agentRef.knowledgeRef",
+        "tgt": "pub.layers.defs#knowledgeRef",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#agentRef.knowledgeRef",
+        "tgt": "pub.layers.defs#knowledgeRef",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalSpan",
+        "tgt": "pub.layers.defs#temporalSpan.start",
+        "kind": "prop",
+        "name": "start"
+      },
+      {
+        "src": "pub.layers.defs#temporalSpan",
+        "tgt": "pub.layers.defs#temporalSpan.start",
+        "kind": "prop",
+        "name": "start"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalExpression.features",
+        "tgt": "pub.layers.defs#featureMap",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#temporalExpression.features",
+        "tgt": "pub.layers.defs#featureMap",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#constraint",
+        "tgt": "pub.layers.defs#constraint.expressionFormat",
+        "kind": "prop",
+        "name": "expressionFormat"
+      },
+      {
+        "src": "pub.layers.defs#constraint",
+        "tgt": "pub.layers.defs#constraint.expressionFormat",
+        "kind": "prop",
+        "name": "expressionFormat"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.earliest",
+        "kind": "prop",
+        "name": "earliest"
+      },
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.earliest",
+        "kind": "prop",
+        "name": "earliest"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalEntity.features",
+        "tgt": "pub.layers.defs#featureMap",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#temporalEntity.features",
+        "tgt": "pub.layers.defs#featureMap",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.crsUri",
+        "kind": "prop",
+        "name": "crsUri"
+      },
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.crsUri",
+        "kind": "prop",
+        "name": "crsUri"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.calendar",
+        "kind": "prop",
+        "name": "calendar"
+      },
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.calendar",
+        "kind": "prop",
+        "name": "calendar"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatioTemporalAnchor",
+        "tgt": "pub.layers.defs#spatioTemporalAnchor.interpolation",
+        "kind": "prop",
+        "name": "interpolation"
+      },
+      {
+        "src": "pub.layers.defs#spatioTemporalAnchor",
+        "tgt": "pub.layers.defs#spatioTemporalAnchor.interpolation",
+        "kind": "prop",
+        "name": "interpolation"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.geometryFormatUri",
+        "kind": "prop",
+        "name": "geometryFormatUri"
+      },
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.geometryFormatUri",
+        "kind": "prop",
+        "name": "geometryFormatUri"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#boundingBox",
+        "tgt": "pub.layers.defs#boundingBox.width",
+        "kind": "prop",
+        "name": "width"
+      },
+      {
+        "src": "pub.layers.defs#boundingBox",
+        "tgt": "pub.layers.defs#boundingBox.width",
+        "kind": "prop",
+        "name": "width"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#objectRef",
+        "tgt": "pub.layers.defs#objectRef.objectId",
+        "kind": "prop",
+        "name": "objectId"
+      },
+      {
+        "src": "pub.layers.defs#objectRef",
+        "tgt": "pub.layers.defs#objectRef.objectId",
+        "kind": "prop",
+        "name": "objectId"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#boundingBox",
+        "tgt": "pub.layers.defs#boundingBox.y",
+        "kind": "prop",
+        "name": "y"
+      },
+      {
+        "src": "pub.layers.defs#boundingBox",
+        "tgt": "pub.layers.defs#boundingBox.y",
+        "kind": "prop",
+        "name": "y"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#knowledgeRef",
+        "tgt": "pub.layers.defs#knowledgeRef.identifier",
+        "kind": "prop",
+        "name": "identifier"
+      },
+      {
+        "src": "pub.layers.defs#knowledgeRef",
+        "tgt": "pub.layers.defs#knowledgeRef.identifier",
+        "kind": "prop",
+        "name": "identifier"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalExpression",
+        "tgt": "pub.layers.defs#temporalExpression.value",
+        "kind": "prop",
+        "name": "value"
+      },
+      {
+        "src": "pub.layers.defs#temporalExpression",
+        "tgt": "pub.layers.defs#temporalExpression.value",
+        "kind": "prop",
+        "name": "value"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#alignmentLink",
+        "tgt": "pub.layers.defs#alignmentLink.features",
+        "kind": "prop",
+        "name": "features"
+      },
+      {
+        "src": "pub.layers.defs#alignmentLink",
+        "tgt": "pub.layers.defs#alignmentLink.features",
+        "kind": "prop",
+        "name": "features"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#pageAnchor",
+        "tgt": "pub.layers.defs#pageAnchor.textSpan",
+        "kind": "prop",
+        "name": "textSpan"
+      },
+      {
+        "src": "pub.layers.defs#pageAnchor",
+        "tgt": "pub.layers.defs#pageAnchor.textSpan",
+        "kind": "prop",
+        "name": "textSpan"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#anchor.externalTarget",
+        "tgt": "pub.layers.defs#externalTarget",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#anchor.externalTarget",
+        "tgt": "pub.layers.defs#externalTarget",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#feature",
+        "tgt": "pub.layers.defs#feature.key",
+        "kind": "prop",
+        "name": "key"
+      },
+      {
+        "src": "pub.layers.defs#feature",
+        "tgt": "pub.layers.defs#feature.key",
+        "kind": "prop",
+        "name": "key"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#textQuoteSelector",
+        "tgt": "pub.layers.defs#textQuoteSelector.exact",
+        "kind": "prop",
+        "name": "exact"
+      },
+      {
+        "src": "pub.layers.defs#textQuoteSelector",
+        "tgt": "pub.layers.defs#textQuoteSelector.exact",
+        "kind": "prop",
+        "name": "exact"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatioTemporalAnchor.keyframes",
+        "tgt": "pub.layers.defs#spatioTemporalAnchor.keyframes:items",
+        "kind": "items",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#spatioTemporalAnchor.keyframes",
+        "tgt": "pub.layers.defs#spatioTemporalAnchor.keyframes:items",
+        "kind": "items",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#knowledgeRef",
+        "tgt": "pub.layers.defs#knowledgeRef.sourceUri",
+        "kind": "prop",
+        "name": "sourceUri"
+      },
+      {
+        "src": "pub.layers.defs#knowledgeRef",
+        "tgt": "pub.layers.defs#knowledgeRef.sourceUri",
+        "kind": "prop",
+        "name": "sourceUri"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#agentRef",
+        "tgt": "pub.layers.defs#agentRef.did",
+        "kind": "prop",
+        "name": "did"
+      },
+      {
+        "src": "pub.layers.defs#agentRef",
+        "tgt": "pub.layers.defs#agentRef.did",
+        "kind": "prop",
+        "name": "did"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatioTemporalAnchor.keyframes:items",
+        "tgt": "pub.layers.defs#keyframe",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#spatioTemporalAnchor.keyframes:items",
+        "tgt": "pub.layers.defs#keyframe",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#anchor.textSpan",
+        "tgt": "pub.layers.defs#span",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#anchor.textSpan",
+        "tgt": "pub.layers.defs#span",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalExpression.anchorRef",
+        "tgt": "pub.layers.defs#objectRef",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#temporalExpression.anchorRef",
+        "tgt": "pub.layers.defs#objectRef",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#constraint",
+        "tgt": "pub.layers.defs#constraint.scopeUri",
+        "kind": "prop",
+        "name": "scopeUri"
+      },
+      {
+        "src": "pub.layers.defs#constraint",
+        "tgt": "pub.layers.defs#constraint.scopeUri",
+        "kind": "prop",
+        "name": "scopeUri"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#keyframe.bbox",
+        "tgt": "pub.layers.defs#boundingBox",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#keyframe.bbox",
+        "tgt": "pub.layers.defs#boundingBox",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#knowledgeRef",
+        "tgt": "pub.layers.defs#knowledgeRef.label",
+        "kind": "prop",
+        "name": "label"
+      },
+      {
+        "src": "pub.layers.defs#knowledgeRef",
+        "tgt": "pub.layers.defs#knowledgeRef.label",
+        "kind": "prop",
+        "name": "label"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalExpression",
+        "tgt": "pub.layers.defs#temporalExpression.type",
+        "kind": "prop",
+        "name": "type"
+      },
+      {
+        "src": "pub.layers.defs#temporalExpression",
+        "tgt": "pub.layers.defs#temporalExpression.type",
+        "kind": "prop",
+        "name": "type"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#externalTarget",
+        "tgt": "pub.layers.defs#externalTarget.sourceHash",
+        "kind": "prop",
+        "name": "sourceHash"
+      },
+      {
+        "src": "pub.layers.defs#externalTarget",
+        "tgt": "pub.layers.defs#externalTarget.sourceHash",
+        "kind": "prop",
+        "name": "sourceHash"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialExpression.value",
+        "tgt": "pub.layers.defs#spatialEntity",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#spatialExpression.value",
+        "tgt": "pub.layers.defs#spatialEntity",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialModifier",
+        "tgt": "pub.layers.defs#spatialModifier.features",
+        "kind": "prop",
+        "name": "features"
+      },
+      {
+        "src": "pub.layers.defs#spatialModifier",
+        "tgt": "pub.layers.defs#spatialModifier.features",
+        "kind": "prop",
+        "name": "features"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#textQuoteSelector",
+        "tgt": "pub.layers.defs#textQuoteSelector.suffix",
+        "kind": "prop",
+        "name": "suffix"
+      },
+      {
+        "src": "pub.layers.defs#textQuoteSelector",
+        "tgt": "pub.layers.defs#textQuoteSelector.suffix",
+        "kind": "prop",
+        "name": "suffix"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#anchor",
+        "tgt": "pub.layers.defs#anchor.textSpan",
+        "kind": "prop",
+        "name": "textSpan"
+      },
+      {
+        "src": "pub.layers.defs#anchor",
+        "tgt": "pub.layers.defs#anchor.textSpan",
+        "kind": "prop",
+        "name": "textSpan"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#textQuoteSelector",
+        "tgt": "pub.layers.defs#textQuoteSelector.prefix",
+        "kind": "prop",
+        "name": "prefix"
+      },
+      {
+        "src": "pub.layers.defs#textQuoteSelector",
+        "tgt": "pub.layers.defs#textQuoteSelector.prefix",
+        "kind": "prop",
+        "name": "prefix"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#annotationMetadata",
+        "tgt": "pub.layers.defs#annotationMetadata.agent",
+        "kind": "prop",
+        "name": "agent"
+      },
+      {
+        "src": "pub.layers.defs#annotationMetadata",
+        "tgt": "pub.layers.defs#annotationMetadata.agent",
+        "kind": "prop",
+        "name": "agent"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#pageAnchor",
+        "tgt": "pub.layers.defs#pageAnchor.boundingBox",
+        "kind": "prop",
+        "name": "boundingBox"
+      },
+      {
+        "src": "pub.layers.defs#pageAnchor",
+        "tgt": "pub.layers.defs#pageAnchor.boundingBox",
+        "kind": "prop",
+        "name": "boundingBox"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.type",
+        "kind": "prop",
+        "name": "type"
+      },
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.type",
+        "kind": "prop",
+        "name": "type"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#fragmentSelector",
+        "tgt": "pub.layers.defs#fragmentSelector.value",
+        "kind": "prop",
+        "name": "value"
+      },
+      {
+        "src": "pub.layers.defs#fragmentSelector",
+        "tgt": "pub.layers.defs#fragmentSelector.value",
+        "kind": "prop",
+        "name": "value"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalModifier",
+        "tgt": "pub.layers.defs#temporalModifier.features",
+        "kind": "prop",
+        "name": "features"
+      },
+      {
+        "src": "pub.layers.defs#temporalModifier",
+        "tgt": "pub.layers.defs#temporalModifier.features",
+        "kind": "prop",
+        "name": "features"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#feature",
+        "tgt": "pub.layers.defs#feature.value",
+        "kind": "prop",
+        "name": "value"
+      },
+      {
+        "src": "pub.layers.defs#feature",
+        "tgt": "pub.layers.defs#feature.value",
+        "kind": "prop",
+        "name": "value"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#objectRef",
+        "tgt": "pub.layers.defs#objectRef.knowledgeRef",
+        "kind": "prop",
+        "name": "knowledgeRef"
+      },
+      {
+        "src": "pub.layers.defs#objectRef",
+        "tgt": "pub.layers.defs#objectRef.knowledgeRef",
+        "kind": "prop",
+        "name": "knowledgeRef"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.intervalEnd",
+        "kind": "prop",
+        "name": "intervalEnd"
+      },
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.intervalEnd",
+        "kind": "prop",
+        "name": "intervalEnd"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalExpression",
+        "tgt": "pub.layers.defs#temporalExpression.functionUri",
+        "kind": "prop",
+        "name": "functionUri"
+      },
+      {
+        "src": "pub.layers.defs#temporalExpression",
+        "tgt": "pub.layers.defs#temporalExpression.functionUri",
+        "kind": "prop",
+        "name": "functionUri"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#fragmentSelector",
+        "tgt": "pub.layers.defs#fragmentSelector.conformsTo",
+        "kind": "prop",
+        "name": "conformsTo"
+      },
+      {
+        "src": "pub.layers.defs#fragmentSelector",
+        "tgt": "pub.layers.defs#fragmentSelector.conformsTo",
+        "kind": "prop",
+        "name": "conformsTo"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.calendarUri",
+        "kind": "prop",
+        "name": "calendarUri"
+      },
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.calendarUri",
+        "kind": "prop",
+        "name": "calendarUri"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#textPositionSelector",
+        "tgt": "pub.layers.defs#textPositionSelector.start",
+        "kind": "prop",
+        "name": "start"
+      },
+      {
+        "src": "pub.layers.defs#textPositionSelector",
+        "tgt": "pub.layers.defs#textPositionSelector.start",
+        "kind": "prop",
+        "name": "start"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialExpression",
+        "tgt": "pub.layers.defs#spatialExpression.function",
+        "kind": "prop",
+        "name": "function"
+      },
+      {
+        "src": "pub.layers.defs#spatialExpression",
+        "tgt": "pub.layers.defs#spatialExpression.function",
+        "kind": "prop",
+        "name": "function"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#alignmentLink.sourceIndices",
+        "tgt": "pub.layers.defs#alignmentLink.sourceIndices:items",
+        "kind": "items",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#alignmentLink.sourceIndices",
+        "tgt": "pub.layers.defs#alignmentLink.sourceIndices:items",
+        "kind": "items",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#annotationMetadata.dependencies",
+        "tgt": "pub.layers.defs#annotationMetadata.dependencies:items",
+        "kind": "items",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#annotationMetadata.dependencies",
+        "tgt": "pub.layers.defs#annotationMetadata.dependencies:items",
+        "kind": "items",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#constraint",
+        "tgt": "pub.layers.defs#constraint.expressionFormatUri",
+        "kind": "prop",
+        "name": "expressionFormatUri"
+      },
+      {
+        "src": "pub.layers.defs#constraint",
+        "tgt": "pub.layers.defs#constraint.expressionFormatUri",
+        "kind": "prop",
+        "name": "expressionFormatUri"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.intervalStart",
+        "kind": "prop",
+        "name": "intervalStart"
+      },
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.intervalStart",
+        "kind": "prop",
+        "name": "intervalStart"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#externalTarget.selector",
+        "tgt": "pub.layers.defs#externalTarget.selector:variant0",
+        "kind": "variant",
+        "name": "#textQuoteSelector"
+      },
+      {
+        "src": "pub.layers.defs#externalTarget.selector",
+        "tgt": "pub.layers.defs#externalTarget.selector:variant0",
+        "kind": "variant",
+        "name": "#textQuoteSelector"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialExpression.modifier",
+        "tgt": "pub.layers.defs#spatialModifier",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#spatialExpression.modifier",
+        "tgt": "pub.layers.defs#spatialModifier",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.features",
+        "kind": "prop",
+        "name": "features"
+      },
+      {
+        "src": "pub.layers.defs#temporalEntity",
+        "tgt": "pub.layers.defs#temporalEntity.features",
+        "kind": "prop",
+        "name": "features"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#agentRef",
+        "tgt": "pub.layers.defs#agentRef.name",
+        "kind": "prop",
+        "name": "name"
+      },
+      {
+        "src": "pub.layers.defs#agentRef",
+        "tgt": "pub.layers.defs#agentRef.name",
+        "kind": "prop",
+        "name": "name"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#agentRef",
+        "tgt": "pub.layers.defs#agentRef.id",
+        "kind": "prop",
+        "name": "id"
+      },
+      {
+        "src": "pub.layers.defs#agentRef",
+        "tgt": "pub.layers.defs#agentRef.id",
+        "kind": "prop",
+        "name": "id"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#externalTarget",
+        "tgt": "pub.layers.defs#externalTarget.selector",
+        "kind": "prop",
+        "name": "selector"
+      },
+      {
+        "src": "pub.layers.defs#externalTarget",
+        "tgt": "pub.layers.defs#externalTarget.selector",
+        "kind": "prop",
+        "name": "selector"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#alignmentLink",
+        "tgt": "pub.layers.defs#alignmentLink.sourceIndices",
+        "kind": "prop",
+        "name": "sourceIndices"
+      },
+      {
+        "src": "pub.layers.defs#alignmentLink",
+        "tgt": "pub.layers.defs#alignmentLink.sourceIndices",
+        "kind": "prop",
+        "name": "sourceIndices"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#knowledgeRef",
+        "tgt": "pub.layers.defs#knowledgeRef.uri",
+        "kind": "prop",
+        "name": "uri"
+      },
+      {
+        "src": "pub.layers.defs#knowledgeRef",
+        "tgt": "pub.layers.defs#knowledgeRef.uri",
+        "kind": "prop",
+        "name": "uri"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#annotationMetadata",
+        "tgt": "pub.layers.defs#annotationMetadata.dependencies",
+        "kind": "prop",
+        "name": "dependencies"
+      },
+      {
+        "src": "pub.layers.defs#annotationMetadata",
+        "tgt": "pub.layers.defs#annotationMetadata.dependencies",
+        "kind": "prop",
+        "name": "dependencies"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#objectRef.knowledgeRef",
+        "tgt": "pub.layers.defs#knowledgeRef",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#objectRef.knowledgeRef",
+        "tgt": "pub.layers.defs#knowledgeRef",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#alignmentLink.knowledgeRefs",
+        "tgt": "pub.layers.defs#alignmentLink.knowledgeRefs:items",
+        "kind": "items",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#alignmentLink.knowledgeRefs",
+        "tgt": "pub.layers.defs#alignmentLink.knowledgeRefs:items",
+        "kind": "items",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#annotationMetadata",
+        "tgt": "pub.layers.defs#annotationMetadata.confidence",
+        "kind": "prop",
+        "name": "confidence"
+      },
+      {
+        "src": "pub.layers.defs#annotationMetadata",
+        "tgt": "pub.layers.defs#annotationMetadata.confidence",
+        "kind": "prop",
+        "name": "confidence"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#externalTarget",
+        "tgt": "pub.layers.defs#externalTarget.source",
+        "kind": "prop",
+        "name": "source"
+      },
+      {
+        "src": "pub.layers.defs#externalTarget",
+        "tgt": "pub.layers.defs#externalTarget.source",
+        "kind": "prop",
+        "name": "source"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#knowledgeRef",
+        "tgt": "pub.layers.defs#knowledgeRef.source",
+        "kind": "prop",
+        "name": "source"
+      },
+      {
+        "src": "pub.layers.defs#knowledgeRef",
+        "tgt": "pub.layers.defs#knowledgeRef.source",
+        "kind": "prop",
+        "name": "source"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#span",
+        "tgt": "pub.layers.defs#span.ending",
+        "kind": "prop",
+        "name": "ending"
+      },
+      {
+        "src": "pub.layers.defs#span",
+        "tgt": "pub.layers.defs#span.ending",
+        "kind": "prop",
+        "name": "ending"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatioTemporalAnchor",
+        "tgt": "pub.layers.defs#spatioTemporalAnchor.interpolationUri",
+        "kind": "prop",
+        "name": "interpolationUri"
+      },
+      {
+        "src": "pub.layers.defs#spatioTemporalAnchor",
+        "tgt": "pub.layers.defs#spatioTemporalAnchor.interpolationUri",
+        "kind": "prop",
+        "name": "interpolationUri"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialExpression",
+        "tgt": "pub.layers.defs#spatialExpression.features",
+        "kind": "prop",
+        "name": "features"
+      },
+      {
+        "src": "pub.layers.defs#spatialExpression",
+        "tgt": "pub.layers.defs#spatialExpression.features",
+        "kind": "prop",
+        "name": "features"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#temporalModifier",
+        "tgt": "pub.layers.defs#temporalModifier.mod",
+        "kind": "prop",
+        "name": "mod"
+      },
+      {
+        "src": "pub.layers.defs#temporalModifier",
+        "tgt": "pub.layers.defs#temporalModifier.mod",
+        "kind": "prop",
+        "name": "mod"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#annotationMetadata.agent",
+        "tgt": "pub.layers.defs#agentRef",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#annotationMetadata.agent",
+        "tgt": "pub.layers.defs#agentRef",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#keyframe.features",
+        "tgt": "pub.layers.defs#featureMap",
+        "kind": "ref",
+        "name": null
+      },
+      {
+        "src": "pub.layers.defs#keyframe.features",
+        "tgt": "pub.layers.defs#featureMap",
+        "kind": "ref",
+        "name": null
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.dimensions",
+        "kind": "prop",
+        "name": "dimensions"
+      },
+      {
+        "src": "pub.layers.defs#spatialEntity",
+        "tgt": "pub.layers.defs#spatialEntity.dimensions",
+        "kind": "prop",
+        "name": "dimensions"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#tokenRefSequence",
+        "tgt": "pub.layers.defs#tokenRefSequence.tokenizationId",
+        "kind": "prop",
+        "name": "tokenizationId"
+      },
+      {
+        "src": "pub.layers.defs#tokenRefSequence",
+        "tgt": "pub.layers.defs#tokenRefSequence.tokenizationId",
+        "kind": "prop",
+        "name": "tokenizationId"
+      }
+    ],
+    [
+      {
+        "src": "pub.layers.defs#annotationMetadata",
+        "tgt": "pub.layers.defs#annotationMetadata.personaRef",
+        "kind": "prop",
+        "name": "personaRef"
+      },
+      {
+        "src": "pub.layers.defs#annotationMetadata",
+        "tgt": "pub.layers.defs#annotationMetadata.personaRef",
+        "kind": "prop",
+        "name": "personaRef"
+      }
+    ]
+  ],
+  "hyper_edge_map": {},
+  "label_map": [],
+  "resolver": [],
+  "hyper_resolver": [],
+  "expr_resolvers": [],
+  "domain": null,
+  "codomain": null
+}
