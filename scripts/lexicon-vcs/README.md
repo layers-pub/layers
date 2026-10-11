@@ -1,7 +1,7 @@
 # Layers lexicon history
 
 This crate builds the retroactive Panproto repository for the Layers record and
-shared-definition lexicons. It reads the `v0.1.0` through `v0.8.0` Git tags,
+shared-definition lexicons. It reads the `v0.1.0` through `v0.11.0` Git tags,
 excludes query and permission-set lexicons, and writes:
 
 - one per-file project-schema commit and lightweight tag per release under
@@ -24,6 +24,12 @@ cargo run \
 
 The builder refuses to replace an existing `.panproto` directory. This makes
 rebuilding safe and leaves installation as an explicit step.
+
+Every lexicon release must extend the version list, install the generated
+adjacent migration under `lexicons/lenses`, and verify the complete chain before
+the Git tag and GitHub release are published. Additive changes use the generated
+structural migration; changes that reshape existing data require a hand-authored
+migration.
 
 ## Real-data round trip
 

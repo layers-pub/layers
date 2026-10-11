@@ -18,6 +18,13 @@ This project follows [Semantic Versioning](https://semver.org/).
   `pub.layers.judgment.experimentDef#taskType`, aligning the experiment
   declaration with the new response carrier.
 
+### Migrations
+
+- Recorded the adjacent Panproto migration `v0.10.0 -> v0.11.0` under
+  `lexicons/lenses/`, extended the generated VCS history through the 0.11.0 tag,
+  and verified the complete migration chain. The new judgment fields are
+  additive, so this hop uses the generated structural migration.
+
 ## [0.10.0] - 2026-09-02
 
 ### Added
