@@ -245,6 +245,39 @@ Participants provide an unbounded numeric value (magnitude estimation). Response
 }
 ```
 
+### Continuous Responses
+
+Continuous tasks record an exact finite decimal response in `continuousValue`.
+The value uses an integer coefficient and a base-10 exponent, so JSON round
+trips do not pass through binary floating point. For instance, the probability
+`0.73` is represented as follows:
+
+```json
+{
+  "$type": "pub.layers.judgment.experimentDef",
+  "name": "Inference probability",
+  "taskType": "continuous",
+  "createdAt": "2026-10-11T12:00:00Z"
+}
+```
+
+```json
+{
+  "item": {
+    "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42"
+  },
+  "continuousValue": {
+    "coefficient": 73,
+    "exponent": -2
+  }
+}
+```
+
+Use `scalarValue` for integer ordinal ratings, ranks, and integer magnitude
+estimates. Use `continuousValue` when the released response is decimal-valued.
+The decimal carrier accepts negative values and values outside 0 to 1 because
+range semantics belong to the experiment declaration.
+
 ```json
 {
   "item": { "recordRef": "at://did:plc:researcher/pub.layers.expression.expression/item-42" },

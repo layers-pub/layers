@@ -4,7 +4,7 @@
   "description": "Composable ATProto lexicons for representing, sharing, and interlinking linguistic annotation data in a decentralized network.",
   "scripts": {
     "validate": "node validate-lexicons.mjs",
-    "test": "node validate-lexicons.mjs"
+    "test": "npm run validate && node test-judgment-continuous.mjs"
   },
   "keywords": ["atproto", "lexicon", "linguistics", "annotation"],
   "author": "Aaron Steven White",
