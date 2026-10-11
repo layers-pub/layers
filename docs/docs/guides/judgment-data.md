@@ -248,7 +248,7 @@ Participants provide an unbounded numeric value (magnitude estimation). Response
 ### Continuous Responses
 
 Continuous tasks record an exact finite decimal response in `continuousValue`.
-The value uses an integer coefficient and a nonnegative scale, so JSON round
+The value uses an integer coefficient and a base-10 exponent, so JSON round
 trips do not pass through binary floating point. For instance, the probability
 `0.73` is represented as follows:
 
@@ -268,7 +268,7 @@ trips do not pass through binary floating point. For instance, the probability
   },
   "continuousValue": {
     "coefficient": 73,
-    "scale": 2
+    "exponent": -2
   }
 }
 ```

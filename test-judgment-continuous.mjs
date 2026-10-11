@@ -26,11 +26,11 @@ const item = {
 };
 
 for (const continuousValue of [
-  { coefficient: 0, scale: 0 },
-  { coefficient: 73, scale: 2 },
-  { coefficient: 1, scale: 0 },
-  { coefficient: -125, scale: 2 },
-  { coefficient: 125, scale: 1 },
+  { coefficient: 0, exponent: 0 },
+  { coefficient: 73, exponent: -2 },
+  { coefficient: 1, exponent: 0 },
+  { coefficient: -125, exponent: -2 },
+  { coefficient: 125, exponent: 1 },
 ]) {
   const judgment = { item, continuousValue };
   const roundTripped = JSON.parse(JSON.stringify(judgment));
@@ -46,14 +46,16 @@ for (const continuousValue of [
   null,
   '',
   {},
-  { coefficient: 'NaN', scale: 0 },
-  { coefficient: Number.NaN, scale: 0 },
-  { coefficient: Number.POSITIVE_INFINITY, scale: 0 },
-  { coefficient: Number.NEGATIVE_INFINITY, scale: 0 },
-  { coefficient: 0.73, scale: 0 },
-  { coefficient: 73, scale: -2 },
+  { coefficient: 'NaN', exponent: 0 },
+  { coefficient: Number.NaN, exponent: 0 },
+  { coefficient: Number.POSITIVE_INFINITY, exponent: 0 },
+  { coefficient: Number.NEGATIVE_INFINITY, exponent: 0 },
+  { coefficient: 0.73, exponent: 0 },
+  { coefficient: 73, exponent: '-2' },
+  { coefficient: 73, exponent: Number.NaN },
+  { coefficient: 73, exponent: Number.POSITIVE_INFINITY },
   { coefficient: 73 },
-  { scale: 2 },
+  { exponent: -2 },
 ]) {
   const result = lexicons.validate('pub.layers.judgment.defs#judgment', {
     item,

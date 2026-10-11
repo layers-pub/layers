@@ -10,7 +10,7 @@ This project follows [Semantic Versioning](https://semver.org/).
 
 - `continuousValue` on `pub.layers.judgment.defs#judgment`, an exact finite
   decimal response represented by a signed integer `coefficient` and a
-  nonnegative `scale`. This arm preserves decimal responses without binary
+  base-10 `exponent`. This arm preserves decimal responses without binary
   floating-point coercion or a caller-defined integer scale, permits values
   outside 0 to 1, and remains distinct from the existing integer
   `scalarValue` arm.

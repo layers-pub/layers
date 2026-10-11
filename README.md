@@ -40,7 +40,7 @@ Version 0.11.0 contains 114 `pub.layers.*` lexicon files:
 - six OAuth permission-set lexicons
 
 This release adds an exact continuous-response arm to judgments. A
-`continuousValue` stores an integer coefficient and nonnegative decimal scale,
+`continuousValue` stores an integer coefficient and base-10 exponent,
 so values such as 0.73 round-trip without binary floating-point coercion or an
 application-defined integer scale. The existing `scalarValue` remains the
 integer arm. Experiment definitions now list `continuous` among the known task

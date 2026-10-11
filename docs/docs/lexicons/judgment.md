@@ -91,14 +91,14 @@ A single judgment about a linguistic item.
 **NSID:** `pub.layers.judgment.defs#decimalValue`
 
 An exact finite decimal represented as `coefficient` multiplied by 10 to the
-negative `scale`. For instance, `0.73` is `{ "coefficient": 73, "scale": 2 }`.
+`exponent`. For instance, `0.73` is `{ "coefficient": 73, "exponent": -2 }`.
 The carrier permits negative values and values outside 0 to 1. The experiment
 declaration, rather than this value type, owns any range constraint.
 
 | Field | Type | Description |
 | --- | --- | --- |
 | `coefficient` | integer (required) | Signed integer coefficient of the decimal value. |
-| `scale` | integer (required, minimum 0) | Number of decimal places represented by `coefficient`. |
+| `exponent` | integer (required) | Base-10 exponent applied to `coefficient`. |
 
 ### experimentDesign
 **NSID:** `pub.layers.judgment.defs#experimentDesign`
