@@ -54,7 +54,19 @@ WORKTREE = Path(__file__).resolve().parent.parent
 SCHEMAS = WORKTREE / "lexicons" / ".schemas"
 LENSES = WORKTREE / "lexicons" / "lenses"
 LEXROOT = "lexicons/pub/layers"
-CHAIN = ["v0.1.0", "v0.2.0", "v0.3.0", "v0.4.0", "v0.5.0", "v0.6.0", "v0.7.0", "v0.8.0", "v0.9.0"]
+CHAIN = [
+    "v0.1.0",
+    "v0.2.0",
+    "v0.3.0",
+    "v0.4.0",
+    "v0.5.0",
+    "v0.6.0",
+    "v0.7.0",
+    "v0.8.0",
+    "v0.9.0",
+    "v0.10.0",
+    "v0.11.0",
+]
 
 
 def load_schema(version: str) -> Any:

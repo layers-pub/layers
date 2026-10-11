@@ -89,7 +89,7 @@ fn append_version(output: &Path, version: &str, previous: &str) -> Result<()> {
     fs::write(&schema_path, serialized).with_context(|| format!("write {}", schema_path.display()))?;
 
     // Adjacent lens: identity-on-surviving-structure, same construction as the
-    // seven existing lenses. The clean-break entries are added by a separate
+    // existing lenses. The clean-break entries are added by a separate
     // hand-authoring step so the additive/surviving structure stays auto-derived.
     let previous_bundle: Schema = serde_json::from_str(
         &fs::read_to_string(schemas_dir.join(format!("{previous}.json")))
