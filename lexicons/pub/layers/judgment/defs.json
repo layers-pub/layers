@@ -25,7 +25,12 @@
         },
         "scalarValue": {
           "type": "integer",
-          "description": "Numeric response value (ordinal-scale rating, magnitude estimate, or rank position)."
+          "description": "Integer response value (ordinal-scale rating, integer magnitude estimate, or rank position). Use continuousValue for an exact decimal response."
+        },
+        "continuousValue": {
+          "type": "ref",
+          "ref": "pub.layers.judgment.defs#decimalValue",
+          "description": "Exact finite decimal response for continuous tasks. The value is coefficient multiplied by 10 to the negative scale; it is distinct from the integer scalarValue arm."
         },
         "textSpan": {
           "type": "ref",
@@ -65,6 +70,22 @@
           "type": "ref",
           "ref": "pub.layers.defs#featureMap",
           "description": "Open-ended features carrying judgment detail not covered by the typed fields."
+        }
+      }
+    },
+    "decimalValue": {
+      "type": "object",
+      "description": "An exact finite decimal represented as coefficient multiplied by 10 to the negative scale. For example, 0.73 is coefficient 73 with scale 2. This carrier permits negative values and values outside 0 to 1; the experiment declaration owns any range constraint.",
+      "required": ["coefficient", "scale"],
+      "properties": {
+        "coefficient": {
+          "type": "integer",
+          "description": "Signed integer coefficient of the decimal value."
+        },
+        "scale": {
+          "type": "integer",
+          "description": "Number of decimal places represented by coefficient.",
+          "minimum": 0
         }
       }
     },

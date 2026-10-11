@@ -55,6 +55,7 @@
               "multi-select",
               "ordinal-scale",
               "magnitude",
+              "continuous",
               "binary",
               "categorical",
               "free-text",

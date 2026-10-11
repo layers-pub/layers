@@ -4,6 +4,20 @@ All notable changes to the Layers lexicon schemas will be documented in this fil
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.11.0] - 2026-10-11
+
+### Added
+
+- `continuousValue` on `pub.layers.judgment.defs#judgment`, an exact finite
+  decimal response represented by a signed integer `coefficient` and a
+  nonnegative `scale`. This arm preserves decimal responses without binary
+  floating-point coercion or a caller-defined integer scale, permits values
+  outside 0 to 1, and remains distinct from the existing integer
+  `scalarValue` arm.
+- `continuous` in the known-value inventory for
+  `pub.layers.judgment.experimentDef#taskType`, aligning the experiment
+  declaration with the new response carrier.
+
 ## [0.10.0] - 2026-09-02
 
 ### Added

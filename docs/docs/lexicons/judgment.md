@@ -23,7 +23,7 @@ Definition of an annotation or judgment experiment.
 | `measureTypeUri` | at-uri | AT-URI of the measure type definition node. Community-expandable via knowledge graph. |
 | `measureType` | string | What property or behavior is being measured (fallback). Known values: `acceptability`, `inference`, `similarity`, `plausibility`, `comprehension`, `preference`, `extraction`, `reading-time`, `production`, `custom` |
 | `taskTypeUri` | at-uri | AT-URI of the response instrument definition node. Community-expandable via knowledge graph. |
-| `taskType` | string | Response instrument: how the response is collected (fallback). Known values: `forced-choice`, `multi-select`, `ordinal-scale`, `magnitude`, `binary`, `categorical`, `free-text`, `cloze`, `span-labeling`, `custom` |
+| `taskType` | string | Response instrument: how the response is collected (fallback). Known values: `forced-choice`, `multi-select`, `ordinal-scale`, `magnitude`, `continuous`, `binary`, `categorical`, `free-text`, `cloze`, `span-labeling`, `custom` |
 | `guidelines` | string | Task guidelines and instructions. |
 | `guidelinesFormat` | string | Format of the guidelines text, so consumers can render it safely without sniffing. Defaults to `plain` when omitted. Known values: `plain`, `html`, `markdown` |
 | `ontologyRef` | at-uri | Reference to the ontology used. |
@@ -77,7 +77,8 @@ A single judgment about a linguistic item.
 | `item` | ref | Reference to the item being judged. Ref: `pub.layers.defs#objectRef` |
 | `fillingRef` | at-uri | Reference to the `pub.layers.resource.filling` that generated the item being judged. |
 | `categoricalValue` | string | Categorical judgment label. |
-| `scalarValue` | integer | Numeric response value (ordinal-scale rating, magnitude estimate, or rank position). |
+| `scalarValue` | integer | Integer response value (ordinal-scale rating, integer magnitude estimate, or rank position). Use `continuousValue` for an exact decimal response. |
+| `continuousValue` | ref | Exact finite decimal response for continuous tasks, represented by `decimalValue`. Distinct from the integer `scalarValue` arm. Ref: `pub.layers.judgment.defs#decimalValue` |
 | `textSpan` | ref | Selected text span for span-labeling tasks. Ref: `pub.layers.defs#span` |
 | `freeText` | string | Free-text response. |
 | `responseTimeMs` | integer | Response time in milliseconds. |
@@ -85,6 +86,19 @@ A single judgment about a linguistic item.
 | `behavioralData` | ref | Behavioral analytics (e.g., mouse movements, keystroke patterns, eye tracking). Ref: `pub.layers.defs#featureMap` |
 | `regionResponses` | array | Per-region reading-time and eye-movement measures for incremental-presentation tasks (self-paced reading, eye-tracking-while-reading, maze), one entry per region. Array of ref: `pub.layers.judgment.defs#regionResponse` |
 | `features` | ref | Ref: `pub.layers.defs#featureMap` |
+
+### decimalValue
+**NSID:** `pub.layers.judgment.defs#decimalValue`
+
+An exact finite decimal represented as `coefficient` multiplied by 10 to the
+negative `scale`. For instance, `0.73` is `{ "coefficient": 73, "scale": 2 }`.
+The carrier permits negative values and values outside 0 to 1. The experiment
+declaration, rather than this value type, owns any range constraint.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `coefficient` | integer (required) | Signed integer coefficient of the decimal value. |
+| `scale` | integer (required, minimum 0) | Number of decimal places represented by `coefficient`. |
 
 ### experimentDesign
 **NSID:** `pub.layers.judgment.defs#experimentDesign`
